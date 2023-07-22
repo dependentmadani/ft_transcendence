@@ -1,19 +1,28 @@
 import {v4 as uuid} from 'uuid'
-import { IsString, IsInt, IsUUID } from 'class-validator';
+import { IsString, IsInt, IsUUID, IsDate, IsBoolean } from 'class-validator';
 
 export class users {
+
+    @IsDate()
+    createdAt: Date;
+
+    @IsDate()
+    updatedAt: Date;
+
     @IsInt()
     userId: number;
 
     @IsString()
     username: string;
 
-    @IsString()
-    avatar:string;
+    @IsBoolean()
+    avatar: boolean;
 
-    @IsUUID()
-    password: uuid;
+    @IsString()
+    password: String;
     
-    @IsUUID()
-    hashedSaltedPassword: uuid;
+    @IsString()
+    hashedSaltedPassword: String;
+
+    //chat need to be added
 }
