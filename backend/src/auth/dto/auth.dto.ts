@@ -4,9 +4,9 @@ export class AuthDto {
 
     @IsString()
     @IsNotEmpty()
-    username: String;
+    username: string;
 
     @IsString()
     @IsNotEmpty()
-    password: String;
+    password: string;
 }

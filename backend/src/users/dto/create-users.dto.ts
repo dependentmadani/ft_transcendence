@@ -19,10 +19,10 @@ export class users {
     avatar: boolean;
 
     @IsString()
-    password: String;
+    password: string;
     
     @IsString()
-    hashedSaltedPassword: String;
+    hashedSaltedPassword: string;
 
     //chat need to be added
 }

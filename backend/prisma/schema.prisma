@@ -15,7 +15,7 @@ model Users {
   updatedAt   DateTime  @updatedAt
   id          Int       @id @default(autoincrement())
   username    String    @unique
-  passHash    String
+  password    String
   avatar      Boolean
   chat        Chat[]
 }
