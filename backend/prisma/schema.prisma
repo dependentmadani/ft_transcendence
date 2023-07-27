@@ -15,8 +15,12 @@ model Users {
   updatedAt   DateTime  @updatedAt
   id          Int       @id @default(autoincrement())
   username    String    @unique
+  email       String    @unique
   password    String
-  avatar      Boolean
+  avatar      String?
+  hashRt      String?
+  friend      Users[]   @relation("friends")
+  block       Users[]   @relation("friends")
   chat        Chat[]
 }
 
@@ -24,7 +28,7 @@ model Chat {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   id            Int       @id @default(autoincrement())
-  user          Users     @relation(fields: [userId], references: [id])
+  user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
   userId        Int
   banUser       Boolean
   muteUser      Boolean
