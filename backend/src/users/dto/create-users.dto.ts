@@ -15,8 +15,8 @@ export class users {
     @IsString()
     username: string;
 
-    @IsBoolean()
-    avatar: boolean;
+    @IsString()
+    avatar: string;
 
     @IsString()
     password: string;
