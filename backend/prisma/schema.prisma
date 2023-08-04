@@ -19,6 +19,9 @@ model Users {
   password    String?
   avatar      String?
   hashRt      String?
+  twofa       String?
+  twofaEmail  String?   @unique
+  twoEnabled  Boolean   @default(false)
   friend      Users[]   @relation("friends")
   block       Users[]   @relation("friends")
   chat        Chat[]
