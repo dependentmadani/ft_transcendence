@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  id          Int       @id @default(autoincrement())
+  username    String    @unique
+  email       String    @unique
+  password    String?
+  avatar      String?
+  hashRt      String?
+  twofa       String?
+  twofaEmail  String?   @unique
+  twoEnabled  Boolean   @default(false)
+  friend      Users[]   @relation("friends")
+  block       Users[]   @relation("friends")
+  senderMessage Message[] @relation("userSender")
+  receiverMessage Message[] @relation("userReceiver")
+  chat        Chat[]
+}
+
+model Chat {
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  id            Int       @id @default(autoincrement())
+  user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
+  userId        Int
+  banUser       Boolean
+  muteUser      Boolean
+  blocked_user  Boolean
+  Message       Message[] @relation("chat")
+  gameInvite    String?
+}
+
+model Message {
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  messageId Int @id @default(autoincrement())
+  chatId Int
+  Chat  Chat  @relation(name:"chat", fields: [chatId], references: [id])
+  senderId  Int  
+  receiverId  Int 
+  sender    Users @relation(name: "userSender", fields: [senderId], references: [id])
+  receiver  Users @relation(name: "userReceiver", fields: [receiverId], references: [id])
+  text  String
+}
+
+enum Role {
+  ADMIN
+  USER
+}
