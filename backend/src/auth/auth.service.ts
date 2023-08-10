@@ -1,11 +1,15 @@
-import { ForbiddenException, Injectable, Req, UseGuards } from "@nestjs/common";
+import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
-import { AuthDto } from "./dto";
+import { AuthDto, TwoFaAuthDto, TwoFaCodeDto } from "./dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from "@nestjs/config";
 import { Tokens } from "./types";
+import { Users } from "@prisma/client";
+import * as speakeasy from 'speakeasy';
+import * as qrcode from 'qrcode'
+
 
 @Injectable({})
 export class AuthService {
@@ -51,6 +55,7 @@ export class AuthService {
                 email: dto.email,
             },
         })
+        console.log(user)
 
         //did not find the username
         if (!user)
@@ -67,7 +72,7 @@ export class AuthService {
         return token; 
     }
 
-    async logout(userId: number) {
+    async logout(userId: number, cookies: any) {
         await this.prisma.users.updateMany({
             where: {
                 id: userId,
@@ -81,7 +86,7 @@ export class AuthService {
         });
     }
 
-    async signup42(dto: AuthDto): Promise<Tokens> {
+    async signup42(dto: AuthDto, profile?: any): Promise<Tokens> {
         //need to hash the password for security reasons
 
         try {
@@ -89,6 +94,7 @@ export class AuthService {
                 data: {
                     username: dto.username,
                     email: dto.email,
+                    avatar: profile.avatar,
                 },
             })
             //the password need to be deleted so it cannot be reached by interder
@@ -124,6 +130,10 @@ export class AuthService {
         return token; 
     }
 
+    // async accessToken42() {
+        //use fetch
+    // }
+
     async fortyTwo(profile: any): Promise<Tokens> {
         // console.log(profile);
         const userDto: AuthDto = {
@@ -132,9 +142,9 @@ export class AuthService {
         }
         const available = await this.findUser(profile.username, profile.email);
         if (!available) {
-            return this.signup42(userDto);
+            return await this.signup42(userDto, profile);
         }
-        return this.signin42(userDto);
+        return await this.signin42(userDto);
     }
 
     async refreshTokens(userdId: number, rt: string): Promise<Tokens> {
@@ -155,6 +165,75 @@ export class AuthService {
         await this.updateRtHashed(user.id, token.refresh_token);
 
         return token; 
+    }
+
+    //generate qrcode for enabling 2fa
+    async enable2fa(body: TwoFaAuthDto, user: Users): Promise<string> {
+        const secret = speakeasy.generateSecret();
+
+        await this.prisma.users.update({
+            where: {
+                id: user.id,
+                email: user.email,
+            },
+            data: {
+                twofaEmail: body.email,
+                twofa: secret.base32,
+            },
+        });
+
+        return await qrcode.toDataURL(secret.otpauth_url);
+    }
+
+    async verify2fa(body: TwoFaCodeDto, user: Users): Promise<boolean> {
+        const theUser = await this.prisma.users.findUnique({
+            where: {
+                id: user.id,
+                email: user.email,
+            },
+        });
+        const secret = theUser.twofa;
+        const verified = speakeasy.totp.verify({
+            secret: secret,
+            encoding: 'base32',
+            token: body.code,
+        });
+        if (verified)
+            return true;
+        //     throw new UnauthorizedException('code entered is wrong, please retry again!');
+        
+        return false;
+    }
+    
+    async isEnable2fa(user: Users) {
+        await this.prisma.users.update({
+            where: {
+                id: user.id,
+                email: user.email
+            },
+            data: {
+                twoEnabled: true,
+            }
+        });
+
+    }
+
+    async disable2fa(user: Users): Promise<boolean> {
+        const users = await this.prisma.users.update({
+            where: {
+                id: user.id,
+                email: user.email,
+            },
+            data: {
+                twoEnabled: false,
+                twofaEmail: null,
+                twofa: null,
+            }
+        });
+
+        if (!users)
+            return false;
+        return true
     }
     
     async signToken(userId: number,
@@ -198,6 +277,15 @@ export class AuthService {
             return false;
         }
         return true;
+    }
+
+    async returnUser(email: string): Promise<Users> {
+        const user = await this.prisma.users.findUnique({
+            where: {
+                email: email,
+            },
+        });
+        return user;
     }
 
     async updateRtHashed(userId: number, hashedRt:string) {

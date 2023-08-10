@@ -2,13 +2,13 @@
  * TODO
  * @param this
  */
-declare function $extends(this: Client, extension: Args_2 | ((client: Client) => Client)): Client;
+declare function $extends(this: Client, extension: Args | ((client: Client) => Client)): Client;
 
-declare type Action = keyof typeof DMMF.ModelAction | 'executeRaw' | 'queryRaw' | 'runCommandRaw';
+export declare type Action = keyof typeof DMMF.ModelAction | 'executeRaw' | 'queryRaw' | 'runCommandRaw';
 
-declare type Aggregate = '_count' | '_max' | '_min' | '_avg' | '_sum';
+export declare type Aggregate = '_count' | '_max' | '_min' | '_avg' | '_sum';
 
-declare type AllModelsToStringIndex<TypeMap extends TypeMapDef, Args extends Record<string, any>, K extends PropertyKey> = Args extends {
+export declare type AllModelsToStringIndex<TypeMap extends TypeMapDef, Args extends Record<string, any>, K extends PropertyKey> = Args extends {
     [P in K]: {
         $allModels: infer AllModels;
     };
@@ -19,18 +19,11 @@ declare type AllModelsToStringIndex<TypeMap extends TypeMapDef, Args extends Rec
 declare class AnyNull extends NullTypesEnumValue {
 }
 
-declare type ApplyExtensionsParams = {
-    result: object;
-    modelName: string;
-    args: JsArgs;
-    extensions: MergedExtensionsList;
-};
+export declare type Args = Optional<RequiredArgs>;
 
-export declare type Args = InternalArgs;
+export declare type Args_2 = InternalArgs;
 
-declare type Args_2 = Optional<UserArgs>;
-
-declare type Args_3<T, F extends Operation> = T extends {
+export declare type Args_3<T, F extends Operation> = T extends {
     [K: symbol]: {
         types: {
             operations: {
@@ -47,7 +40,7 @@ declare type Args_3<T, F extends Operation> = T extends {
  *
  * Note: only the own enumerable keys are counted as valid attribute keys.
  */
-declare interface Attributes {
+export declare interface Attributes {
     [attributeKey: string]: AttributeValue | undefined;
 }
 
@@ -56,96 +49,96 @@ declare interface Attributes {
  *
  * null or undefined attribute values are invalid and will result in undefined behavior.
  */
-declare type AttributeValue = string | number | boolean | Array<null | undefined | string> | Array<null | undefined | number> | Array<null | undefined | boolean>;
+export declare type AttributeValue = string | number | boolean | Array<null | undefined | string> | Array<null | undefined | number> | Array<null | undefined | boolean>;
 
 export declare type BaseDMMF = Pick<DMMF.Document, 'datamodel'>;
 
-declare type BatchArgs = {
+export declare type BatchArgs = {
     queries: BatchQuery[];
     transaction?: {
         isolationLevel?: IsolationLevel;
     };
 };
 
-declare type BatchInternalParams = {
+export declare type BatchInternalParams = {
     requests: RequestParams[];
     customDataProxyFetch?: CustomDataProxyFetch;
 };
 
-declare type BatchQuery = {
+export declare type BatchQuery = {
     model: string | undefined;
     operation: string;
     args: JsArgs | RawQueryArgs;
 };
 
-declare type BatchQueryEngineResult<T> = QueryEngineResult<T> | Error;
+export declare type BatchQueryEngineResult<T> = QueryEngineResult<T> | Error;
 
-declare type BatchQueryOptionsCb = (args: BatchQueryOptionsCbArgs) => Promise<any>;
+export declare type BatchQueryOptionsCb = (args: BatchQueryOptionsCbArgs) => Promise<any>;
 
-declare type BatchQueryOptionsCbArgs = {
+export declare type BatchQueryOptionsCbArgs = {
     args: BatchArgs;
     query: (args: BatchArgs, __internalParams?: BatchInternalParams) => Promise<unknown[]>;
     __internalParams: BatchInternalParams;
 };
 
-declare type BatchTransactionOptions = {
+export declare type BatchTransactionOptions = {
     isolationLevel?: Transaction.IsolationLevel;
 };
 
-declare interface BinaryTargetsEnvValue {
+export declare interface BinaryTargetsEnvValue {
     fromEnvVar: string | null;
     value: string;
     native?: boolean;
 }
 
-declare type Call<F extends Fn, P> = (F & {
+export declare type Call<F extends Fn, P> = (F & {
     params: P;
 })['returns'];
 
-declare interface CallSite {
+export declare interface CallSite {
     getLocation(): LocationInFile | null;
 }
 
-declare type Cast<A, W> = A extends W ? A : W;
+export declare type Cast<A, W> = A extends W ? A : W;
 
-declare type Client = ReturnType<typeof getPrismaClient> extends new () => infer T ? T : never;
+export declare type Client = ReturnType<typeof getPrismaClient> extends new () => infer T ? T : never;
 
-declare type ClientArg = {
+export declare type ClientArg = {
     [MethodName in string]: unknown;
 };
 
-declare type ClientArgs = {
+export declare type ClientArgs = {
     client: ClientArg;
 };
 
-declare type ClientBuiltInProp = keyof DynamicClientExtensionThisBuiltin<never, never, never>;
+export declare type ClientBuiltInProp = keyof DynamicClientExtensionThisBuiltin<never, never, never>;
 
 declare enum ClientEngineType {
     Library = "library",
     Binary = "binary"
 }
 
-declare type Compute<T> = T extends Function ? T : {
+export declare type Compute<T> = T extends Function ? T : {
     [K in keyof T]: T[K];
 } & unknown;
 
-declare type ComputeDeep<T> = T extends Function ? T : {
+export declare type ComputeDeep<T> = T extends Function ? T : {
     [K in keyof T]: ComputeDeep<T[K]>;
 } & unknown;
 
-declare type ComputedField = {
+export declare type ComputedField = {
     name: string;
     needs: string[];
     compute: ResultArgsFieldCompute;
 };
 
-declare type ComputedFieldsMap = {
+export declare type ComputedFieldsMap = {
     [fieldName: string]: ComputedField;
 };
 
-declare type ConnectorType = 'mysql' | 'mongodb' | 'sqlite' | 'postgresql' | 'sqlserver' | 'jdbc:sqlserver' | 'cockroachdb';
+export declare type ConnectorType = 'mysql' | 'mongodb' | 'sqlite' | 'postgresql' | 'sqlserver' | 'jdbc:sqlserver' | 'cockroachdb';
 
-declare interface Context {
+export declare interface Context {
     /**
      * Get a value from the context.
      *
@@ -169,21 +162,31 @@ declare interface Context {
     deleteValue(key: symbol): Context;
 }
 
-declare type Context_2<T> = T extends {
+export declare type Context_2<T> = T extends {
     [K: symbol]: {
         ctx: infer C;
     };
 } ? C & T & {
+    /**
+     * @deprecated Use `$name` instead.
+     */
     name?: string;
+    $name?: string;
+    $parent?: unknown;
 } : T & {
+    /**
+     * @deprecated Use `$name` instead.
+     */
     name?: string;
+    $name?: string;
+    $parent?: unknown;
 };
 
-declare type Count<O> = {
+export declare type Count<O> = {
     [K in keyof O]: Count<number>;
 } & {};
 
-declare type CustomDataProxyFetch = (fetch: Fetch) => Fetch;
+export declare type CustomDataProxyFetch = (fetch: Fetch) => Fetch;
 
 declare class DataLoader<T = unknown> {
     private options;
@@ -197,24 +200,24 @@ declare class DataLoader<T = unknown> {
     get [Symbol.toStringTag](): string;
 }
 
-declare type DataLoaderOptions<T> = {
+export declare type DataLoaderOptions<T> = {
     singleLoader: (request: T) => Promise<any>;
     batchLoader: (request: T[]) => Promise<any[]>;
     batchBy: (request: T) => string | undefined;
     batchOrder: (requestA: T, requestB: T) => number;
 };
 
-declare type Datasource = {
+export declare type Datasource = {
     url?: string;
 };
 
-declare interface DatasourceOverwrite {
+export declare interface DatasourceOverwrite {
     name: string;
     url?: string;
     env?: string;
 }
 
-declare type Datasources = {
+export declare type Datasources = {
     [name in string]: Datasource;
 };
 
@@ -230,7 +233,7 @@ export declare interface Debug {
     formatters: Record<string, ((value: any) => string) | undefined>;
 }
 
-declare interface Debugger {
+export declare interface Debugger {
     (format: any, ...args: any[]): void;
     log: (...args: any[]) => any;
     extend: (namespace: string, delimiter?: string) => Debugger;
@@ -520,19 +523,21 @@ export declare interface DecimalJsLike {
 
 export declare type DefaultArgs = InternalArgs<{}, {}, {}, {}>;
 
-declare type DefaultSelection<P> = P extends Payload ? P['scalars'] & UnwrapPayload<P['composites']> : P;
+export declare type DefaultSelection<P> = UnwrapPayload<{
+    default: P;
+}>['default'];
 
 export declare function defineDmmfProperty(target: object, runtimeDataModel: RuntimeDataModel): void;
 
-declare function defineExtension(ext: Args_2 | ((client: Client) => Client)): (client: Client) => Client;
+declare function defineExtension(ext: Args | ((client: Client) => Client)): (client: Client) => Client;
 
-declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"];
+export declare const denylist: readonly ["$connect", "$disconnect", "$on", "$transaction", "$use", "$extends"];
 
-declare interface Dictionary<T> {
+export declare interface Dictionary<T> {
     [key: string]: T;
 }
 
-declare type Dictionary_2<T> = {
+export declare type Dictionary_2<T> = {
     [key: string]: T | undefined;
 };
 
@@ -777,17 +782,17 @@ declare class DMMFDatamodelHelper implements Pick<DMMF.Document, 'datamodel'> {
     typeMap: Dictionary<DMMF.Model>;
     typeAndModelMap: Dictionary<DMMF.Model>;
     constructor({ datamodel }: Pick<DMMF.Document, 'datamodel'>);
-    getDatamodelEnumMap(): Dictionary<DMMF.DatamodelEnum>;
-    getModelMap(): Dictionary<DMMF.Model>;
-    getTypeMap(): Dictionary<DMMF.Model>;
-    getTypeModelMap(): Dictionary<DMMF.Model>;
+    private getDatamodelEnumMap;
+    private getModelMap;
+    private getTypeMap;
+    private getTypeModelMap;
 }
 
 declare class DMMFMappingsHelper implements Pick<DMMF.Document, 'mappings'> {
     mappings: DMMF.Mappings;
     mappingsMap: Dictionary<DMMF.ModelMapping>;
     constructor({ mappings }: Pick<DMMF.Document, 'mappings'>);
-    getMappingsMap(): Dictionary<DMMF.ModelMapping>;
+    private getMappingsMap;
     getOtherOperationNames(): string[];
 }
 
@@ -799,30 +804,28 @@ declare class DMMFSchemaHelper implements Pick<DMMF.Document, 'schema'> {
         model: DMMF.OutputType[];
         prisma: DMMF.OutputType[];
     };
-    outputTypeMap: Dictionary<DMMF.OutputType>;
+    outputTypeMap: NamespacedTypeMap<DMMF.OutputType>;
     inputObjectTypes: {
         model?: DMMF.InputType[];
         prisma: DMMF.InputType[];
     };
-    inputTypeMap: Dictionary<DMMF.InputType>;
-    enumMap: Dictionary<DMMF.SchemaEnum>;
+    inputTypeMap: NamespacedTypeMap<DMMF.InputType>;
+    enumMap: NamespacedTypeMap<DMMF.SchemaEnum>;
     rootFieldMap: Dictionary<DMMF.SchemaField>;
     constructor({ schema }: Pick<DMMF.Document, 'schema'>);
     get [Symbol.toStringTag](): string;
     outputTypeToMergedOutputType: (outputType: DMMF.OutputType) => DMMF.OutputType;
-    resolveOutputTypes(): void;
-    resolveInputTypes(): void;
-    resolveFieldArgumentTypes(): void;
-    getQueryType(): DMMF.OutputType;
-    getMutationType(): DMMF.OutputType;
-    getOutputTypes(): {
-        model: DMMF.OutputType[];
-        prisma: DMMF.OutputType[];
-    };
-    getEnumMap(): Dictionary<DMMF.SchemaEnum>;
+    private resolveOutputTypes;
+    private resolveOutputTypesInNamespace;
+    private resolveInputTypes;
+    private resolveNamespaceInputTypes;
+    private resolveFieldArgumentTypes;
+    private resolveFieldArgumentTypesInNamespace;
+    private getOutputTypes;
+    private getEnumMap;
     hasEnumInNamespace(enumName: string, namespace: 'prisma' | 'model'): boolean;
-    getMergedOutputTypeMap(): Dictionary<DMMF.OutputType>;
-    getInputTypeMap(): Dictionary<DMMF.InputType>;
+    private getMergedOutputTypeMap;
+    private getInputTypeMap;
     getRootFieldMap(): Dictionary<DMMF.SchemaField>;
 }
 
@@ -831,7 +834,9 @@ export declare type DynamicClientExtensionArgs<C_, TypeMap extends TypeMapDef, T
     [P in keyof C_]: unknown;
 } & {
     [K: symbol]: {
-        ctx: Optional<DynamicClientExtensionThis<TypeMap, TypeMapCb, ExtArgs>, ITXClientDenyList>;
+        ctx: Optional<DynamicClientExtensionThis<TypeMap, TypeMapCb, ExtArgs>, ITXClientDenyList> & {
+            $parent: Optional<DynamicClientExtensionThis<TypeMap, TypeMapCb, ExtArgs>, ITXClientDenyList>;
+        };
     };
 };
 
@@ -840,14 +845,14 @@ export declare type DynamicClientExtensionThis<TypeMap extends TypeMapDef, TypeM
 } & {
     [P in Exclude<TypeMap['meta']['modelProps'], keyof ExtArgs['client']>]: DynamicModelExtensionThis<TypeMap, ModelKey<TypeMap, P>, ExtArgs>;
 } & {
-    [P in Exclude<keyof TypeMap['other']['operations'], keyof ExtArgs['client']>]: <R = GetResult_2<TypeMap['other']['payload'], any, P & Operation>>(...args: ToTuple<TypeMap['other']['operations'][P]['args']>) => PrismaPromise<R>;
+    [P in Exclude<keyof TypeMap['other']['operations'], keyof ExtArgs['client']>]: <R = GetResult<TypeMap['other']['payload'], any, P & Operation>>(...args: ToTuple<TypeMap['other']['operations'][P]['args']>) => PrismaPromise_2<R>;
 } & {
     [P in Exclude<ClientBuiltInProp, keyof ExtArgs['client']>]: DynamicClientExtensionThisBuiltin<TypeMap, TypeMapCb, ExtArgs>[P];
 };
 
-declare type DynamicClientExtensionThisBuiltin<TypeMap extends TypeMapDef, TypeMapCb extends TypeMapCbDef, ExtArgs extends Record<string, any>> = {
+export declare type DynamicClientExtensionThisBuiltin<TypeMap extends TypeMapDef, TypeMapCb extends TypeMapCbDef, ExtArgs extends Record<string, any>> = {
     $extends: ExtendsHook<'extends', TypeMapCb, ExtArgs>;
-    $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: {
+    $transaction<P extends PrismaPromise_2<any>[]>(arg: [...P], options?: {
         isolationLevel?: TypeMap['meta']['txIsolationLevel'];
     }): Promise<UnwrapTuple<P>>;
     $transaction<R>(fn: (client: Omit<DynamicClientExtensionThis<TypeMap, TypeMapCb, ExtArgs>, ITXClientDenyList>) => Promise<R>, options?: {
@@ -860,7 +865,7 @@ declare type DynamicClientExtensionThisBuiltin<TypeMap extends TypeMapDef, TypeM
 };
 
 /** Model */
-export declare type DynamicModelExtensionArgs<M_, TypeMap extends TypeMapDef, ExtArgs extends Record<string, any>> = {
+export declare type DynamicModelExtensionArgs<M_, TypeMap extends TypeMapDef, TypeMapCb extends TypeMapCbDef, ExtArgs extends Record<string, any>> = {
     [K in keyof M_]: K extends '$allModels' ? {
         [P in keyof M_[K]]?: unknown;
     } & {
@@ -870,27 +875,34 @@ export declare type DynamicModelExtensionArgs<M_, TypeMap extends TypeMapDef, Ex
     } & {
         [K: symbol]: {
             ctx: DynamicModelExtensionThis<TypeMap, ModelKey<TypeMap, K>, ExtArgs> & {
+                $parent: DynamicClientExtensionThis<TypeMap, TypeMapCb, ExtArgs>;
+            } & {
+                $name: ModelKey<TypeMap, K>;
+            } & {
+                /**
+                 * @deprecated Use `$name` instead.
+                 */
                 name: ModelKey<TypeMap, K>;
             };
         };
     } : never;
 };
 
-declare type DynamicModelExtensionFluentApi<TypeMap extends TypeMapDef, M extends PropertyKey, P extends PropertyKey, Null> = {
-    [K in keyof TypeMap['model'][M]['payload']['objects']]: <A>(args?: Exact<A, Path<TypeMap['model'][M]['operations'][P]['args']['select'], [K]>>) => PrismaPromise<Path<DynamicModelExtensionFnResultBase<TypeMap, M, {
+export declare type DynamicModelExtensionFluentApi<TypeMap extends TypeMapDef, M extends PropertyKey, P extends PropertyKey, Null> = {
+    [K in keyof TypeMap['model'][M]['payload']['objects']]: <A>(args?: Exact<A, Path<TypeMap['model'][M]['operations'][P]['args']['select'], [K]>>) => PrismaPromise_2<Path<DynamicModelExtensionFnResultBase<TypeMap, M, {
         select: {
             [P in K]: A;
         };
-    }, P>, [K]> | Null> & DynamicModelExtensionFluentApi<TypeMap, (TypeMap['model'][M]['payload']['objects'][K] & {})['name'], P, Null>;
+    }, P>, [K]> | Null> & DynamicModelExtensionFluentApi<TypeMap, (TypeMap['model'][M]['payload']['objects'][K] & {})['name'], P, Null | Select<TypeMap['model'][M]['payload']['objects'][K], null>>;
 };
 
-declare type DynamicModelExtensionFnResult<TypeMap extends TypeMapDef, M extends PropertyKey, A, P extends PropertyKey, Null = DynamicModelExtensionFnResultNull<P>> = P extends FluentOperation ? DynamicModelExtensionFluentApi<TypeMap, M, P, Null> & PrismaPromise<DynamicModelExtensionFnResultBase<TypeMap, M, A, P> | Null> : PrismaPromise<DynamicModelExtensionFnResultBase<TypeMap, M, A, P>>;
+export declare type DynamicModelExtensionFnResult<TypeMap extends TypeMapDef, M extends PropertyKey, A, P extends PropertyKey, Null = DynamicModelExtensionFnResultNull<P>> = P extends FluentOperation ? DynamicModelExtensionFluentApi<TypeMap, M, P, Null> & PrismaPromise_2<DynamicModelExtensionFnResultBase<TypeMap, M, A, P> | Null> : PrismaPromise_2<DynamicModelExtensionFnResultBase<TypeMap, M, A, P>>;
 
-declare type DynamicModelExtensionFnResultBase<TypeMap extends TypeMapDef, M extends PropertyKey, A, P extends PropertyKey> = GetResult_2<TypeMap['model'][M]['payload'], A, P & Operation>;
+export declare type DynamicModelExtensionFnResultBase<TypeMap extends TypeMapDef, M extends PropertyKey, A, P extends PropertyKey> = GetResult<TypeMap['model'][M]['payload'], A, P & Operation>;
 
-declare type DynamicModelExtensionFnResultNull<P extends PropertyKey> = P extends 'findUnique' | 'findFirst' ? null : never;
+export declare type DynamicModelExtensionFnResultNull<P extends PropertyKey> = P extends 'findUnique' | 'findFirst' ? null : never;
 
-declare type DynamicModelExtensionOperationFn<TypeMap extends TypeMapDef, M extends PropertyKey, P extends PropertyKey> = {} extends TypeMap['model'][M]['operations'][P]['args'] ? <A>(args?: Exact<A, TypeMap['model'][M]['operations'][P]['args']>) => DynamicModelExtensionFnResult<TypeMap, M, A, P> : <A>(args: Exact<A, TypeMap['model'][M]['operations'][P]['args']>) => DynamicModelExtensionFnResult<TypeMap, M, A, P>;
+export declare type DynamicModelExtensionOperationFn<TypeMap extends TypeMapDef, M extends PropertyKey, P extends PropertyKey> = {} extends TypeMap['model'][M]['operations'][P]['args'] ? <A>(args?: Exact<A, TypeMap['model'][M]['operations'][P]['args']>) => DynamicModelExtensionFnResult<TypeMap, M, A, P> : <A>(args: Exact<A, TypeMap['model'][M]['operations'][P]['args']>) => DynamicModelExtensionFnResult<TypeMap, M, A, P>;
 
 export declare type DynamicModelExtensionThis<TypeMap extends TypeMapDef, M extends PropertyKey, ExtArgs extends Record<string, any>> = {
     [P in keyof ExtArgs['model'][Uncapitalize<M & string>]]: Return<ExtArgs['model'][Uncapitalize<M & string>][P]>;
@@ -910,7 +922,7 @@ export declare type DynamicQueryExtensionArgs<Q_, TypeMap extends TypeMapDef> = 
         model?: string;
         operation: string;
         args: any;
-        query: (args: any) => PrismaPromise<any>;
+        query: (args: any) => PrismaPromise_2<any>;
     }) => Promise<any> : K extends '$allModels' ? {
         [P in keyof Q_[K] | keyof TypeMap['model'][keyof TypeMap['model']]['operations'] | '$allOperations']?: P extends '$allOperations' ? DynamicQueryExtensionCb<TypeMap, 'model', keyof TypeMap['model'], keyof TypeMap['model'][keyof TypeMap['model']]['operations']> : P extends keyof TypeMap['model'][keyof TypeMap['model']]['operations'] ? DynamicQueryExtensionCb<TypeMap, 'model', keyof TypeMap['model'], P> : never;
     } : K extends TypeMap['meta']['modelProps'] ? {
@@ -918,18 +930,18 @@ export declare type DynamicQueryExtensionArgs<Q_, TypeMap extends TypeMapDef> = 
     } : K extends keyof TypeMap['other']['operations'] ? DynamicQueryExtensionCb<[TypeMap], 0, 'other', K> : never;
 };
 
-declare type DynamicQueryExtensionCb<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = <A extends DynamicQueryExtensionCbArgs<TypeMap, _0, _1, _2>>(args: A) => Promise<TypeMap[_0][_1][_2]['result']>;
+export declare type DynamicQueryExtensionCb<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = <A extends DynamicQueryExtensionCbArgs<TypeMap, _0, _1, _2>>(args: A) => Promise<TypeMap[_0][_1][_2]['result']>;
 
-declare type DynamicQueryExtensionCbArgs<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = (_1 extends unknown ? _2 extends unknown ? {
+export declare type DynamicQueryExtensionCbArgs<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = (_1 extends unknown ? _2 extends unknown ? {
     args: DynamicQueryExtensionCbArgsArgs<TypeMap, _0, _1, _2>;
     model: _0 extends 0 ? undefined : _1;
     operation: _2;
-    query: <A extends DynamicQueryExtensionCbArgsArgs<TypeMap, _0, _1, _2>>(args: A) => PrismaPromise<TypeMap[_0][_1]['operations'][_2]['result']>;
+    query: <A extends DynamicQueryExtensionCbArgsArgs<TypeMap, _0, _1, _2>>(args: A) => PrismaPromise_2<TypeMap[_0][_1]['operations'][_2]['result']>;
 } : never : never) & {
-    query: (args: DynamicQueryExtensionCbArgsArgs<TypeMap, _0, _1, _2>) => PrismaPromise<TypeMap[_0][_1]['operations'][_2]['result']>;
+    query: (args: DynamicQueryExtensionCbArgsArgs<TypeMap, _0, _1, _2>) => PrismaPromise_2<TypeMap[_0][_1]['operations'][_2]['result']>;
 };
 
-declare type DynamicQueryExtensionCbArgsArgs<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = _2 extends '$queryRaw' | '$executeRaw' ? Sql : TypeMap[_0][_1]['operations'][_2]['args'];
+export declare type DynamicQueryExtensionCbArgsArgs<TypeMap extends TypeMapDef, _0 extends PropertyKey, _1 extends PropertyKey, _2 extends PropertyKey> = _2 extends '$queryRaw' | '$executeRaw' ? Sql : TypeMap[_0][_1]['operations'][_2]['args'];
 
 /** Result */
 export declare type DynamicResultExtensionArgs<R_, TypeMap extends TypeMapDef> = {
@@ -941,11 +953,11 @@ export declare type DynamicResultExtensionArgs<R_, TypeMap extends TypeMapDef> =
     };
 };
 
-declare type DynamicResultExtensionData<TypeMap extends TypeMapDef, M extends PropertyKey, S> = GetFindResult<TypeMap['model'][M]['payload'], {
+export declare type DynamicResultExtensionData<TypeMap extends TypeMapDef, M extends PropertyKey, S> = GetFindResult<TypeMap['model'][M]['payload'], {
     select: S;
 }>;
 
-declare type DynamicResultExtensionNeeds<TypeMap extends TypeMapDef, M extends PropertyKey, S> = {
+export declare type DynamicResultExtensionNeeds<TypeMap extends TypeMapDef, M extends PropertyKey, S> = {
     [K in keyof S]: K extends keyof TypeMap['model'][M]['payload']['scalars'] ? S[K] : never;
 } & {
     [N in keyof TypeMap['model'][M]['payload']['scalars']]?: boolean;
@@ -956,7 +968,7 @@ declare type DynamicResultExtensionNeeds<TypeMap extends TypeMapDef, M extends P
  */
 export declare const empty: Sql;
 
-declare type EmptyToUnknown<T> = T;
+export declare type EmptyToUnknown<T> = T;
 
 declare abstract class Engine<InteractiveTransactionPayload = unknown> {
     abstract on(event: EngineEventType, listener: (args?: any) => any): void;
@@ -972,7 +984,7 @@ declare abstract class Engine<InteractiveTransactionPayload = unknown> {
     abstract metrics(options: MetricsOptionsPrometheus): Promise<string>;
 }
 
-declare interface EngineConfig {
+export declare interface EngineConfig {
     cwd: string;
     dirname: string;
     datamodelPath: string;
@@ -1019,9 +1031,9 @@ declare interface EngineConfig {
     isBundled?: boolean;
 }
 
-declare type EngineEventType = 'query' | 'info' | 'warn' | 'error' | 'beforeExit';
+export declare type EngineEventType = 'query' | 'info' | 'warn' | 'error' | 'beforeExit';
 
-declare type EngineSpan = {
+export declare type EngineSpan = {
     span: boolean;
     name: string;
     trace_id: string;
@@ -1036,65 +1048,67 @@ declare type EngineSpan = {
     }[];
 };
 
-declare type EngineSpanEvent = {
+export declare type EngineSpanEvent = {
     span: boolean;
     spans: EngineSpan[];
 };
 
-declare interface EnvValue {
+export declare interface EnvValue {
     fromEnvVar: null | string;
     value: null | string;
 }
 
-declare interface EnvValue_2 {
+export declare interface EnvValue_2 {
     fromEnvVar: string | null;
     value: string | null;
 }
 
-declare type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
+export declare type Equals<A, B> = (<T>() => T extends A ? 1 : 2) extends (<T>() => T extends B ? 1 : 2) ? 1 : 0;
 
-declare interface ErrorWithBatchIndex {
+export declare type ErrorFormat = 'pretty' | 'colorless' | 'minimal';
+
+export declare interface ErrorWithBatchIndex {
     batchRequestIdx?: number;
 }
 
-declare interface EventEmitter {
+export declare interface EventEmitter {
     on(event: string, listener: (...args: any[]) => void): unknown;
     emit(event: string, args?: any): boolean;
 }
 
-declare type Exact<A, W> = (W extends A ? {
+export declare type Exact<A, W> = (A extends unknown ? (W extends A ? {
     [K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : never;
-} : W) | (A extends Narrowable ? A : never);
+} : W) : never) | (A extends Narrowable ? A : never);
 
 /**
  * Defines Exception.
  *
  * string or an object with one of (message or name or code) and optional stack
  */
-declare type Exception = ExceptionWithCode | ExceptionWithMessage | ExceptionWithName | string;
+export declare type Exception = ExceptionWithCode | ExceptionWithMessage | ExceptionWithName | string;
 
-declare interface ExceptionWithCode {
+export declare interface ExceptionWithCode {
     code: string | number;
     name?: string;
     message?: string;
     stack?: string;
 }
 
-declare interface ExceptionWithMessage {
+export declare interface ExceptionWithMessage {
     code?: string | number;
     message: string;
     name?: string;
     stack?: string;
 }
 
-declare interface ExceptionWithName {
+export declare interface ExceptionWithName {
     code?: string | number;
     message?: string;
     name: string;
     stack?: string;
 }
 
-declare type ExtendedSpanOptions = SpanOptions & {
+export declare type ExtendedSpanOptions = SpanOptions & {
     /** The name of the span */
     name: string;
     internal?: boolean;
@@ -1126,7 +1140,7 @@ export declare interface ExtendsHook<Variant extends 'extends' | 'define', TypeM
         name?: string;
         query?: DynamicQueryExtensionArgs<Q_, TypeMap>;
         result?: DynamicResultExtensionArgs<R_, TypeMap> & R;
-        model?: DynamicModelExtensionArgs<M_, TypeMap, ExtArgs> & M;
+        model?: DynamicModelExtensionArgs<M_, TypeMap, TypeMapCb, ExtArgs> & M;
         client?: DynamicClientExtensionArgs<C_, TypeMap, TypeMapCb, ExtArgs> & C;
     }): {
         'extends': DynamicClientExtensionThis<Call<TypeMapCb, {
@@ -1151,22 +1165,17 @@ export { Extensions }
 declare namespace Extensions_2 {
     export {
         InternalArgs,
-        Args,
+        Args_2 as Args,
         DefaultArgs,
-        GetResult,
+        GetResult_2 as GetResult,
         GetSelect,
-        DynamicQueryExtensionArgs,
-        DynamicResultExtensionArgs,
-        DynamicModelExtensionArgs,
-        DynamicModelExtensionThis,
-        DynamicClientExtensionArgs,
-        DynamicClientExtensionThis,
         ExtendsHook,
-        UserArgs
+        TypeMapCbDef,
+        RequiredArgs as UserArgs
     }
 }
 
-declare type Fetch = typeof nodeFetch;
+export declare type Fetch = typeof nodeFetch;
 
 /**
  * A reference to a specific field of a specific model
@@ -1178,14 +1187,14 @@ export declare interface FieldRef<Model, FieldType> {
     readonly isList: boolean;
 }
 
-declare type FluentOperation = 'findUnique' | 'findUniqueOrThrow' | 'findFirst' | 'findFirstOrThrow' | 'create' | 'update' | 'upsert' | 'delete';
+export declare type FluentOperation = 'findUnique' | 'findUniqueOrThrow' | 'findFirst' | 'findFirstOrThrow' | 'create' | 'update' | 'upsert' | 'delete';
 
-declare interface Fn<Params = unknown, Returns = unknown> {
+export declare interface Fn<Params = unknown, Returns = unknown> {
     params: Params;
     returns: Returns;
 }
 
-declare interface GeneratorConfig {
+export declare interface GeneratorConfig {
     name: string;
     output: EnvValue | null;
     isCustomOutput?: boolean;
@@ -1195,28 +1204,28 @@ declare interface GeneratorConfig {
     previewFeatures: string[];
 }
 
-declare type GetAggregateResult<P extends Payload, A> = {
+export declare type GetAggregateResult<P extends Payload, A> = {
     [K in keyof A as K extends Aggregate ? K : never]: K extends '_count' ? A[K] extends true ? number : Count<A[K]> : {
         [J in keyof A[K] & string]: P['scalars'][J] | null;
     };
 };
 
-declare type GetBatchResult = {
+export declare type GetBatchResult = {
     count: number;
 };
 
-declare type GetCountResult<A> = A extends {
+export declare type GetCountResult<A> = A extends {
     select: infer S;
 } ? (S extends true ? number : Count<S>) : number;
 
 declare function getExtensionContext<T>(that: T): Context_2<T>;
 
-declare type GetFindResult<P extends Payload, A> = {} extends A ? DefaultSelection<P> : A extends {
-    select: infer S;
+export declare type GetFindResult<P extends Payload, A> = {} extends A ? DefaultSelection<P> : A extends {
+    select: infer S extends object;
 } & Record<string, unknown> | {
-    include: infer S;
-} & Record<string, unknown> ? S extends undefined ? DefaultSelection<P> : {
-    [K in keyof S as S[K] extends false | undefined | null ? never : K]: S[K] extends object ? P extends SelectablePayloadFields<K, (infer O)[]> ? O extends Payload ? GetFindResult<O, S[K]>[] : never : P extends SelectablePayloadFields<K, infer O | null> ? O extends Payload ? GetFindResult<O, S[K]> | SelectField<P, K> & null : never : K extends '_count' ? Count<GetFindResult<P, S[K]>> : never : P extends SelectablePayloadFields<K, (infer O)[]> ? O extends Payload ? DefaultSelection<O>[] : never : P extends SelectablePayloadFields<K, infer O | null> ? O extends Payload ? DefaultSelection<O> | SelectField<P, K> & null : never : P extends {
+    include: infer I extends object;
+} & Record<string, unknown> ? {
+    [K in keyof S | keyof I as (S & I)[K] extends false | undefined | null ? never : K]: (S & I)[K] extends object ? P extends SelectablePayloadFields<K, (infer O)[]> ? O extends Payload ? GetFindResult<O, (S & I)[K]>[] : never : P extends SelectablePayloadFields<K, infer O | null> ? O extends Payload ? GetFindResult<O, (S & I)[K]> | SelectField<P, K> & null : never : K extends '_count' ? Count<GetFindResult<P, (S & I)[K]>> : never : P extends SelectablePayloadFields<K, (infer O)[]> ? O extends Payload ? DefaultSelection<O>[] : never : P extends SelectablePayloadFields<K, infer O | null> ? O extends Payload ? DefaultSelection<O> | SelectField<P, K> & null : never : P extends {
         scalars: {
             [k in K]: infer O;
         };
@@ -1225,10 +1234,14 @@ declare type GetFindResult<P extends Payload, A> = {} extends A ? DefaultSelecti
     include: any;
 } & Record<string, unknown> ? DefaultSelection<P> : unknown) : DefaultSelection<P>;
 
-declare type GetGroupByResult<P extends Payload, A> = A extends {
+export declare type GetGroupByResult<P extends Payload, A> = A extends {
     by: string[];
 } ? Array<GetAggregateResult<P, A> & {
     [K in A['by'][number]]: P['scalars'][K];
+}> : A extends {
+    by: string;
+} ? Array<GetAggregateResult<P, A> & {
+    [K in A['by']]: P['scalars'][K];
 }> : never;
 
 export declare function getPrismaClient(config: GetPrismaClientConfig): {
@@ -1249,6 +1262,11 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
         _activeProvider: string;
         _dataProxy: boolean;
         _extensions: MergedExtensionsList;
+        /**
+         * A fully constructed/applied Client that references the parent
+         * PrismaClient. This is used for Client extensions only.
+         */
+        _appliedParent: any;
         _createPrismaPromise: PrismaPromiseFactory;
         getEngine(): Engine;
         /**
@@ -1278,7 +1296,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          * @param values
          * @returns
          */
-        $executeRaw(query: TemplateStringsArray | Sql, ...values: any[]): PrismaPromise_2<unknown>;
+        $executeRaw(query: TemplateStringsArray | Sql, ...values: any[]): PrismaPromise<unknown>;
         /**
          * Unsafe counterpart of `$executeRaw` that is susceptible to SQL injections
          * @see https://github.com/prisma/prisma/issues/7142
@@ -1287,14 +1305,14 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          * @param values
          * @returns
          */
-        $executeRawUnsafe(query: string, ...values: RawValue[]): PrismaPromise_2<unknown>;
+        $executeRawUnsafe(query: string, ...values: RawValue[]): PrismaPromise<unknown>;
         /**
          * Executes a raw command only for MongoDB
          *
          * @param command
          * @returns
          */
-        $runCommandRaw(command: Record<string, JsInputValue>): PrismaPromise_2<unknown>;
+        $runCommandRaw(command: Record<string, JsInputValue>): PrismaPromise<unknown>;
         /**
          * Executes a raw query and returns selected data
          */
@@ -1307,7 +1325,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          * @param values
          * @returns
          */
-        $queryRaw(query: TemplateStringsArray | Sql, ...values: any[]): PrismaPromise_2<unknown>;
+        $queryRaw(query: TemplateStringsArray | Sql, ...values: any[]): PrismaPromise<unknown>;
         /**
          * Unsafe counterpart of `$queryRaw` that is susceptible to SQL injections
          * @see https://github.com/prisma/prisma/issues/7142
@@ -1316,14 +1334,14 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
          * @param values
          * @returns
          */
-        $queryRawUnsafe(query: string, ...values: RawValue[]): PrismaPromise_2<unknown>;
+        $queryRawUnsafe(query: string, ...values: RawValue[]): PrismaPromise<unknown>;
         /**
          * Execute a batch of requests in a transaction
          * @param requests
          * @param options
          */
         _transactionWithArray({ promises, options, }: {
-            promises: Array<PrismaPromise_2<any>>;
+            promises: Array<PrismaPromise<any>>;
             options?: BatchTransactionOptions | undefined;
         }): Promise<any>;
         /**
@@ -1336,7 +1354,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
             callback: (client: Client) => Promise<unknown>;
             options?: Options_2 | undefined;
         }): Promise<unknown>;
-        _createItxClient(transaction: PrismaPromiseInteractiveTransaction): any;
+        _createItxClient(transaction: PrismaPromiseInteractiveTransaction): Client;
         /**
          * Execute queries within a transaction
          * @param input a callback or a query list
@@ -1368,7 +1386,7 @@ export declare function getPrismaClient(config: GetPrismaClientConfig): {
  * loaded, this same config is passed to {@link getPrismaClient} which creates a
  * closure with that config around a non-instantiated [[PrismaClient]].
  */
-declare type GetPrismaClientConfig = {
+export declare type GetPrismaClientConfig = {
     runtimeDataModel: RuntimeDataModel;
     generator?: GeneratorConfig;
     sqliteDatasourceOverrides?: DatasourceOverwrite[];
@@ -1435,13 +1453,7 @@ declare type GetPrismaClientConfig = {
     isBundled?: boolean;
 };
 
-export declare type GetResult<Base extends Record<any, any>, R extends Args['result'][string], KR extends keyof R = string extends keyof R ? never : keyof R> = {
-    [K in KR | keyof Base]: K extends KR ? R[K] extends (() => {
-        compute: (...args: any) => infer C;
-    }) ? C : never : Base[K];
-};
-
-declare type GetResult_2<P extends Payload, A, O extends Operation = 'findUniqueOrThrow'> = {
+export declare type GetResult<P extends Payload, A, O extends Operation = 'findUniqueOrThrow'> = {
     findUnique: GetFindResult<P, A> | null;
     findUniqueOrThrow: GetFindResult<P, A>;
     findFirst: GetFindResult<P, A> | null;
@@ -1466,11 +1478,17 @@ declare type GetResult_2<P extends Payload, A, O extends Operation = 'findUnique
     aggregateRaw: JsonObject;
 }[O];
 
-export declare type GetSelect<Base extends Record<any, any>, R extends Args['result'][string], KR extends keyof R = string extends keyof R ? never : keyof R> = {
+export declare type GetResult_2<Base extends Record<any, any>, R extends Args_2['result'][string], KR extends keyof R = string extends keyof R ? never : keyof R> = unknown extends R ? Base : {
+    [K in KR | keyof Base]: K extends KR ? R[K] extends (() => {
+        compute: (...args: any) => infer C;
+    }) ? C : never : Base[K];
+};
+
+export declare type GetSelect<Base extends Record<any, any>, R extends Args_2['result'][string], KR extends keyof R = string extends keyof R ? never : keyof R> = {
     [K in KR | keyof Base]?: K extends KR ? boolean : Base[K];
 };
 
-declare type HandleErrorParams = {
+export declare type HandleErrorParams = {
     args: JsArgs;
     error: any;
     clientMethod: string;
@@ -1478,7 +1496,7 @@ declare type HandleErrorParams = {
     transaction?: PrismaPromiseTransaction;
 };
 
-declare type Headers_2 = Record<string, string | string[] | undefined>;
+export declare type Headers_2 = Record<string, string | string[] | undefined>;
 
 /**
  * Defines High-Resolution Time.
@@ -1492,19 +1510,19 @@ declare type Headers_2 = Record<string, string | string[] | undefined>;
  * HrTime[1] = Number((1609504210.150 - HrTime[0]).toFixed(9)) * 1e9 = 150000000.
  * This is represented in HrTime format as [1609504210, 150000000].
  */
-declare type HrTime = [number, number];
+export declare type HrTime = [number, number];
 
-declare type InlineDatasource = {
+export declare type InlineDatasource = {
     url: NullableEnvValue;
 };
 
-declare type InlineDatasources = {
+export declare type InlineDatasources = {
     [name in InternalDatasource['name']]: {
         url: InternalDatasource['url'];
     };
 };
 
-declare type InteractiveTransactionInfo<Payload = unknown> = {
+export declare type InteractiveTransactionInfo<Payload = unknown> = {
     /**
      * Transaction ID returned by the query engine.
      */
@@ -1517,7 +1535,7 @@ declare type InteractiveTransactionInfo<Payload = unknown> = {
     payload: Payload;
 };
 
-declare type InteractiveTransactionOptions<Payload> = Transaction.InteractiveTransactionInfo<Payload>;
+export declare type InteractiveTransactionOptions<Payload> = Transaction.InteractiveTransactionInfo<Payload>;
 
 export declare type InternalArgs<R = {
     [K in string]: {
@@ -1554,7 +1572,7 @@ export declare type InternalArgs<R = {
     };
 };
 
-declare interface InternalDatasource {
+export declare interface InternalDatasource {
     name: string;
     activeProvider: ConnectorType;
     provider: ConnectorType;
@@ -1562,7 +1580,7 @@ declare interface InternalDatasource {
     config: any;
 }
 
-declare type InternalRequestParams = {
+export declare type InternalRequestParams = {
     /**
      * The original client method being called.
      * Even though the rootField / operation can be changed,
@@ -1580,7 +1598,7 @@ declare type InternalRequestParams = {
     unpacker?: Unpacker;
     otelParentCtx?: Context;
     /** Used to "desugar" a user input into an "expanded" one */
-    argsMapper?: (args?: UserArgs_2) => UserArgs_2;
+    argsMapper?: (args?: UserArgs) => UserArgs;
     /** Used to convert args for middleware and back */
     middlewareArgsMapper?: MiddlewareArgsMapper<unknown, unknown>;
     /** Used for Accelerate client extension via Data Proxy */
@@ -1597,7 +1615,7 @@ declare enum IsolationLevel {
 
 export declare type ITXClientDenyList = (typeof denylist)[number];
 
-declare interface Job {
+export declare interface Job {
     resolve: (data: any) => void;
     reject: (data: any) => void;
     request: any;
@@ -1608,24 +1626,28 @@ declare interface Job {
  */
 export declare function join(values: RawValue[], separator?: string, prefix?: string, suffix?: string): Sql;
 
-declare type JsArgs = {
+export declare type JsArgs = {
     select?: Selection_2;
     include?: Selection_2;
     [argName: string]: JsInputValue;
 };
 
-declare type JsInputValue = null | undefined | string | number | boolean | bigint | Uint8Array | Date | DecimalJsLike | ObjectEnumValue | RawParameters | FieldRef<string, unknown> | JsInputValue[] | {
+export declare type JsInputValue = null | undefined | string | number | boolean | bigint | Uint8Array | Date | DecimalJsLike | ObjectEnumValue | RawParameters | JsonConvertible | FieldRef<string, unknown> | JsInputValue[] | {
     [key: string]: JsInputValue;
 };
 
-declare type JsonArgumentValue = number | string | boolean | null | JsonTaggedValue | JsonArgumentValue[] | {
+export declare type JsonArgumentValue = number | string | boolean | null | JsonTaggedValue | JsonArgumentValue[] | {
     [key: string]: JsonArgumentValue;
 };
 
-declare interface JsonArray extends Array<JsonValue> {
+export declare interface JsonArray extends Array<JsonValue> {
 }
 
-declare type JsonFieldSelection = {
+export declare interface JsonConvertible {
+    toJSON(): unknown;
+}
+
+export declare type JsonFieldSelection = {
     arguments?: Record<string, JsonArgumentValue>;
     selection: JsonSelectionSet;
 };
@@ -1633,46 +1655,40 @@ declare type JsonFieldSelection = {
 declare class JsonNull extends NullTypesEnumValue {
 }
 
-declare type JsonObject = {
+export declare type JsonObject = {
     [Key in string]?: JsonValue;
 };
 
-declare type JsonQuery = {
+export declare type JsonQuery = {
     modelName?: string;
     action: JsonQueryAction;
     query: JsonFieldSelection;
 };
 
-declare type JsonQueryAction = 'findUnique' | 'findUniqueOrThrow' | 'findFirst' | 'findFirstOrThrow' | 'findMany' | 'createOne' | 'createMany' | 'updateOne' | 'updateMany' | 'deleteOne' | 'deleteMany' | 'upsertOne' | 'aggregate' | 'groupBy' | 'executeRaw' | 'queryRaw' | 'runCommandRaw' | 'findRaw' | 'aggregateRaw';
+export declare type JsonQueryAction = 'findUnique' | 'findUniqueOrThrow' | 'findFirst' | 'findFirstOrThrow' | 'findMany' | 'createOne' | 'createMany' | 'updateOne' | 'updateMany' | 'deleteOne' | 'deleteMany' | 'upsertOne' | 'aggregate' | 'groupBy' | 'executeRaw' | 'queryRaw' | 'runCommandRaw' | 'findRaw' | 'aggregateRaw';
 
-declare type JsonSelectionSet = {
+export declare type JsonSelectionSet = {
     $scalars?: boolean;
     $composites?: boolean;
 } & {
     [fieldName: string]: boolean | JsonFieldSelection;
 };
 
-declare type JsonTaggedValue = {
+export declare type JsonTaggedValue = {
     $type: 'Json';
     value: string;
 };
 
-declare type JsonValue = string | number | boolean | JsonObject | JsonArray | null;
+export declare type JsonValue = string | number | boolean | JsonObject | JsonArray | null;
 
-declare type KnownErrorParams = {
+export declare type JsPromise<T> = Promise<T> & {};
+
+export declare type KnownErrorParams = {
     code: string;
     clientVersion: string;
     meta?: Record<string, unknown>;
     batchRequestIdx?: number;
 };
-
-declare type LegacyExact<A, W = unknown> = W extends unknown ? A extends LegacyNarrowable ? Cast<A, W> : Cast<{
-    [K in keyof A]: K extends keyof W ? LegacyExact<A[K], W[K]> : never;
-}, {
-    [K in keyof W]: K extends keyof A ? LegacyExact<A[K], W[K]> : W[K];
-}> : never;
-
-declare type LegacyNarrowable = string | number | boolean | bigint;
 
 /**
  * A pointer from the current {@link Span} to another span in the same trace or
@@ -1689,7 +1705,7 @@ declare type LegacyNarrowable = string | number | boolean | bigint;
  *    initiated on service provider side so two traces (from Client and from
  *    Service Provider) can be correlated.
  */
-declare interface Link {
+export declare interface Link {
     /** The {@link SpanContext} of a linked span. */
     context: SpanContext;
     /** A set of {@link SpanAttributes} on the link. */
@@ -1698,25 +1714,25 @@ declare interface Link {
     droppedAttributesCount?: number;
 }
 
-declare type LoadedEnv = {
+export declare type LoadedEnv = {
     message?: string;
     parsed: {
         [x: string]: string;
     };
 } | undefined;
 
-declare type LocationInFile = {
+export declare type LocationInFile = {
     fileName: string;
     lineNumber: number | null;
     columnNumber: number | null;
 };
 
-declare type LogDefinition = {
+export declare type LogDefinition = {
     level: LogLevel;
     emit: 'stdout' | 'event';
 };
 
-declare type LogLevel = 'info' | 'query' | 'warn' | 'error';
+export declare type LogLevel = 'info' | 'query' | 'warn' | 'error';
 
 /**
  * Generates more strict variant of an enum which, unlike regular enum,
@@ -1750,9 +1766,9 @@ declare class MergedExtensionsList {
     private head?;
     private constructor();
     static empty(): MergedExtensionsList;
-    static single(extension: Args_2): MergedExtensionsList;
+    static single(extension: Args): MergedExtensionsList;
     isEmpty(): boolean;
-    append(extension: Args_2): MergedExtensionsList;
+    append(extension: Args): MergedExtensionsList;
     getAllComputedFields(dmmfModelName: string): ComputedFieldsMap | undefined;
     getAllClientExtensions(): ClientArg | undefined;
     getAllModelExtensions(dmmfModelName: string): ModelArg | undefined;
@@ -1760,7 +1776,7 @@ declare class MergedExtensionsList {
     getAllBatchQueryCallbacks(): BatchQueryOptionsCb[];
 }
 
-declare type MergeExtArgs<TypeMap extends TypeMapDef, ExtArgs extends Record<any, any>, Args extends Record<any, any>> = ComputeDeep<ExtArgs & Args & AllModelsToStringIndex<TypeMap, Args, 'result'> & AllModelsToStringIndex<TypeMap, Args, 'model'>>;
+export declare type MergeExtArgs<TypeMap extends TypeMapDef, ExtArgs extends Record<any, any>, Args extends Record<any, any>> = ComputeDeep<ExtArgs & Args & AllModelsToStringIndex<TypeMap, Args, 'result'> & AllModelsToStringIndex<TypeMap, Args, 'model'>>;
 
 export declare type Metric<T> = {
     key: string;
@@ -1803,26 +1819,26 @@ export declare class MetricsClient {
     json(options?: MetricsOptions): Promise<Metrics>;
 }
 
-declare type MetricsOptions = {
+export declare type MetricsOptions = {
     /**
      * Labels to add to every metrics in key-value format
      */
     globalLabels?: Record<string, string>;
 };
 
-declare type MetricsOptionsCommon = {
+export declare type MetricsOptionsCommon = {
     globalLabels?: Record<string, string>;
 };
 
-declare type MetricsOptionsJson = {
+export declare type MetricsOptionsJson = {
     format: 'json';
 } & MetricsOptionsCommon;
 
-declare type MetricsOptionsPrometheus = {
+export declare type MetricsOptionsPrometheus = {
     format: 'prometheus';
 } & MetricsOptionsCommon;
 
-declare type MiddlewareArgsMapper<RequestArgs, MiddlewareArgs> = {
+export declare type MiddlewareArgsMapper<RequestArgs, MiddlewareArgs> = {
     requestArgsToMiddlewareArgs(requestArgs: RequestArgs): MiddlewareArgs;
     middlewareArgsToRequestArgs(middlewareArgs: MiddlewareArgs): RequestArgs;
 };
@@ -1835,38 +1851,43 @@ declare class MiddlewareHandler<M extends Function> {
     length(): number;
 }
 
-declare type ModelArg = {
+export declare type ModelArg = {
     [MethodName in string]: unknown;
 };
 
-declare type ModelArgs = {
+export declare type ModelArgs = {
     model: {
         [ModelName in string]: ModelArg;
     };
 };
 
-declare type ModelKey<TypeMap extends TypeMapDef, M extends PropertyKey> = M extends keyof TypeMap['model'] ? M : Capitalize<M & string>;
+export declare type ModelKey<TypeMap extends TypeMapDef, M extends PropertyKey> = M extends keyof TypeMap['model'] ? M : Capitalize<M & string>;
 
-declare type ModelQueryOptionsCb = (args: ModelQueryOptionsCbArgs) => Promise<any>;
+export declare type ModelQueryOptionsCb = (args: ModelQueryOptionsCbArgs) => Promise<any>;
 
-declare type ModelQueryOptionsCbArgs = {
+export declare type ModelQueryOptionsCbArgs = {
     model: string;
     operation: string;
     args: JsArgs;
     query: (args: JsArgs) => Promise<unknown>;
 };
 
-declare type NameArgs = {
+export declare type NameArgs = {
     name?: string;
 };
 
-declare type Narrow<A> = {
+export declare type NamespacedTypeMap<T> = {
+    prisma: Record<string, T>;
+    model: Record<string, T>;
+};
+
+export declare type Narrow<A> = {
     [K in keyof A]: A[K] extends Function ? A[K] : Narrow<A[K]>;
 } | (A extends Narrowable ? A : never);
 
-declare type Narrowable = string | number | bigint | boolean | [];
+export declare type Narrowable = string | number | bigint | boolean | [];
 
-declare type NeverToUnknown<T> = [T] extends [never] ? unknown : T;
+export declare type NeverToUnknown<T> = [T] extends [never] ? unknown : T;
 
 /**
  * Imitates `fetch` via `https` to only suit our needs, it does nothing more.
@@ -1888,7 +1909,7 @@ export declare class NotFoundError extends PrismaClientKnownRequestError {
     constructor(message: string, clientVersion: string);
 }
 
-declare type NullableEnvValue = {
+export declare type NullableEnvValue = {
     fromEnvVar: string | null;
     value?: string | null;
 };
@@ -1920,27 +1941,27 @@ export declare const objectEnumValues: {
     };
 };
 
-declare type Omit_2<T, K extends string | number | symbol> = {
+export declare type Omit_2<T, K extends string | number | symbol> = {
     [P in keyof T as P extends K ? never : P]: T[P];
 };
 
-declare type Operation = 'findFirst' | 'findFirstOrThrow' | 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'create' | 'createMany' | 'update' | 'updateMany' | 'upsert' | 'delete' | 'deleteMany' | 'aggregate' | 'count' | 'groupBy' | '$queryRaw' | '$executeRaw' | '$queryRawUnsafe' | '$executeRawUnsafe' | 'findRaw' | 'aggregateRaw' | '$runCommandRaw';
+export declare type Operation = 'findFirst' | 'findFirstOrThrow' | 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'create' | 'createMany' | 'update' | 'updateMany' | 'upsert' | 'delete' | 'deleteMany' | 'aggregate' | 'count' | 'groupBy' | '$queryRaw' | '$executeRaw' | '$queryRawUnsafe' | '$executeRawUnsafe' | 'findRaw' | 'aggregateRaw' | '$runCommandRaw';
 
-declare type Optional<O, K extends keyof any = keyof O> = {
+export declare type Optional<O, K extends keyof any = keyof O> = {
     [P in K & keyof O]?: O[P];
 } & {
     [P in Exclude<keyof O, K>]: O[P];
 };
 
-declare type OptionalFlat<T> = {
+export declare type OptionalFlat<T> = {
     [K in keyof T]?: T[K];
 };
 
-declare type OptionalKeys<O> = {
+export declare type OptionalKeys<O> = {
     [K in keyof O]-?: {} extends Pick_2<O, K> ? K : never;
 }[keyof O];
 
-declare type Options = {
+export declare type Options = {
     clientVersion: string;
 };
 
@@ -1948,15 +1969,26 @@ declare type Options = {
  * maxWait ?= 2000
  * timeout ?= 5000
  */
-declare type Options_2 = {
+export declare type Options_2 = {
     maxWait?: number;
     timeout?: number;
     isolationLevel?: IsolationLevel;
 };
 
-declare type PatchFlat<O1, O2> = O1 & Omit_2<O2, keyof O1>;
+export declare type Or<A extends 1 | 0, B extends 1 | 0> = {
+    0: {
+        0: 0;
+        1: 1;
+    };
+    1: {
+        0: 1;
+        1: 1;
+    };
+}[A][B];
 
-declare type Path<O, P, Default = never> = O extends unknown ? P extends [infer K, ...infer R] ? K extends keyof O ? Path<O[K], R> : Default : O : never;
+export declare type PatchFlat<O1, O2> = O1 & Omit_2<O2, keyof O1>;
+
+export declare type Path<O, P, Default = never> = O extends unknown ? P extends [infer K, ...infer R] ? K extends keyof O ? Path<O[K], R> : Default : O : never;
 
 export declare type Payload = {
     scalars: {
@@ -1970,7 +2002,7 @@ export declare type Payload = {
     };
 };
 
-declare type Payload_2<T, F extends Operation = never> = T extends {
+export declare type Payload_2<T, F extends Operation = never> = T extends {
     [K: symbol]: {
         types: {
             payload: any;
@@ -1978,11 +2010,11 @@ declare type Payload_2<T, F extends Operation = never> = T extends {
     };
 } ? T[symbol]['types']['payload'] : never;
 
-declare type PayloadToResult<P, O extends Record_2<any, any> = RenameAndNestPayloadKeys<P>> = {
+export declare type PayloadToResult<P, O extends Record_2<any, any> = RenameAndNestPayloadKeys<P>> = {
     [K in keyof O]?: O[K][K] extends any[] ? PayloadToResult<O[K][K][number]>[] : O[K][K] extends object ? PayloadToResult<O[K][K]> : O[K][K];
 };
 
-declare type Pick_2<T, K extends string | number | symbol> = {
+export declare type Pick_2<T, K extends string | number | symbol> = {
     [P in keyof T as P extends K ? P : never]: T[P];
 };
 
@@ -2063,16 +2095,12 @@ export declare class PrismaClientValidationError extends Error {
     get [Symbol.toStringTag](): string;
 }
 
-export declare interface PrismaPromise<T> extends Promise<T> {
-    [Symbol.toStringTag]: 'PrismaPromise';
-}
-
 /**
  * Prisma's `Promise` that is backwards-compatible. All additions on top of the
  * original `Promise` are optional so that it can be backwards-compatible.
  * @see [[createPrismaPromise]]
  */
-declare interface PrismaPromise_2<A> extends Promise<A> {
+export declare interface PrismaPromise<A> extends Promise<A> {
     /**
      * Extension of the original `.then` function
      * @param onfulfilled same as regular promises
@@ -2099,7 +2127,11 @@ declare interface PrismaPromise_2<A> extends Promise<A> {
     requestTransaction?(transaction: PrismaPromiseBatchTransaction): PromiseLike<unknown>;
 }
 
-declare type PrismaPromiseBatchTransaction = {
+export declare interface PrismaPromise_2<T> extends Promise<T> {
+    [Symbol.toStringTag]: 'PrismaPromise';
+}
+
+export declare type PrismaPromiseBatchTransaction = {
     kind: 'batch';
     id: number;
     isolationLevel?: IsolationLevel;
@@ -2107,7 +2139,7 @@ declare type PrismaPromiseBatchTransaction = {
     lock: PromiseLike<void>;
 };
 
-declare type PrismaPromiseCallback = (transaction?: PrismaPromiseTransaction) => PrismaPromise_2<unknown>;
+export declare type PrismaPromiseCallback = (transaction?: PrismaPromiseTransaction) => PrismaPromise<unknown>;
 
 /**
  * Creates a [[PrismaPromise]]. It is Prisma's implementation of `Promise` which
@@ -2118,15 +2150,15 @@ declare type PrismaPromiseCallback = (transaction?: PrismaPromiseTransaction) =>
  * @see [[PrismaPromise]]
  * @returns
  */
-declare type PrismaPromiseFactory = (callback: PrismaPromiseCallback) => PrismaPromise_2<unknown>;
+export declare type PrismaPromiseFactory = (callback: PrismaPromiseCallback) => PrismaPromise<unknown>;
 
-declare type PrismaPromiseInteractiveTransaction<PayloadType = unknown> = {
+export declare type PrismaPromiseInteractiveTransaction<PayloadType = unknown> = {
     kind: 'itx';
     id: string;
     payload: PayloadType;
 };
 
-declare type PrismaPromiseTransaction<PayloadType = unknown> = PrismaPromiseBatchTransaction | PrismaPromiseInteractiveTransaction<PayloadType>;
+export declare type PrismaPromiseTransaction<PayloadType = unknown> = PrismaPromiseBatchTransaction | PrismaPromiseInteractiveTransaction<PayloadType>;
 
 declare namespace Public {
     export {
@@ -2138,22 +2170,22 @@ export { Public }
 declare namespace Public_2 {
     export {
         Args_3 as Args,
-        Result,
+        Result_2 as Result,
         Payload_2 as Payload,
-        PrismaPromise,
+        PrismaPromise_2 as PrismaPromise,
         Operation,
         Exact
     }
 }
 
-declare type QueryEngineResult<T> = {
+export declare type QueryEngineResult<T> = {
     data: T;
     elapsed: number;
 };
 
-declare type QueryMiddleware = (params: QueryMiddlewareParams, next: (params: QueryMiddlewareParams) => Promise<unknown>) => Promise<unknown>;
+export declare type QueryMiddleware = (params: QueryMiddlewareParams, next: (params: QueryMiddlewareParams) => Promise<unknown>) => Promise<unknown>;
 
-declare type QueryMiddlewareParams = {
+export declare type QueryMiddlewareParams = {
     /** The model this is executed on */
     model?: string;
     /** The action that is being handled */
@@ -2162,10 +2194,10 @@ declare type QueryMiddlewareParams = {
     dataPath: string[];
     /** TODO what is this */
     runInTransaction: boolean;
-    args?: UserArgs_2;
+    args?: UserArgs;
 };
 
-declare type QueryOptions = {
+export declare type QueryOptions = {
     query: {
         [ModelName in string]: {
             [ModelAction in string]: ModelQueryOptionsCb;
@@ -2173,9 +2205,9 @@ declare type QueryOptions = {
     };
 };
 
-declare type QueryOptionsCb = (args: QueryOptionsCbArgs) => Promise<any>;
+export declare type QueryOptionsCb = (args: QueryOptionsCbArgs) => Promise<any>;
 
-declare type QueryOptionsCbArgs = {
+export declare type QueryOptionsCbArgs = {
     model?: string;
     operation: string;
     args: JsArgs | RawQueryArgs;
@@ -2187,31 +2219,31 @@ declare type QueryOptionsCbArgs = {
  */
 export declare function raw(value: string): Sql;
 
-declare type RawParameters = {
+export declare type RawParameters = {
     __prismaRawParameters__: true;
     values: string;
 };
 
-declare type RawQueryArgs = Sql | [query: string, ...values: RawValue[]];
+export declare type RawQueryArgs = Sql | [query: string, ...values: RawValue[]];
 
 /**
  * Supported value or SQL instance.
  */
 export declare type RawValue = Value | Sql;
 
-declare type ReadonlyDeep<T> = {
+export declare type ReadonlyDeep<T> = {
     readonly [K in keyof T]: ReadonlyDeep<T[K]>;
 };
 
-declare type Record_2<T extends string | number | symbol, U> = {
+export declare type Record_2<T extends string | number | symbol, U> = {
     [P in T]: U;
 };
 
-declare type RenameAndNestPayloadKeys<P> = {
+export declare type RenameAndNestPayloadKeys<P> = {
     [K in keyof P as K extends 'scalars' | 'objects' | 'composites' ? keyof P[K] : never]: P[K];
 };
 
-declare type RequestBatchOptions<InteractiveTransactionPayload> = {
+export declare type RequestBatchOptions<InteractiveTransactionPayload> = {
     transaction?: TransactionOptions<InteractiveTransactionPayload>;
     traceparent?: string;
     numTry?: number;
@@ -2225,7 +2257,7 @@ declare class RequestHandler {
     private logEmitter?;
     constructor(client: Client, logEmitter?: EventEmitter);
     request(params: RequestParams): Promise<any>;
-    mapQueryEngineResult({ dataPath, unpacker, modelName, args, extensions }: RequestParams, response: QueryEngineResult<any>): any;
+    mapQueryEngineResult({ dataPath, unpacker }: RequestParams, response: QueryEngineResult<any>): any;
     /**
      * Handles the error and logs it, logging the error is done synchronously waiting for the event
      * handlers to finish.
@@ -2234,11 +2266,10 @@ declare class RequestHandler {
     handleRequestError({ error, clientMethod, callsite, transaction, args }: HandleErrorParams): never;
     sanitizeMessage(message: any): any;
     unpack(data: unknown, dataPath: string[], unpacker?: Unpacker): any;
-    applyResultExtensions({ result, modelName, args, extensions }: ApplyExtensionsParams): object;
     get [Symbol.toStringTag](): string;
 }
 
-declare type RequestOptions<InteractiveTransactionPayload> = {
+export declare type RequestOptions<InteractiveTransactionPayload> = {
     traceparent?: string;
     numTry?: number;
     interactiveTransaction?: InteractiveTransactionOptions<InteractiveTransactionPayload>;
@@ -2246,13 +2277,13 @@ declare type RequestOptions<InteractiveTransactionPayload> = {
     customDataProxyFetch?: (fetch: Fetch) => Fetch;
 };
 
-declare type RequestOptions_2 = {
+export declare type RequestOptions_2 = {
     method?: string;
     headers?: Record<string, string>;
     body?: string;
 };
 
-declare type RequestParams = {
+export declare type RequestParams = {
     modelName?: string;
     action: Action;
     protocolQuery: JsonQuery;
@@ -2269,7 +2300,7 @@ declare type RequestParams = {
     customDataProxyFetch?: (fetch: Fetch) => Fetch;
 };
 
-declare type RequestResponse = {
+export declare type RequestResponse = {
     ok: boolean;
     url: string;
     statusText?: string;
@@ -2279,52 +2310,64 @@ declare type RequestResponse = {
     json: () => Promise<any>;
 };
 
-declare type RequiredKeys<O> = {
+export declare type RequiredArgs = NameArgs & ResultArgs & ModelArgs & ClientArgs & QueryOptions;
+
+export declare type RequiredKeys<O> = {
     [K in keyof O]-?: {} extends Pick_2<O, K> ? never : K;
 }[keyof O];
 
-declare type Result<T, A, F extends Operation> = T extends {
+declare namespace Result {
+    export {
+        Operation,
+        FluentOperation,
+        GetFindResult,
+        DefaultSelection,
+        GetResult
+    }
+}
+
+export declare type Result_2<T, A, F extends Operation> = T extends {
     [K: symbol]: {
         types: {
             payload: any;
         };
     };
-} ? GetResult_2<T[symbol]['types']['payload'], A, F> : never;
+} ? GetResult<T[symbol]['types']['payload'], A, F> : never;
 
-declare type ResultArg = {
+export declare type ResultArg = {
     [FieldName in string]: ResultFieldDefinition;
 };
 
-declare type ResultArgs = {
+export declare type ResultArgs = {
     result: {
         [ModelName in string]: ResultArg;
     };
 };
 
-declare type ResultArgsFieldCompute = (model: any) => unknown;
+export declare type ResultArgsFieldCompute = (model: any) => unknown;
 
-declare type ResultFieldDefinition = {
+export declare type ResultFieldDefinition = {
     needs?: {
         [FieldName in string]: boolean;
     };
     compute: ResultArgsFieldCompute;
 };
 
-declare type Return<T> = T extends (...args: any[]) => infer R ? R : T;
+export declare type Return<T> = T extends (...args: any[]) => infer R ? R : T;
 
-declare type RuntimeDataModel = {
+export declare type RuntimeDataModel = {
     readonly models: Record<string, RuntimeModel>;
     readonly enums: Record<string, RuntimeEnum>;
     readonly types: Record<string, RuntimeModel>;
 };
 
-declare type RuntimeEnum = Omit<DMMF.DatamodelEnum, 'name'>;
+export declare type RuntimeEnum = Omit<DMMF.DatamodelEnum, 'name'>;
 
-declare type RuntimeModel = Omit<DMMF.Model, 'name'>;
+export declare type RuntimeModel = Omit<DMMF.Model, 'name'>;
 
-declare type Select<T, U> = T extends U ? T : never;
+export declare type Select<T, U> = T extends U ? T : never;
 
-declare type SelectablePayloadFields<K extends PropertyKey, O> = {
+export declare type SelectablePayloadFields<K extends PropertyKey, O> = {
     objects: {
         [k in K]: O;
     };
@@ -2334,13 +2377,13 @@ declare type SelectablePayloadFields<K extends PropertyKey, O> = {
     };
 };
 
-declare type SelectField<P extends SelectablePayloadFields<any, any>, K extends PropertyKey> = P extends {
+export declare type SelectField<P extends SelectablePayloadFields<any, any>, K extends PropertyKey> = P extends {
     objects: Record<K, any>;
 } ? P['objects'][K] : P extends {
     composites: Record<K, any>;
 } ? P['composites'][K] : never;
 
-declare type Selection_2 = Record<string, boolean | JsArgs>;
+export declare type Selection_2 = Record<string, boolean | JsArgs>;
 
 /**
  * An interface that represents a span. A span represents a single operation
@@ -2351,7 +2394,7 @@ declare type Selection_2 = Record<string, boolean | JsArgs>;
  *
  * Spans are created by the {@link Tracer.startSpan} method.
  */
-declare interface Span {
+export declare interface Span {
     /**
      * Returns the {@link SpanContext} object associated with this Span.
      *
@@ -2441,20 +2484,20 @@ declare interface Span {
 /**
  * @deprecated please use {@link Attributes}
  */
-declare type SpanAttributes = Attributes;
+export declare type SpanAttributes = Attributes;
 
 /**
  * @deprecated please use {@link AttributeValue}
  */
-declare type SpanAttributeValue = AttributeValue;
+export declare type SpanAttributeValue = AttributeValue;
 
-declare type SpanCallback<R> = (span?: Span, context?: Context) => R;
+export declare type SpanCallback<R> = (span?: Span, context?: Context) => R;
 
 /**
  * A SpanContext represents the portion of a {@link Span} which must be
  * serialized and propagated along side of a {@link Baggage}.
  */
-declare interface SpanContext {
+export declare interface SpanContext {
     /**
      * The ID of the trace that this span belongs to. It is worldwide unique
      * with practically sufficient probability by being made as 16 randomly
@@ -2532,7 +2575,7 @@ declare enum SpanKind {
 /**
  * Options needed for span creation
  */
-declare interface SpanOptions {
+export declare interface SpanOptions {
     /**
      * The SpanKind of a span
      * @default {@link SpanKind.INTERNAL}
@@ -2548,7 +2591,7 @@ declare interface SpanOptions {
     root?: boolean;
 }
 
-declare interface SpanStatus {
+export declare interface SpanStatus {
     /** The status code of this message. */
     code: SpanStatusCode;
     /** A developer-facing error message. */
@@ -2600,11 +2643,11 @@ export declare function sqltag(strings: ReadonlyArray<string>, ...values: RawVal
  *
  * hrtime, epoch milliseconds, performance.now() or Date
  */
-declare type TimeInput = HrTime | number | Date;
+export declare type TimeInput = HrTime | number | Date;
 
-declare type ToTuple<T> = T extends any[] ? T : [T];
+export declare type ToTuple<T> = T extends any[] ? T : [T];
 
-declare interface TraceState {
+export declare interface TraceState {
     /**
      * Create a new TraceState which inherits from this TraceState and has the
      * given key set.
@@ -2642,7 +2685,7 @@ declare interface TraceState {
     serialize(): string;
 }
 
-declare interface TracingHelper {
+export declare interface TracingHelper {
     isEnabled(): boolean;
     getTraceParent(context?: Context): string;
     createEngineSpan(engineSpanEvent: EngineSpanEvent): void;
@@ -2659,11 +2702,11 @@ declare namespace Transaction {
     }
 }
 
-declare type TransactionHeaders = {
+export declare type TransactionHeaders = {
     traceparent?: string;
 };
 
-declare type TransactionOptions<InteractiveTransactionPayload> = {
+export declare type TransactionOptions<InteractiveTransactionPayload> = {
     kind: 'itx';
     options: InteractiveTransactionOptions<InteractiveTransactionPayload>;
 } | {
@@ -2671,48 +2714,51 @@ declare type TransactionOptions<InteractiveTransactionPayload> = {
     options: BatchTransactionOptions;
 };
 
-declare type TypeMapCbDef = Fn<{
-    extArgs: Args;
+export declare type TypeMapCbDef = Fn<{
+    extArgs: Args_2;
 }, TypeMapDef>;
 
 /** Shared */
-declare type TypeMapDef = Record<any, any>;
+export declare type TypeMapDef = Record<any, any>;
 
 declare namespace Types {
     export {
+        Result,
         Extensions_2 as Extensions,
         Utils,
         Public_2 as Public,
-        GetResult_2 as GetResult,
-        Payload,
-        DefaultSelection
+        Payload
     }
 }
 export { Types }
 
-declare type UnknownErrorParams = {
+export declare type UnknownErrorParams = {
     clientVersion: string;
     batchRequestIdx?: number;
 };
 
-declare type Unpacker = (data: any) => any;
+export declare type Unpacker = (data: any) => any;
 
-declare type UnwrapPayload<P> = {
-    [K in keyof P]: P[K] extends Payload[] ? UnwrapPayload<P[K]> : P[K] extends Payload ? P[K]['scalars'] & UnwrapPayload<P[K]['composites']> : P[K] extends infer O | null ? O extends Payload ? (O['scalars'] & UnwrapPayload<O['composites']>) | null : P[K] : P[K];
-} & unknown;
-
-declare type UnwrapPromise<P> = P extends Promise<infer R> ? R : P;
-
-declare type UnwrapTuple<Tuple extends readonly unknown[]> = {
-    [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise_2<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>;
+export declare type UnwrapPayload<P> = {} extends P ? unknown : {
+    [K in keyof P]: P[K] extends {
+        scalars: infer S;
+        composites: infer C;
+    }[] ? Array<S & UnwrapPayload<C>> : P[K] extends {
+        scalars: infer S;
+        composites: infer C;
+    } | null ? S & UnwrapPayload<C> | Select<P[K], null> : never;
 };
 
-export declare type UserArgs = NameArgs & ResultArgs & ModelArgs & ClientArgs & QueryOptions;
+export declare type UnwrapPromise<P> = P extends Promise<infer R> ? R : P;
+
+export declare type UnwrapTuple<Tuple extends readonly unknown[]> = {
+    [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>;
+};
 
 /**
  * Input that flows from the user into the Client.
  */
-declare type UserArgs_2 = any;
+export declare type UserArgs = any;
 
 declare namespace Utils {
     export {
@@ -2728,7 +2774,6 @@ declare namespace Utils {
         Narrow,
         Exact,
         Cast,
-        LegacyExact,
         JsonObject,
         JsonArray,
         JsonValue,
@@ -2744,7 +2789,10 @@ declare namespace Utils {
         ToTuple,
         RenameAndNestPayloadKeys,
         PayloadToResult,
-        Select
+        Select,
+        Equals,
+        Or,
+        JsPromise
     }
 }
 

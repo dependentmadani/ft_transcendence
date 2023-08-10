@@ -1,5 +1,4 @@
-import {v4 as uuid} from 'uuid'
-import { IsString, IsInt, IsUUID, IsDate, IsBoolean } from 'class-validator';
+import { IsString, IsInt, IsDate, IsOptional, ValidateIf } from 'class-validator';
 
 export class users {
 
@@ -25,4 +24,15 @@ export class users {
     hashedSaltedPassword: string;
 
     //chat need to be added
+}
+
+export class UserModify {
+
+    @ValidateIf(dto => !dto.avatar || (dto.username && dto.avatar))
+    @IsString()
+    username?: string;
+
+    @ValidateIf(dto => !dto.username || (dto.username && dto.avatar))
+    @IsString()
+    avatar?: string;
 }

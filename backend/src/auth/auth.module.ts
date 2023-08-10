@@ -7,7 +7,6 @@ import { FortyTwoStrategy } from "../strategy";
 import { AtStrategy } from "src/strategy/at.strategy";
 import { RtStrategy } from "src/strategy/rt.strategy";
 
-
 @Module({
     imports: [PassportModule, JwtModule.register({})],
     controllers: [AuthController],

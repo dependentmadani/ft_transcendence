@@ -1,7 +1,7 @@
 declare class AnyNull extends NullTypesEnumValue {
 }
 
-declare type Args<T, F extends Operation> = T extends {
+export declare type Args<T, F extends Operation> = T extends {
     [K: symbol]: {
         types: {
             operations: {
@@ -283,9 +283,9 @@ export declare class Decimal {
     static readonly EUCLID: 9;
 }
 
-declare type Exact<A, W> = (W extends A ? {
+export declare type Exact<A, W> = (A extends unknown ? (W extends A ? {
     [K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : never;
-} : W) | (A extends Narrowable ? A : never);
+} : W) : never) | (A extends Narrowable ? A : never);
 
 declare class JsonNull extends NullTypesEnumValue {
 }
@@ -308,7 +308,7 @@ declare class JsonNull extends NullTypesEnumValue {
  */
 export declare function makeStrictEnum<T extends Record<PropertyKey, string | number>>(definition: T): T;
 
-declare type Narrowable = string | number | bigint | boolean | [];
+export declare type Narrowable = string | number | bigint | boolean | [];
 
 declare class NullTypesEnumValue extends ObjectEnumValue {
     _getNamespace(): string;
@@ -337,7 +337,7 @@ export declare const objectEnumValues: {
     };
 };
 
-declare type Operation = 'findFirst' | 'findFirstOrThrow' | 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'create' | 'createMany' | 'update' | 'updateMany' | 'upsert' | 'delete' | 'deleteMany' | 'aggregate' | 'count' | 'groupBy' | '$queryRaw' | '$executeRaw' | '$queryRawUnsafe' | '$executeRawUnsafe' | 'findRaw' | 'aggregateRaw' | '$runCommandRaw';
+export declare type Operation = 'findFirst' | 'findFirstOrThrow' | 'findUnique' | 'findUniqueOrThrow' | 'findMany' | 'create' | 'createMany' | 'update' | 'updateMany' | 'upsert' | 'delete' | 'deleteMany' | 'aggregate' | 'count' | 'groupBy' | '$queryRaw' | '$executeRaw' | '$queryRawUnsafe' | '$executeRawUnsafe' | 'findRaw' | 'aggregateRaw' | '$runCommandRaw';
 
 declare namespace Public {
     export {

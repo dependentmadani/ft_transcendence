@@ -22,7 +22,8 @@ if __name__ == "__main__":
         "prisma.prisma",
         "prisma.prisma-insider",
         "redhat.vscode-yaml",
-        "dotenv.dotenv-vscode"
+        "dotenv.dotenv-vscode",
+        "wayou.vscode-todo-highlight"
     ]
 
     for extension_name in extensions:

@@ -14,3 +14,15 @@ export class AuthDto {
     @IsEmail()
     email: string;
 }
+
+export class TwoFaAuthDto {
+    @IsString()
+    @IsEmail()
+    email: string;
+}
+
+export class TwoFaCodeDto {
+    @IsString()
+    @IsNotEmpty()
+    code: string;
+}
