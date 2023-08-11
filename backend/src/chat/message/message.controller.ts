@@ -1,23 +1,24 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post } from "@nestjs/common";
 import { MessageService } from "./message.service";
+// import { Message } from "./dto";
+import { Message } from "@prisma/client";
 
-@Controller()
+@Controller('message')
 export class MessageController {
-    constructor(private readonly messageService: MessageService) {}
+    constructor(private messageService: MessageService) {}
     
-    @Get()
-    getMessages() : string[] {
-        return this.messageService.getMessages()
-    }
+    // @Get()
+    // async getMessages( @Body() message: Message ) : Promise<Message[]> {
+    //     return this.messageService.getMessages(message)
+    // }
 
-    @Get()
-    getOneMessage() : string {
-        return this.messageService.getOneMessage()
-    }
+    // @Get('/:id')
+    // async getOneMessage( @Param('id', ParseIntPipe) messageId, @Body() message: Message ) : Promise<Message> {
+    //     return this.messageService.getOneMessage(messageId, message)
+    // }
 
     // @Post()
-    // async createMessage( @Body('chatId') chatId: string, @Body('senderId') senderId: string, @Body('text') text: string ) : string {
-    //     console.log(text)
-    //     return this.messageService.createMessage(chatId, senderId, text)
+    // async createMessage(@Body() message: Message) : Promise<Message> {
+    //     return this.messageService.createMessage(message)
     // }
 }

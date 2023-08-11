@@ -24,35 +24,43 @@ model Users {
   twoEnabled  Boolean   @default(false)
   friend      Users[]   @relation("friends")
   block       Users[]   @relation("friends")
-  senderMessage Message[] @relation("userSender")
-  receiverMessage Message[] @relation("userReceiver")
-  chat        Chat[]
+  // senderMessage Message[] @relation("userSender")
+  // receiverMessage Message[] @relation("userReceiver")
+  messagesSent        Chat[] @relation("chatSender")
+  messagesReceived    Chat[] @relation("chatReceiver")
 }
 
 model Chat {
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
   id            Int       @id @default(autoincrement())
-  user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
-  userId        Int
-  banUser       Boolean
-  muteUser      Boolean
-  blocked_user  Boolean
-  Message       Message[] @relation("chat")
-  gameInvite    String?
+  text          String
+  sender        Users      @relation("chatSender", fields: [senderId], references: [id])
+  senderId      Int
+  receiver      Users      @relation("chatReceiver", fields: [receiverId], references: [id])
+  receiverId    Int
 }
 
+// model Chat {
+//   // createdAt     DateTime  @default(now())
+//   // updatedAt     DateTime  @updatedAt
+//   chatId            Int       @id @default(autoincrement())
+//   sender          Users       @relation("chatSender", fields: [senderId], references: [id])
+//   senderId        Int
+//   receiver          Users       @relation("chatReceiver", fields: [receiverId], references: [id])
+//   receiverId        Int
+//   text            String
+//   // user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
+//   // userId        Int
+//   // banUser       Boolean
+//   // muteUser      Boolean
+//   // blocked_user  Boolean
+//   // Message       Message[] @relation("chat")
+//   // gameInvite    String?
+// }
+
 model Message {
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
   messageId Int @id @default(autoincrement())
-  chatId Int
-  Chat  Chat  @relation(name:"chat", fields: [chatId], references: [id])
-  senderId  Int  
-  receiverId  Int 
-  sender    Users @relation(name: "userSender", fields: [senderId], references: [id])
-  receiver  Users @relation(name: "userReceiver", fields: [receiverId], references: [id])
-  text  String
+  senderId  Int
+  text      String
 }
 
 enum Role {

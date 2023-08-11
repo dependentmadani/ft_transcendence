@@ -68,7 +68,8 @@ export class AuthService {
         delete user.password;
         const token = await this.signToken(user.id, user.email);
         await this.updateRtHashed(user.id, token.refresh_token);
-    
+        console.log('everything Went smootly');
+        console.log(token);
         return token; 
     }
 
