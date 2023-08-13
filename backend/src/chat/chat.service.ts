@@ -1,5 +1,6 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { Chat } from "@prisma/client";
+import { ChatD } from "./dto";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -7,7 +8,7 @@ export class ChatService {
     constructor(private prisma: PrismaService) {}
 
     async getChats() : Promise<Chat[]> {
-        console.log(this.prisma.chat.findMany())
+        console.log('Chats ->', this.prisma.chat.findMany())
         return this.prisma.chat.findMany()
     }
 
@@ -15,9 +16,10 @@ export class ChatService {
         return ''
     }
 
-    async createChat(data: Chat) : Promise<Chat> {
+    async createChat(chat: { text: string; senderId: number; receiverId: number }) : Promise<Chat> {
+        console.log('data: ->', chat.text, chat.senderId, chat.receiverId)
         try {
-            const _chat = await this.prisma.chat.create({ data })
+            const _chat = await this.prisma.chat.create({ data: chat })
             return _chat
         }
         catch {

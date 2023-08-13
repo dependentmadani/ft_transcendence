@@ -1,5 +1,5 @@
 sleep 12
 
-npx prisma migrate dev --name backend --create-only
+npx prisma migrate dev --name backend
 
 exec $@

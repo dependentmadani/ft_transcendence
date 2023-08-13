@@ -31,12 +31,19 @@ model Users {
 }
 
 model Chat {
-  id            Int       @id @default(autoincrement())
+  chatId            Int       @id @default(autoincrement())
   text          String
   sender        Users      @relation("chatSender", fields: [senderId], references: [id])
   senderId      Int
   receiver      Users      @relation("chatReceiver", fields: [receiverId], references: [id])
   receiverId    Int
+}
+
+model Room {
+  roomId          Int @id @default(autoincrement())
+  admins          Users[]
+  members         Users[]
+  bannedMembers   Users[]
 }
 
 // model Chat {

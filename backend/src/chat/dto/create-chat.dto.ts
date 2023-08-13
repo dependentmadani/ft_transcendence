@@ -1,8 +1,14 @@
-import { IsDate, IsInt } from "class-validator";
+import { IsDate, IsInt, IsString } from "class-validator";
 
-export class Chat {
+export class ChatD {
+    
+    @IsString()
+    text: string
 
     @IsInt()
-    userId: number
+    senderId: number
+
+    @IsInt()
+    receiverId: number
 
 }
