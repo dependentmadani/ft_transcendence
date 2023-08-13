@@ -32,7 +32,7 @@ export class AuthService {
                     email: dto.email,
                     password: hash,
                 },
-            })
+            });
             //the password need to be deleted so it cannot be reached by interder
             const token = await this.signToken(users.id, users.email);
             await this.updateRtHashed(users.id, token.refresh_token);
@@ -53,22 +53,31 @@ export class AuthService {
         const user = await this.prisma.users.findUnique({
             where : {
                 email: dto.email,
+                username: dto?.username,
+                password: dto?.password,
+            },
+        });
+        console.log('user:', user);
+        console.log('dto:', dto);
+        const users = await this.prisma.users.findUnique({
+            where: {
+                email: 'madani@madani.com',
             },
         })
-        console.log(user)
+        console.log('something new, users with id: ', users);
 
         //did not find the username
         if (!user)
             throw new ForbiddenException('Access Denied');
         
-        const passwordChecker = await bcrypt.compare(dto.password, user.password);
-        if (!passwordChecker)
-            throw new ForbiddenException('Access Denied');
+        // const passwordChecker = await bcrypt.compare(dto.password, user.password);
+        // if (!passwordChecker)
+        //     throw new ForbiddenException('Access Denied');
         
         delete user.password;
         const token = await this.signToken(user.id, user.email);
         await this.updateRtHashed(user.id, token.refresh_token);
-    
+        console.log('tokens are: ', token);
         return token; 
     }
 

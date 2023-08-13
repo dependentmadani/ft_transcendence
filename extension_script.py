@@ -23,7 +23,12 @@ if __name__ == "__main__":
         "prisma.prisma-insider",
         "redhat.vscode-yaml",
         "dotenv.dotenv-vscode",
-        "wayou.vscode-todo-highlight"
+        "wayou.vscode-todo-highlight",
+        "riazxrazor.html-to-jsx",
+        "andys8.jest-snippets",
+        "sivasubramanyam.paste-clean-diff",
+        "dsznajder.es7-react-js-snippets",
+        "avraammavridis.vsc-react-documentation"
     ]
 
     for extension_name in extensions:

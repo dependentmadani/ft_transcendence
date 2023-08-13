@@ -18,7 +18,7 @@ import { HomeModule } from './home/home.module';
     HomeModule,
     AuthModule ,
     UsersModule,
-    ChatModule, 
+    ChatModule,
     PrismaModule
   ],
   providers: [{

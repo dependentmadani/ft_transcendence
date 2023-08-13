@@ -8,4 +8,3 @@ export class ChatController {
         return "sdgsdhdsgh"
     }
 }
-

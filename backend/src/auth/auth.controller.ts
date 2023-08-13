@@ -19,15 +19,43 @@ export class AuthController {
     @Public()
     @Post('signup')
     @HttpCode(HttpStatus.CREATED)
-    signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
-        return this.authService.signupLocal(dto);
+    async signupLocal(@Body() dto: AuthDto,
+                @Res() res:Response) {
+        const tokens = await this.authService.signupLocal(dto);
+        res.cookie('token', tokens.access_token, {
+            
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.cookie('refresh_token', tokens.refresh_token, {
+
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 60), // expires in 60 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.send('the user signup successfully!');
     }
 
     @Public()
     @Post('signin')
     @HttpCode(HttpStatus.OK)
-    signinLocal(@Body() dto: AuthDto, @Res() res: Response): Promise<Tokens> {
-        return this.authService.signinLocal(dto);
+    async signinLocal(@Body() dto: AuthDto,
+                @Res() res: Response) {
+        const tokens = await this.authService.signinLocal(dto);
+         res.cookie('token', tokens.access_token, {
+            
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.cookie('refresh_token', tokens.refresh_token, {
+
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 60), // expires in 60 days
+            httpOnly: true, // for security
+            secure: true
+        });
+         res.send('the user created');
     }
 
     @Get('logout')
