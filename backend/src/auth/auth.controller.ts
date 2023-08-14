@@ -1,12 +1,13 @@
-import { Body, Controller, Post, Req, Get, UseGuards, HttpCode, Res, HttpStatus, UnauthorizedException } from "@nestjs/common";
+import { Body, Controller, Post, Req, Get, UseGuards, HttpCode, Res, HttpStatus, UnauthorizedException, Query } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { Request, Response } from "express";
 import { AuthDto, TwoFaAuthDto, TwoFaCodeDto } from "./dto";
 import { AuthGuard } from "@nestjs/passport";
 import { ConfigService } from "@nestjs/config";
 import { Tokens } from "./types";
-import { RtGuard } from "src/guards";
+import { GoogleGuard, RtGuard } from "src/guards";
 import { GetUser, Public } from "src/decorator";
+import { Users } from "@prisma/client";
 
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
@@ -19,15 +20,70 @@ export class AuthController {
     @Public()
     @Post('signup')
     @HttpCode(HttpStatus.CREATED)
-    signupLocal(@Body() dto: AuthDto): Promise<Tokens> {
-        return this.authService.signupLocal(dto);
+    async signupLocal(@Body() dto: AuthDto,
+                @Res() res:Response) {
+        const tokens = await this.authService.signupLocal(dto);
+        res.cookie('token', tokens.access_token, {
+            
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.cookie('refresh_token', tokens.refresh_token, {
+
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 60), // expires in 60 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.send('the user signup successfully!');
     }
 
     @Public()
     @Post('signin')
     @HttpCode(HttpStatus.OK)
-    signinLocal(@Body() dto: AuthDto, @Res() res: Response): Promise<Tokens> {
-        return this.authService.signinLocal(dto);
+    async signinLocal(@Body() dto: AuthDto,
+                @Res() res: Response) {
+        const tokens = await this.authService.signinLocal(dto);
+         res.cookie('token', tokens.access_token, {
+            
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.cookie('refresh_token', tokens.refresh_token, {
+
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 60), // expires in 60 days
+            httpOnly: true, // for security
+            secure: true
+        });
+         res.send('the user created');
+    }
+
+    @Public()
+    @Get('google_auth')
+    @UseGuards(GoogleGuard)
+    async signinGoogle() {
+    }
+
+    @Public()
+    @Get('google_auth/redirect')
+    @UseGuards(GoogleGuard)
+    async signinGoogleRedirection(@Req() req: Request,
+                                    @Res() res: Response) {
+        const tokens = await this.authService.signinGoogle(req);
+        res.cookie("token", tokens.access_token, {
+            
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.cookie("refresh_token", tokens.refresh_token, {
+
+            expires: new Date(new Date().getTime() + 60 * 60 * 24 * 60), // expires in 60 days
+            httpOnly: true, // for security
+            secure: true
+        });
+        res.redirect('http://localhost:8000/');
     }
 
     @Get('logout')
@@ -54,22 +110,25 @@ export class AuthController {
 
     @Post('2fa/setup')
     @HttpCode(HttpStatus.CREATED)
-    enable2fa(@Body() body: TwoFaAuthDto, @Req() req: Request) {
-        return this.authService.enable2fa(body, req.user);
+    async enable2fa(@Body() body: TwoFaAuthDto, @Req() req: Request) {
+        const user: Users = await this.authService.returnUser(req.user['email']);
+        return this.authService.enable2fa(body, user);
     }
 
     @Post('2fa/verify')
     @HttpCode(HttpStatus.FOUND)
     async verify2fa(@Body() body: TwoFaCodeDto, @Req() req: Request) {
-        if (await this.authService.verify2fa(body, req.user))
-            return this.authService.isEnable2fa(req.user);
+        const user: Users = await this.authService.returnUser(req.user['email']);
+        if (await this.authService.verify2fa(body, user))
+            return this.authService.isEnable2fa(user);
         throw new UnauthorizedException('code is wrong, try again');
     }
 
     @Post('2fa/disable')
     @HttpCode(HttpStatus.OK)
     async disable2fa(@Req() req: Request) {
-        if (await this.authService.disable2fa(req.user))
+        const user: Users = await this.authService.returnUser(req.user['email']);
+        if (await this.authService.disable2fa(user))
             return 'Disabled successfuly';
         throw new UnauthorizedException('weird error');
     }
