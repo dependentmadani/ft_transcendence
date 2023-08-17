@@ -32,7 +32,7 @@ export class AuthService {
                     email: dto.email,
                     password: hash,
                 },
-            })
+            });
             //the password need to be deleted so it cannot be reached by interder
             const token = await this.signToken(users.id, users.email);
             await this.updateRtHashed(users.id, token.refresh_token);
@@ -50,12 +50,13 @@ export class AuthService {
     }
 
     async signinLocal(dto: AuthDto, tokens?: Tokens): Promise<Tokens> {
-        const user = await this.prisma.users.findUnique({
+	
+	const user = await this.prisma.users.findUnique({
             where : {
                 email: dto.email,
+                username: dto?.username,
             },
-        })
-        console.log(user)
+        });
 
         //did not find the username
         if (!user)
@@ -63,14 +64,13 @@ export class AuthService {
         
         const passwordChecker = await bcrypt.compare(dto.password, user.password);
         if (!passwordChecker)
-            throw new ForbiddenException('Access Denied');
+        	throw new ForbiddenException('Password wrong');
         
         delete user.password;
         const token = await this.signToken(user.id, user.email);
         await this.updateRtHashed(user.id, token.refresh_token);
-        console.log('everything Went smootly');
-        console.log(token);
-        return token; 
+        
+	return token; 
     }
 
     async logout(userId: number, cookies: any) {

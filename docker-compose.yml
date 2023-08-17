@@ -7,7 +7,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/data/database
+      device: $HOME/goinfre/data/database
       # device: /home/mbadaoui/data/database
   backend_volume:
     driver: local
@@ -15,7 +15,7 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/data/backend
+      device: $HOME/goinfre/data/backend
       # device: /home/mbadaoui/data/backend
 
 networks:
@@ -45,7 +45,7 @@ services:
     networks:
       - hadnetwork
     volumes:
-      - backend_volume:/app/src
+      - backend_volume:/app
 
   pgadmin:
     container_name: pgadmin4_container
@@ -57,8 +57,8 @@ services:
       - 5050:80
     networks:
       - hadnetwork
-    volumes:
-      - db_volume:/var/lib/postgresql/data
+    # volumes:
+    #   - db_volume:/var/lib/postgresql/data
 
   # test-db:
   #   image: postgres:13

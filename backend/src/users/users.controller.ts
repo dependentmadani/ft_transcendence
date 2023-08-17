@@ -12,22 +12,24 @@ import {v4 as uuidv4} from 'uuid'
 import * as path from 'path'
 import { of } from 'rxjs';
 import { join } from 'path';
-
+// import { Public } from '@prisma/client/runtime/library';
+import { Public } from "src/decorator";
 export const storage = {
     storage : diskStorage({
         destination: './uploads/avatarStorage/',
         filename : (req, file, cb) => {
-
-            if (!path)
-                return ;
-            const filename: string = path?.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
-            const extension: string = path?.parse(file.originalname).ext;
             
-            cb(null, `${filename}${extension}`);
-        }
-    })
+            if (!path)
+            return ;
+        const filename: string = path?.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+        const extension: string = path?.parse(file.originalname).ext;
+        
+        cb(null, `${filename}${extension}`);
+    }
+})
 };
 
+@Public()
 @Controller('users')
 @Authenticated()
 export class UsersController {

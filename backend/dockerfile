@@ -1,6 +1,6 @@
 FROM node:18
 
-WORKDIR /Users/ael-asri/data/backend
+WORKDIR /app
 
 COPY package*.json ./
 
