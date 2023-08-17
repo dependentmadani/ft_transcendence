@@ -1,11 +1,11 @@
 all:
-	@docker compose -f docker-compose.yml up
+	@docker-compose -f docker-compose.yml up
   
 down:
-	@docker compose -f docker-compose.yml down --volumes
+	@docker-compose -f docker-compose.yml down --volumes
   
 re: down
-	@docker compose -f docker-compose.yml up --build
+	@docker-compose -f docker-compose.yml up --build
 
 
 clean:

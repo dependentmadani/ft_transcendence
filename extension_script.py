@@ -23,7 +23,12 @@ if __name__ == "__main__":
         "prisma.prisma-insider",
         "redhat.vscode-yaml",
         "dotenv.dotenv-vscode",
-        "wayou.vscode-todo-highlight"
+        "wayou.vscode-todo-highlight",
+        "riazxrazor.html-to-jsx",
+        "andys8.jest-snippets",
+        "sivasubramanyam.paste-clean-diff",
+        "dsznajder.es7-react-js-snippets",
+        "avraammavridis.vsc-react-documentation"
     ]
 
     for extension_name in extensions:
@@ -36,4 +41,4 @@ if __name__ == "__main__":
         subprocess.run(['open', '/Applications/Docker.app'])
         print('\t\t\t\tOpened successfully. ✨')
     except:
-        print('Error in opening the docker engine. :(')
+        print("Error in opening the docker engine. :(")

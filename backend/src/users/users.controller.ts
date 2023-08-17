@@ -41,6 +41,12 @@ export class UsersController {
         return this.userService.findAllUsers();
     }
 
+    @Get('me')
+    async getMe(@Req() req: Request): Promise<Users> {
+        const user: Users = await this.userService.findUserById(req.user['sub']);
+        return user;
+    }
+
     @Get("/:id")
     async getUser(@Param("id", ParseIntPipe) userId: number,
      @Req() req: Request): Promise<Users> {
