@@ -44,12 +44,13 @@ model Users {
 // }
 
 model Chat {
-  contactId   Int @id @default(autoincrement())
+  chatId   Int @id @default(autoincrement())
   senderId    Users @relation("sencontact", fields: [senId], references: [id])
   senId       Int
   receiverId  Users @relation("reccontact", fields: [recId], references: [id])
   recId       Int
-  msg         String?
+  // msg         String?
+  msgChatId     Message[] @relation("msgChatId")
 }
 
 model Message {
@@ -60,6 +61,8 @@ model Message {
   MessageSenId       Int
   receiverId  Users @relation("Messagereccontact", fields: [MessageRecId], references: [id])
   MessageRecId       Int
+  messageChatId  Chat @relation("msgChatId", fields: [msgChatId], references: [chatId])
+  msgChatId       Int
 }
 
 enum Role {

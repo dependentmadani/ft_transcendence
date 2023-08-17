@@ -14,7 +14,7 @@ export class MessageController {
     }
 
     @Get('/:id')
-    async getOneMessage(@Body('messageId', ParseIntPipe) messageId) : Promise<Message> {
+    async getOneMessage(@Param('id', ParseIntPipe) messageId) : Promise<Message> {
         return this.messageService.getOneMessage(messageId)
     }
 

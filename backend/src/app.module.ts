@@ -10,6 +10,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './guards';
 import { HomeController } from './home/home.controller';
 import { HomeModule } from './home/home.module';
+import { MessageModule } from './chat/message/message.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { HomeModule } from './home/home.module';
     AuthModule ,
     UsersModule,
     ChatModule,
+    MessageModule,
     PrismaModule
   ],
   providers: [{

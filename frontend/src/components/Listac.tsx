@@ -109,9 +109,9 @@ export function Listac() {
     <div>
       <h1>Chat List</h1>
       <ul>
-        {users.map((user, index) => (
+        {/* {users.map((user, index) => (
           <li key={index}>{user?.recId}</li>
-        ))}
+        ))} */}
       </ul>
     </div>
   );

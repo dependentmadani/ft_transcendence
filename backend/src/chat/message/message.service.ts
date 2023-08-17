@@ -16,12 +16,12 @@ export class MessageService {
         }
     }
 
-    async getOneMessage(_messageId: number): Promise<Message> {
+    async getOneMessage(messageId: number): Promise<Message> {
         try {
-            return this.prisma.message.findUnique({ where: { messageId: _messageId } })
+            return this.prisma.message.findUnique({ where: { messageId: messageId } })
         }
         catch {
-            throw new UnauthorizedException(`Couldn't finde message with id ${_messageId}`)
+            throw new UnauthorizedException(`Couldn't finde message with id ${messageId}`)
         }
     }
 
@@ -30,8 +30,8 @@ export class MessageService {
         try {
             const message = await this.prisma.message.create({ 
                 data: {
-                    senId: MessageSenId,
-                    recId: MessageRecId,
+                    MessageSenId: MessageSenId,
+                    MessageRecId: MessageRecId,
                     textContent: textContent
                 },
             })

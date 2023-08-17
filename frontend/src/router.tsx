@@ -3,7 +3,6 @@ import { AuthLayout } from "./pages/layouts/AuthLayout";
 import { Login } from "./pages/login";
 import { Signup } from "./pages/signup";
 import { Home } from "./pages/Home";
-import { Lista } from "./pages/Lista";
 
 export const router = createBrowserRouter([
     {

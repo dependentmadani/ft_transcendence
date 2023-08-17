@@ -23,7 +23,7 @@ export class ChatController {
     async createChat(@Body("senId", ParseIntPipe) senId: number,
                         @Body('recId', ParseIntPipe) recId: number,
                         @Body('msg') msg: string) : Promise<Chat> {
-        return this.chatService.createChat(Number(senId), Number(recId), msg)
+        return this.chatService.createChat(senId, recId, msg)
     }
 
     @Get(':/id')

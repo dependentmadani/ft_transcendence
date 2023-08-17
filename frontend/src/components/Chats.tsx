@@ -1,8 +1,22 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { Messages } from "./Messages";
+import { Chat } from "./Chat";
+
+interface User {
+  id: number;
+  username: string;
+}
+
+interface Chat {
+  recId: number;
+  msg: string;
+}
 
 export const Chats = () => {
-  const [chats, setChats] = useState([])
+  const [chats, setChats] = useState<Chat[]>([])
+  const [users, setUsers] = useState<User[]>([])
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -17,7 +31,6 @@ export const Chats = () => {
     fetchChats()
   }, [])
 
-  const [users, setUsers] = useState([])
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -32,7 +45,10 @@ export const Chats = () => {
     fetchUsers()
   }, [])
 
-  console.log('users: ', users.find(_u => _u.id === 1))
+  // console.log('users: ', users.find(_u => _u.id === 1))
+  const chatDestination = () => {
+    setIsOpen(true)
+  }
   return (
     <div className="chats">
       {
@@ -42,6 +58,8 @@ export const Chats = () => {
               <div className="userChatInfo">
                   <span>{users.find(_u => _u.id === chat?.recId)?.username}</span>
                   <p>{ chat?.msg }</p>
+                  {/* <button onClick={chatDestination} >gg</button>
+                  <Messages isOpen={isOpen} /> */}
               </div>
           </div>
         ))
