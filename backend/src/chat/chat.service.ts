@@ -17,17 +17,22 @@ export class ChatService {
         }
     }
 
-    async getOneChat(chatId: number) : Promise<string> {
-        return ''
+    async getOneChat(chatId: number) : Promise<Chat> {
+        try {
+            return this.prisma.chat.findUnique({ where: { chatId: chatId } })
+        }
+        catch {
+            throw new UnauthorizedException(`Couldn't finde message with id ${chatId}`)
+        }
     }
 
-    async createChat(senId: number, recId: number, msg: string) : Promise<Chat> {
+    async createChat(senId: number, recId: number, usrChatId: number) : Promise<Chat> {
         try {
             const chat = await this.prisma.chat.create({
                 data: {
                     senId: senId,
                     recId: recId,
-                    msg: msg
+                    usrChatId: usrChatId,
                 }
             })
             return chat

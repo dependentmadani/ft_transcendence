@@ -19,9 +19,10 @@ export class MessageController {
     }
 
     @Post()
-    async createMessage(@Body("MessageSenId", ParseIntPipe) MessageSenId: number,
+    async createMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
+                        @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
                         @Body('MessageRecId', ParseIntPipe) MessageRecId: number,
                         @Body('textContent') textContent: string) : Promise<Message> {
-        return this.messageService.createMessage(MessageSenId, MessageRecId, textContent)
+        return this.messageService.createMessage(msgChatId, MessageSenId, MessageRecId, textContent)
     }
 }

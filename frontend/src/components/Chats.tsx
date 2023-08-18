@@ -1,11 +1,12 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-import { Messages } from "./Messages";
+// import { Messages } from "./Messages";
 import { Chat } from "./Chat";
 
 interface User {
   id: number;
   username: string;
+  avatar: string,
 }
 
 interface Chat {
@@ -16,7 +17,7 @@ interface Chat {
 export const Chats = () => {
   const [chats, setChats] = useState<Chat[]>([])
   const [users, setUsers] = useState<User[]>([])
-  const [isOpen, setIsOpen] = useState(false)
+  // const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const fetchChats = async () => {
@@ -46,17 +47,18 @@ export const Chats = () => {
   }, [])
 
   // console.log('users: ', users.find(_u => _u.id === 1))
-  const chatDestination = () => {
-    setIsOpen(true)
-  }
+  // const chatDestination = () => {
+  //   setIsOpen(true)
+  // }
+
   return (
     <div className="chats">
       {
         chats.map((chat, index) => (
           <div className="userChat" key={index}>
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
+              <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" />
               <div className="userChatInfo">
-                  <span>{users.find(_u => _u.id === chat?.recId)?.username}</span>
+                  <span>{users.find(_u => _u.id === chat?.recId)?.username }</span>
                   <p>{ chat?.msg }</p>
                   {/* <button onClick={chatDestination} >gg</button>
                   <Messages isOpen={isOpen} /> */}

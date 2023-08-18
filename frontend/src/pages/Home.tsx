@@ -31,13 +31,15 @@ export const Home = () => {
   const handleSelectedChat = (chatId: number): any => {
     setSelectedChat(chatId)
   }
-  console.log('rah l id howa hada ->', users.find(_u => _u.id === selectedChat))
+  const currentUser = users.find(_u => _u.id === selectedChat)
+  console.log('rah l id howa hada ->', currentUser)
+
   return (
     <div className='home'>
         <div className='container'>
             <Leftbar onValueChange={handleSelectedChat} />
-            <Chat selectedChat={ users.find(_u => _u.id === selectedChat) } />
-            <Rightbar />
+            <Chat currentUser={ currentUser } />
+            <Rightbar currentUser={ currentUser } />
         </div>
     </div>
   )

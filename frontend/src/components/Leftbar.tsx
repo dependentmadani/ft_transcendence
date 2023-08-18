@@ -18,8 +18,9 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }) => {
 
   useEffect(() => {
     const handleInputChange = () => {
-      setInputValue(1);
+      setInputValue(2);
       onValueChange(1)
+      // onValueChange(Math.floor(Math.random() * (4 - 2 + 1)) + 2)
       // onValueChange(event.target.value); // Pass the value back to the parent
     };
     handleInputChange()

@@ -6,9 +6,11 @@ import { Input } from './Input'
 import { Messages } from './Messages'
 
 interface Chat {
-  senId: Number,
-  recId: number,
-  msg: string,
+  chatId: Number,
+  usrChatId: Number,
+  // senId: Number,
+  // recId: number,
+  // msg: string,
 }
 
 // interface User {
@@ -16,10 +18,22 @@ interface Chat {
 //   username: string;
 // }
 
-export const Chat = ({ selectedChat }) => {
+export const Chat = ({ currentUser }: any) => {
   const [chats, setChats] = useState<Chat[]>([])
-  // const [users, setUsers] = useState<User[]>([])
+  // // const [users, setUsers] = useState<User[]>([])
 
+  // useEffect(() => {
+  //   const fetchChats = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:8000/chat')
+  //       setChats(response.data)
+  //     }
+  //     catch (err) {
+  //       console.error('Error fetching chats: ', err)
+  //     }
+  //   }
+  //   fetchChats()
+  // }, [])
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -33,32 +47,21 @@ export const Chat = ({ selectedChat }) => {
     fetchChats()
   }, [])
 
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:8000/users')
-  //       setUsers(response.data)
-  //     }
-  //     catch (err) {
-  //       console.error('Error fetching users: ', err)
-  //     }
-  //   }
-  //   fetchUsers()
-  // }, [])
-
-  console.log('l7maa9 ->', selectedChat)
+  console.log('llhj ', chats.find(_chat => _chat?.usrChatId === currentUser?.id))
+  const currentChat = chats.find(_chat => _chat?.usrChatId === currentUser?.id)
+  console.log('l7maa9 ->', currentChat, 'chats ', chats)
 
   return (
     <div className='chat'>
       <div className="chatInfo">
-        <span>{ selectedChat?.username }</span>
+        <span>{ currentUser?.username }</span>
         <div className="chatIcons">
-          <img src={selectedChat?.avatar} alt="user_avatar" />
-          <img src={Add} alt="" />
-          <img src={More} alt="" />
+          <img src={ currentUser?.avatar } alt="user_avatar" />
+          <img src={Add} alt="add_icon" />
+          <img src={More} alt="more_icon" />
         </div>
       </div>
-      <Messages chatId={selectedChat}/>
+      <Messages currentChat={ currentChat }/>
       <Input />
     </div>
   )

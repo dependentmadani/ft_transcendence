@@ -21,13 +21,13 @@ export class ChatController {
     // }
     @Post()
     async createChat(@Body("senId", ParseIntPipe) senId: number,
-                        @Body('recId', ParseIntPipe) recId: number,
-                        @Body('msg') msg: string) : Promise<Chat> {
-        return this.chatService.createChat(senId, recId, msg)
+                    @Body('recId', ParseIntPipe) recId: number,
+                    @Body('usrChatId', ParseIntPipe) usrChatId: number) : Promise<Chat> {
+        return this.chatService.createChat(senId, recId, usrChatId)
     }
 
     @Get(':/id')
-    async getOneChat(@Param('id', ParseIntPipe) chatId: number) : Promise<string> {
+    async getOneChat(@Param('id', ParseIntPipe) chatId: number) : Promise<Chat> {
         return this.chatService.getOneChat(chatId)
     }
 

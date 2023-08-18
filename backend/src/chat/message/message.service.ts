@@ -25,11 +25,12 @@ export class MessageService {
         }
     }
 
-    async createMessage(MessageSenId: number, MessageRecId:number, textContent: string) : Promise<Message> {
+    async createMessage(msgChatId: number, MessageSenId: number, MessageRecId:number, textContent: string) : Promise<Message> {
         // console.log(message.chatId)
         try {
             const message = await this.prisma.message.create({ 
                 data: {
+                    msgChatId: msgChatId,
                     MessageSenId: MessageSenId,
                     MessageRecId: MessageRecId,
                     textContent: textContent
