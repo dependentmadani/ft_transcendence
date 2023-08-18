@@ -25,6 +25,7 @@ model Users {
   friend      Users[]   @relation("friends")
   block       Users[]   @relation("friends")
   chat        Chat[]
+  //isActive: to check if he is online or not
 }
 
 model Chat {

@@ -13,17 +13,22 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true
   }));
+//   app.setGlobalPrefix('auth');
   app.use(cookieParser());
-  app.use(
-		session({
-			secret: 'pass',
-			resave: false,
-			saveUninitialized: true,
-			cookie: {maxAge: oneWeek},
-		})
-	);
+//   app.use(
+// 		session({
+// 			secret: 'pass',
+// 			resave: false,
+// 			saveUninitialized: true,
+// 			cookie: {maxAge: oneWeek},
+// 		})
+// 	);
 	app.use(passport.initialize());
 	app.use(passport.session());
+	app.enableCors({
+		origin : '*',
+		credentials : true
+	  });
   await app.listen(8000);
 }
 bootstrap();

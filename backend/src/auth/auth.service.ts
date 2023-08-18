@@ -1,5 +1,6 @@
 import { ForbiddenException, Injectable } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
+import { Request } from "express";
 import { AuthDto, TwoFaAuthDto, TwoFaCodeDto } from "./dto";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { JwtService } from "@nestjs/jwt";
@@ -21,16 +22,15 @@ export class AuthService {
         return bcrypt.hash(data, 10);
     }
     
-    async signupLocal(dto: AuthDto): Promise<Tokens> {
+    async signupLocal(dto: AuthDto, avatar?: string): Promise<Tokens> {
         //need to hash the password for security reasons
-        const hash = await this.hashData(dto.password); //check this error
 
         try {
                 const users = await this.prisma.users.create({
                 data: {
                     username: dto.username,
                     email: dto.email,
-                    password: hash,
+                    avatar: avatar,
                 },
             });
             //the password need to be deleted so it cannot be reached by interder
@@ -50,27 +50,27 @@ export class AuthService {
     }
 
     async signinLocal(dto: AuthDto, tokens?: Tokens): Promise<Tokens> {
-	
-	const user = await this.prisma.users.findUnique({
+        const user = await this.prisma.users.findUnique({
             where : {
                 email: dto.email,
                 username: dto?.username,
+                password: dto?.password,
             },
         });
 
         //did not find the username
         if (!user)
             throw new ForbiddenException('Access Denied');
+        if (dto.password) {
+            const passwordChecker = await bcrypt.compare(dto.password, user.password);
+            if (!passwordChecker)
+                throw new ForbiddenException('Password wrong');
+        }
         
-        const passwordChecker = await bcrypt.compare(dto.password, user.password);
-        if (!passwordChecker)
-        	throw new ForbiddenException('Password wrong');
-        
-        delete user.password;
         const token = await this.signToken(user.id, user.email);
         await this.updateRtHashed(user.id, token.refresh_token);
-        
-	return token; 
+
+        return token; 
     }
 
     async logout(userId: number, cookies: any) {
@@ -105,7 +105,7 @@ export class AuthService {
             return token;
         }
         catch (error) {
-            if (error instanceof PrismaClientKnownRequestError) {
+        if (error instanceof PrismaClientKnownRequestError) {
                 if (error.code === 'P2002') { 
                     //P2002 means that there is duplicate error launched by prisma
                     throw new ForbiddenException('Credentials taken')
@@ -131,9 +131,20 @@ export class AuthService {
         return token; 
     }
 
-    // async accessToken42() {
-        //use fetch
-    // }
+    async signinGoogle(req: Request) {
+        const userInfo = req.user;
+        if (!userInfo)
+            throw new ForbiddenException('user info not found');
+        const userDto : AuthDto = {
+            username: userInfo['users'].username,
+            email: userInfo['users'].email,
+        };
+        const available = await this.findUser(userDto.username, userDto.email);
+        if (!available) {
+            return await this.signupLocal(userDto, userInfo['users'].avatar);
+        }
+        return await this.signinLocal(userDto);
+    }
 
     async fortyTwo(profile: any): Promise<Tokens> {
         // console.log(profile);

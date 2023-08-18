@@ -1,36 +1,13 @@
+import React from 'react';
 import './App.css';
-import image from './images/42Logo.png'
+import { ProjectPage } from './projects/projectPage';
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.tsx</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-function Login() {
-  let style = {
-      width:50,
-      height:20,
-      background: `url(${image})`,
-    };
+function App() {
   return (
-    <button style={style}>LogIn</button>
+    <div className='container'>
+      <ProjectPage />
+    </div>
   );
 }
 
-export default Login;
+export default App;

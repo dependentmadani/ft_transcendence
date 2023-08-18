@@ -41,6 +41,12 @@ export class UsersController {
         return this.userService.findAllUsers();
     }
 
+    @Get('me')
+    async getMe(@Req() req: Request): Promise<Users> {
+        const user: Users = await this.userService.findUserById(req.user['sub']);
+        return user;
+    }
+
     @Get("/:id")
     async getUser(@Param("id", ParseIntPipe) userId: number,
      @Req() req: Request): Promise<Users> {
@@ -60,28 +66,29 @@ export class UsersController {
 
     @Post("/:id/avatar")
     @UseInterceptors(FileInterceptor('avatar', storage))
-    uploadFile(@Req() req: Request,
+    async uploadFile(@Req() req: Request,
         @Param("id", ParseIntPipe) userId: number,
         @UploadedFile() file) {
         
         if (!file) {
             throw new UnauthorizedException('Did not upload successfully');
         }
-        return this.userService.uploadAvatar(userId, file.path);
+        return await this.userService.uploadAvatar(userId, file.path);
     }
 
     @Patch("/:id")
-    updateUser(@Param("id", ParseIntPipe) userId: number,
+    async updateUser(@Param("id", ParseIntPipe) userId: number,
         @Req() req: Request,
         @Body() body: UserModify) {
-
-        return this.userService.updateUser(userId, req.user, body);
+        const user: Users = await this.authService.returnUser(req.user['email']);
+        
+        return await this.userService.updateUser(userId, user, body);
     }
 
     @Delete("/:id")
-    deleteUser(@Param("id", ParseIntPipe) userId: number) {
+    async deleteUser(@Param("id", ParseIntPipe) userId: number) {
 
-        this.userService.deleteUser(userId);
+        await this.userService.deleteUser(userId);
     }
 
     @Get("/:id/stats")
