@@ -26,9 +26,9 @@ export class ChatController {
         return this.chatService.createChat(senId, recId, usrChatId)
     }
 
-    @Get(':/id')
-    async getOneChat(@Param('id', ParseIntPipe) chatId: number) : Promise<Chat> {
-        return this.chatService.getOneChat(chatId)
+    @Get('/:usrChatId')
+    async getOneChat(@Param('usrChatId', ParseIntPipe) usrChatId: number) : Promise<Chat[]> {
+        return this.chatService.getOneChat(usrChatId)
     }
 
 }

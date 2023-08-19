@@ -5,35 +5,14 @@ import More from '../img/more.png'
 import { Input } from './Input'
 import { Messages } from './Messages'
 
-interface Chat {
-  chatId: Number,
-  usrChatId: Number,
-  // senId: Number,
-  // recId: number,
-  // msg: string,
-}
+// interface User {}
+interface Chat {}
 
-// interface User {
-//   id: number;
-//   username: string;
-// }
+let currentChat: {}
 
-export const Chat = ({ currentUser }: any) => {
-  const [chats, setChats] = useState<Chat[]>([])
-  // // const [users, setUsers] = useState<User[]>([])
+export const Chat = ({ chatData }: any) => {
+  const [, setChats] = useState<Chat[]>([])
 
-  // useEffect(() => {
-  //   const fetchChats = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:8000/chat')
-  //       setChats(response.data)
-  //     }
-  //     catch (err) {
-  //       console.error('Error fetching chats: ', err)
-  //     }
-  //   }
-  //   fetchChats()
-  // }, [])
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -47,9 +26,8 @@ export const Chat = ({ currentUser }: any) => {
     fetchChats()
   }, [])
 
-  console.log('llhj ', chats.find(_chat => _chat?.usrChatId === currentUser?.id))
-  const currentChat = chats.find(_chat => _chat?.usrChatId === currentUser?.id)
-  console.log('l7maa9 ->', currentChat, 'chats ', chats)
+  const currentUser = chatData._user
+  currentChat = chatData._chat
 
   return (
     <div className='chat'>
@@ -61,8 +39,8 @@ export const Chat = ({ currentUser }: any) => {
           <img src={More} alt="more_icon" />
         </div>
       </div>
-      <Messages currentChat={ currentChat }/>
-      <Input />
+      <Messages currentChat={ currentChat } />
+      <Input currentChat={ currentChat } />
     </div>
   )
 }

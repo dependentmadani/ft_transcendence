@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 // import { Messages } from "./Messages";
 import { Chat } from "./Chat";
+// import { Message } from "./Message";
 
 interface User {
   id: number;
@@ -10,19 +11,27 @@ interface User {
 }
 
 interface Chat {
+  chatId: number,
   recId: number;
   msg: string;
 }
 
-export const Chats = () => {
-  const [chats, setChats] = useState<Chat[]>([])
-  const [users, setUsers] = useState<User[]>([])
+interface ChildComponentProps {
+  selectedChat: (val: number) => -1;
+}
+
+const _USER_: Number = 1 // for now
+
+export  const Chats: React.FC<ChildComponentProps> = ({ selectedChat }) => {
+    const [chats, setChats] = useState<Chat[]>([])
+    const [users, setUsers] = useState<User[]>([])
+    const [selectedContact, setSelectedContact] = useState(-1);
   // const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/chat')
+        const response = await axios.get(`http://localhost:8000/chat/${_USER_}`)
         setChats(response.data)
       }
       catch (err) {
@@ -36,7 +45,7 @@ export const Chats = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/users')
+        const response = await axios.get(`http://localhost:8000/users`)
         setUsers(response.data)
       }
       catch (err) {
@@ -46,20 +55,29 @@ export const Chats = () => {
     fetchUsers()
   }, [])
 
-  // console.log('users: ', users.find(_u => _u.id === 1))
+  console.log(selectedContact)
   // const chatDestination = () => {
-  //   setIsOpen(true)
-  // }
+    //   setIsOpen(true)
+    // }
+  
+  
+  
+  const handleClick = (chat: Chat) => {
+    setSelectedContact(chat?.chatId);
+    selectedChat(chat.chatId)
+  };
+
+  
 
   return (
     <div className="chats">
       {
         chats.map((chat, index) => (
-          <div className="userChat" key={index}>
+          <div className="userChat" key={index} onClick={() => handleClick(chat)} >
               <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" />
               <div className="userChatInfo">
                   <span>{users.find(_u => _u.id === chat?.recId)?.username }</span>
-                  <p>{ chat?.msg }</p>
+                  <p>latest message</p>
                   {/* <button onClick={chatDestination} >gg</button>
                   <Messages isOpen={isOpen} /> */}
               </div>
