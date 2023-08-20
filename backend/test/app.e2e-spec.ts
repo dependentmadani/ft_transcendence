@@ -42,7 +42,7 @@ describe('App e2e',() => {
       it('should throw if email empty', () => {
         return pactum
           .spec()
-          .post('http://localhost:3333/auth/signin')
+          .post(`http://${process.env.ADDRESS}:3333/auth/signin`)
           .withBody({
             password: dto.password,
           })
@@ -51,7 +51,7 @@ describe('App e2e',() => {
       it('should throw if password empty', () => {
         return pactum
           .spec()
-          .post('http://localhost:3333/auth/signin')
+          .post(`http://${process.env.ADDRESS}:3333/auth/signin`)
           .withBody({
             username: dto.username,
           })
@@ -60,14 +60,14 @@ describe('App e2e',() => {
       it('should throw if no body provided', () => {
         return pactum
           .spec()
-          .post('http://localhost:3333/auth/signin')
+          .post(`http://${process.env.ADDRESS}:3333/auth/signin`)
           .expectStatus(400); // give me the uncorrect status code, need to be checked
       });
 
 
       it('should sign up', () => {
         return pactum.spec()
-        .post('http://localhost:3333/auth/signup')
+        .post(`http://${process.env.ADDRESS}:3333/auth/signup`)
         .withBody(dto)
         .expectStatus(201);
       })

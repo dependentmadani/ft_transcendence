@@ -68,11 +68,23 @@ img {
     width: 100%;
 }
 
+.leftside {
+    margin-top: 40%;
+    /* margin-left: 5%; */
+    max-width: 860px;
+}
 
 .rightside {
     background-image: url("../assets/pingpong.gif");
     background-repeat: no-repeat;
     background-size: 100% 100%;
+    /* height: 1000px; */
+    /* width: 700px; */
+    /* margin-right: 100px; */
+    /* margin-top: 100px; */
+    /* margin-bottom: 10%; */
+    /* margin-right: 100px; */
+    /* margin-left: 0px; */
 }
 
 
@@ -81,7 +93,9 @@ img {
     width: 50%;
     float: left;
     height: 100%;
-    background-color: #282828;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #282828; */
     z-index: 1010101010
   }
   
@@ -90,8 +104,11 @@ img {
     width: 50%;
     float: left;
     height: 100%;
-    background-color: #0080ff;
-    z-index: 1010101010
+    /* background-color: #0080ff; */
+    z-index: 1010101010;
+    justify-content: center;
+    align-items: center;
+    /* margin-left: 10px; */
   }
 
 /* .row {
@@ -99,7 +116,11 @@ img {
     width: 100%;
 } */
 
-div {
+/* div {
     height: auto;
     width: auto;
-}
+} */
+
+/* #log {
+    margin-top: 300px;
+} */

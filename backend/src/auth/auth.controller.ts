@@ -70,6 +70,8 @@ export class AuthController {
     @UseGuards(GoogleGuard)
     async signinGoogleRedirection(@Req() req: Request,
                                     @Res() res: Response) {
+        
+        const user = req.user;
         const tokens = await this.authService.signinGoogle(req);
         res.cookie("token", tokens.access_token, {
             
@@ -83,21 +85,27 @@ export class AuthController {
             httpOnly: true, // for security
             secure: true
         });
-        res.redirect('http://localhost:8000/');
+        const userNew = await this.authService.returnUser(user['users'].email);
+        await this.authService.updateUserState(userNew.id, true);
+        console.log('vite address 1:', process.env.VITE_ADDRESS)
+        res.redirect(`http://${process.env.VITE_ADDRESS}:5173/`);
     }
 
     @Get('logout')
     @HttpCode(HttpStatus.OK)
-    logout(@GetUser('sub') userId: number,
+    async logout(@GetUser('sub') userId: number,
             @Res() res: Response,
-            @Req() req: Request): void {
-        
+            @Req() req: Request) {
+        const user = req.user;
         this.authService.logout(userId, req.cookies);
         if (req.cookies['token']) {
             res.cookie('token', req.cookies['token'], {expires: new Date(0)})
             res.cookie('refresh_token', req.cookies['refresh_token'], {expires: new Date(0)})
         }
-        res.redirect('http://localhost:8000/');
+        const userNew = await this.authService.returnUser(req.user['email']);
+        await this.authService.updateUserState(userNew.id, false);
+        console.log('vite address 2:', process.env.VITE_ADDRESS)
+        res.redirect(`http://${process.env.VITE_ADDRESS}:5173/`);
     }
 
     @Get('refresh')
@@ -157,8 +165,10 @@ export class AuthController {
             httpOnly: true, // for security
             secure: true
         });
-        const userId = await this.authService.returnUser(user['users'].email);
-        res.redirect('http://localhost:8000/')
+        const userNew = await this.authService.returnUser(user['users'].email);
+        await this.authService.updateUserState(userNew.id, true);
+        console.log('vite address 3:', process.env.VITE_ADDRESS)
+        res.redirect(`http://${process.env.VITE_ADDRESS}:5173/`)
         // console.log('access_token', tokens.access_token)
         // res.json({accessToken});
         

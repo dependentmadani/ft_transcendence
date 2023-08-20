@@ -1,12 +1,17 @@
-import React from 'react';
+// import React from 'react';
 import './App.css';
-import { ProjectPage } from './projects/projectPage';
+// import { Routes , Route } from 'react-router-dom';
+// import { ProjectPage } from './projects/projectPage';
+import Login from './pages/login'
 
 function App() {
   return (
-    <div className='container'>
-      <ProjectPage />
-    </div>
+    <>
+      {/* <Routes>
+          <Route path="/login" element={<Login />} />
+      </Routes> */}
+      <Login />
+    </>
   );
 }
 

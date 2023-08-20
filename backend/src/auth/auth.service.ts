@@ -247,6 +247,18 @@ export class AuthService {
             return false;
         return true
     }
+
+    async updateUserState(userId: number, state:boolean) {
+        const user: Users = await this.prisma.users.update({
+            where: {
+                id: userId,
+            },
+            data : {
+                isActive: state,
+            }
+        });
+        console.log(user);
+    }
     
     async signToken(userId: number,
         email: string ): Promise<Tokens> {

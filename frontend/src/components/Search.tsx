@@ -2,8 +2,9 @@ import { useState } from "react"
 
 export const Search = () => {
   const [username, setUsername] = useState('')
-  const [user, setUser] = useState('')
-  const [err, setErr] = useState('')
+  // const [user, setUser] = useState('')
+  // const [err, setErr] = useState('')
+  console.log(username)
 
   // const handleKey = () => {
   //   const q = query(collection)
