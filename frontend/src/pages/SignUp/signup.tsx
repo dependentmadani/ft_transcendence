@@ -1,10 +1,10 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 import './signup.css'
 
 export function Signup() {
     
-    const [username, setUsername] = useState("");
-    const [avatar, setAvatar] = useState("");
+    // const [username, setUsername] = useState("");
+    // const [avatar, setAvatar] = useState("");
 
     return (
         <>

@@ -8,8 +8,8 @@ import axios from "axios";
 export default function Login() {
 
     axios.get(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/logged_in`, {withCredentials: true})
-        .then((response)=> window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:5173`))
-        .catch((error) =>  console.log('did not login yet! :)'))
+        .then(()=> window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:5173`))
+        .catch(() =>  console.log('did not login yet! :)'))
         
     const request42 = async () => {
         window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/42`);

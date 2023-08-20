@@ -2,7 +2,7 @@
 import './App.css';
 // import { Routes , Route } from 'react-router-dom';
 // import { ProjectPage } from './projects/projectPage';
-import Login from './pages/login'
+import Login from './pages/Login/login'
 
 function App() {
   return (

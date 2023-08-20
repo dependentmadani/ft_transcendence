@@ -17,6 +17,13 @@ volumes:
       o: bind
       device: $HOME/goinfre/data/backend
       # device: /home/mbadaoui/data/backend
+  frontend_volume:
+    driver: local
+    name: frontend_volume
+    driver_opts:
+      type: none
+      o: bind
+      device: $HOME/goinfre/data/frontend
 
 networks:
   hadnetwork:
@@ -46,6 +53,22 @@ services:
       - hadnetwork
     volumes:
       - backend_volume:/app
+  
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pingpongFrontend
+    ports:
+      - 5173:5173
+    restart: always
+    depends_on:
+      - db
+      - backend
+    networks:
+      - hadnetwork
+    volumes:
+      - frontend_volume:/app
 
   pgadmin:
     container_name: pgadmin4_container
