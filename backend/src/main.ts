@@ -35,8 +35,10 @@ async function bootstrap() {
 	app.use(passport.session());
   console.log('vite address 4:', process.env.VITE_ADDRESS)
 	app.enableCors({
-		origin : `http://${process.env.VITE_ADDRESS}:5173`
-	  });
+    origin : `http://${process.env.VITE_ADDRESS}:5173`,
+    allowedHeaders: ['content-type'],
+    credentials: true,
+  });
   await app.listen(8000);
 }
 bootstrap();

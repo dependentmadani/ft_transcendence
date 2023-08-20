@@ -17,6 +17,11 @@ export class AuthController {
     constructor(private authService: AuthService,
         private config: ConfigService) {}
 
+    @Get('logged_in')
+    loggedIn() {
+        return true;
+    }
+
     @Public()
     @Post('signup')
     @HttpCode(HttpStatus.CREATED)
