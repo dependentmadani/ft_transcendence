@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react'
 import './signup.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export function Signup() {
     
     let fileUploaded: File;
+    const navigate = useNavigate();
     const [userId, setUserId] = useState();
     const [username, setUsername] = useState("");
     const [avatar, setAvatar] = useState("");
@@ -79,6 +81,8 @@ export function Signup() {
     function handleSubmit() {
         
         //need to add axios to update the avatar here.
+        // axios.get(`http://${import.meta.env.VITE_ADDRESS}:5173/`);
+        navigate('/');
     }
 
     return (

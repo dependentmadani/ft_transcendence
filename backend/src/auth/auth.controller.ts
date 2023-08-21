@@ -165,7 +165,7 @@ export class AuthController {
     @UseGuards(AuthGuard('42'))
     async fortyTwoCallback(@Req() req: Request ,@Res() res:Response ): Promise<void> {
         const user = req.user;
-        const tokens = await this.authService.fortyTwo(req.user['users']);
+        const [tokens, state] = await this.authService.fortyTwo(req.user['users']);
         res.cookie("token", tokens.access_token, {
             
             expires: new Date(new Date().getTime() + 60 * 60 * 24 * 7), // expires in 7 days
@@ -180,15 +180,10 @@ export class AuthController {
         });
         const userNew = await this.authService.returnUser(user['users'].email);
         await this.authService.updateUserState(userNew.id, true);
-        console.log('vite address 3:', process.env.VITE_ADDRESS)
-        res.redirect(`http://${process.env.VITE_ADDRESS}:5173/`)
-        // console.log('access_token', tokens.access_token)
-        // res.json({accessToken});
-        
-        // const accesToken = req['user'].accessToken
-        // console.log('access_token', accesToken);
-        // Handle the callback URL. The actual logic is performed in the FortyTwoStrategy's `validate()` method.
-        // res.redirect('/users');
+        if (state)
+            res.redirect(`http://${process.env.VITE_ADDRESS}:5173/signup`);
+        else
+            res.redirect(`http://${process.env.VITE_ADDRESS}:5173/`)
     }
 
 }

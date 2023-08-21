@@ -87,7 +87,7 @@ export class AuthService {
         });
     }
 
-    async signup42(dto: AuthDto, profile?: any): Promise<Tokens> {
+    async signup42(dto: AuthDto, profile?: any) {
         //need to hash the password for security reasons
 
         try {
@@ -114,7 +114,7 @@ export class AuthService {
         }
     }
 
-    async signin42(dto: AuthDto, tokens?: Tokens): Promise<Tokens> {
+    async signin42(dto: AuthDto, tokens?: Tokens) {
         const user = await this.prisma.users.findUnique({
             where : {
                 email: dto.email,
@@ -146,17 +146,20 @@ export class AuthService {
         return await this.signinLocal(userDto);
     }
 
-    async fortyTwo(profile: any): Promise<Tokens> {
+    async fortyTwo(profile: any) {
         // console.log(profile);
         const userDto: AuthDto = {
             username: profile.username,
             email: profile.email,
         }
         const available = await this.findUser(profile.username, profile.email);
+        let token;
         if (!available) {
-            return await this.signup42(userDto, profile);
+            token = await this.signup42(userDto, profile);
+            return [token, true];
         }
-        return await this.signin42(userDto);
+        token = await this.signin42(userDto);
+        return [token, false];
     }
 
     async refreshTokens(userdId: number, rt: string): Promise<Tokens> {
