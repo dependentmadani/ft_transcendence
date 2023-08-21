@@ -34,10 +34,12 @@ services:
     restart: always
     env_file:
       - .env
-    networks:
-      - hadnetwork
-    volumes:
-      - db_volume:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    # networks:
+    #   - hadnetwork
+    # volumes:
+    #   - db_volume:/var/lib/postgresql/data
     
   backend:
     build:
@@ -54,21 +56,21 @@ services:
     volumes:
       - backend_volume:/app
   
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    container_name: pingpongFrontend
-    ports:
-      - 5173:5173
-    restart: always
-    depends_on:
-      - db
-      - backend
-    networks:
-      - hadnetwork
-    volumes:
-      - frontend_volume:/app
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: pingpongFrontend
+  #   ports:
+  #     - 5173:5173
+  #   restart: always
+  #   depends_on:
+  #     - db
+  #     - backend
+  #   networks:
+  #     - hadnetwork
+  #   volumes:
+  #     - frontend_volume:/app
 
   pgadmin:
     container_name: pgadmin4_container

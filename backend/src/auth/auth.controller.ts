@@ -8,6 +8,7 @@ import { Tokens } from "./types";
 import { GoogleGuard, RtGuard } from "src/guards";
 import { GetUser, Public } from "src/decorator";
 import { Users } from "@prisma/client";
+import { json } from "stream/consumers";
 
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
@@ -20,6 +21,13 @@ export class AuthController {
     @Get('logged_in')
     loggedIn() {
         return true;
+    }
+
+    @Get('me')
+    async getMe(@Req() req: Request, @Res() res: Response) {
+        const user = req.user;
+        const userInfo = await this.authService.returnUser(user['email']);
+        return res.send(userInfo);
     }
 
     @Public()

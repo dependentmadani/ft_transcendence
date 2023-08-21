@@ -46,6 +46,7 @@ export class UsersService {
                     avatar: body?.avatar,
                 }
             });
+            console.log('this is the user:', user)
             return user;
         }
         catch {
@@ -74,7 +75,7 @@ export class UsersService {
                     id: userId,
                 },
                 data: {
-                    avatar: filePath,
+                    avatar: './public/uploadAvatar/' + filePath,
                 }
             });
             return user;
