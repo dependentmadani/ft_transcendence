@@ -1,7 +1,7 @@
-import { useState } from "react"
+// import { useState } from "react"
 
 export const Search = () => {
-  const [username, setUsername] = useState('')
+  // const [username, setUsername] = useState('')
 
   // const handleKey = () => {
   //   const q = query(collection)

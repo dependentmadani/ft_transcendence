@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
+// import { IoAdapter } from '@nestjs/platform-socket.io';
 // import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 
 
@@ -22,6 +23,12 @@ async function bootstrap() {
 //     optionsSuccessStatus: 204,
 //   };
 //   app.enableCors(corsOptions);
+
+	// const httpServer = app.getHttpAdapter().getHttpServer();
+	
+	// const ioAdapter = new IoAdapter(app);
+	// const io = ioAdapter.createIOServer(httpServer);
+	// io.origins('http://localhost:5173');
 	
 
 	

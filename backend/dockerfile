@@ -6,12 +6,14 @@ COPY package*.json ./
 
 RUN npm install
 
+RUN npm i --save @nestjs/websockets @nestjs/platform-socket.io
+
 COPY . .
 
 EXPOSE 8000
 
 RUN npm run build
-
+# npm run start:dev
 RUN npm rebuild bcrypt --update-binary
 
 RUN npx prisma generate

@@ -1,10 +1,10 @@
-interface User {
-    id: number;
-    username: string;
-    avatar: string,
-}
+// interface User {
+//     id: number;
+//     username: string;
+//     avatar: string,
+// }
 
-export const Infos = ({ currentUser }) => {
+export const Infos = ({ currentUser }: any) => {
 
   return (
     <div className="search">

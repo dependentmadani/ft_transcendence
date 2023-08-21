@@ -21,7 +21,7 @@ interface Chat {
 // }
 
 export const Home = () => {
-  const [selectedChat, setSelectedChat] = useState()
+  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
@@ -40,7 +40,8 @@ export const Home = () => {
   const handleSelectedChat = (chat: Chat): any => {
     setSelectedChat(chat)
   }
-  const currentUser = users.find(_u => _u.id === selectedChat)
+  // const currentUser = users.find(_u => _u.id === selectedChat)
+  const currentUser = selectedChat ? users.find(_u => _u.id === selectedChat.recId) : null;
   const chatData = { _user: currentUser, _chat: selectedChat }
 
   return (

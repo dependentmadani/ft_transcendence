@@ -21,7 +21,7 @@ import { MessageModule } from './chat/message/message.module';
     UsersModule,
     ChatModule,
     MessageModule,
-    PrismaModule
+    PrismaModule,
   ],
   providers: [{
     provide: APP_GUARD,

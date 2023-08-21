@@ -1,10 +1,27 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Attach from "../img/attach.png"
 import Img from "../img/img.png"
 import axios from "axios"
+import io, { Socket } from "socket.io-client";
 
 export const Input = ({ currentChat }: any) => {
   const [inputText, setInputText] = useState('')
+  const [socket, setSocket] = useState<Socket | null>(null);
+
+  useEffect(() => {
+    const newSocket = io("http://localhost:8000");
+
+    newSocket.on('connect', () => {
+      console.log(newSocket.id, ' connected to the server!')
+    })
+
+    setSocket(newSocket)
+
+    console.log(newSocket, socket)
+    return () => {
+      newSocket.disconnect()
+    }
+  }, [])
 
   const createNewMessage = async (inputText: string) => {
     try {
@@ -22,8 +39,10 @@ export const Input = ({ currentChat }: any) => {
   }
   const handleClick = () => {
     console.log('Ha lKtaaaba: ', inputText)
-    if (inputText.trim() !== '')
+    if (inputText.trim() !== '') {
       createNewMessage(inputText)
+      socket?.emit("newMessage", inputText);
+    }
   }
   
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {

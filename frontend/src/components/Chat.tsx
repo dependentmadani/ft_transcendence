@@ -12,6 +12,7 @@ let currentChat: {}
 
 export const Chat = ({ chatData }: any) => {
   const [, setChats] = useState<Chat[]>([])
+  
 
   useEffect(() => {
     const fetchChats = async () => {
