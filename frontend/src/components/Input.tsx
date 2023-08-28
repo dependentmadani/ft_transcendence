@@ -6,7 +6,8 @@ import axios from "axios"
 // import io, { Socket } from "socket.io-client";
 // import { Message } from "./Message"
 import { Messages } from './Messages'
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 // interface Message {
 //   messageId: number;
 //   textContent: string;
@@ -28,7 +29,7 @@ export const Input = ({ chatData }: any) => {
         console.log(`Couldn't fetch any message`)
       }
     }
-  
+    faFaceSmile
   const createNewMessage = async (inputText: string) => {
     try {
       return await axios.post('http://localhost:8000/message', {
@@ -94,14 +95,18 @@ export const Input = ({ chatData }: any) => {
     <Messages messages={ messages } />
 
     <div className="input">
-      <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
-      <div className="send">
-        <img src={Attach} alt="" />
-        <input type="file" style={{ display: "none" }} id="file" />
-        <label htmlFor="file">
-          <img src={Img} alt="" />
-        </label>
-        <button onClick={handleClick}>Send</button>
+      <div className="inputContainer">
+        <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
+        <div className="send">
+          {/* <img src={Attach} alt="" />
+          <input type="file" style={{ display: "none" }} id="file" />
+          <label htmlFor="file">
+            <img src={Img} alt="" />
+          </label> */}
+          {/* <button >Send</button> */}
+          <span onClick={handleClick}><FontAwesomeIcon icon={faFaceSmile} /></span>
+          <span onClick={handleClick}><FontAwesomeIcon icon={faPaperPlane} /></span>
+        </div>
       </div>
     </div>
     </>

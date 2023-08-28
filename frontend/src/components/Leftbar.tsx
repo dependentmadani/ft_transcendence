@@ -73,8 +73,8 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
   };
 
   return (
-    <div className="sidebar">
-        <Navebar />
+    <div className="leftSidebar">
+        {/* <Navebar /> */}
         <Search />
         <div className="chats">
         {

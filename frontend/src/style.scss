@@ -49,43 +49,7 @@
 }
 
 /* Styling for user avatar and username */
-.contactInfos {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  flex-direction: column;
-}
 
-.contactAvatar img {
-  width: 100px;
-  height: 100px;
-  // border-radius: 50%;
-  object-fit: cover;
-  // margin-right: 10px;
-}
-
-.contactInfos span {
-  font-size: 1.2rem;
-  // color: #333;
-}
-
-/* Styling for buttons */
-.contactPlay {
-  display: flex;
-  flex-direction: row;
-}
-
-.contactPlay button,
-.contactPlay button + button {
-  background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 5px 5px;
-    font-size: 0.9em;
-    cursor: pointer;
-    margin: 10px;
-}
 
 /* Styling for mutual friends and groups lists */
 .mutualFriends ul,
@@ -176,15 +140,15 @@
   }
   
   .home {
-    background-color: #1c2b5b;// #a7bcff;
+    background-color: #0f1237;// #a7bcff;
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
   
     .container {
-      border: 1px solid white;
-      border-radius: 10px;
+      // border: 1px solid white;
+      border-radius: 20px;
       width: 65%;
       height: 80%;
       display: flex;
@@ -193,9 +157,9 @@
        width: 90%;
       }
   
-      .sidebar {
+      .leftSidebar {
         flex: 1;
-        background-color: #3e3c61;
+        background-color: #232760;
         position: relative;
   
         .navbar {
@@ -239,24 +203,150 @@
             }
           }
         }
+
         .search {
-          border-bottom: 1px solid gray;
+          // border-bottom: 1px solid gray;
+          padding: 30px 10px;
+          display: flex;
   
           .searchForm {
             padding: 10px;
   
-            input {
-              background-color: transparent;
-              border: none;
-              color: white;
-              outline: none;
-  
-              &::placeholder {
-                color: lightgray;
-              }
+            
+          }
+          input {
+            background-color: #828ccb;
+            border: none;
+            outline: none;
+            margin: 0 10px;
+
+            &::placeholder {
+              color: lightgray;
             }
           }
+          span {
+            background-color: #828ccb;
+            display: flex;
+            border-radius: 20px;
+            padding: 10px;
+            width: 90%;
+            background-color: #838ec8;
+          }
+
+          .searchIcon {
+            font-size: 1.2em;
+            color: #dddef6;
+            margin: 0 10px;
+            cursor: pointer;
+          }
         }
+      }
+
+        .rightSidebar {
+          flex: 1;
+          background-color: #232760;
+          position: relative;
+    
+
+            .contactInfo {
+              height: 100%;
+            
+
+            .flex-container {
+              display: flex;
+            }
+
+            .flex-item {
+              flex: 1; /* Equal distribution of available space */
+              padding: 10px;
+              border: 1px solid gray;
+            }
+
+            .flex-item:nth-child(1) {
+              flex: 40%; /* 30% width */
+            }
+            
+            .flex-item:nth-child(2) {
+              flex: 30%; /* 40% width */
+            }
+            
+            .flex-item:nth-child(3) {
+              flex: 30%; /* 30% width */
+            }
+
+            .contactInfos {
+              display: flex;
+              align-items: center;
+              margin-bottom: 10px;
+              flex-direction: column;
+              flex: 30%;
+            }
+            
+            .contactAvatar {
+              display: flex;
+            }
+
+            .contactAvatar img {
+              width: 70%;
+              // height: 50%;
+              // border-radius: 50%;
+              object-fit: cover;
+              margin: auto;
+            }
+            
+            .contactInfos span {
+              font-size: 1.5rem;
+              // color: #333;
+              margin: 10px;
+            }
+
+            .mutualContact {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+            }
+            
+            /* Styling for buttons */
+            .contactPlay {
+              display: flex;
+              flex-direction: row;
+            }
+            
+            .contactPlay span {
+              // background-color: #007bff;
+                color: #fff;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 5px;
+                font-size: 1.2em;
+                cursor: pointer;
+                margin: 10px;
+            }
+     
+          
+          
+          // .search {
+          //   // border-bottom: 1px solid gray;
+    
+          //   .searchForm {
+          //     padding: 10px;
+    
+          //     input {
+          //       background-color: #828ccb;
+          //       border: none;
+          //       margin: 20px 0px 10px 0px;
+          //       border-radius: 30px;
+          //       padding: 10px;
+          //       color: white;
+          //       outline: none;
+          //       width: 90%;
+    
+          //       &::placeholder {
+          //         color: lightgray;
+          //       }
+          //     }
+          //   }
+          }
   
         .userChat {
           padding: 10px;
@@ -315,8 +405,8 @@
         .messages {
           background-color: #ddddf7;
           padding: 10px;
-          height: calc(100% - 90px);
-          overflow: scroll;
+          height: calc(100% - 70px);
+          overflow-y: scroll;
   
           .message {
             display: flex;
@@ -371,11 +461,28 @@
   
         .input {
           height: 50px;
-          background-color: white;
-          padding: 10px;
+          background-color: #dddef6;
+          // padding: 10px;
           display: flex;
           align-items: center;
           justify-content: space-between;
+          
+          .inputContainer {
+            display: flex;
+            flex-direction: row;
+            width: 90%;
+            background-color: white;
+            align-items: center;
+            margin: auto;
+            padding: 10px;
+            border-radius: 50px;
+
+            span {
+              color: #4b519a;
+              font-size: 1.2em;
+              cursor: pointer;
+            }
+          }
   
           input {
             width: 100%;

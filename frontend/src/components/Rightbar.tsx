@@ -2,9 +2,7 @@ import { Infos } from "./Infos"
 
 export const Rightbar = ({ currentUser }: any) => {
   return (
-    <div className="sidebar">
-        {/* <div className="navbar"> </div> */}
-        {/* <Search /> */}
+    <div className="rightSidebar">
         <Infos currentUser={ currentUser } />
     </div>
   )
