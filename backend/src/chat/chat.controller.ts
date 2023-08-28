@@ -1,10 +1,9 @@
-import { Controller, Get,  Post } from "@nestjs/common";
+import { Controller, Get } from '@nestjs/common';
 
 @Controller('chat')
 export class ChatController {
-    @Get()
-    gg() : string
-    {
-        return "sdgsdhdsgh"
-    }
+  @Get()
+  gg(): string {
+    return 'sdgsdhdsgh';
+  }
 }

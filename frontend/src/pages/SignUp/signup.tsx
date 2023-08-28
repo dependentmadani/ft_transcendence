@@ -3,7 +3,7 @@ import './signup.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export function Signup() {
+function InfoUpdate() {
     
     let fileUploaded: File;
     const navigate = useNavigate();
@@ -87,10 +87,12 @@ export function Signup() {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <h1>Please Enter Your Information</h1>
+            <h1 id='signup-header'>Please Enter Your Information</h1>
+            <form className='signup-form' onSubmit={handleSubmit}>
                 <div className='updateAvatar'>
                     <img src={avatar} className='img-avatar'/>
+                </div>
+                <div className='change-avatar-button'>
                     <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={(e) => handleChangeAvatar(e.target.files)}/>
                     {errorMessageFile && <div className="error"> {errorMessageFile} </div>}
                 </div>
@@ -100,9 +102,26 @@ export function Signup() {
                         {errorMessage && <div className="error"> {errorMessage} </div>}
                 </div>
                 <div className="form-submit-button">
-                    <input disabled={disable} type="submit" value="Next ➝" />
+                    <input id='submit-button' disabled={disable} type="submit" value="Next ➝" />
                 </div>
             </form>
         </>
     )
+}
+
+
+export function Signup() {
+
+    return (
+        <>
+            <div id='col-1'>
+                <div className='leftside'>
+                    <InfoUpdate />
+                </div>
+            </div>
+            <div id='col-2'>
+                <div className='rightside'></div>
+            </div>
+        </>
+    );
 }

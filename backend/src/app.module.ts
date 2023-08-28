@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -13,24 +18,29 @@ import { HomeModule } from './home/home.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }) ,
+    ConfigModule.forRoot({ isGlobal: true }),
     PassportModule,
     HomeModule,
-    AuthModule ,
+    AuthModule,
     UsersModule,
     ChatModule,
-    PrismaModule
+    PrismaModule,
   ],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: AtGuard,
-  }],
-  controllers: [HomeController]
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard,
+    },
+  ],
+  controllers: [HomeController],
 })
-export class AppModule implements NestModule{
+export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(IfNotAuthenticatedMiddleware)
-      .forRoutes({ path: '/users*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
+      .forRoutes({
+        path: '/users*',
+        method: RequestMethod.ALL,
+      }); // Apply the middleware to all routes under /users
   }
 }

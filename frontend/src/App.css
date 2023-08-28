@@ -40,3 +40,32 @@
 .read-the-docs {
   color: #888;
 }
+
+/* Navbar css  */
+
+.navbar {
+  display:flex;
+  text-align: center;
+  position: absolute;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  justify-content: flex-end;
+}
+
+.navbar-ul {
+  list-style-type: none;
+  margin-right: 18%;
+  padding: 0;
+  /* margin-right: 10%; */
+
+}
+
+#navbar-li {
+  display: inline;
+  float:left;
+  padding-left: 50px;
+  padding-right: 50px;
+  padding-top: 8%;
+  font-size: x-large;
+}

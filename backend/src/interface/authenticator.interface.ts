@@ -1,4 +1,4 @@
 export interface Authenticator {
-    isTwoFactorEnable?: boolean;
-    isTwoFaAuthenticated?: boolean;
+  isTwoFactorEnable?: boolean;
+  isTwoFaAuthenticated?: boolean;
 }

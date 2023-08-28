@@ -1,4 +1,74 @@
+.signup-form {
+    background-color:rgba(72, 105, 238, 0.4);
+    width: 50%;
+    height: 25%;
+    display: inline-block;
+    border-radius: 20px;
+}
+
+.updateAvatar {
+    display: inline-block;
+    justify-content: center;
+}
+
 .img-avatar {
-    width: 100px;
-    height: 100px;
+    overflow: visible;
+    width: 160px;
+    height: 160px;
+    margin-top: -30px;
+
+}
+
+.change-avatar-button {
+    justify-content: center;
+}
+
+#name {
+    background-color: #fff;
+    border-radius: 40px;
+    margin: 10px;
+    color:black;
+    font-family: "Times New Roman", Times, serif;
+    font-size: large;
+}
+
+#signup-header {
+    margin: 10%;
+}
+
+.form-example {
+    margin: 10px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: blanchedalmond;
+}
+
+.form-submit-button {
+    width: 80px;
+    height: 30px;
+    margin: 5%;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    border-radius: 40px;
+    box-shadow: 0 6px 20px -5px rgba(206, 184, 201, 0.4);
+}
+
+#submit-button {
+    width: 80px;
+    height: 30px;
+    border: none;
+    outline: none;
+    background: #2475b8;
+    color: #fff;
+    font-size: 15px;
+    border-radius: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+#submit-button:hover {
+    background-color: rgb(180, 3, 85);
+    cursor: pointer;
 }
