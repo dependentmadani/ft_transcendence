@@ -25,6 +25,15 @@ export class MessageService {
         }
     }
 
+    async getChatMessage(msgChatId: number): Promise<Message[]> {
+        try {
+            return this.prisma.message.findMany({ where: { msgChatId: msgChatId } })
+        }
+        catch {
+            throw new UnauthorizedException(`Couldn't finde message with id ${msgChatId}`)
+        }
+    }
+
     async createMessage(msgChatId: number, MessageSenId: number, MessageRecId:number, textContent: string) : Promise<Message> {
         // console.log(message.chatId)
         try {

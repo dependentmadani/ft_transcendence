@@ -7,14 +7,14 @@
 export const Infos = ({ currentUser }: any) => {
 
   return (
-    <div className="search">
-        <h3>M3lomat</h3>
+    <div className={`search`}>
+        {/* <h3>M3lomat</h3> */}
         <div className="userChat">
             <div className="contactInfos">
                 <div className="contactAvatar">
                     <img src={ currentUser?.avatar ? currentUser.avatar : `https://assets.mycast.io/actor_images/actor-steve-minecraft-90370_large.jpg?1589410150` } alt="user_avatar" />
                 </div>
-                <span>gg{ currentUser?.username }</span>
+                <span>{ currentUser?.username }</span>
             </div>
             <div className="contactPlay">
                 <button>Play</button>
@@ -22,6 +22,7 @@ export const Infos = ({ currentUser }: any) => {
             </div>
 
             <div className="mutualFriends">
+                <p>mutual Friends</p>
                 <ul>
                     <li>gg</li>
                     <li>gg</li>
@@ -29,11 +30,16 @@ export const Infos = ({ currentUser }: any) => {
                 </ul>
             </div>
             <div className="mutualGroups">
+                <p>mutual Groups</p>
                 <ul>
                     <li>gg</li>
                     <li>gg</li>
                     <li>gg</li>
                 </ul>
+            </div>
+            <div className="contactPlay">
+                <button>mute</button>
+                <button>block</button>
             </div>
             {/* <div className="userChatInfo">
             </div>

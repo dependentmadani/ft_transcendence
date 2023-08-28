@@ -3,6 +3,7 @@ import { ChatService } from "./chat.service";
 import { Request, Response } from "express";
 import { Chat } from "@prisma/client";
 import { Public } from "src/decorator";
+import { ChatGateway } from "./chat.gateway";
 // import { Chat } from './dto'
 
 @Public()
@@ -30,6 +31,5 @@ export class ChatController {
     async getOneChat(@Param('usrChatId', ParseIntPipe) usrChatId: number) : Promise<Chat[]> {
         return this.chatService.getOneChat(usrChatId)
     }
-
 }
 

@@ -13,9 +13,14 @@ export class MessageController {
         return this.messageService.getMessages()
     }
 
-    @Get('/:id')
-    async getOneMessage(@Param('id', ParseIntPipe) messageId) : Promise<Message> {
-        return this.messageService.getOneMessage(messageId)
+    // @Get('/:id')
+    // async getOneMessage(@Param('id', ParseIntPipe) messageId) : Promise<Message> {
+    //     return this.messageService.getOneMessage(messageId)
+    // }
+
+    @Get('/:msgChatId')
+    async getChatMessage(@Param('msgChatId', ParseIntPipe) msgChatId) : Promise<Message[]> {
+        return this.messageService.getChatMessage(msgChatId)
     }
 
     @Post()

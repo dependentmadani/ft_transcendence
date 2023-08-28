@@ -79,8 +79,9 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
         <div className="chats">
         {
           chats.map((chat, index) => (
-            <div className="userChat" key={index} onClick={() => handleClick(chat)} >
-                <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" />
+            <div className="userChats" key={index} onClick={() => handleClick(chat)} >
+                {/* <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" /> */}
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
                 <div className="userChatInfo">
                     <span>{users.find(_u => _u.id === chat?.recId)?.username }</span>
                     <p>latest message</p>
