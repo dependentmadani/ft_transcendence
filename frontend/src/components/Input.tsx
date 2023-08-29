@@ -28,8 +28,8 @@ export const Input = ({ chatData }: any) => {
     catch (err) {
         console.log(`Couldn't fetch any message`)
       }
-    }
-    faFaceSmile
+  }
+    // faFaceSmile
   const createNewMessage = async (inputText: string) => {
     try {
       return await axios.post('http://localhost:8000/message', {

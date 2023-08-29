@@ -12,7 +12,7 @@ export class MessageService {
             return this.prisma.message.findMany()
         }
         catch {
-            throw new UnauthorizedException("Couldn't finde any message")
+            throw new UnauthorizedException("Couldn't find any message")
         }
     }
 
@@ -21,7 +21,7 @@ export class MessageService {
             return this.prisma.message.findUnique({ where: { messageId: messageId } })
         }
         catch {
-            throw new UnauthorizedException(`Couldn't finde message with id ${messageId}`)
+            throw new UnauthorizedException(`Couldn't find message with id ${messageId}`)
         }
     }
 
@@ -30,7 +30,7 @@ export class MessageService {
             return this.prisma.message.findMany({ where: { msgChatId: msgChatId } })
         }
         catch {
-            throw new UnauthorizedException(`Couldn't finde message with id ${msgChatId}`)
+            throw new UnauthorizedException(`Couldn't find message with id ${msgChatId}`)
         }
     }
 

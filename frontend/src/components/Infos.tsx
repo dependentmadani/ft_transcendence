@@ -25,19 +25,25 @@ export const Infos = ({ currentUser }: any) => {
             <div className="mutualContact flex-item">
                 <div className="mutualFriends">
                     <p>mutual Friends</p>
-                    <ul>
-                        <li>gg</li>
-                        <li>gg</li>
-                        <li>gg</li>
-                    </ul>
+                    <div className="mutualFriendsContainer">
+                        <ul>
+                            <li>gg</li>
+                            <li>gg</li>
+                            <li>gg</li>
+                            <li>gg</li>
+                            <li>gg</li>
+                        </ul>
+                    </div>
                 </div>
                 <div className="mutualGroups">
                     <p>mutual Groups</p>
-                    <ul>
-                        <li>gg</li>
-                        <li>gg</li>
-                        <li>gg</li>
-                    </ul>
+                    <div className="mutualGroupssContainer">
+                        <ul>
+                            <li>gg</li>
+                            <li>gg</li>
+                            <li>gg</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div className="contactPlay flex-item">

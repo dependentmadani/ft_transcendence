@@ -30,6 +30,9 @@ model Users {
   recId     Chat[] @relation("reccontact")
   MessageSenId     Message[] @relation("Messagesencontact")
   MessageRecId     Message[] @relation("Messagereccontact")
+  rooms       Room[] @relation("roomId", fields: [roomId], references: [roomId])
+  roomId      Int?
+  adminId       Room[] @relation()
 }
 
 // model Chat {
@@ -65,6 +68,23 @@ model Message {
   MessageRecId       Int
   messageChatId  Chat @relation(fields: [msgChatId], references: [chatId])
   msgChatId       Int
+}
+
+model Room {
+  roomId   Int @id @default(autoincrement())
+  roomName    String
+  roomAvatar  String
+  admin     Users @relation("roomId", fields: [adminId], references: [id])
+  adminId   Int
+  roomUsers   Users[] @relation(references: [id])
+  kickedUsers Users[] @relation(references: [id])
+  mutedUser   Users[] @relation(references: [id])
+  banedUsers  Users[] @relation(references: [id])
+  // senderId    Users @relation("senroom", fields: [senId], references: [id])
+  // senId       Int
+  // receiverId  Users @relation("recroom", fields: [recId], references: [id])
+  // recId       Int
+  // msgChatId     Message[]
 }
 
 enum Role {

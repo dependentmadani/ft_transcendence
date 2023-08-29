@@ -13,7 +13,7 @@ export class ChatService {
             return this.prisma.chat.findMany()
         }
         catch {
-            throw new UnauthorizedException("Couldn't finde any chat")
+            throw new UnauthorizedException("Couldn't find any chat")
         }
     }
 
@@ -22,7 +22,7 @@ export class ChatService {
             return this.prisma.chat.findMany({ where: { usrChatId: usrChatId } })
         }
         catch {
-            throw new UnauthorizedException(`Couldn't finde message with id ${usrChatId}`)
+            throw new UnauthorizedException(`Couldn't find message with id ${usrChatId}`)
         }
     }
 

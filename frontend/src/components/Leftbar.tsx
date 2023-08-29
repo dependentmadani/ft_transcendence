@@ -17,6 +17,10 @@ interface User {
   avatar: string,
 }
 
+interface Message {
+  textContent: string
+}
+
 interface ChildComponentProps {
   onValueChange: (val: Chat) => any;
 }
@@ -72,6 +76,22 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
     onValueChange(chat)
   };
 
+  // const [latestMessages, setLatesetMessages] = useState()
+
+  const latestMessage = async (chatId: number) : Promise<any> => {
+    try {
+      const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`))?.data
+      console.log('liwazzzz -> ', latestMessage[latestMessage.length-1].textContent)
+        // return await axios.get(`http://localhost:8000/message/${chatId}`).data
+      return latestMessage[latestMessage.length-1]
+    }
+    catch (err) {
+        console.log(`Couldn't fetch any message`)
+      }
+  }
+
+  // console.log('lastest message: ', latestMessage(1))
+
   return (
     <div className="leftSidebar">
         {/* <Navebar /> */}
@@ -84,7 +104,7 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
                 <div className="userChatInfo">
                     <span>{users.find(_u => _u.id === chat?.recId)?.username }</span>
-                    <p>latest message</p>
+                    <p>{ 1 ? latestMessage(chat.chatId)?.textContent : 'latest message' }</p>
                     {/* <button onClick={chatDestination} >gg</button>
                     <Messages isOpen={isOpen} /> */}
                 </div>

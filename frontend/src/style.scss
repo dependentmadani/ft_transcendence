@@ -15,6 +15,9 @@
   }
   
 
+  body {
+    margin: 0;
+  }
 /* user chats*/
 .userChats {
   margin: 10px;
@@ -50,20 +53,6 @@
 
 /* Styling for user avatar and username */
 
-
-/* Styling for mutual friends and groups lists */
-.mutualFriends ul,
-.mutualGroups ul {
-  list-style: none;
-  padding: 0;
-}
-
-.mutualFriends li,
-.mutualGroups li {
-  margin-bottom: 6px;
-  font-size: 1rem;
-  color: #555;
-}
 
 
   .formContainer {
@@ -304,6 +293,44 @@
               display: flex;
               flex-direction: column;
               align-items: center;
+            }
+
+            /* Styling for mutual friends and groups lists */
+            .mutualFriends, .mutualGroups {
+              display: flex;
+              flex-direction: column;
+              margin: 10px;
+
+              p {
+                background-color: #dddef6;
+                padding: 5px 10px;
+                border-radius: 20px;
+                // width: 100%;
+                align-items: center;
+                margin: auto;
+              }
+            }
+            .mutualFriendsContainer, .mutualGroupssContainer {
+              background-color: #828ccb;
+              padding: 10px;
+              display: flex;
+              align-items: center;
+              overflow-y: scroll;
+              height: 5em;
+              // margin: auto;
+            }
+
+            .mutualFriends ul,
+            .mutualGroups ul {
+              list-style: none;
+              padding: 0;
+            }
+
+            .mutualFriends li,
+            .mutualGroups li {
+              margin-bottom: 6px;
+              font-size: 1rem;
+              color: #555;
             }
             
             /* Styling for buttons */
