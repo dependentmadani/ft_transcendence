@@ -11,6 +11,7 @@ import { AtGuard } from './guards';
 import { HomeController } from './home/home.controller';
 import { HomeModule } from './home/home.module';
 import { MessageModule } from './chat/message/message.module';
+import { RoomModule } from './chat/room/room.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MessageModule } from './chat/message/message.module';
     UsersModule,
     ChatModule,
     MessageModule,
+    RoomModule,
     PrismaModule,
   ],
   providers: [{

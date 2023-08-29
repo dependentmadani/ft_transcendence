@@ -6,7 +6,7 @@ import { Room } from '@prisma/client'
 export class RoomService {
     constructor(private prisma: PrismaService) {}
 
-    async getChats(): Promise<Room[]> {
+    async getRooms(): Promise<Room[]> {
         try {
             return this.prisma.room.findMany()
         }
