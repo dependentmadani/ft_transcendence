@@ -1,6 +1,25 @@
 import axios from "axios"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
+import { RoomCreationModal } from './RoomCreationModal'
+import { useState } from "react";
 
-export const CreateRoom = () => {
+interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+export  const CreateRoom = () => {
+
+  const [showForm, setShowForm] = useState(false);
+
+  const openForm = () => {
+    setShowForm(true);
+  };
+
+  const closeForm = () => {
+    setShowForm(false);
+  };
 
     const createNewRoom = async () => {
         try {
@@ -30,10 +49,16 @@ export const CreateRoom = () => {
         //   };
         //   setMessages([...messages, newMessage]);
     }
+
+
+    
+
+  
     
     return (
         <div className="createRoom">
-            <button onClick={createAroom}>Create Room</button>
+            <span className="createRoomIcon" onClick={openForm}><FontAwesomeIcon icon={faUserGroup} /></span>
+            {showForm && <RoomCreationModal onClose={closeForm} />}
         </div>
     )
 }

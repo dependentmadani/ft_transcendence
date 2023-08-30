@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { Search } from "./Search"
 import axios from "axios"
-import { CreateRoom } from "./CreateRoom";
 
 interface Chat {
   chatId: number,
@@ -27,7 +26,7 @@ interface ChildComponentProps {
 
 const _MAIN_USER_: number = 1 // for now
 
-export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) => {
+export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange, isOpen, onClose }: any) => {
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [users, setUsers] = useState<User[]>([])
   const [chats, setChats] = useState<Chat[]>([])
@@ -127,7 +126,6 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
           ))
         }
       </div>
-      <CreateRoom />
     </div>
   )
 }

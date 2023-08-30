@@ -2,8 +2,10 @@
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { CreateRoom } from "./CreateRoom";
 
 export const Search = () => {
+// export  const Search: React.FC<ChildComponentProps> = ({ isOpen, onClose }: any) => {
   // const [username, setUsername] = useState('')
 
   // const handleKey = () => {
@@ -16,6 +18,7 @@ export const Search = () => {
             <span>
               <input type="text" placeholder="Find a user" /*onKeyDown={handleKey} onChange={e => setUsername(e.target.value)}*/ />
               <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} />
+              <CreateRoom />
             </span>
         {/* </div> */}
         {/* <div className="userChat">

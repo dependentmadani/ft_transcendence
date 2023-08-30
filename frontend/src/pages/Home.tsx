@@ -6,6 +6,7 @@ import { Leftbar } from "../components/Leftbar"
 
 import io from 'socket.io-client';
 import { Socket } from "socket.io-client/debug";
+import { RoomCreationModal } from "../components/RoomCreationModal";
 
 interface User {
   id: number;
@@ -74,11 +75,18 @@ export const Home = () => {
   // }, [socket]);
 
 
+
+  
+    
+
+    
   console.log('lusers z3ma', onlineUsers)
   console.log('MSG', receivedMsg)
 
   console.log('chat data', chatData)
   
+  // var isOpen = true
+
   return (
     <div className='home'>
       {/* <button onClick={sendMessage}> Send Message</button>
