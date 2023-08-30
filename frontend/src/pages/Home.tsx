@@ -23,7 +23,7 @@ interface Chat {
 // }
 
 export const Home = () => {
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [selectedChat, setSelectedChat] = useState<any | null>(null);
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
@@ -39,7 +39,7 @@ export const Home = () => {
     fetchUsers()
   }, [])
 
-  const handleSelectedChat = (chat: Chat): any => {
+  const handleSelectedChat = (chat: any) => {
     setSelectedChat(chat)
   }
   const socket = io("http://localhost:8000");
@@ -77,7 +77,7 @@ export const Home = () => {
   console.log('lusers z3ma', onlineUsers)
   console.log('MSG', receivedMsg)
 
-  // console.log('chat data 1', chatData)
+  console.log('chat data', chatData)
   
   return (
     <div className='home'>
@@ -91,7 +91,7 @@ export const Home = () => {
         <div className='container'>
             <Leftbar onValueChange={handleSelectedChat} />
             <Chat chatData={ chatData } />
-            <Rightbar currentUser={ currentUser } />
+            <Rightbar chatData={ chatData } />
         </div>
     </div>
   )

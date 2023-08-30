@@ -14,4 +14,15 @@ export class RoomService {
             throw new UnauthorizedException(`Couldn't find any rooms: `, err)
         }
     }
+
+    async createRoom(roomName: string, roomAvatar: string, roomUser: number, role: string) {
+        await this.prisma.room.create({
+            data: {
+                roomName: roomName,
+                roomAvatar: roomAvatar,
+                roomUsers: [roomUser],
+                role: role//'ADMIN',
+            }
+        })
+    }
 }

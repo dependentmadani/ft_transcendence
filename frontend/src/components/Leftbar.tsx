@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react"
-import { Navebar } from "./Navebar"
 import { Search } from "./Search"
 import axios from "axios"
-
-// import { Messages } from "./Messages";
+import { CreateRoom } from "./CreateRoom";
 
 interface Chat {
   chatId: number,
   recId: number;
   msg: string;
+}
+
+interface Room {
+  roomId: number,
+  roomName: number;
+  roomAvatar: string;
 }
 
 interface User {
@@ -17,21 +21,17 @@ interface User {
   avatar: string,
 }
 
-interface Message {
-  textContent: string
-}
-
 interface ChildComponentProps {
-  onValueChange: (val: Chat) => any;
+  onValueChange: (val: any, type: string) => any;
 }
 
 const _MAIN_USER_: number = 1 // for now
 
 export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) => {
-  // const [inputValue, setInputValue] = useState();
-  const [selectedChat, setSelectedChat] = useState<Chat | null>(null);
+  const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [users, setUsers] = useState<User[]>([])
   const [chats, setChats] = useState<Chat[]>([])
+  const [rooms, setRooms] = useState<Room[]>([])
 
 
   useEffect(() => {
@@ -50,7 +50,7 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        const response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_}`)
+        let response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_}`)
         setChats(response.data)
       }
       catch (err) {
@@ -61,22 +61,26 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
   }, [])
 
   useEffect(() => {
-    // setInputValue(selectedChat?.msg ?? ""); // Use optional chaining and nullish coalescing
+    const fetchRooms = async () => {
+      try {
+        let response = await axios.get(`http://localhost:8000/room`)
+        setRooms(response.data)
+      }
+      catch (err) {
+        console.error('Error fetching rooms: ', err)
+      }
+    }
+    fetchRooms()
+  }, [])
+
+  useEffect(() => {
     onValueChange(selectedChat);
   }, [selectedChat]);
-  
 
-
-  // const handleClick = (chatId: number): any => {
-  //   setSelectedChat(chatId)
-  // }
-
-  const handleClick = (chat: Chat) => {
-    setSelectedChat(chat);
-    onValueChange(chat)
+  const handleClick = (chat: any, type: string) => {
+    setSelectedChat({chat, type});
+    onValueChange({chat, type})
   };
-
-  // const [latestMessages, setLatesetMessages] = useState()
 
   const latestMessage = async (chatId: number) : Promise<any> => {
     try {
@@ -90,8 +94,6 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
       }
   }
 
-  // console.log('lastest message: ', latestMessage(1))
-
   return (
     <div className="leftSidebar">
         {/* <Navebar /> */}
@@ -99,7 +101,7 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
         <div className="chats">
         {
           chats.map((chat, index) => (
-            <div className="userChats" key={index} onClick={() => handleClick(chat)} >
+            <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')} >
                 {/* <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" /> */}
                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
                 <div className="userChatInfo">
@@ -111,7 +113,21 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange }: any) 
             </div>
           ))
         }
+        {
+          rooms.map((room, index) => (
+            <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
+                <img src={ room?.roomAvatar } alt="room_avatar" />
+                <div className="userChatInfo">
+                    <span>{ room.roomName }</span>
+                    {/* <p>{ 1 ? latestMessage(chat.chatId)?.textContent : 'latest message' }</p> */}
+                    {/* <button onClick={chatDestination} >gg</button>
+                    <Messages isOpen={isOpen} /> */}
+                </div>
+            </div>
+          ))
+        }
       </div>
+      <CreateRoom />
     </div>
   )
 }

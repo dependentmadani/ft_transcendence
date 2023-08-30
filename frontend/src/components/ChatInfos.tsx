@@ -7,7 +7,7 @@ import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall, faMe
 //     avatar: string,
 // }
 
-export const Infos = ({ currentUser }: any) => {
+export const ChatInfos = ({ currentUser }: any) => {
 
   return (
     <div className="contactInfo container-flex">
