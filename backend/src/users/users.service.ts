@@ -35,6 +35,21 @@ export class UsersService {
         return user
     }
 
+    async searchUser(username: string) {
+        if (username === '') {
+            throw new UnauthorizedException("username should not be empty!");
+        }
+        const user = await this.prisma.users.findMany({
+          where: {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          }
+        });
+        return user;
+    }
+
     async updateUser(userId: number, userInfo: Users, body: UserModify) {
         try {
             const user = await this.prisma.users.update({

@@ -43,6 +43,11 @@ export class UsersController {
         return this.userService.findAllUsers();
     }
 
+    @Get('search/:username')
+    async searchUser(@Param('username') username: string) {
+        return this.userService.searchUser(username);
+    }
+
     @Get("/:id")
     async getUser(@Param("id", ParseIntPipe) userId: number,
      @Req() req: Request): Promise<Users> {

@@ -1,32 +1,57 @@
-// import { useState } from "react"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { CreateRoom } from "./CreateRoom";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { SearchResult } from "./SearchResult";
+
+interface User {}
 
 export const Search = () => {
-// export  const Search: React.FC<ChildComponentProps> = ({ isOpen, onClose }: any) => {
-  // const [username, setUsername] = useState('')
+  const [username, setUsername] = useState('')
+  const [searchResults, setSearchResults] = useState<User | null>([])
+  
+  // useEffect(() => {
+  //   if (username.trim() !== '') {
+  //     setUsername(username)
+  //   }
+  // })
+    
+  const getResults = async () => {
+      try {
+        const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+        setSearchResults(results.data)
+        // console.log('whyyy', searchResults, results.data)
+      }
+      catch {
+        console.error(`Couldn't find any user`)
+      }
+  }
 
-  // const handleKey = () => {
-  //   const q = query(collection)
-  // }
+  useEffect(() => {
+    getResults()
+  }, [username])
+
+  const [showForm, setShowForm] = useState(false);
+  
+  const openForm = () => {
+    // getResults()
+    setShowForm(true);
+  };
+  
+  const closeForm = () => {
+    setShowForm(false);
+  };
+  
+  console.log('username ', username, 'resluts ', searchResults)
   return (
     <div className="search">
-        {/* <div className="searchForm"> */}
-            
-            <span>
-              <input type="text" placeholder="Find a user" /*onKeyDown={handleKey} onChange={e => setUsername(e.target.value)}*/ />
-              <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} />
-              <CreateRoom />
-            </span>
-        {/* </div> */}
-        {/* <div className="userChat">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
-            <div className="userChatInfo">
-                <span>Hmouda</span>
-            </div>
-        </div> */}
+      <span>
+        <input type="text" placeholder="Find a user" onChange={e => setUsername(e.target.value)} />
+        <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
+        { showForm && <SearchResult onClose={closeForm} searchResults={searchResults} />}
+        <CreateRoom />
+      </span>
     </div>
   )
 }
