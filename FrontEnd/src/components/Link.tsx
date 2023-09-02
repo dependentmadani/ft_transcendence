@@ -1,11 +1,24 @@
+import Home from './Home'
+import About from './About'
+import Developers from './Developers'
 
-type links = { page:string }
 
-const Link = ({page} : links) => {
+// type page = {
+//     link:string
+//     comp: string
+// }
 
-    const link_ref = page.toLowerCase().replace(/ /g, "")
+export default function Link(props:any) : JSX.Element  {
 
+    let Component:JSX.Element
+
+    if (props.comp === 'About')        Component = <About />  
+    else if (props.comp === 'Developers')   Component = <Developers />
+    else                                    Component = <Home />
+    
     return (
-        {page}
+        <>
+            {Component}
+        </>
     )
 }

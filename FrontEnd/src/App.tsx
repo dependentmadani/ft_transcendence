@@ -1,14 +1,13 @@
 import NavBar from "./components/navBar"
-import Home from "./components/Home"
-import "./App.css"
+import Link from "./components/Link"
+import "./css/App.css"
 
 function App() {
 
-
   return (
     <>
-      {/* <NavBar /> */}
-      {/* <Home /> */}
+      <NavBar />
+      <Link comp='Home' />
       
     </>
   )
