@@ -16,7 +16,7 @@ export class RoomService {
     }
 
     async createRoom(roomName: string, roomAvatar: string, roomUser: number, role: string) {
-        await this.prisma.room.create({
+        return await this.prisma.room.create({
             data: {
                 roomName: roomName,
                 roomAvatar: roomAvatar,
@@ -24,5 +24,29 @@ export class RoomService {
                 role: role//'ADMIN',
             }
         })
+    }
+
+    async deleteAllRooms() {
+        if (await this.prisma.room.deleteMany())
+            return `All rooms deleted successufully!`
+        else
+            return `Couldn't delete rooms!`
+    }
+
+    async deleteOneRoom(roomId: number) {
+        const room = await this.prisma.room.findUnique({
+            where: {
+                id: roomId
+            }
+        })
+        if (room) {
+            return await this.prisma.room.delete({
+                where: {
+                    id: roomId
+                }
+            })
+        }
+        else
+            return `Couldn't find room with id ${roomId}`
     }
 }
