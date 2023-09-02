@@ -1,17 +1,26 @@
-import  { useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPaperPlane, faImage, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faPaperPlane, faImage, faUserPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { SearchInviteResults } from './SearchInviteResults';
+
+interface User {}
 
 export const RoomCreationModal = ({ onClose }: any) => {
 
     const [roomName, setRoomName] = useState('')
     const [roomAvatar, setRoomAvatar] = useState<File | null>(null)
+    const [searchResults, setSearchResults] = useState<User | null>([])
+    const [username, setUsername] = useState('')
 
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
         setRoomAvatar(file);
     };
+
+    useEffect(() => {
+        getResults()
+    }, [username])
 
     const uploadImage = async () => {
         if (roomAvatar) {
@@ -36,6 +45,17 @@ export const RoomCreationModal = ({ onClose }: any) => {
         }
     };
 
+    // Search for Users to invite
+    const getResults = async () => {
+        try {
+          const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+          setSearchResults(results.data)
+        }
+        catch {
+          console.error(`Couldn't find any user`)
+        }
+    }
+
     return (
         <div className="overlay">
         <div className="form-container">
@@ -59,13 +79,11 @@ export const RoomCreationModal = ({ onClose }: any) => {
                     </span>
                 </div>
                 <div className="roomFormInvite">
-                        <input type="text" placeholder="Invite a user" /*onKeyDown={handleKey} onChange={e => setUsername(e.target.value)}*/ />
-                        <div className="searchInviteResults">
-                            <div className="searchInviteResult">
-                                <p>name</p>
-                                <FontAwesomeIcon className="inviteIcon" icon={faUserPlus} />
-                            </div>
-                        </div>
+                    <div className="searchInvite">
+                        <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
+                        <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
+                    </div>
+                    { searchResults && <SearchInviteResults searchResults={searchResults} /> }
                 </div>
                 <span onClick={uploadImage}><FontAwesomeIcon icon={faPaperPlane} /></span>
             </div>

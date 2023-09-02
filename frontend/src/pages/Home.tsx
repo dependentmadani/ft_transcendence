@@ -5,8 +5,8 @@ import { Rightbar } from "../components/Rightbar"
 import { Leftbar } from "../components/Leftbar"
 
 import io from 'socket.io-client';
-import { Socket } from "socket.io-client/debug";
-import { RoomCreationModal } from "../components/RoomCreationModal";
+// import { Socket } from "socket.io-client/debug";
+// import { RoomCreationModal } from "../components/Rooms/RoomCreationModal";
 
 interface User {
   id: number;

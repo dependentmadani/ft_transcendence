@@ -1,5 +1,5 @@
 import { ChatInfos } from "./ChatInfos"
-import { RoomInfos } from "./RoomInfos"
+import { RoomInfos } from "./Rooms/RoomInfos"
 
 export const Rightbar = ({ chatData }: any) => {
   return (

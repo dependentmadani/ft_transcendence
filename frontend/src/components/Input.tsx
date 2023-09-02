@@ -5,7 +5,7 @@ import axios from "axios"
 // import { Message } from "./Message";
 // import io, { Socket } from "socket.io-client";
 // import { Message } from "./Message"
-import { Messages } from './Messages'
+import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 // interface Message {

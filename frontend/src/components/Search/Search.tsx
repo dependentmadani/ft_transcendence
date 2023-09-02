@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-import { CreateRoom } from "./CreateRoom";
+import { CreateRoom } from "../Rooms/CreateRoom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SearchResult } from "./SearchResult";

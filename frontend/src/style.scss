@@ -185,6 +185,8 @@
       background-color: #4c639c;
       display: flex;
       flex-direction: column;
+      padding: 10px;
+      border-radius: 10px;
 
     }
 
@@ -194,6 +196,12 @@
       align-items: center;
       border: solid 1px darkgray;
       border-radius: 5px;
+    }
+
+    .searchInvite {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
     }
 
     input {
