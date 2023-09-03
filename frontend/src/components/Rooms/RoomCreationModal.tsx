@@ -52,43 +52,44 @@ export const RoomCreationModal = ({ onClose }: any) => {
           setSearchResults(results.data)
         }
         catch {
+            setSearchResults(null)
           console.error(`Couldn't find any user`)
         }
     }
 
     return (
         <div className="overlay">
-        <div className="form-container">
-            <h2>Fill the Form wlla sir tl3ab</h2>
-            <div className="roomFomrs">
-                <div className="roomFormInfos">
-                    <input type="text" placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
-                    <span>
-                        <label htmlFor="image-upload" className="upload-label">
-                            <input
-                            type="file"
-                            id="image-upload"
-                            accept="image/*"
-                            onChange={handleImageChange}
-                            style={{ display: 'none' }}
-                            />
-                            <div className="upload-icon">
-                                <FontAwesomeIcon className='importAvatarIcon' icon={faImage} />
-                            </div>
-                        </label>
-                    </span>
-                </div>
-                <div className="roomFormInvite">
-                    <div className="searchInvite">
-                        <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
-                        <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
+            <div className="form-container">
+                <h2>Fill the Form wlla sir tl3ab</h2>
+                <div className="roomFomrs">
+                    <div className="roomFormInfos">
+                        <input type="text" placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
+                        <span>
+                            <label htmlFor="image-upload" className="upload-label">
+                                <input
+                                type="file"
+                                id="image-upload"
+                                accept="image/*"
+                                onChange={handleImageChange}
+                                style={{ display: 'none' }}
+                                />
+                                <div className="upload-icon">
+                                    <FontAwesomeIcon className='importAvatarIcon' icon={faImage} />
+                                </div>
+                            </label>
+                        </span>
                     </div>
-                    { searchResults && <SearchInviteResults searchResults={searchResults} /> }
+                    <div className="roomFormInvite">
+                        <div className="searchInvite">
+                            <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
+                            <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
+                        </div>
+                        { searchResults && <SearchInviteResults searchResults={searchResults} /> }
+                    </div>
+                    <span className='sendIcon' onClick={uploadImage}><FontAwesomeIcon icon={faPaperPlane} /></span>
                 </div>
-                <span onClick={uploadImage}><FontAwesomeIcon icon={faPaperPlane} /></span>
             </div>
-        </div>
-        <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
+            <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
         </div>
     );
 };

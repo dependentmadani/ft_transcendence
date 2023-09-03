@@ -147,9 +147,9 @@
   }
   
   .form-container {
-    background-color: white;
+    background-color: #0e225c;
     padding: 20px;
-    width: 75%;
+    width: 40%;
     max-height: 75%;
     overflow: auto;
     border-radius: 8px;
@@ -164,7 +164,18 @@
     border-radius: 5px;
     align-items: center;
     margin: auto;
-    width: 50%;
+    width: 90%;
+
+    .sendIcon {
+      display: flex;
+      border-radius: 5px !important;
+      padding: 5px;
+      background-color: #838ec8;
+      align-items: center;
+      color: aliceblue;
+      margin: 10px;
+      cursor: pointer;
+    }
 
     .roomFormInfos {
       display: flex;
@@ -192,10 +203,29 @@
 
     .searchInviteResult {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
       border: solid 1px darkgray;
       border-radius: 5px;
+    }
+
+    .inviteResults {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background-color: #bcbedb;
+      margin: 10px;
+      padding: 5px 70px;
+      border-radius: 10px;
+
+        .inviteIcon {
+          font-size: 1em;
+          border: solid 1px lightgray;
+          color: white;
+          border-radius: 6px;
+          padding: 5px;
+          cursor: pointer;
+        }
     }
 
     .searchInvite {
@@ -283,6 +313,7 @@
           // border-bottom: 1px solid gray;
           padding: 30px 10px;
           display: flex;
+          flex-direction: column;
   
           .searchForm {
             padding: 10px;
@@ -313,6 +344,17 @@
             color: #dddef6;
             // margin: 0 10px;
             cursor: pointer;
+          }
+
+          // search chat results
+          .searchChatResults {
+            display: flex;
+            flex-direction: row;
+            // z-index: 999;
+            // position: absolute;
+            background: #deddf6;
+            padding: 10px;
+            border-radius: 10px;
           }
         }
       }

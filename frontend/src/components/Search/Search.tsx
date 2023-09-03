@@ -18,24 +18,24 @@ export const Search = () => {
   // })
     
   const getResults = async () => {
-      try {
-        const results = await axios.get(`http://localhost:8000/users/search/${username}`)
-        setSearchResults(results.data)
-        // console.log('whyyy', searchResults, results.data)
-      }
-      catch {
-        console.error(`Couldn't find any user`)
-      }
+    try {
+      const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+      setSearchResults(results.data)
+    }
+    catch {
+      setSearchResults(null)
+      console.error(`Couldn't find any user`)
+    }
   }
 
   useEffect(() => {
-    getResults()
+    if (username.trim() !== '')
+      getResults()
   }, [username])
 
   const [showForm, setShowForm] = useState(false);
   
   const openForm = () => {
-    // getResults()
     setShowForm(true);
   };
   
@@ -49,9 +49,9 @@ export const Search = () => {
       <span>
         <input type="text" placeholder="Find a user" onChange={e => setUsername(e.target.value)} />
         <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
-        { showForm && <SearchResult onClose={closeForm} searchResults={searchResults} />}
         <CreateRoom />
       </span>
+      { showForm && searchResults && <SearchResult onClose={closeForm} searchResults={searchResults} />}
     </div>
   )
 }

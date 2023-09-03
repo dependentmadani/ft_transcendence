@@ -37,20 +37,18 @@ export const SearchResult = ({ onClose, searchResults }: any) => {
     }
 
     return (
-        <div className="search-overlay">
-            <div className="search-pop-container">
-                <div className="chats">
-                    { searchResults.length ? 
-                        searchResults.map((user: any, index: number) => (
-                        <div key={index} className="userChats" onClick={() => createChat(user)} >
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
-                            <div className="userChatInfo">
-                                <span>{user.username }</span>
-                            </div>
+        <div className="searchChatResults">
+            <div className="searchChatResults-container">
+                { searchResults.length ? 
+                    searchResults.map((user: any, index: number) => (
+                    <div key={index} className="userChats" onClick={() => createChat(user)} >
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
+                        <div className="userChatInfo">
+                            <span>{user.username }</span>
                         </div>
-                    )) : 'Ghayarha a sadi9'
-                    }
-                </div>
+                    </div>
+                )) : 'Ghayarha a sadi9'
+                }
             </div>
             <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
         </div>
