@@ -1,0 +1,80 @@
+.main-dev {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: white; */
+}
+
+
+.dscp-dev {
+    display: flex;
+    flex:1;
+    align-items: flex-start;
+    flex-direction: row;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+    /* max-width: 1400px;
+    max-height: 700px; */
+    /* background-color: aqua; */
+}
+
+
+.badge {
+    width: 500px;
+    height: 200px;
+    display: flex;
+    border: none;
+    border-radius: 10px;
+    font-size: larger;
+    font-weight: 700;
+    background-color: rgba(63,81,181,0.5);
+    background-blend-mode: normal ;
+    margin: 20px;
+
+}
+
+.badge > img {
+    max-width: 170px;
+    margin: 15px;
+    margin-right: 80px;
+    border: none;
+    border-radius: 10px;
+    background-color: brown;
+}
+
+.portfolio {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    /* background-color: aqua; */
+    align-self: center;
+}
+
+.portfolio > p {
+    /* margin-top: 40px; */
+    padding: 8px;
+    text-align: center;
+    /* padding-left: ; */
+    border: none;
+    border-radius: 5px;
+    color: rgba(63,81,181);
+    background: #c5cae9;
+    background-blend-mode: normal;
+    /* background-color: #c5cae9; */
+    /* background-blend-mode: normal; */
+    /* align-items: center; */
+}
+
+.follow {
+    display: flex;
+    justify-content: space-between;
+    /* background-color: coral; */
+    margin-top: 25px;
+    /* width: 50px; */
+}
+
+.follow > a > img {
+    width: 35px;
+    margin-left: 15px;
+    margin-right: 15px;
+    /* background-color: rgb(208, 237, 19); */
+}

@@ -1,12 +1,11 @@
 import '../css/Home.css'
 
 
-export default function Home(props) {
+export default function Home(props:any) {
 
     const my_img:string = 'src/imgs/home.png'
 
     return (
-        <>
             <main className="main-home" >
                 <div className="dscp-home">
                     <span className="title1"> MSKOTA </span>
@@ -24,6 +23,5 @@ export default function Home(props) {
                     <img  src={my_img} alt='home.png' />
                 </div>
             </main>
-        </>
     )
 }

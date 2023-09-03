@@ -1,16 +1,23 @@
+import { useState } from "react"
 import NavBar from "./components/navBar"
-import Link from "./components/Link"
+import Section from "./components/Section"
 import "./css/App.css"
 
 function App() {
 
+  const [selectedSection, setSelectedSection] = useState("Home")
+
+  const handleSectionChange = (section:string) => {
+    setSelectedSection(section);
+  }
+
   return (
     <>
-      <NavBar />
-      <Link comp='Home' />
+      <NavBar onSectionChange={handleSectionChange} />
+      <Section selectedSection={selectedSection} />
       
     </>
   )
 }
 
-export default App
+export default App;
