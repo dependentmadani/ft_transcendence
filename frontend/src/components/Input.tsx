@@ -1,42 +1,32 @@
 import { useEffect, useState } from "react"
-import Attach from "../img/attach.png"
-import Img from "../img/img.png"
 import axios from "axios"
-// import { Message } from "./Message";
-// import io, { Socket } from "socket.io-client";
-// import { Message } from "./Message"
 import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
-// interface Message {
-//   messageId: number;
-//   textContent: string;
-//   msgChatId: number,
-// }
 
-export const Input = ({ chatData }: any) => {
+const _MAIN_USER_ = 1 // for now
+
+export const Input = ({ chatData, chat }: any) => {
+
+  const currentChat = chatData._chat?.chat
+
+  // console.log('!!!!!!!!!', currentChat)
+
   const [inputText, setInputText] = useState('')
   const [messages, setMessages] = useState([])
   const [connectedSocket, setConnectedSocket] = useState(false)
 
-  const fetchMessages = async () => {
-    try {    
-        setMessages((await axios.get(`http://localhost:8000/message/${chatData._chat.chatId}`))?.data)
-        // chatData._socket.emit('joinChat', chatData._chat?.chatId)
-        // fetchMessages()
-    }
-    catch (err) {
-        console.log(`Couldn't fetch any message`)
-      }
-  }
-    // faFaceSmile
   const createNewMessage = async (inputText: string) => {
     try {
+      const sender = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
+      const receiver = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[1] : currentChat?.chatUsers[0];
+      console.log('WA L ID ', currentChat?.chatId, sender, receiver)
+
       return await axios.post('http://localhost:8000/message', {
-        MessageSenId: chatData._chat?.senId,
-        MessageRecId: chatData._chat?.recId,
-        textContent: inputText,
-        msgChatId: chatData._chat?.chatId,
+        'MessageSenId': sender,
+        'MessageRecId': receiver,
+        'textContent': inputText,
+        'msgChatId': currentChat?.chatId,
       })
     }
     catch
@@ -53,7 +43,7 @@ export const Input = ({ chatData }: any) => {
       
       const newMessage = {
         textContent: inputText,
-        msgChatId: chatData._chat?.chatId,
+        msgChatId: currentChat?.chatId,
       };
       setMessages([...messages, newMessage]);
     }
@@ -75,8 +65,6 @@ export const Input = ({ chatData }: any) => {
       setMessages([...messages, newMessage]);
     }
   };
-  
-  
 
   useEffect(() => {
     chatData._socket.emit('setup', chatData._user)
@@ -84,10 +72,18 @@ export const Input = ({ chatData }: any) => {
   }, [])
 
   useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+          setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`))?.data)
+      }
+      catch (err) {
+          console.log(`Couldn't fetch any message`)
+        }
+    }
     fetchMessages()
-  }, [chatData._chat?.chatId])
+  }, [currentChat?.chatId])
 
-  // console.log('WAWAW', messages)
+  // console.log('WAWAW', currentChat?.chatId)
 
   
   return (
@@ -104,7 +100,7 @@ export const Input = ({ chatData }: any) => {
             <img src={Img} alt="" />
           </label> */}
           {/* <button >Send</button> */}
-          <span onClick={handleClick}><FontAwesomeIcon icon={faFaceSmile} /></span>
+          <span><FontAwesomeIcon icon={faFaceSmile} /></span>
           <span onClick={handleClick}><FontAwesomeIcon icon={faPaperPlane} /></span>
         </div>
       </div>

@@ -9,11 +9,14 @@ interface Message {
 }
 
 export const Messages = ({ messages }: any) => {
+
+  console.log('Messages ', messages)
+
   return (
     <div className="messages">
       {
-        messages.map((message: any) => (
-          <Message key={ message.messageId } currentMessage={message} />
+        messages?.map((message: any, index:number) => (
+          <Message key={ index } currentMessage={message} />
           ))
         }
     </div>

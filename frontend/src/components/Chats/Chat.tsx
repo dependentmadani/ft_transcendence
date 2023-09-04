@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 // import Add from '../img/add.png'
 // import More from '../img/more.png'
 import { Input } from '../Input'
+import { Messages } from "../Messages/Messages"
 // import { Messages } from './Messages'
 
 // interface User {}
@@ -32,6 +33,8 @@ export const Chat = ({ chatData }: any) => {
   // const currentUser = chatData._user
   currentChat = chatData._chat
 
+  console.log('Current messages: ', currentChat)
+
   // console.log('chat data', chatData)
 
   return (
@@ -45,7 +48,7 @@ export const Chat = ({ chatData }: any) => {
         </div>
       </div> */}
       {/* <Messages currentChat={ currentChat } /> */}
-      <Input chatData={ chatData } />
+      <Input chatData={ chatData } chat={currentChat} />
     </div>
   )
 }
