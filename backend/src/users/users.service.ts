@@ -42,12 +42,15 @@ export class UsersService {
   }
 
   async searchUser(username: string) {
-    const user = await this.prisma.users.findUnique({
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
       where: {
-        username: username,
-      },
-      include: {
-        friends: true,
+        username: {
+          startsWith: username,
+          mode: 'insensitive',
+        }
       }
     });
     return user;
@@ -83,7 +86,7 @@ export class UsersService {
         id: userId,
       },
       data: {
-        friends: {
+        pendingFriendReq: {
           connect: {
             id: friendId
           }
@@ -93,22 +96,22 @@ export class UsersService {
         friends: true,
       }
     });
-    await this.prisma.users.update({
-      where: {
-        id: friendId,
-      },
-      data: {
-        friends: {
-          connect: {
-            id: userId
-          }
-        }
-      },
-      include: {
-        friends: false,
-        _count: false,
-      }
-    });
+    // await this.prisma.users.update({
+    //   where: {
+    //     id: friendId,
+    //   },
+    //   data: {
+    //     pendingFriendReq: {
+    //       connect: {
+    //         id: userId
+    //       }
+    //     }
+    //   },
+    //   include: {
+    //     friends: false,
+    //     _count: false,
+    //   }
+    // });
     return user;
   }
 

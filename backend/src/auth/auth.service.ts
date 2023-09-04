@@ -26,8 +26,8 @@ export class AuthService {
     private config: ConfigService,
   ) {}
 
-  hashData(data: string) {
-    return bcrypt.hash(data, 10);
+  async hashData(data: string) {
+    return await bcrypt.hash(data, 10);
   }
 
   async signupLocal(
@@ -35,14 +35,15 @@ export class AuthService {
     avatar?: string,
   ): Promise<Tokens> {
     //need to hash the password for security reasons
-
     try {
       const users =
         await this.prisma.users.create({
           data: {
             username: dto.username,
             email: dto.email,
+            password: await this.hashData(dto.password),
             avatar: avatar,
+            userStatus: "ONLINE"
           },
         });
       //the password need to be deleted so it cannot be reached by interder
@@ -78,8 +79,7 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: dto.email,
-          username: dto?.username,
-          password: dto?.password,
+          username: dto?.username
         },
       });
 
@@ -99,6 +99,14 @@ export class AuthService {
           'Password wrong',
         );
     }
+    await this.prisma.users.update({
+      where: {
+        id: user.id,
+      },
+       data: {
+        userStatus: "ONLINE",
+       }
+    });
 
     const token = await this.signToken(
       user.id,
@@ -121,6 +129,7 @@ export class AuthService {
         },
       },
       data: {
+        userStatus: "OFFLINE",
         hashRt: null,
       },
     });
@@ -137,6 +146,7 @@ export class AuthService {
             username: dto.username,
             email: dto.email,
             avatar: profile.avatar,
+            userStatus: "ONLINE",
           },
         });
       //the password need to be deleted so it cannot be reached by interder
@@ -177,7 +187,14 @@ export class AuthService {
       throw new ForbiddenException(
         'Access Denied',
       );
-
+    await this.prisma.users.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        userStatus: "ONLINE",
+      }
+    });
     delete user.password;
     const token = await this.signToken(
       user.id,
@@ -271,6 +288,10 @@ export class AuthService {
     );
 
     return token;
+  }
+
+  async verifyToken(token: string) {
+    return this.jwt.decode(token);
   }
 
   //generate qrcode for enabling 2fa

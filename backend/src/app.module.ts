@@ -15,6 +15,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './guards';
 import { HomeController } from './home/home.controller';
 import { HomeModule } from './home/home.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { HomeModule } from './home/home.module';
     UsersModule,
     ChatModule,
     PrismaModule,
+    NotificationsModule,
   ],
   providers: [
     {

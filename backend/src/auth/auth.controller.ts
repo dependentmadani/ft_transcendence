@@ -110,7 +110,7 @@ export class AuthController {
         secure: true,
       },
     );
-    res.send('the user created');
+    res.send('the user signin');
   }
 
   @Public()

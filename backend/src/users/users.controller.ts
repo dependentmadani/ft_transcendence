@@ -63,19 +63,12 @@ export class UsersController {
   @Get('me')
   async getMe(
     @Req() req: Request,
-  ): Promise<Users> {
-    const user: Users =
+    ): Promise<Users> {
+      const user: Users =
       await this.userService.findUserById(
         req.user['sub'],
-      );
-    return user;
-  }
-
-  @Get('search')
-  @HttpCode(HttpStatus.OK)
-  async searchUser(@Body() username: string) {
-      const user = this.userService.searchUser(username);
-      return user;
+        );
+        return user;
   }
 
   @Post('add-friend/:id')
@@ -116,6 +109,12 @@ export class UsersController {
     const user = await this.userService.findUserById(req.user['sub']);
     const mutual = await this.userService.mutualFriends(user.id, friendId);
     return res.send(mutual);
+  }
+
+  @Get('search/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchUser(@Param('username') username: string) {
+    return this.userService.searchUser(username);
   }
 
   @Get('/:id')
