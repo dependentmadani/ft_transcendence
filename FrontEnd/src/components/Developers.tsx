@@ -5,8 +5,12 @@ function Badges() {
 
     const badges = badgeData.map(badge => {
 
+        let nameclass:string = 'badge' 
+
+        if (badge.id === 5)
+            nameclass = 'badge-5'
         return (
-            <div className='badge'>
+            <div className={nameclass}>
                 <img src={badge.img} alt="person-img" /> 
                 <div className='portfolio'>
                     <p>{badge.name}</p>
@@ -45,7 +49,7 @@ function Developers() {
             <div className="dscp-dev">
                 <Badges />
             </div>
-            <div className='home-img' >
+            <div className='dev-img' >
                  <img  src={my_img} alt='home.png' />
             </div>
         </main>

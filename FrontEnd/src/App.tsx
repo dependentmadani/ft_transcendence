@@ -5,17 +5,16 @@ import "./css/App.css"
 
 function App() {
 
-  const [selectedSection, setSelectedSection] = useState("Home")
+  // const [selectedSection, setSelectedSection] = useState("Home")
 
-  const handleSectionChange = (section:string) => {
-    setSelectedSection(section);
-  }
+  // const handleSectionChange = (section:string) => {
+  //   setSelectedSection(section);
+  // }
 
   return (
     <>
-      <NavBar onSectionChange={handleSectionChange} />
-      <Section selectedSection={selectedSection} />
-      
+      <NavBar />
+      <Section  />
     </>
   )
 }

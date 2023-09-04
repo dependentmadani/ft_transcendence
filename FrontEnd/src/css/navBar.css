@@ -28,17 +28,19 @@
     font-weight: 900;
 }
 
-.list > ul > li {
-    
+.link-b {
+    text-decoration: none;
+    color: rgb(234, 247, 252);
     cursor: pointer;
 }
 
-.list > ul > li:hover {
+
+.link-b:hover {
     
     color: rgb(11, 177, 233);
     padding-bottom: 5px;
     border-bottom: 3px solid rgb(11, 177, 233);
-}
+} 
 
 
 

@@ -9,10 +9,6 @@
     flex:1;
     align-items: center;
     flex-direction: column;
-    justify-content: space-between;
-    max-width: 1400px;
-    max-height: 700px;
-    /* padding-bottom: 100px; */
     /* background-color: aquamarine; */
 }
 
@@ -44,23 +40,23 @@
 
 .comment {
     
-    font-size: clamp(10px, 1vw, 50px);
+    font-size: clamp(20px, 1vw, 50px);
     /* background-color: blue; */
     max-width: 900px;
 }
 
 .getStart-b {
+    display: flex;
     color: #00AEFF;
     border: none;
     border-radius: 20px;
-    font-size: 60px;
-    /* font-family: Ro; */
+    /* font-size: 60px; */
+    font-size: clamp(35px, 1vw, 50px);
     font-weight: 700;
     margin-top: 40px;
     padding: 20px 40px 20px 40px;
-    /* margin-bottom:; */
     background-color: rgba(104 , 116, 181, 0.5);
-    align-self: center;
+
 }
 
 .home-img {
