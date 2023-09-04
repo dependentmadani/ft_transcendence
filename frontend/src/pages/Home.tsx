@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import { Chat } from "../components/Chat"
+import { Chat } from "../components/Chats/Chat"
 import { Rightbar } from "../components/Rightbar"
 import { Leftbar } from "../components/Leftbar"
 
@@ -80,10 +80,10 @@ export const Home = () => {
     
 
     
-  console.log('lusers z3ma', onlineUsers)
-  console.log('MSG', receivedMsg)
+  // console.log('lusers z3ma', onlineUsers)
+  // console.log('MSG', receivedMsg)
 
-  console.log('chat data', chatData)
+  // console.log('chat data', chatData)
   
   // var isOpen = true
 

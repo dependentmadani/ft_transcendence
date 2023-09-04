@@ -4,8 +4,9 @@ import axios from "axios"
 
 interface Chat {
   chatId: number,
-  recId: number;
-  msg: string;
+  chatUsers: number[],
+  sender: User,
+  receiver: User
 }
 
 interface Room {
@@ -30,22 +31,13 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange, isOpen,
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [users, setUsers] = useState<User[]>([])
   const [chats, setChats] = useState<Chat[]>([])
+  const [newChats, setNewChats] = useState<Chat[]>()
   const [rooms, setRooms] = useState<Room[]>([])
+  // const [chatSender, setChatSender] = useState<User>()
+  // const [chatReceiver, setChatReceiver] = useState<User>()
 
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/users`)
-        setUsers(response.data)
-      }
-      catch (err) {
-        console.error('Error fetching users: ', err)
-      }
-    }
-    fetchUsers()
-  }, [])
-
+  
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -58,6 +50,33 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange, isOpen,
     }
     fetchChats()
   }, [])
+  
+  useEffect(() => {
+      const fetchChatUsers = async () => {
+        try {
+          const newChatsData = await Promise.all(
+            chats.map(async (chat) => {
+              const sender = chat.chatUsers[0] === _MAIN_USER_ ? chat.chatUsers[0] : chat.chatUsers[1];
+              const receiver = chat.chatUsers[0] === _MAIN_USER_ ? chat.chatUsers[1] : chat.chatUsers[0];
+              const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`);
+              const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`);
+
+              const newChat: Chat = {
+                chatId: chat.chatId,
+                chatUsers: [sender, receiver],
+                sender: senderResponse.data,
+                receiver: receiverResponse.data,
+              };
+              return newChat;
+            })
+          );
+          setNewChats(newChatsData);
+        } catch (err) {
+          console.error('Error fetching users for chats: ', err);
+        }
+      };
+      fetchChatUsers()
+  }, [chats])
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -84,7 +103,7 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange, isOpen,
   const latestMessage = async (chatId: number) : Promise<any> => {
     try {
       const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`))?.data
-      console.log('liwazzzz -> ', latestMessage[latestMessage.length-1].textContent)
+      // console.log('liwazzzz -> ', latestMessage[latestMessage.length-1].textContent)
         // return await axios.get(`http://localhost:8000/message/${chatId}`).data
       return latestMessage[latestMessage.length-1]
     }
@@ -93,22 +112,28 @@ export  const Leftbar: React.FC<ChildComponentProps> = ({ onValueChange, isOpen,
       }
   }
 
+  
+  // console.log('CHATS -> ', chats, ' CHAT SENDER -> ', chatSender, ' CHAT RECEIVER -> ', chatReceiver)
+
+  console.log('HAAA', newChats)
+  // newChats?.map((chat, index) => {
+  //       console.log('chat', chat.chatId, 'sender', chat.chatUsers[0], 'receiver', chat.chatUsers[1])
+  //     })
+  
+      
   return (
     <div className="leftSidebar">
         {/* <Navebar /> */}
         <Search />
         <div className="chats">
         {
-          chats.map((chat, index) => (
-            <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')} >
-                {/* <img src={ users.find(_u => _u.id === chat?.recId)?.avatar } alt="user_avatar" /> */}
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
-                <div className="userChatInfo">
-                    <span>{users.find(_u => _u.id === chat?.recId)?.username }</span>
-                    <p>{ 1 ? latestMessage(chat.chatId)?.textContent : 'latest message' }</p>
-                    {/* <button onClick={chatDestination} >gg</button>
-                    <Messages isOpen={isOpen} /> */}
-                </div>
+          newChats?.map((chat: Chat, index: number) => (
+            <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
+              <img src={chat.receiver.avatar} alt="user_avatar" />
+              <div className="userChatInfo">
+                <span>{chat.receiver.username}</span>
+                <p>{/*chat.chatId ? latestMessage(chat.chatId)?.textContent : */'latest message'}</p>
+              </div>
             </div>
           ))
         }

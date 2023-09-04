@@ -43,7 +43,7 @@ export const Search = () => {
     setShowForm(false);
   };
   
-  console.log('username ', username, 'resluts ', searchResults)
+  // console.log('username ', username, 'resluts ', searchResults)
   return (
     <div className="search">
       <span>

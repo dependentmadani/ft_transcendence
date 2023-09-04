@@ -24,10 +24,10 @@ model Users {
   twoEnabled  Boolean   @default(false)
   friend      Users[]   @relation("friends")
   block       Users[]   @relation("friends")
-  // chat        Chat[]
-  usrChatId Chat[]
-  senId     Chat[] @relation("sencontact")
-  recId     Chat[] @relation("reccontact")
+  chat        Chat[] @relation("chats")
+  // usrChatId Chat[]
+  // senId     Chat[] @relation("sencontact")
+  // recId     Chat[] @relation("reccontact")
   MessageSenId     Message[] @relation("Messagesencontact")
   MessageRecId     Message[] @relation("Messagereccontact")
   
@@ -55,13 +55,15 @@ model Users {
 
 model Chat {
   chatId   Int @id @default(autoincrement())
-  senderId    Users @relation("sencontact", fields: [senId], references: [id])
-  senId       Int
-  receiverId  Users @relation("reccontact", fields: [recId], references: [id])
-  recId       Int
+  users    Users[]  @relation("chats")
+  chatUsers    Int[]
+  // senderId    Users @relation("sencontact", fields: [senId], references: [id])
+  // senId       Int
+  // receiverId  Users @relation("reccontact", fields: [recId], references: [id])
+  // recId       Int
   msgChatId     Message[]
-  userChatId  Users @relation(fields: [usrChatId], references: [id])
-  usrChatId       Int
+  // userChatId  Users @relation(fields: [usrChatId], references: [id])
+  // usrChatId       Int
 }
 
 model Message {

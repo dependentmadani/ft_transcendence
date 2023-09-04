@@ -67,6 +67,8 @@ export  const Chats: React.FC<ChildComponentProps> = ({ selectedChat }) => {
     selectedChat(chat.chatId)
   };
 
+  console.log('Chat', chats)
+
   
 
   return (

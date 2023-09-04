@@ -10,29 +10,47 @@ interface User {
 
 export const SearchResult = ({ onClose, searchResults }: any) => {
 
-    console.log('wazawizzz ', typeof(searchResults))
+    // console.log('wazawizzz ', typeof(searchResults))
+
 
     const createChat = async (user: User) => {
         // check if we find a commun chatId between the current user and this user
-        const currentUserId = [1,2,3]
-        const userChatId = [19,28,37]
-        console.log('Commun id -> ', userChatId.some(e => currentUserId.includes(e)))
-        if (!userChatId.some(e => currentUserId.includes(e)))
-        {
+        const sender = 1
+        const receiver = user.id
+        const chats = await (await axios.get(`http://localhost:8000/chat/${sender}`)).data
+        const communChats = await (await axios.get(`http://localhost:8000/chat`, {
+            params: {
+                'sender': sender,
+                'receiver': receiver,
+            }
+        })).data
+        console.log('chatsssss ', chats, receiver)
+        console.log('Commun stuff', communChats)
+        // console.log('Commun shit ', axios.get(`http://localhost:8000/chat`, {
+        //     params: {
+        //         'sender': sender,
+        //         'receiver': receiver,
+        //     }
+        // }))
+        if (communChats.length === 0) {
+
             // create chat
+            console.log('WE CREATE NEW CHAT')
             try {
                 return await axios.post('http://localhost:8000/chat', {
-                    senId: 1,
-                    recId: 2,
-                    usrChatId: 1,
+                    senId: sender,
+                    recId: receiver,
                 })
             }
-            catch
-            {
-              console.log(`Couldn't create new Chat`)
+            catch (err) {
+                console.log(`Couldn't create new Chat: `, err)
             }
-
         }
+        // console.log('Commun id -> ', userChatId.some(e => currentUserId.includes(e)))
+        // if (!userChatId.some(e => currentUserId.includes(e)))
+        // {
+
+        // }
         // open chat
     }
 

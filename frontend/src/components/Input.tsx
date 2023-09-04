@@ -87,7 +87,7 @@ export const Input = ({ chatData }: any) => {
     fetchMessages()
   }, [chatData._chat?.chatId])
 
-  console.log('WAWAW', messages)
+  // console.log('WAWAW', messages)
 
   
   return (

@@ -2,7 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 // import Add from '../img/add.png'
 // import More from '../img/more.png'
-import { Input } from './Input'
+import { Input } from '../Input'
 // import { Messages } from './Messages'
 
 // interface User {}
