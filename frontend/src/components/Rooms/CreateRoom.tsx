@@ -4,11 +4,6 @@ import { faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { RoomCreationModal } from './RoomCreationModal'
 import { useState } from "react";
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
 export  const CreateRoom = () => {
 
   const [showForm, setShowForm] = useState(false);

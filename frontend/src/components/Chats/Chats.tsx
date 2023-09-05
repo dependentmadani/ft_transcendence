@@ -1,8 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
-// import { Messages } from "./Messages";
 import { Chat } from "./Chat";
-// import { Message } from "./Message";
 
 interface User {
   id: number;
@@ -23,21 +21,16 @@ interface Room {
   roomAvatar: string;
 }
 
-// interface ChildComponentProps {
-//   selectedChat: (val: number) => -1;
-// }
-
 const _MAIN_USER_: number = 1 // for now
 
 export  const Chats = ({ onValueChange }: any) => {
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
-  // const [users, setUsers] = useState<User[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [newChats, setNewChats] = useState<Chat[]>()
   const [rooms, setRooms] = useState<Room[]>([])
-  // const [chatSender, setChatSender] = useState<User>()
-  // const [chatReceiver, setChatReceiver] = useState<User>()
+  const [latestMessages, setLatestMessages] = useState<{ [chatId: number]: string }>({});
+  const [latestRoomMessages, setLatestRoomMessages] = useState<{ [roomId: number]: string }>({});
 
 
   
@@ -70,7 +63,7 @@ export  const Chats = ({ onValueChange }: any) => {
                 sender: senderResponse.data,
                 receiver: receiverResponse.data,
               };
-              return newChat;
+              return newChat
             })
           );
           setNewChats(newChatsData);
@@ -103,17 +96,58 @@ export  const Chats = ({ onValueChange }: any) => {
     onValueChange({chat, type})
   };
 
-  const latestMessage = async (chatId: number) : Promise<any> => {
-    try {
-      const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`))?.data
-      return latestMessage[latestMessage.length-1]
-    }
-    catch (err) {
-        console.log(`Couldn't fetch any message`)
-      }
-  }
+  
 
   
+
+  useEffect(() => {
+    const fetchLatestMessages = async () => {
+      try {
+        const chatIds = newChats?.map((chat) => chat.chatId);
+
+        if (chatIds && chatIds.length > 0) {
+          const latestMessagesData = await Promise.all(
+            chatIds.map(async (chatId) => {
+              const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`))?.data;
+              const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
+              return { [chatId]: latestTextContent || 'No messages' };
+            })
+          );
+
+          const latestMessagesObject = Object.assign({}, ...latestMessagesData);
+          setLatestMessages(latestMessagesObject);
+        }
+      } catch (err) {
+        console.error('Error fetching latest messages: ', err);
+      }
+    };
+    fetchLatestMessages();
+  }, [newChats]);
+
+  
+  useEffect(() => {
+    const fetchLatestMessages = async () => {
+      try {
+        const roomIds = rooms?.map((room) => room.roomId);
+
+        if (roomIds && roomIds.length > 0) {
+          const latestMessagesData = await Promise.all(
+            roomIds.map(async (roomId) => {
+              const latestMessage = (await axios.get(`http://localhost:8000/message/${roomId}`))?.data;
+              const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
+              return { [roomId]: latestTextContent || 'No messages' };
+            })
+          );
+
+          const latestMessagesObject = Object.assign({}, ...latestMessagesData);
+          setLatestRoomMessages(latestMessagesObject);
+        }
+      } catch (err) {
+        console.error('Error fetching latest messages: ', err);
+      }
+    };
+    fetchLatestMessages();
+  }, [rooms]);
 
   return (
     <div className="chats">
@@ -123,7 +157,7 @@ export  const Chats = ({ onValueChange }: any) => {
               <img src={chat.receiver.avatar} alt="user_avatar" />
               <div className="userChatInfo">
                 <span>{chat.receiver.username}</span>
-                <p>{/*chat.chatId ? latestMessage(chat.chatId)?.textContent : */'latest message'}</p>
+                <p>{ latestMessages[chat.chatId] }</p>
               </div>
             </div>
           ))
@@ -134,9 +168,7 @@ export  const Chats = ({ onValueChange }: any) => {
                 <img src={ room?.roomAvatar } alt="room_avatar" />
                 <div className="userChatInfo">
                     <span>{ room.roomName }</span>
-                    {/* <p>{ 1 ? latestMessage(chat.chatId)?.textContent : 'latest message' }</p> */}
-                    {/* <button onClick={chatDestination} >gg</button>
-                    <Messages isOpen={isOpen} /> */}
+                    <p>{ latestRoomMessages[room.roomId] }</p>
                 </div>
             </div>
           ))

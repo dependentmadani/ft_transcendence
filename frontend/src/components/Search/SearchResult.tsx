@@ -11,14 +11,12 @@ interface User {
 export const SearchResult = ({ onClose, searchResults }: any) => {
 
     const createChat = async (user: User) => {
+
         // check if we find a commun chatId between the current user and this user
         const sender = 1
         const receiver = user.id
         if (sender !== receiver) {
-            const chats = await (await axios.get(`http://localhost:8000/chat/${sender}`)).data
             const communChats = await (await axios.get(`http://localhost:8000/chat/${sender}/${receiver}`)).data
-            console.log('chatsssss ', chats, sender, receiver)
-            console.log('Commun stuff', communChats)
             if (communChats.length === 0) {
                 try {
                     return await axios.post('http://localhost:8000/chat', {

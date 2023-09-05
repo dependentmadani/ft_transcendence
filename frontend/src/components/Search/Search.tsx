@@ -10,12 +10,6 @@ interface User {}
 export const Search = () => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
-  
-  // useEffect(() => {
-  //   if (username.trim() !== '') {
-  //     setUsername(username)
-  //   }
-  // })
     
   const getResults = async () => {
     try {
@@ -42,8 +36,7 @@ export const Search = () => {
   const closeForm = () => {
     setShowForm(false);
   };
-  
-  // console.log('username ', username, 'resluts ', searchResults)
+
   return (
     <div className="search">
       <span>

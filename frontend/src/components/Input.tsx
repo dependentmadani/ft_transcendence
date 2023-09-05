@@ -6,6 +6,8 @@ import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 
 const _MAIN_USER_ = 1 // for now
 
+interface Message {}
+
 export const Input = ({ chatData, chat }: any) => {
 
   const currentChat = chatData._chat?.chat
@@ -13,7 +15,7 @@ export const Input = ({ chatData, chat }: any) => {
   // console.log('!!!!!!!!!', currentChat)
 
   const [inputText, setInputText] = useState('')
-  const [messages, setMessages] = useState([])
+  const [messages, setMessages] = useState<Message | null>([])
   const [connectedSocket, setConnectedSocket] = useState(false)
 
   const createNewMessage = async (inputText: string) => {
