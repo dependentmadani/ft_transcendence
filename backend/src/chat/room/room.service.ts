@@ -20,7 +20,7 @@ export class RoomService {
             data: {
                 roomName: roomName,
                 roomAvatar: roomAvatar,
-                roomUsers: [roomUser],
+                roomMembers: [roomUser],
                 role: role//'ADMIN',
             }
         })

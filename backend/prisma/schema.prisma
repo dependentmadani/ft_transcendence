@@ -31,7 +31,7 @@ model Users {
   MessageSenId     Message[] @relation("Messagesencontact")
   MessageRecId     Message[] @relation("Messagereccontact")
   
-  // rooms       Room[] @relation("roomUsers")
+  rooms       Room[] @relation("roomUsers")
   // kickedUsers Room[] @relation("kickedUsers")
   // mutedUsers  Room[] @relation("mutedUsers")
   // banedUsers  Room[] @relation("banedUsers")
@@ -39,6 +39,8 @@ model Users {
   // rooms       RoomUsers[]
   // roomId      Int?
   // adminId       Room[] @relation()
+  roomInvitationSender Invitations[] @relation("sender")
+  roomInvitationReceiver Invitations[] @relation("receiver")
 }
 
 // model Chat {
@@ -82,12 +84,25 @@ model Room {
   id          Int @id @default(autoincrement())
   roomName    String
   roomAvatar  String
-  roomUsers   Int[]// @relation("roomUsers")
+  roomUsers   Users[] @relation("roomUsers")
+  roomMembers Int[]
   kickedUsers Int[]// @relation("kickedUsers")
   mutedUsers  Int[]// @relation("mutedUsers")
   banedUsers  Int[]// @relation("banedUsers")
 
   role        String
+  invitations Invitations[] @relation("room")
+}
+
+model Invitations {
+  id  Int @id @default(autoincrement())
+  status  String @default("Pending")
+  sender  Users @relation("sender", fields: [senderId], references: [id])
+  senderId  Int
+  receiver  Users @relation("receiver", fields: [receiverId], references: [id])
+  receiverId  Int
+  room      Room @relation("room", fields: [roomId], references: [id])
+  roomId  Int
 }
 
 enum Role {
