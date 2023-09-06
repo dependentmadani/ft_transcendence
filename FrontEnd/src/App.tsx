@@ -14,7 +14,7 @@ function App() {
   return (
     <>
       <NavBar />
-      <Section  />
+      {/* <Section  /> */}
     </>
   )
 }
