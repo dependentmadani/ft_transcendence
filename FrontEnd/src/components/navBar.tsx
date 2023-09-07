@@ -1,34 +1,32 @@
 import '../css/navBar.css'
 import { Link, Route, Routes} from "react-router-dom"
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 
 
 function NavBar(props:any) {
     
     const my_img:string = 'src/imgs/logo.png'
     // const list:JSX.Element
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // document.getElementsByClassName()
-    const toggleMenu = () => {
-        // Toggle the state to open/close the menu
-        const menuList = document.getElementById('list') as HTMLUListElement
-        const userIco = document.getElementById('userIco') as HTMLElement
-        const userName = document.getElementById('userName') as HTMLParagraphElement
-        
-        // cons
-        if (!isMenuOpen){
-            setIsMenuOpen(!isMenuOpen);
-            menuList.style.maxHeight = '127.5px'
-            userIco.style.minWidth = '200px'
-            userName.style.display = 'block'
-        }
-        else {
-            setIsMenuOpen(!isMenuOpen);
-            menuList.style.maxHeight = '0px'
-            userIco.style.minWidth = '100px'
-            userName.style.display = 'none'
-        }
 
+    const defaultList = ([
+        <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
+        <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>,
+        <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>,
+    ])
+
+    const [listItems, setListItems] = useState([...defaultList, (    
+    <div className='login'>
+        <Link to='/login' className='link-b'> Get Started </Link>
+    </div>)]
+    );
+
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+    const toggleMenu = () => {
+
+        setIsMenuOpen(!isMenuOpen)
     };
 
     return (
@@ -39,23 +37,19 @@ function NavBar(props:any) {
                         <img className="logo-img" src={my_img} alt='Mskota-Logo' /> 
                     </Link>
                 </div>
-                <div className='sub-bar'>                                
-                    <div className="list" id='list'>
-                        <ul>
-                            <li> <Link to='/' className='link-b'> Home </Link> </li>
-                            <li> <Link to='/about' className='link-b'> About </Link> </li>
-                            <li> <Link to='/developers' className='link-b'> Developers </Link> </li>
-                        </ul>
-                    </div>
-                    <div className='user' id='userIco'>
-                        <p id='userName' >name</p> {/* user.name */}
-                        <div className='user-img'>
-                            <img src='src/imgs/saitama.png' alt="user-img" />
-                        </div>
-                        <img className='icon-list' src='src/imgs/drop-down.png' alt="icon-list"  onClick={toggleMenu} />
-                    </div>
+                <ul className="list">
+                    {defaultList}
+                </ul>
+                <div className='login'>
+                    <Link to='/login' className='link-b'> Get Started </Link>
+                </div>
+                <div className='menu-ico' onClick={toggleMenu}>
+                    <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />
                 </div>
             </nav>
+            <div className={`drop-menu ${isMenuOpen ? 'open' : ''}`}>
+                {listItems}
+            </div>
         </>
     )
 }
