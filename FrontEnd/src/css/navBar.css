@@ -21,7 +21,7 @@
     display: flex;
     width: 30%;
     max-width: 200px;
-    background: darkgoldenrod;
+    /* background: darkgoldenrod; */
     margin-right: 5%;
 }
 
@@ -84,8 +84,8 @@ a {
     height: 0;
     width: 300px;
     margin-right: 2rem;
-    background-color: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(25px);
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
     border-radius: 10px;
     overflow: hidden;
     transition: height .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
