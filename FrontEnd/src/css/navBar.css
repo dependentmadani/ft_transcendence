@@ -6,7 +6,7 @@
     align-items: center;
     /* background: darkcyan; */
     width: 100%;
-    max-width: 2000px;
+    max-width: 2600px;
     margin: auto;
 }
 
@@ -88,6 +88,7 @@
     display: flex;
     align-items: center;
     width: 35%;
+    min-height: 50px;
     aspect-ratio: 8/8;
     /* overflow: hidden; */
 }
@@ -114,7 +115,7 @@
 @media (max-width: 850px) {
 
     .bar {
-        /* background-color: chartreuse; */
+        background-color: chartreuse;
     }
 
     .sub-bar {
@@ -125,16 +126,12 @@
     }
 
     .list {
-        /* display: none; */
         position: absolute;
         width: 200px;
+        max-height: 0px;
         margin-top: 4rem;
         margin-right: .25rem;
         overflow: hidden;
-        /* top */
-        /* top: 70px; */
-        /* order: 1; */
-        /* align-items: ;? */
         background-color: darkorchid;
         border-radius: 10px 0px 10px 10px ;
     }
@@ -165,16 +162,20 @@
     }
 
     .user-img {
-        width : 60%;
+        width : 60px;
     }
 
     .icon-list  {
-        width: 25%;
+        width: 25px;
     }
 
 
     .user > p {
         display: none;
     } 
+
+    #userIco {
+        transition: 700ms;
+    }
     
 }

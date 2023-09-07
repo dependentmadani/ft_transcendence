@@ -8,17 +8,25 @@ function NavBar(props:any) {
     const my_img:string = 'src/imgs/logo.png'
     // const list:JSX.Element
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    document.getElementsByClassName()
+    // document.getElementsByClassName()
     const toggleMenu = () => {
         // Toggle the state to open/close the menu
         const menuList = document.getElementById('list') as HTMLUListElement
+        const userIco = document.getElementById('userIco') as HTMLElement
+        const userName = document.getElementById('userName') as HTMLParagraphElement
+        
+        // cons
         if (!isMenuOpen){
             setIsMenuOpen(!isMenuOpen);
-            menuList.style.maxHeight = '0px'
+            menuList.style.maxHeight = '127.5px'
+            userIco.style.minWidth = '200px'
+            userName.style.display = 'block'
         }
         else {
             setIsMenuOpen(!isMenuOpen);
-            menuList.style.maxHeight = '127.15px'
+            menuList.style.maxHeight = '0px'
+            userIco.style.minWidth = '100px'
+            userName.style.display = 'none'
         }
 
     };
@@ -39,8 +47,8 @@ function NavBar(props:any) {
                             <li> <Link to='/developers' className='link-b'> Developers </Link> </li>
                         </ul>
                     </div>
-                    <div className='user'>
-                        <p>name</p> {/* user.name */}
+                    <div className='user' id='userIco'>
+                        <p id='userName' >name</p> {/* user.name */}
                         <div className='user-img'>
                             <img src='src/imgs/saitama.png' alt="user-img" />
                         </div>
