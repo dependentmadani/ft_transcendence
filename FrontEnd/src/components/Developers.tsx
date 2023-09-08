@@ -7,8 +7,6 @@ function Badges() {
 
         let nameclass:string = 'badge' 
 
-        if (badge.id === 5)
-            nameclass = 'badge-5'
         return (
             <div className={nameclass}>
                 <img src={badge.img} alt="person-img" /> 

@@ -1,4 +1,5 @@
 import '../css/Home.css'
+import { Link, Route, Routes} from "react-router-dom"
 
 
 export default function Home(props:any) {
@@ -18,7 +19,7 @@ export default function Home(props:any) {
                         </p>
                         <img  src={my_img} alt='home.png' />
                     </div>
-                    <button className="getStart-b">Get Started</button>
+                    <button className="getStart-b"><Link to='/login' > Get Started </Link></button>
                 </div>
                 <div className='home-img' >
                     <img  src={my_img} alt='home.png' />

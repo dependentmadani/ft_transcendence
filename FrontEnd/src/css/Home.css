@@ -3,6 +3,9 @@
 .main-home {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    /* height: 80vh; */
+    margin-top: 5rem;
     /* background-color: white; */
 }
 
@@ -62,6 +65,16 @@
 
 }
 
+
+.getStart-b:hover {
+    background-color: rgb(17, 122, 161);
+    scale: 1.07;
+}
+
+.getStart-b:active {
+    scale: 0.95;
+}
+
 .home-img {
     align-self: flex-end;
     flex: 1;
@@ -80,6 +93,11 @@
 }
 
 @media (max-width: 990px) {
+    
+    .main-home {
+        top: 5erm;
+    }
+
     .home-img {
         display: none;
     }
