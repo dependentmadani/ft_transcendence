@@ -31,7 +31,7 @@ import { join } from 'path';
 export const storage = {
   storage: diskStorage({
     destination:
-      '/nfs/homes/mbadaoui/goinfre/ft_transcendence/frontend/public/uploadAvatar/',
+      `${process.cwd}}/frontend/public/uploadAvatar/`,
     filename: (req, file, cb) => {
       if (!path) return;
       const filename: string =
