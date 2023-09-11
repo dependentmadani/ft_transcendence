@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { RoomService } from './room.service';
-import { Room } from '@prisma/client'
+import { Room, Users } from '@prisma/client'
 import { Public } from "src/decorator";
 import { diskStorage } from 'multer';
 import * as path from 'path'
@@ -15,6 +15,11 @@ export class RoomController {
     @Get()
     async getRooms(): Promise<Room[]> {
         return this.roomService.getRooms()
+    }
+
+    @Get(':/roomId')
+    async getRoomAdmin(@Param('roomId', ParseIntPipe)roomId: number): Promise<Users[]> {
+        return this.roomService.getRoomAdmin(roomId)
     }
 
     @Post()

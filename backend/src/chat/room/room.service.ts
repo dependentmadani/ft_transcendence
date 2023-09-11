@@ -1,6 +1,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Room } from '@prisma/client'
+import { Room, Users } from '@prisma/client'
 
 @Injectable()
 export class RoomService {
@@ -12,6 +12,24 @@ export class RoomService {
         }
         catch (err) {
             throw new UnauthorizedException(`Couldn't find any rooms: `, err)
+        }
+    }
+
+    async getRoomAdmin(roomId: number): Promise<Users[]> {
+        try {
+            return this.prisma.room.findMany({
+                where: { id: roomId },
+                select: {
+                    roomUsers: {
+                        select: {
+                            user: { where: { role: 'ADMIN' } }
+                        }
+                    }
+                }
+            })
+        }
+        catch (err) {
+            console.error(`Couldn't find any admins for room ${roomId}`)
         }
     }
 
