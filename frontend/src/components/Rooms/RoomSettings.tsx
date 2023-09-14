@@ -10,6 +10,7 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
 
     const [searchResults, setSearchResults] = useState<User | null>([])
     const [username, setUsername] = useState('')
+    const [roomUsers, setRoomUsers] = useState([])
     
     const getResults = async () => {
         try {
@@ -19,6 +20,16 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
         catch {
             setSearchResults(null)
           console.error(`Couldn't find any user`)
+        }
+    }
+
+    const getRoomUsers = async () => {
+        try {
+            const result = await axios.get(`http://localhost:8000/roomUsers/${1}`)
+            setRoomUsers(result.data)
+        }
+        catch {
+            console.error('No users for this room')
         }
     }
 
@@ -35,7 +46,7 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
                 </div>
                 <div className="mutualContact flex-item">
                     <p>members</p>
-                    <p>room admin: { currentRoom.roomMembers }</p>
+                    <p>room admin: { currentRoom.roomUsers.roomMembers }</p>
                     <p>room users: { currentRoom.roomMembers }</p>
                     <p>kicked users: { currentRoom.kickedUsers }</p>
                     <p>baned users: { currentRoom.bannedUsers }</p>
