@@ -17,10 +17,10 @@ export class RoomController {
         return this.roomService.getRooms()
     }
 
-    @Get(':/roomId')
-    async getRoomAdmin(@Param('roomId', ParseIntPipe)roomId: number): Promise<Users[]> {
-        return this.roomService.getRoomAdmin(roomId)
-    }
+    // @Get(':/roomId')
+    // async getRoomAdmin(@Param('roomId', ParseIntPipe)roomId: number): Promise<Users[]> {
+    //     return this.roomService.getRoomAdmin(roomId)
+    // }
 
     @Post()
     @UseInterceptors(
@@ -40,10 +40,8 @@ export class RoomController {
         }),
     )
     createRoom(@Body('roomName') roomName: string,
-                @UploadedFile() roomAvatar: Express.Multer.File,
-                @Body('roomUsers', ParseIntPipe) roomUsers: number,
-                @Body('role') role: string,) {
-        return this.roomService.createRoom(roomName, roomAvatar.path, roomUsers, role)
+                @UploadedFile() roomAvatar: Express.Multer.File) {
+        return this.roomService.createRoom(roomName, roomAvatar.path)
     }
 
     @Delete()

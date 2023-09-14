@@ -31,7 +31,7 @@ model Users {
   MessageSenId     Message[] @relation("Messagesencontact")
   MessageRecId     Message[] @relation("Messagereccontact")
   
-  rooms       Room[] @relation("roomUsers")
+  rooms       RoomUsers[]// @relation("roomUsers")
   // kickedUsers Room[] @relation("kickedUsers")
   // mutedUsers  Room[] @relation("mutedUsers")
   // banedUsers  Room[] @relation("banedUsers")
@@ -84,14 +84,23 @@ model Room {
   id          Int @id @default(autoincrement())
   roomName    String
   roomAvatar  String
-  roomUsers   Users[] @relation("roomUsers")
-  roomMembers Int[]
-  kickedUsers Int[]// @relation("kickedUsers")
-  mutedUsers  Int[]// @relation("mutedUsers")
-  banedUsers  Int[]// @relation("banedUsers")
+  roomUsers   RoomUsers[]// @relation("roomUsers")
+  // roomMembers Int[]
+  // kickedUsers Int[]// @relation("kickedUsers")
+  // mutedUsers  Int[]// @relation("mutedUsers")
+  // banedUsers  Int[]// @relation("banedUsers")
 
-  role        String
+  // role        String
   invitations Invitations[] @relation("room")
+}
+
+model RoomUsers {
+  id     Int @id @default(autoincrement())
+  room   Room @relation(fields: [roomId], references: [id])
+  roomId Int
+  user   Users @relation(fields: [userId], references: [id])
+  userId Int
+  role   String
 }
 
 model Invitations {

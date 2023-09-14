@@ -27,18 +27,31 @@ export const RoomCreationModal = ({ onClose }: any) => {
             let formData = new FormData();
             formData.append('roomName', roomName);
             formData.append('roomAvatar', roomAvatar);
-            formData.append('roomUsers', '1');
-            formData.append('role', 'ADMIN');
+            // formData.append('roomUsers', '1');
+            // formData.append('role', 'ADMIN');
             console.log('hhh', formData)
 
         try {
             const response = await axios.post('http://localhost:8000/room', formData, {
-            headers: { 'Content-Type': 'multipart/form-data' },
+                headers: { 'Content-Type': 'multipart/form-data' },
             });
+            console.log('CREATED ROOM ', response)
 
             if (response.data.imagePath) {
                 console.log('rah mzyaaan')
+                const roomId: number = response.data.id
+                const userId: number = 1
+                try {
+                    const response = await axios.post(`http://localhost:8000/roomUsers/${roomId}/${userId}`);
+        
+                    if (response.data.imagePath) {
+                        console.log('rah mzyaaan')
+                    }
+                } catch (error) {
+                    console.error(error);
+                }
             }
+            
         } catch (error) {
             console.error(error);
         }

@@ -13,6 +13,7 @@ import { HomeModule } from './home/home.module';
 import { MessageModule } from './chat/message/message.module';
 import { RoomModule } from './chat/room/room.module';
 import { InvitationsModule } from './chat/room/invitations/invitations.module';
+import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { InvitationsModule } from './chat/room/invitations/invitations.module';
     MessageModule,
     RoomModule,
     InvitationsModule,
+    RoomUsersModule,
     PrismaModule,
   ],
   providers: [{
