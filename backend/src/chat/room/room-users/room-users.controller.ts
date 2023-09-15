@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
 import { RoomUsersService } from './room-users.service';
 import { Public } from "src/decorator";
 
@@ -23,7 +23,19 @@ export class RoomUsersController {
     }
 
     @Post()
-    async createRoomUsers(@Body('roomId', ParseIntPipe) roomId: number, @Body('userId', ParseIntPipe) userId: number) {
-        return this.roomUsersService.createRoomUsers(roomId, userId)
+    async createRoomUsers(@Body('roomId', ParseIntPipe) roomId: number,
+                         @Body('userId', ParseIntPipe) userId: number, 
+                         @Body('role') role: string) {
+        return this.roomUsersService.createRoomUsers(roomId, userId, role)
+    }
+
+    @Delete()
+    async deleteAllRoomUsers() {
+        return this.roomUsersService.deleteAllRoomUsers()
+    }
+    
+    @Delete('/:roomId')
+    async deleteRoom(@Param('roomId', ParseIntPipe) roomId: number) {
+        return this.roomUsersService.deleteOneRoomUser(roomId)
     }
 }

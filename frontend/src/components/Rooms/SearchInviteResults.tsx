@@ -3,14 +3,31 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faPaperPlane, faImage, faUserPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-interface User {}
+interface User {
+    id: number,
+}
 
-export const SearchInviteResults = ({ searchResults }: any) => {
+export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
 
     // const [invitedUser, setInvitedUser] = useState<User | null>(null)
 
-    const sendInvite = (invitedUser: User) => {
-        console.log('joinina assi ', invitedUser.username)
+    const sendInvite = async (invitedUser: User) => {
+        console.log('joinina assi ', invitedUser, currentRoom)
+        const roomId: number = currentRoom.id
+        const userId: number = invitedUser.id
+        try {
+            const response = await axios.post(`http://localhost:8000/roomUsers`, {
+                roomId: roomId,
+                userId: userId,
+                role: 'MEMBER',
+            });
+
+            console.log('rah mzyaaan', roomId, userId)
+            // if (response.data) {
+            // }
+        } catch (error) {
+            console.error(error);
+        }
     }
 
     

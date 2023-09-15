@@ -17,10 +17,10 @@ export class RoomController {
         return this.roomService.getRooms()
     }
 
-    // @Get(':/roomId')
-    // async getRoomAdmin(@Param('roomId', ParseIntPipe)roomId: number): Promise<Users[]> {
-    //     return this.roomService.getRoomAdmin(roomId)
-    // }
+    @Get('/:roomId')
+    async getRoomAdmin(@Param('roomId', ParseIntPipe) roomId: number): Promise<Room> {
+        return this.roomService.getOneRoom(roomId)
+    }
 
     @Post()
     @UseInterceptors(

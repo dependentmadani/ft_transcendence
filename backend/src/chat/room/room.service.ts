@@ -15,23 +15,16 @@ export class RoomService {
         }
     }
 
-    // async getRoomAdmin(roomId: number): Promise<Users[]> {
-    //     try {
-    //         return this.prisma.room.findMany({
-    //             where: { id: roomId },
-    //             select: {
-    //                 roomUsers: {
-    //                     select: {
-    //                         user: { where: { role: 'ADMIN' } }
-    //                     }
-    //                 }
-    //             }
-    //         })
-    //     }
-    //     catch (err) {
-    //         console.error(`Couldn't find any admins for room ${roomId}`)
-    //     }
-    // }
+    async getOneRoom(roomId: number): Promise<Room> {
+        try {
+            return await this.prisma.room.findUnique({
+                where: { id: roomId }
+            })
+        }
+        catch (err) {
+            console.error(`Couldn't find any room with id: ${roomId} ${err}`)
+        }
+    }
 
     async createRoom(roomName: string, roomAvatar: string) {
         return await this.prisma.room.create({

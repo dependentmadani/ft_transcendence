@@ -37,12 +37,16 @@ export const RoomCreationModal = ({ onClose }: any) => {
             });
             console.log('CREATED ROOM ', response)
 
-            if (response.data.imagePath) {
+            if (response.data) {
                 console.log('rah mzyaaan')
                 const roomId: number = response.data.id
                 const userId: number = 1
                 try {
-                    const response = await axios.post(`http://localhost:8000/roomUsers/${roomId}/${userId}`);
+                    const response = await axios.post(`http://localhost:8000/roomUsers`, {
+                        roomId: roomId,
+                        userId: userId,
+                        role: 'OWNER',
+                    });
         
                     if (response.data.imagePath) {
                         console.log('rah mzyaaan')

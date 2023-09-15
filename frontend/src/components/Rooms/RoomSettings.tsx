@@ -16,7 +16,7 @@ interface RoomUsers {
     role: string
 }
 
-export const RoomSettings = ({ onClose, currentRoom }: any) => {
+export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
     const [searchResults, setSearchResults] = useState<User | null>([])
     const [username, setUsername] = useState('')
@@ -36,7 +36,8 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom.id}`)
+                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`)
+                console.log('yyyy', currentRoom.id)
                 if (result.data) {
                     let membersIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -62,7 +63,7 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
         getRoomMembers()
     }, [])
 
-    console.log('ROOM USERS ', roomMembers)
+    console.log('ROOM MEMBERS ', roomMembers)
     console.log(currentRoom)
 
     return (
@@ -74,7 +75,7 @@ export const RoomSettings = ({ onClose, currentRoom }: any) => {
                             <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
                             <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
                         </div>
-                        { searchResults && <SearchInviteResults searchResults={searchResults} /> }
+                        { searchResults && <SearchInviteResults currentRoom={currentRoom} searchResults={searchResults} /> }
                 </div>
                 <div className="mutualContact flex-item">
                     {/* <p>members</p>
