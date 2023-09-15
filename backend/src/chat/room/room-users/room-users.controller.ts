@@ -17,7 +17,7 @@ export class RoomUsersController {
         return this.roomUsersService.getRoomUsers(roomId)
     }
 
-    @Get('/:roomId')
+    @Get('admins/:roomId')
     async getRoomAdmins(@Param('roomId', ParseIntPipe) roomId: number) {
         return this.roomUsersService.getRoomAdmins(roomId)
     }

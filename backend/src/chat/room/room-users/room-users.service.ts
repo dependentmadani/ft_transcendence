@@ -32,7 +32,7 @@ export class RoomUsersService {
                 where: {
                     AND: [
                         { roomId: roomId },
-                        { role: 'ADMIN' },
+                        { role: 'OWNER' },
                     ]
                 }
             })
