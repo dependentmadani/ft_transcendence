@@ -10,6 +10,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
 
     const [roomName, setRoomName] = useState('')
     const [roomAvatar, setRoomAvatar] = useState<File | null>(null)
+    const [roomType, setRoomType] = useState('')
     const [searchResults, setSearchResults] = useState<User | null>([])
     const [username, setUsername] = useState('')
 
@@ -23,10 +24,11 @@ export const RoomCreationModal = ({ onClose }: any) => {
     }, [username])
 
     const uploadImage = async () => {
-        if (roomAvatar) {
+        if (roomName && roomAvatar) {
             let formData = new FormData();
             formData.append('roomName', roomName);
             formData.append('roomAvatar', roomAvatar);
+            formData.append('roomType', roomType)
             // formData.append('roomUsers', '1');
             // formData.append('role', 'ADMIN');
             console.log('hhh', formData)
@@ -74,10 +76,14 @@ export const RoomCreationModal = ({ onClose }: any) => {
         }
     }
 
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRoomType(event.target.value);
+    };
+
     return (
         <div className="overlay">
             <div className="form-container">
-                <h2>Fill the Form wlla sir tl3ab</h2>
+                <h2>Create New Room</h2>
                 <div className="roomFomrs">
                     <div className="roomFormInfos">
                         <input type="text" placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
@@ -96,6 +102,25 @@ export const RoomCreationModal = ({ onClose }: any) => {
                             </label>
                         </span>
                     </div>
+                    <div className='roomType'>
+                        <label>
+                            <input type="radio" value="public" checked={roomType === 'public'} onChange={handleOptionChange} />
+                            public
+                        </label>
+
+                        <label>
+                            <input type="radio" value="protected" checked={roomType === 'protected'} onChange={handleOptionChange} />
+                            protected
+                        </label>
+
+                        <label>
+                            <input type="radio" value="private" checked={roomType === 'private'} onChange={handleOptionChange} />
+                            private
+                        </label>
+
+                        <p>Selected Option: {roomType}</p>
+                    </div>
+                    
                     <div className="roomFormInvite">
                         <div className="searchInvite">
                             <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />

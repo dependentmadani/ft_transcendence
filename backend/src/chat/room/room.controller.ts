@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { Room, Users } from '@prisma/client'
 import { Public } from "src/decorator";
@@ -40,8 +40,33 @@ export class RoomController {
         }),
     )
     createRoom(@Body('roomName') roomName: string,
-                @UploadedFile() roomAvatar: Express.Multer.File) {
-        return this.roomService.createRoom(roomName, roomAvatar.path)
+                @UploadedFile() roomAvatar: Express.Multer.File,
+                @Body('roomType') roomType: string) {
+        return this.roomService.createRoom(roomName, roomAvatar.path, roomType)
+    }
+
+    @Patch('/:roomId')
+    @UseInterceptors(
+        FileInterceptor('roomAvatar', {
+            storage: diskStorage({
+                destination: './uploads/roomAvatarStorage/',
+                filename : (req, file, cb) => {
+                
+                if (!path)
+                    return ;
+            const filename: string = path?.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+            const extension: string = path?.parse(file.originalname).ext;
+            
+            cb(null, `${filename}${extension}`);
+            }
+        }),
+        }),
+    )
+    async updateRoom(@Param('roomId', ParseIntPipe) roomId: number,
+                    @Body('roomName') roomName: string,
+                    @UploadedFile() roomAvatar: Express.Multer.File,
+                    @Body('roomType') roomType: string) {
+        return await this.roomService.updateRoom(roomId, roomName, roomAvatar.path, roomType)
     }
 
     @Delete()

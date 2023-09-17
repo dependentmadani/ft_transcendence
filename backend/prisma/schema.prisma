@@ -92,6 +92,7 @@ model Room {
 
   // role        String
   invitations Invitations[] @relation("room")
+  roomType  String
 }
 
 model RoomUsers {

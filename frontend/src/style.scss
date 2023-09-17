@@ -154,6 +154,39 @@
     overflow: auto;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+    .changeRoomSettings {
+      padding: 10px;
+      border: 1px solid gray;
+      margin: 10px 0;
+
+      .mainInfos {
+        display: flex;
+        flex-direction: row;
+        padding: 10px 0;
+
+        input {
+          margin-right: 10px;
+          font-size: 1em;
+          border: none;
+          outline: none;
+          border-radius: 3px;
+          padding: 5px 2px;
+        }
+
+        .importNewAvatarIcon {
+          font-size: 1.7em;
+          color: aliceblue;
+          cursor: pointer;
+        }
+      }
+
+      .saveChanges {
+        font-size: 1.2em;
+        color: aliceblue;
+        cursor: pointer;
+      }
+    }
   }
 
   .roomFomrs {
@@ -177,6 +210,15 @@
       cursor: pointer;
     }
 
+    .roomType {
+      background-color: #838ec8;
+      padding: 10px;
+      border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
+
     .roomFormInfos {
       display: flex;
       flex-direction: row;
@@ -190,15 +232,6 @@
         font-size: 1.6em;
         cursor: pointer;
       }
-    }
-
-    .roomFormInvite {
-      background-color: #4c639c;
-      display: flex;
-      flex-direction: column;
-      padding: 10px;
-      border-radius: 10px;
-
     }
 
     .searchInviteResult {
@@ -443,6 +476,46 @@
               display: flex;
               flex-direction: column;
               align-items: center;
+
+              .searchIcon {
+                color: aliceblue;
+              }
+            }
+
+            .roomFormInvite {
+              // background-color: aliceblue;
+              width: 75%;
+              padding: 10px;
+              border-radius: 10px;
+              margin: 20px;
+
+              input {
+                background-color: rgba(240, 248, 255, 0.9215686275);
+                border: none;
+                border-radius: 30px;
+                padding: 10px;
+                outline: none;
+                width: 75%;
+              }
+
+              .searchIcon {
+                font-size: 1.1em;
+                cursor: pointer;
+                margin: 0 10px;
+              }
+            }
+
+            .roomMembers {
+              border-radius: 10px;
+              width: 75%;
+              background-color: #6b73a7;
+              padding: 10px;
+
+              .roomMember {
+                background-color: #f0f8ffeb;
+                padding: 10px;
+                border-radius: 10px;
+              }
             }
 
             /* Styling for mutual friends and groups lists */

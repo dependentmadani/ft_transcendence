@@ -26,15 +26,34 @@ export class RoomService {
         }
     }
 
-    async createRoom(roomName: string, roomAvatar: string) {
+    async createRoom(roomName: string, roomAvatar: string, roomType: string) {
         return await this.prisma.room.create({
             data: {
                 roomName: roomName,
                 roomAvatar: roomAvatar,
+                roomType: roomType,
                 // roomMembers: [roomUser],
                 // role: role//'ADMIN',
             }
         })
+    }
+
+    async updateRoom(roomId: number, roomName: string, roomAvatar: string, roomType: string) {
+        try {
+            return await this.prisma.room.update({
+                where: {
+                    id: roomId,
+                },
+                data: { 
+                    roomName: roomName,
+                    roomAvatar: roomAvatar,
+                    roomType: roomType,
+                }
+            });
+        }
+        catch {
+            console.error(`Couldn't create room with id ${roomId}`)
+        }
     }
 
     async deleteAllRooms() {

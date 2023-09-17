@@ -47,15 +47,15 @@ export const RoomMembers = ({ currentRoom }: any) => {
         getRoomMembers()
     }, [])
 
-    console.log('ROOM ADMINS ', roomMembers)
+    console.log('ROOM Members ', roomMembers)
     console.log(currentRoom)
 
     return (
-        <div>
+        <div className='roomMembers'>
             <p>Members</p>
             {
                 roomMembers?.map((user: User) => (
-                    <p>{ user.username }</p>
+                    <p className='roomMember' >{ user.username }</p>
                 ))
             }
         </div>
