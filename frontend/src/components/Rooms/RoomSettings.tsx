@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faFloppyDisk, faImage, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faFloppyDisk, faImage } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { SearchInviteResults } from './SearchInviteResults';
 import { RoomMembers } from './RoomMembers';
 import { RoomFormInvite } from './RoomFormIvite';
 
@@ -18,35 +17,30 @@ interface RoomUsers {
 
 export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
-    // const [searchResults, setSearchResults] = useState<User | null>([])
-    // const [username, setUsername] = useState('')
     const [roomMembers, setRoomMembers] = useState<User[] | null>([])
     const [currentUserIsAdmin, setCurrentUserIsAdmin] = useState(false)
-    
-    // const getResults = async () => {
-    //     try {
-    //       const results = await axios.get(`http://localhost:8000/users/search/${username}`)
-    //       setSearchResults(results.data)
-    //     }
-    //     catch {
-    //         setSearchResults(null)
-    //       console.error(`Couldn't find any user`)
-    //     }
-    // }
+    const [newRoomType, setNewRoomType] = useState(currentRoom.roomType)
+    const [newRoomName, setNewRoomName] = useState('')
+    const [newRoomAvatar, setNewRoomAvatar] = useState<File | null>(null)
+
     useEffect(() => {
         const isCurrentUserAdmin = async () => {
-            const currentUserId: number = 1 // for now
-            const roomAdmins = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`)
-            let t: number[] = []
+            if (currentRoom.roomType === 'Public' || currentRoom.roomType === 'Protected')
+                setCurrentUserIsAdmin(true)
+            else if (currentRoom.roomType === 'Private')
+            {
+                const currentUserId: number = 1 // for now
+                const roomAdmins = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`)
+                let t: number[] = []
+                    
+                roomAdmins.data.map((roomUser: RoomUsers) => (
+                    t.push(roomUser.userId)
+                ))
                 
-            roomAdmins.data.map((roomUser: RoomUsers) => (
-                t.push(roomUser.userId)
-            ))
-            console.log('T ', t)
-                
-            for (let i=0; i<t.length; i++)
-                if (t[i] === currentUserId)
-                    setCurrentUserIsAdmin(true)
+                for (let i=0; i<t.length; i++)
+                    if (t[i] === currentUserId)
+                        setCurrentUserIsAdmin(true)
+            }
         }
         isCurrentUserAdmin()
     }, [currentRoom.id])
@@ -81,13 +75,6 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
         getRoomMembers()
     }, [])
 
-    const [newRoomType, setNewRoomType] = useState(currentRoom.roomType)
-    const [newRoomName, setNewRoomName] = useState('')
-    const [newRoomAvatar, setNewRoomAvatar] = useState<File | null>(null)
-    // const [selectedOption, setSelectedOption] = useState<string>();
-    // const isOptionSelected = (optionValue: string) => {
-    //     return selectedOption === optionValue;
-    // };
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewRoomType(event.target.value);
     };
@@ -98,10 +85,6 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
     };
 
     const saveChanges = async () => {
-        console.log('New room name: ', newRoomName)
-        console.log('New room avatar: ', newRoomAvatar)
-        console.log('New room type: ', newRoomType)
-
         if (newRoomName && newRoomAvatar) {
             let formData = new FormData();
             formData.append('roomName', newRoomName);
@@ -121,19 +104,12 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
     }
 
     console.log('ROOM MEMBERS ', roomMembers, currentUserIsAdmin)
-    console.log(currentRoom)
+    console.log(currentRoom.roomType)
 
     return (
         <div className="overlay">
             <div className="form-container">
                 { currentUserIsAdmin && <RoomFormInvite currentRoom={currentRoom} /> }
-                {/* <div className="roomFormInvite">
-                        <div className="searchInvite">
-                            <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
-                            <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
-                        </div>
-                        { searchResults && <SearchInviteResults currentRoom={currentRoom} searchResults={searchResults} /> }
-                </div> */}
                 <div className="changeRoomSettings">
                     <p>Change room settings</p>
                     <div className="mainInfos">
@@ -155,38 +131,24 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                     </div>
                     <div className='roomType'>
                         <label>
-                            <input type="radio" value="public" checked={newRoomType === 'public'} onChange={handleOptionChange} />
-                            public
+                            <input type="radio" value="Public" checked={newRoomType === 'Public'} onChange={handleOptionChange} />
+                            Public
                         </label>
 
                         <label>
-                            <input type="radio" value="protected" checked={newRoomType === 'protected'} onChange={handleOptionChange} />
-                            protected
+                            <input type="radio" value="Protected" checked={newRoomType === 'Protected'} onChange={handleOptionChange} />
+                            Protected
                         </label>
 
                         <label>
-                            <input type="radio" value="private" checked={newRoomType === 'private'} onChange={handleOptionChange} />
-                            private
+                            <input type="radio" value="Private" checked={newRoomType === 'Private'} onChange={handleOptionChange} />
+                            Private
                         </label>
                     </div>
-                    {/* <p>Room Name: { currentRoom.roomName }</p>
-                    <p>Room Type: { currentRoom.roomType } </p> */}
                     <span className='saveChanges'><FontAwesomeIcon className="saveChangesIcon" icon={faFloppyDisk} onClick={ saveChanges } /></span>
                 </div>
                 <div className="mutualContact flex-item">
-                    
-                    {/* <p>members</p>
-                    {
-                        roomMembers?.map((user: User) => (
-                            <p>{ user.username }</p>
-                        ))
-                    } */}
                     <RoomMembers currentRoom={currentRoom} />
-                    {/* <RoomAdmins currentRoom={currentRoom} />
-                    <p>room users: { currentRoom.roomMembers }</p>
-                    <p>kicked users: { currentRoom.kickedUsers }</p>
-                    <p>baned users: { currentRoom.bannedUsers }</p>
-                    <p>muted users: { currentRoom.mutedUsers }</p> */}
                 </div>
             </div>
             <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>

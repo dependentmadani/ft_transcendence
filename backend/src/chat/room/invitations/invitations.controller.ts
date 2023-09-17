@@ -19,7 +19,7 @@ export class InvitationsController {
     }
 
     @Post()
-    async createInvitation(@Body("sender", ParseIntPipe) sender: number,
+    async createInvitation(@Body('sender', ParseIntPipe) sender: number,
                     @Body('receiver', ParseIntPipe) receiver: number,
                     @Body('roomId', ParseIntPipe) roomId: number) : Promise<Invitations> {
         return this.invitaionsService.createInvitation(sender, receiver, roomId)
