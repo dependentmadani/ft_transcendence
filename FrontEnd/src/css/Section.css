@@ -1,0 +1,59 @@
+
+
+.root-section {
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
+    gap: 3%;
+    width: 100%;
+    height: 100vh;
+    min-height: 700px;
+    max-height: 1400px;
+    max-width: 2500px;
+}
+
+
+.NavBarTwo {
+    height: 15%;
+    width: 100%;
+    background-color: rgb(227, 220, 17);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.main-section {
+    height: 80%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: aqua;
+}
+
+.NavBarTree {
+    width: 3.5%;
+    height: 70%;
+    min-height: 400px;
+    max-height: 600px;
+    min-width: 40px;
+    /* max-width: 80px; */
+    border-radius: 20px;
+    background-color: rgba(97, 49, 141, .7);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4vh;
+}
+
+.NavBarTree > img {
+    width: 68%;
+    cursor: pointer;
+}
+
+.select-section {
+    width: 85%;
+    height: 100%;
+    background-color: crimson;
+}

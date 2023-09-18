@@ -1,0 +1,52 @@
+
+.logo-img {
+    height: 100%;
+    margin-left: 1.5rem;
+    /* padding-top: .5rem; */
+    background-color: blueviolet;
+}
+
+.right-bar {
+    width: 20%;
+    min-width: 230px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: blue;
+    margin-right: 1rem;
+}
+
+.notification {
+    width: 40px;
+    height: 42px;
+    margin-right: 2rem;
+    background-color: dimgrey;
+}
+
+.mini-badge {
+    width: 60%;
+    min-width: 160px;
+    border-radius: 50px;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: large;
+    font-weight: 600;
+    border: 1px solid white;
+    background-color: rgb(57, 121, 205);
+}
+
+#user-img {
+    height: 100%;
+    aspect-ratio: 4/4;
+    object-fit: cover;
+    background-color: black;
+    border-radius: 50%;
+    outline: 1px solid rgb(145, 32, 238) ;
+}
+
+#drop-down {    /* color: white; */
+    width: 22px;
+    margin-right: 1rem;
+}

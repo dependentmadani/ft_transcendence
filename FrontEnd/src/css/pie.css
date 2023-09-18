@@ -1,0 +1,35 @@
+
+.hlwa {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    overflow: scroll;
+    /* justify-content: center;
+    align-items: center; */
+    background-color: white;
+}
+
+/* .recharts-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1000px; /* Takes up all available width of the container */
+    /* height: 1000px; Takes up all available height of the container */
+  /* }  */
+
+  .dlaha {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    /* font-size: larger; */
+    background-color: rgb(52, 30, 68);
+  }
+
+  .kik {
+    position: absolute;
+    text-align: center;
+    font-size: clamp(10px, 5vw, 30px);
+    background-color: cyan;
+  }

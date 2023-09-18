@@ -9,6 +9,21 @@
     
 }
 
+.logo-login {
+    width: 40%;
+    max-width: 200px;
+    background: darkgoldenrod;
+    /* margin-right: 5%;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.logo-login-img {
+    width: 100%;
+    aspect-ratio: 4/4;
+}
+
 #project-name {
     font-size: clamp(24px, 20vw, 100px);
     font-weight: bolder;
@@ -25,19 +40,25 @@
     justify-content: center;
     font-size: clamp(20px, 1.5vw, 50px);
     text-align: center;
+    margin-left: 1rem;
 }
 
 #col-2 {
+    display: flex;
+    align-items: center;
     width: 30%;
+    height: 100%;
     margin-right: 2rem;
+    background-color: darkgoldenrod;
 }
 
 #col-2  img {
     max-width: 100%; /* Ensure the image doesn't exceed the container's width */
-    max-height: 1000px; /* Set the maximum height of the image */
+    max-height: 90%; /* Set the maximum height of the image */
     width: auto; /* Maintain the image's aspect ratio */
     height: auto; /* Allow the image to shrink or expand as needed */
     object-fit: cover;
+    margin: 0 auto;
 }
 
 #log {
