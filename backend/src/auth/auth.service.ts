@@ -72,6 +72,47 @@ export class AuthService {
     }
   }
 
+  async signupGoogle(
+    dto: AuthDto,
+    avatar?: string,
+  ): Promise<Tokens> {
+    //need to hash the password for security reasons
+    try {
+      const users =
+        await this.prisma.users.create({
+          data: {
+            username: dto.username,
+            email: dto.email,
+            avatar: avatar,
+            userStatus: "ONLINE"
+          },
+        });
+      //the password need to be deleted so it cannot be reached by interder
+      const token = await this.signToken(
+        users.id,
+        users.email,
+      );
+      await this.updateRtHashed(
+        users.id,
+        token.refresh_token,
+      );
+
+      return token;
+    } catch (error) {
+      if (
+        error instanceof
+        PrismaClientKnownRequestError
+      ) {
+        if (error.code === 'P2002') {
+          //P2002 means that there is duplicate error launched by prisma
+          throw new ForbiddenException(
+            'Credentials taken',
+          );
+        }
+      }
+    }
+  }
+
   async signinLocal(
     dto: AuthDto,
   ): Promise<Tokens> {
@@ -223,12 +264,38 @@ export class AuthService {
       userDto.email,
     );
     if (!available) {
-      return await this.signupLocal(
+      return await this.signupGoogle(
         userDto,
         userInfo['users'].avatar,
       );
     }
-    return await this.signinLocal(userDto);
+    const user =
+      await this.prisma.users.findUnique({
+        where: {
+          email: userDto.email,
+          username: userDto?.username
+        },
+      });
+
+    await this.prisma.users.update({
+      where: {
+        id: user.id,
+      },
+       data: {
+        userStatus: "ONLINE",
+       }
+    });
+
+    const token = await this.signToken(
+      user.id,
+      user.email,
+    );
+    await this.updateRtHashed(
+      user.id,
+      token.refresh_token,
+    );
+
+    return token;
   }
 
   async fortyTwo(profile: any) {
