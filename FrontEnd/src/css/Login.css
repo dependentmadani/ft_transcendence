@@ -12,7 +12,7 @@
 .logo-login {
     width: 40%;
     max-width: 200px;
-    background: darkgoldenrod;
+    /* background: darkgoldenrod; */
     /* margin-right: 5%;*/
     position: absolute;
     top: 0;
@@ -48,8 +48,8 @@
     align-items: center;
     width: 30%;
     height: 100%;
-    margin-right: 2rem;
-    background-color: darkgoldenrod;
+    margin-right: 5rem;
+    /* background-color: darkgoldenrod; */
 }
 
 #col-2  img {
@@ -58,6 +58,7 @@
     width: auto; /* Maintain the image's aspect ratio */
     height: auto; /* Allow the image to shrink or expand as needed */
     object-fit: cover;
+    border-radius: 10px;
     margin: 0 auto;
 }
 

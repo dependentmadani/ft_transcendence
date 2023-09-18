@@ -6,13 +6,18 @@
 }
 
 body {
-    /* display: flex;
-    flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     /* height: 100vh; */
     /* align-items: center; */
+    /* justify-content: center; */
+    width: 100vw;
+    height: 100vh;
     color: rgb(227, 235, 243);
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #1B1A27;
+    background-color: #9a96ca;
+    /* background-color: #1B1A27; */
+    /* min-height: ; */
     /* overflow: auto; */
     /* min-width: 1280px;
     min-height: 720px; */

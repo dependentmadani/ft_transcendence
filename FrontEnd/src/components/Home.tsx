@@ -8,8 +8,8 @@ export default function Home(props:any) {
 
     return (
             <main className={`main-home ${props.isMenuOpen ? 'marg' : ''}`} >
-                <div className="dscp-home">
-                    <span className="title1"> MSKOTA </span>
+                {/* <div className="dscp-home"> */}
+                    {/* <span className="title1"> MSKOTA </span>
                     <span className="title2"> LET'S PLAY<br /> <span className="tab">PINGPONG</span></span>
                     <div className='home-2'>
                         <p className="comment">
@@ -22,8 +22,8 @@ export default function Home(props:any) {
                     <button className="getStart-b"><Link to='/login' > Get Started </Link></button>
                 </div>
                 <div className='home-img' >
-                    <img  src={my_img} alt='home.png' />
-                </div>
+                    <img  src={my_img} alt='home.png' /> */}
+                {/* </div> */}
             </main>
     )
 }

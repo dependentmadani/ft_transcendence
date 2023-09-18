@@ -12,13 +12,14 @@ import Section from './Section'
 import MyPieChart from './pieChart'
 
 import { Test as Hlwa }  from './Test'
+import Zitona  from '../test/zitona'
 
 
 function App(props:any)  {
     
     return (
         <Routes>
-            <Route path='/' element={<>
+            {/* <Route path='/' element={<>
                 <NavBarOne />
                 <Home /> </>} 
             />
@@ -34,7 +35,8 @@ function App(props:any)  {
             <Route path='/signUp' element={<SignUp />} />
             <Route path='/profile' element={<Section section='profile' />} />
             <Route path='/pie' element={<MyPieChart />} />
-            <Route path='/hlwa' element={<Hlwa />} />
+            <Route path='/hlwa' element={<Hlwa />} /> */}
+            <Route path='/zitona' element={<Zitona />} />
         </Routes>
     )
 }

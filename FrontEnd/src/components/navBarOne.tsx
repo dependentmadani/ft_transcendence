@@ -1,4 +1,4 @@
-import '../css/navBarOne.css'
+// import '../css/navBarOne.css'
 import { Link, Route, Routes} from "react-router-dom"
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,7 +7,6 @@ import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 
 function NavBarOne(props:any) {
     
-    const my_img:string = 'src/imgs/logo.png'
     // const list:JSX.Element
 
     const defaultList = ([
@@ -34,7 +33,7 @@ function NavBarOne(props:any) {
             <nav className="bar">
                 <div className='logo'>                    
                     <Link to='/' >
-                        <img className="logo-img" src={my_img} alt='Mskota-Logo' /> 
+                        <img className="logo-img" src='src/imgs/logo.png' alt='Mskota-Logo' /> 
                     </Link>
                 </div>
                 <ul className="list">
@@ -54,4 +53,6 @@ function NavBarOne(props:any) {
     )
 }
 
-export default  NavBarOne;
+function NavBarOne1() {return <></>}
+
+export default  NavBarOne1;
