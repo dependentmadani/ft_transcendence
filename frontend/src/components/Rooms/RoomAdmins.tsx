@@ -21,7 +21,7 @@ export const RoomAdmins = ({ currentRoom }: any) => {
     useEffect(() =>{
         const getRoomAdmins = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`)
+                const result = await axios.get(`http://${process.env.VITE_BACK_ADDRESS}/roomUsers/admins/${currentRoom.id}`)
                 if (result.data) {
                     let adminsIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -30,7 +30,7 @@ export const RoomAdmins = ({ currentRoom }: any) => {
                     let members: User[] = []
                     for (let i=0; i<adminsIds.length; i++) {
                         try {
-                            const user = await axios.get(`http://localhost:8000/users/${adminsIds[i]}`)
+                            const user = await axios.get(`http://${process.env.VITE_BACK_ADDRESS}/users/${adminsIds[i]}`)
                             members.push(user.data)
                         }
                         catch (err) {

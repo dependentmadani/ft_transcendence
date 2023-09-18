@@ -37,7 +37,7 @@ export  const Chats = ({ onValueChange }: any) => {
   useEffect(() => {
     const fetchChats = async () => {
       try {
-        let response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_}`)
+        let response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_}`, {withCredentials: true})
         setChats(response.data)
       }
       catch (err) {
@@ -54,8 +54,8 @@ export  const Chats = ({ onValueChange }: any) => {
             chats.map(async (chat) => {
               const sender = chat.chatUsers[0] === _MAIN_USER_ ? chat.chatUsers[0] : chat.chatUsers[1];
               const receiver = chat.chatUsers[0] === _MAIN_USER_ ? chat.chatUsers[1] : chat.chatUsers[0];
-              const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`);
-              const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`);
+              const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
+              const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
 
               const newChat: Chat = {
                 chatId: chat.chatId,
@@ -77,7 +77,7 @@ export  const Chats = ({ onValueChange }: any) => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        let response = await axios.get(`http://localhost:8000/room`)
+        let response = await axios.get(`http://localhost:8000/room`, {withCredentials: true})
         setRooms(response.data)
       }
       catch (err) {
@@ -108,7 +108,7 @@ export  const Chats = ({ onValueChange }: any) => {
         if (chatIds && chatIds.length > 0) {
           const latestMessagesData = await Promise.all(
             chatIds.map(async (chatId) => {
-              const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`))?.data;
+              const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`, {withCredentials: true}))?.data;
               const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
               return { [chatId]: latestTextContent || 'No messages' };
             })
@@ -133,7 +133,7 @@ export  const Chats = ({ onValueChange }: any) => {
         if (roomIds && roomIds.length > 0) {
           const latestMessagesData = await Promise.all(
             roomIds.map(async (roomId) => {
-              const latestMessage = (await axios.get(`http://localhost:8000/message/${roomId}`))?.data;
+              const latestMessage = (await axios.get(`http://localhost:8000/message/${roomId}`, {withCredentials: true}))?.data;
               const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
               return { [roomId]: latestTextContent || 'No messages' };
             })
@@ -149,14 +149,18 @@ export  const Chats = ({ onValueChange }: any) => {
     fetchLatestMessages();
   }, [rooms]);
 
+  // newChats?.map((chat: Chat) => (
+  //   console.log('CHAT AVATAR', chat)
+  // ))
+
   return (
     <div className="chats">
         {
           newChats?.map((chat: Chat, index: number) => (
             <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
-              <img src={chat.receiver.avatar} alt="user_avatar" />
+              <img src={ chat.receiver.avatar } alt="user_avatar" />
               <div className="userChatInfo">
-                <span>{chat.receiver.username}</span>
+                <span>{ chat.receiver.username }</span>
                 <p>{ latestMessages[chat.chatId] }</p>
               </div>
             </div>

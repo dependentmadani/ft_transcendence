@@ -18,7 +18,7 @@ export  const CreateRoom = () => {
 
     const createNewRoom = async () => {
         try {
-          return await axios.post('http://localhost:8000/room', {
+          return await axios.post(`http://${process.env.VITE_BACK_ADDRESS}/room`, {
             roomName: 'Ghorfa',
             roomAvatar: 'https://moodoffdp.com/wp-content/uploads/2023/06/Best-Meme-PFP-1-1024x1024.jpg',
             roomUsers: [1],

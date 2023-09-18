@@ -12,29 +12,12 @@ const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
 
-//   // enable Cors
-//   const corsOptions: CorsOptions = {
-//     origin: true, // You can set specific origins or true to allow all
-//     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//     credentials: true,
-//     preflightContinue: false,
-//     optionsSuccessStatus: 204,
-//   };
-//   app.enableCors(corsOptions);
-
-	// const httpServer = app.getHttpAdapter().getHttpServer();
-	
-	// const ioAdapter = new IoAdapter(app);
-	// const io = ioAdapter.createIOServer(httpServer);
-	// io.origins('http://localhost:5173');
-	
-
-	
-	app.enableCors({
-		origin: 'http://localhost:5173'
-	});
+  app.enableCors({
+    origin: `http://localhost:5173`,
+    allowedHeaders: ['content-type'],
+    credentials: true,
+  });
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true

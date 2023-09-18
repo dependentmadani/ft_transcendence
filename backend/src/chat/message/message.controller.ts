@@ -3,7 +3,6 @@ import { MessageService } from "./message.service";
 import { Public } from "src/decorator";
 import { Message } from "@prisma/client";
 
-@Public()
 @Controller('message')
 export class MessageController {
     constructor(private messageService: MessageService) {}

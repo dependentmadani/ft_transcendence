@@ -37,7 +37,8 @@ export const RoomCreationModal = ({ onClose }: any) => {
             console.log('hhh', formData)
 
         try {
-            const response = await axios.post('http://localhost:8000/room', formData, {
+            const response = await axios.post(`http://localhost:8000/room`, formData, {
+                withCredentials: true,
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('CREATED ROOM ', response)
@@ -45,17 +46,19 @@ export const RoomCreationModal = ({ onClose }: any) => {
             if (response.data) {
                 console.log('rah mzyaaan')
                 const roomId: number = response.data.id
-                const userId: number = 1
+                const userId: number = 1 // for now
                 try {
                     const response = await axios.post(`http://localhost:8000/roomUsers`, {
                         roomId: roomId,
                         userId: userId,
                         role: 'OWNER',
+                    }, {
+                        withCredentials: true
                     });
         
-                    if (response.data.imagePath) {
-                        console.log('rah mzyaaan')
-                    }
+                    // if (response.data.imagePath) {
+                    //     console.log('rah mzyaaan')
+                    // }
                 } catch (error) {
                     console.error(error);
                 }
@@ -70,7 +73,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
     // Search for Users to invite
     const getResults = async () => {
         try {
-          const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+          const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
           setSearchResults(results.data)
         }
         catch {

@@ -13,7 +13,7 @@ export const Search = () => {
     
   const getResults = async () => {
     try {
-      const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+      const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
       setSearchResults(results.data)
     }
     catch {

@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post } from '@nestj
 import { RoomUsersService } from './room-users.service';
 import { Public } from "src/decorator";
 
-@Public()
 @Controller('roomUsers')
 export class RoomUsersController {
     constructor(private roomUsersService: RoomUsersService) {}

@@ -14,6 +14,7 @@ import { MessageModule } from './chat/message/message.module';
 import { RoomModule } from './chat/room/room.module';
 import { InvitationsModule } from './chat/room/invitations/invitations.module';
 import { RoomUsersModule } from './chat/room/room-users/room-users.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { RoomUsersModule } from './chat/room/room-users/room-users.module';
     InvitationsModule,
     RoomUsersModule,
     PrismaModule,
+    NotificationsModule,
   ],
   providers: [{
     provide: APP_GUARD,

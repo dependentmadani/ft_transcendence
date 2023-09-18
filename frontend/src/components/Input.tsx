@@ -29,6 +29,8 @@ export const Input = ({ chatData, chat }: any) => {
         'MessageRecId': receiver,
         'textContent': inputText,
         'msgChatId': currentChat?.chatId,
+      }, {
+        withCredentials: true
       })
     }
     catch
@@ -76,7 +78,7 @@ export const Input = ({ chatData, chat }: any) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-          setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`))?.data)
+          setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`, {withCredentials: true}))?.data)
       }
       catch (err) {
           console.log(`Couldn't fetch any message`)

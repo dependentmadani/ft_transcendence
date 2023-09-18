@@ -16,12 +16,14 @@ export const SearchResult = ({ onClose, searchResults }: any) => {
         const sender = 1
         const receiver = user.id
         if (sender !== receiver) {
-            const communChats = await (await axios.get(`http://localhost:8000/chat/${sender}/${receiver}`)).data
+            const communChats = await (await axios.get(`http://localhost:8000/chat/${sender}/${receiver}`, {withCredentials: true})).data
             if (communChats.length === 0) {
                 try {
-                    return await axios.post('http://localhost:8000/chat', {
+                    return await axios.post(`http://localhost:8000/chat`, {
                         senId: sender,
                         recId: receiver,
+                    }, {
+                        withCredentials: true
                     })
                 }
                 catch (err) {

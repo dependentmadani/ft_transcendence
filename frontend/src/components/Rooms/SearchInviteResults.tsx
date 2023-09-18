@@ -19,6 +19,8 @@ export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
                 sender: 1, // for now
                 receiver: invitedUser.id,
                 roomId: currentRoom.id,
+            }, {
+                withCredentials: true,
             });
 
             console.log('rah mzyaaan', response.data)

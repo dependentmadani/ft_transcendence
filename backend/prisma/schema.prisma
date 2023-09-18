@@ -11,61 +11,65 @@ datasource db {
 }
 
 model Users {
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  id          Int       @id @default(autoincrement())
-  username    String    @unique
-  email       String    @unique
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  id          Int         @id @default(autoincrement())
+  username    String      @unique
+  email       String      @unique
   password    String?
   avatar      String?
   hashRt      String?
   twofa       String?
-  twofaEmail  String?   @unique
-  twoEnabled  Boolean   @default(false)
-  friend      Users[]   @relation("friends")
-  block       Users[]   @relation("friends")
+  twofaEmail  String?     @unique
+  twoEnabled  Boolean     @default(false)
+  userStatus  userStatus  @default(ONLINE)
+  
+  isActive              Boolean         @default(false)
+  
+  // Notifications
+  pendingFriendReq      Users[]         @relation("PendingFriend")
+  pendingFriendReqOf    Users[]         @relation("PendingFriend")
+  friends               Users[]         @relation("friends")
+  friendOf              Users[]         @relation("friends")
+  blocked               Users[]         @relation("blockedUsers")
+  blockedBy             Users[]         @relation("blockedUsers")
+  senNotification       Notifications[] @relation("senderNotification")
+  recNotification       Notifications[] @relation("receiverNotification")
+
+  // Chat
   chat        Chat[] @relation("chats")
-  // usrChatId Chat[]
-  // senId     Chat[] @relation("sencontact")
-  // recId     Chat[] @relation("reccontact")
+
+  // Messages
   MessageSenId     Message[] @relation("Messagesencontact")
   MessageRecId     Message[] @relation("Messagereccontact")
   
-  rooms       RoomUsers[]// @relation("roomUsers")
-  // kickedUsers Room[] @relation("kickedUsers")
-  // mutedUsers  Room[] @relation("mutedUsers")
-  // banedUsers  Room[] @relation("banedUsers")
-
-  // rooms       RoomUsers[]
-  // roomId      Int?
-  // adminId       Room[] @relation()
+  // Rooms
+  rooms       RoomUsers[]
   roomInvitationSender Invitations[] @relation("sender")
   roomInvitationReceiver Invitations[] @relation("receiver")
 }
 
-// model Chat {
-//   createdAt     DateTime  @default(now())
-//   updatedAt     DateTime  @updatedAt
-//   id            Int       @id @default(autoincrement())
-//   user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
-//   userId        Int
-//   banUser       Boolean
-//   muteUser      Boolean
-//   blocked_user  Boolean
-//   gameInvite    String?
-// }
+model Notifications {
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  id              Int         @id @default(autoincrement())
+  title           String
+  description     String?
+  icon            String?
+  type            NotificationType
+  read            Boolean     @default(false)
+  socketId        String
+  senderUser      Users       @relation("senderNotification", fields: [senderId], references: [id])
+  senderId        Int
+  receiverUser    Users       @relation("receiverNotification", fields: [receiverId], references: [id])
+  receiverId      Int
+}
 
 model Chat {
   chatId   Int @id @default(autoincrement())
   users    Users[]  @relation("chats")
   chatUsers    Int[]
-  // senderId    Users @relation("sencontact", fields: [senId], references: [id])
-  // senId       Int
-  // receiverId  Users @relation("reccontact", fields: [recId], references: [id])
-  // recId       Int
   msgChatId     Message[]
-  // userChatId  Users @relation(fields: [usrChatId], references: [id])
-  // usrChatId       Int
 }
 
 model Message {
@@ -84,13 +88,7 @@ model Room {
   id          Int @id @default(autoincrement())
   roomName    String
   roomAvatar  String
-  roomUsers   RoomUsers[]// @relation("roomUsers")
-  // roomMembers Int[]
-  // kickedUsers Int[]// @relation("kickedUsers")
-  // mutedUsers  Int[]// @relation("mutedUsers")
-  // banedUsers  Int[]// @relation("banedUsers")
-
-  // role        String
+  roomUsers   RoomUsers[]
   invitations Invitations[] @relation("room")
   roomType  String
 }
@@ -121,4 +119,23 @@ enum Role {
   KICKED
   MUTED
   BANNED
+}
+
+enum RelationStatus {
+  MUTED_UNTIL_TOMMORROW
+  BLOCKED
+  NORMAL
+}
+
+enum userStatus {
+  ONLINE
+  OFFLINE
+  INGAME
+}
+
+enum  NotificationType {
+  INFO
+  MESSAGE
+  FRIEND
+  GAME
 }

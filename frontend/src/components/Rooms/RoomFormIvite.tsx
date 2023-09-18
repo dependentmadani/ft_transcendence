@@ -20,12 +20,12 @@ export const RoomFormInvite = ({ currentRoom }: any) => {
     // Search for Users to invite
     const getResults = async () => {
         try {
-          const results = await axios.get(`http://localhost:8000/users/search/${username}`)
+          const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
           setSearchResults(results.data)
         }
-        catch {
+        catch (err) {
             setSearchResults(null)
-          console.error(`Couldn't find any user`)
+          console.error(`Couldn't find any user`, err)
         }
     }
 

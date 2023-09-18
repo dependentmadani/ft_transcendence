@@ -21,7 +21,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom.id}`)
+                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom.id}`, {withCredentials: true})
                 if (result.data) {
                     let membersIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -30,7 +30,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
                     let members: User[] = []
                     for (let i=0; i<membersIds.length; i++) {
                         try {
-                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`)
+                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
                             members.push(user.data)
                         }
                         catch (err) {

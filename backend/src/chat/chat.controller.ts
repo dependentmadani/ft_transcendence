@@ -6,7 +6,6 @@ import { Public } from "src/decorator";
 import { ChatGateway } from "./chat.gateway";
 // import { Chat } from './dto'
 
-@Public()
 @Controller('chat')
 export class ChatController {
     constructor(private chatService: ChatService) {}

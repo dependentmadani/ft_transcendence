@@ -3,7 +3,6 @@ import { Public } from 'src/decorator';
 import { InvitationsService } from './invitations.service';
 import { Invitations } from '@prisma/client'
 
-@Public()
 @Controller('invitations')
 export class InvitationsController {
     constructor(private invitaionsService: InvitationsService) {}

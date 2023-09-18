@@ -30,7 +30,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
             else if (currentRoom.roomType === 'Private')
             {
                 const currentUserId: number = 1 // for now
-                const roomAdmins = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`)
+                const roomAdmins = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`, {withCredentials: true})
                 let t: number[] = []
                     
                 roomAdmins.data.map((roomUser: RoomUsers) => (
@@ -48,7 +48,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`)
+                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`, {withCredentials: true})
                 console.log('yyyy', currentRoom.id)
                 if (result.data) {
                     let membersIds: number[] = []
@@ -58,7 +58,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                     let members: User[] = []
                     for (let i=0; i<membersIds.length; i++) {
                         try {
-                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`)
+                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
                             members.push(user.data)
                         }
                         catch (err) {
@@ -93,6 +93,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
         try {
             const response = await axios.patch(`http://localhost:8000/room/${currentRoom.id}`, formData, {
+                withCredentials: true,
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
             console.log('Updated ROOM ', response.data)

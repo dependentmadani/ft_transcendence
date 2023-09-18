@@ -7,7 +7,6 @@ import * as path from 'path'
 import {v4 as uuidv4} from 'uuid'
 import { FileInterceptor } from '@nestjs/platform-express';
 
-@Public()
 @Controller('room')
 export class RoomController {
     constructor(private roomService: RoomService) {}
