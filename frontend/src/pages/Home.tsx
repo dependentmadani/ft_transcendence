@@ -1,12 +1,14 @@
-import { Chat } from "../components/Chat"
-import { Sidebar } from "../components/Sidebar"
+// import { Chat } from "../components/Chat"
+import { Navebar } from "../components/Navebar"
+import './home.scss'
+// import { Sidebar } from "../components/Sidebar"
 
 export const Home = () => {
   return (
     <div className='home'>
         <div className='container'>
-            <Sidebar />
-            <Chat />
+            <Navebar/>
+            Welcome home!
         </div>
     </div>
   )

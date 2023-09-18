@@ -1,38 +1,48 @@
-import { IsString, IsInt, IsDate, IsOptional, ValidateIf } from 'class-validator';
+import {
+  IsString,
+  IsInt,
+  IsDate,
+  ValidateIf,
+} from 'class-validator';
 
 export class users {
+  @IsDate()
+  createdAt: Date;
 
-    @IsDate()
-    createdAt: Date;
+  @IsDate()
+  updatedAt: Date;
 
-    @IsDate()
-    updatedAt: Date;
+  @IsInt()
+  userId: number;
 
-    @IsInt()
-    userId: number;
+  @IsString()
+  username: string;
 
-    @IsString()
-    username: string;
+  @IsString()
+  avatar: string;
 
-    @IsString()
-    avatar: string;
+  @IsString()
+  password: string;
 
-    @IsString()
-    password: string;
-    
-    @IsString()
-    hashedSaltedPassword: string;
+  @IsString()
+  hashedSaltedPassword: string;
 
-    //chat need to be added
+  //chat need to be added
 }
 
 export class UserModify {
+  @ValidateIf(
+    (dto) =>
+      !dto.avatar || (dto.username && dto.avatar),
+  )
+  @IsString()
+  username?: string;
 
-    @ValidateIf(dto => !dto.avatar || (dto.username && dto.avatar))
-    @IsString()
-    username?: string;
-
-    @ValidateIf(dto => !dto.username || (dto.username && dto.avatar))
-    @IsString()
-    avatar?: string;
+  @ValidateIf(
+    (dto) =>
+      !dto.username ||
+      (dto.username && dto.avatar),
+  )
+  @IsString()
+  avatar?: string;
 }

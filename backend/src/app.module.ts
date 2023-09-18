@@ -10,6 +10,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './guards';
 import { HomeController } from './home/home.controller';
 import { HomeModule } from './home/home.module';
+import { MessageModule } from './chat/message/message.module';
+import { RoomModule } from './chat/room/room.module';
+import { InvitationsModule } from './chat/room/invitations/invitations.module';
+import { RoomUsersModule } from './chat/room/room-users/room-users.module';
+import { NotificationsModule } from './notifications/notifications.module';
 
 @Module({
   imports: [
@@ -19,7 +24,12 @@ import { HomeModule } from './home/home.module';
     AuthModule ,
     UsersModule,
     ChatModule,
-    PrismaModule
+    MessageModule,
+    RoomModule,
+    InvitationsModule,
+    RoomUsersModule,
+    PrismaModule,
+    NotificationsModule,
   ],
   providers: [{
     provide: APP_GUARD,
@@ -31,6 +41,7 @@ export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(IfNotAuthenticatedMiddleware)
-      .forRoutes({ path: '/users*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
+      .exclude({path:'/auth*', method: RequestMethod.ALL})
+      .forRoutes({ path: '/a7bass*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
   }
 }

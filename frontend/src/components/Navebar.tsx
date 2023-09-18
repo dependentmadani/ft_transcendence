@@ -1,12 +1,23 @@
+import { Link } from "react-router-dom"
+import '../pages/home.scss'
 
 export const Navebar = () => {
   return (
     <div className="navbar">
-        <span className="logo">Chat</span>
-        <div className="user">
-            <img src="https://moodoffdp.com/wp-content/uploads/2023/06/Meme-PFP-Man.jpg" alt="" />
-            <span>Hamid</span>
-        </div>
+        <ul className="navbar-ul">
+          <li id='navbar-li'>
+            <Link to='/'>Home </Link>
+          </li>
+          <li id='navbar-li'>
+            <Link to='/chat'>Chat</Link>
+          </li>
+          <li id='navbar-li'>
+            <Link to='/about'>About</Link>
+          </li>
+          <li id='navbar-li'>
+            <Link to='/devs'>Developers</Link>
+          </li>
+        </ul>
     </div>
   )
 }
