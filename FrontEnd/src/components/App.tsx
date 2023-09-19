@@ -30,12 +30,12 @@ function App(props:any)  {
             <Route path='/developers' element={<>
               <NavBarOne />
               <Developers /></>} 
-            />
+            /> */}
             <Route path='/login' element={<Login />} />
             <Route path='/signUp' element={<SignUp />} />
             <Route path='/profile' element={<Section section='profile' />} />
             <Route path='/pie' element={<MyPieChart />} />
-            <Route path='/hlwa' element={<Hlwa />} /> */}
+            <Route path='/hlwa' element={<Hlwa />} />
             <Route path='/zitona' element={<Zitona />} />
         </Routes>
     )

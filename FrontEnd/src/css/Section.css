@@ -13,14 +13,7 @@
 }
 
 
-.NavBarTwo {
-    height: 15%;
-    width: 100%;
-    background-color: rgb(227, 220, 17);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+
 
 .main-section {
     height: 80%;

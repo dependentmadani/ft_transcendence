@@ -31,14 +31,14 @@ function Section (props:any) {
                 {/* hlwa */}
                 <NavBarTwo/>
             </div>
-            <div className='main-section'>
+            {/* <div className='main-section'>
                 <div className='NavBarTree'>
                     <NavBarTree/>
                 </div>
                 <div className='select-section'>
                     {selectSection(props.section)}
                 </div>
-            </div>
+            </div> */}
         </div>
     ) 
 }
