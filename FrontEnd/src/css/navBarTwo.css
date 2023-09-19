@@ -6,7 +6,7 @@
     height: 15%;
     width: 100%;
     max-height: 140px;
-    min-height: 115px;
+    min-height: 70px;
     background-color: rgb(227, 220, 17);
     display: flex;
     align-items: center;
@@ -25,55 +25,70 @@
 .right-bar {
     width: 20%;
     height: 60%;
-    min-width: 220px;
+    /* min-width: 220px; */
+    max-width: 300px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* background-color: blue; */
+    background-color: blue;
     margin-right: 2rem;
 }
 
 .notification {
-    height: 55%;
+    height: 60%;
+    /* margin-left: 2.2rem; */
     background-color: dimgrey;
 }
 
 .drop-notification {
-    
-    display: flex;
-    height: 100px;
+
+    height: 0;
     width: 120px;
     background-color: black;
-    justify-content: space-around;
-    align-items: center;
-    flex-direction: column;
     position: absolute;
-    right: 11.4rem;
-    top: 5.1rem;
+    top: 6.1rem;
     overflow: auto;
-    /* gap: .5rem; */
+    background-color: rgba(114, 113, 113, 0.7);
+    transition: height .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 200;
+    backdrop-filter: blur(30px);
+}
+
+.open-notific {
+    height: 100px;
+}
+
+.drop-notification::-webkit-scrollbar {
+    width: 4px;
+    background-color: gray;
+}
+
+
+.drop-notification::-webkit-scrollbar-thumb {
+    border-radius: 2px;
+    background-color: aqua;
 }
 
 .notifics {
     width: 90%;
     height: 26px;
-    margin-top: .2rem;
-    margin-bottom: .2rem;
+    margin: .5rem auto;
+    border-radius: 5px;
     background-color: antiquewhite;
 }
 
-#user-img {
-    height: 75%;
+.user-img {
+    height: 80%;
     aspect-ratio: 4/4;
     object-fit: cover;
     background-color: black;
     border-radius: 50%;
     border: 3px solid lightskyblue ;
-    margin-right: .5rem;
-    margin-left: 2rem;
+    /* margin-right: .5rem;
+    margin-left: 2rem; */
 }
 
-#user-img:hover {
+.user-img:hover {
     scale: 1.05;
     border: 3px solid lightskyblue ;
 }
@@ -109,6 +124,8 @@
 }
 
 #logout {
+    text-align: center;
+    width: 90%;
     padding: .4rem 5rem;
     border-radius: 15px;
     background-color: rgb(93, 199, 164);
@@ -128,3 +145,32 @@
 }
 
 
+@media (max-width: 600px) {
+
+    .logo-img1 {
+        margin-left: .5rem;
+    }
+
+    .right-bar {
+        min-width: 114px;
+        margin-right: .5rem;
+    }
+
+    @media (max-width: 500px) {
+        .notification {
+            height: 50%;
+        }
+
+        .user-img {
+            height: 70%;
+        }
+
+        .drop-menu2 {
+            width: unset;
+            left: .5rem;
+            right: 0rem;
+            border-radius: 10px;
+            top: 8.5rem;
+        }
+    }
+}

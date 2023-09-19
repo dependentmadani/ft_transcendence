@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 
 
 
-
 function NavBarTwo (props:any) {
 
 
@@ -23,6 +22,9 @@ function NavBarTwo (props:any) {
         <div className='notifics' ></div>,
         <div className='notifics' ></div>,
         <div className='notifics' ></div>,
+        <div className='notifics' ></div>,
+        <div className='notifics' ></div>,
+        <div id='notifics' ></div>,
         <div className='notifics' ></div>
     ])
 
@@ -30,18 +32,25 @@ function NavBarTwo (props:any) {
     const [isNotificOpen, setIsNotificOpen] = useState(false);
 
     const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
-    const toggleNotific = () => setIsNotificOpen(!isNotifcOpen);
+    const toggleNotific = () => setIsNotificOpen(!isNotificOpen);
+
+    window.addEventListener('click', function(event) {
+        const nameClass = event.target.className as string;
+        if (nameClass !== 'notification' && nameClass !== 'user-img') {
+            setIsMenuOpen(false)
+            setIsNotificOpen(false);
+        }
+    });
 
     return ( 
         <>
             <img className='logo-img1'  src="src/imgs/logo.png" alt="Mskota-logo" />
             <div className='right-bar'>
                 <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
-                <div className={`drop-notification ${isMenuOpen ? 'open-notific' : ''}`}>
+                <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
                     {listNotific}
-
                 </div>
-                <img id='user-img' src="src/imgs/user.jpg" alt="user-img" onClick={toggleMenu} />
+                <img className='user-img' src="src/imgs/user.jpg" alt="user-img" onClick={toggleMenu} />
                 <div className={`drop-menu2 ${isMenuOpen ? 'open-menu2' : ''}`}>
                     {listItems}
                 </div>
