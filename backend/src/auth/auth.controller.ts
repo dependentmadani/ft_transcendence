@@ -194,10 +194,7 @@ export class AuthController {
       false,
       'OFFLINE'
     );
-    console.log(
-      'vite address 2:',
-      process.env.VITE_ADDRESS,
-    );
+
     res.redirect(
       `http://${process.env.VITE_ADDRESS}:5173/`,
     );

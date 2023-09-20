@@ -8,6 +8,22 @@ export class NotificationsService {
 
   async create(createNotificationDto: NotificationDto, userId: number, socketId: string) {
     // console.log('the user id is:', createNotificationDto);
+    if (userId == createNotificationDto.receiverId) {
+      throw new UnauthorizedException("Cannot send add friend request to yourself!");
+    }
+    const alreadyFriend = await this.prisma.users.findFirst({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: createNotificationDto.receiverId,
+          }
+        }
+      }
+    });
+    if (alreadyFriend) {
+      throw new UnauthorizedException("already friends!");
+    }
     const createNotif = await this.prisma.notifications.create({
       data: {
         title: createNotificationDto.title,
@@ -47,7 +63,22 @@ export class NotificationsService {
         }
       }
     });
-    return updatedUser;
+    return await this.prisma.users.update({
+      where: {
+        id: createNotificationDto.receiverId,
+      },
+      data: {
+        pendingFriendReq: {
+          connect: {
+            id: userId,
+          }
+        }
+      },
+      include: {
+        friends: true,
+      }
+    });
+    // return updatedUser;
   }
 
   async findAll(userId:number) {
@@ -145,40 +176,40 @@ export class NotificationsService {
       }
     });
     //remove users from pending list
-    await this.prisma.users.update({
-      where: {
-        id: userId,
-      },
-      data: {
-        pendingFriendReq: {
-          disconnect: {
-            id: friend.id,
-          }
-        },
-        pendingFriendReqOf: {
-          disconnect: {
-            id: friend.id,
-          }
-        }
-      }
-    });
     // await this.prisma.users.update({
     //   where: {
-    //     id: friend.id,
+    //     id: userId,
     //   },
     //   data: {
     //     pendingFriendReq: {
     //       disconnect: {
-    //         id: userId,
+    //         id: friend.id,
     //       }
     //     },
     //     pendingFriendReqOf: {
     //       disconnect: {
-    //         id: userId,
+    //         id: friend.id,
     //       }
     //     }
     //   }
     // });
+    await this.prisma.users.update({
+      where: {
+        id: friend.id,
+      },
+      data: {
+        pendingFriendReq: {
+          disconnect: {
+            id: userId,
+          }
+        },
+        pendingFriendReqOf: {
+          disconnect: {
+            id: userId,
+          }
+        }
+      }
+    });
     return user;
   }
 
@@ -219,17 +250,17 @@ export class NotificationsService {
     }
     await this.prisma.users.update({
       where: {
-        id: userId,
+        id: friend.id,
       },
       data: {
         pendingFriendReq: {
           disconnect: {
-            id: friend.id,
+            id: userId,
           }
         },
         pendingFriendReqOf: {
           disconnect: {
-            id: friend.id,
+            id: userId,
           }
         }
       }
