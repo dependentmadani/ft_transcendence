@@ -23,12 +23,19 @@ export const Input = ({ chatData, chat }: any) => {
       const sender = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
       const receiver = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[1] : currentChat?.chatUsers[0];
       console.log('WA L ID ', currentChat?.chatId, sender, receiver)
+      let type: string = ''
+      if (currentChat.type === 'chat')
+        type = 'chat'
+      else if (currentChat.type === 'room')
+        type = 'room'
+      console.log('TYPPPPEEE', chatData._chat.type)
 
       return await axios.post('http://localhost:8000/message', {
         'MessageSenId': sender,
-        'MessageRecId': receiver,
+        // 'MessageRecId': receiver,
         'textContent': inputText,
         'msgChatId': currentChat?.chatId,
+        'type': chatData._chat.type,
       }, {
         withCredentials: true
       })
@@ -78,21 +85,22 @@ export const Input = ({ chatData, chat }: any) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-          setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`, {withCredentials: true}))?.data)
+        if (currentChat.chatId !== undefined)
+            setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`, {withCredentials: true}))?.data)
       }
       catch (err) {
-          console.log(`Couldn't fetch any message`)
+          console.log(`No message`)
         }
     }
     fetchMessages()
   }, [currentChat?.chatId])
 
-  // console.log('WAWAW', currentChat?.chatId)
+  console.log('WAWAW', messages)
 
   
   return (
     <>
-    <Messages messages={ messages } />
+    <Messages currentChat={ currentChat } />
 
     <div className="input">
       <div className="inputContainer">
@@ -105,7 +113,7 @@ export const Input = ({ chatData, chat }: any) => {
           </label> */}
           {/* <button >Send</button> */}
           <span><FontAwesomeIcon icon={faFaceSmile} /></span>
-          <span onClick={handleClick}><FontAwesomeIcon icon={faPaperPlane} /></span>
+          <span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>
         </div>
       </div>
     </div>

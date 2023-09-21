@@ -21,10 +21,12 @@ export const RoomInfos = ({ currentRoom }: any) => {
         setShowSettings(false);
       };
 
+      console.log('current room', currentRoom)
+
   return (
       <div className="contactInfo container-flex">
             <div className="contactInfos flex-item">
-                <FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} />
+                
                 <div className="contactAvatar">
                     <img src={ currentRoom.roomAvatar } alt="room_avatar" />
                 </div>
@@ -40,6 +42,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
                 <p>muted users: { currentRoom.mutedUsers }</p>
             </div> */}
             <div className="contactPlay flex-item">
+                <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
                 <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
                 <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
             </div>
