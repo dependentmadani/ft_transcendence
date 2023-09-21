@@ -7,8 +7,9 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/goinfre/data/database
+      device: /tmp/data/database
       # device: $HOME/data/database
+      # device: $HOME/goinfre/data/database
       # device: /home/mbadaoui/data/database
   backend_volume:
     driver: local
@@ -16,8 +17,9 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/goinfre/data/backend
+      device: /tmp/data/backend
       # device: $HOME/data/backend
+      # device: $HOME/goinfre/data/backend
       # device: /home/mbadaoui/data/backend
   frontend_volume:
     driver: local
@@ -25,7 +27,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/goinfre/data/frontend
+      device: /tmp/data/frontend
+      # device: $HOME/goinfre/data/frontend
       # device: $HOME/data/frontend
 
 networks:

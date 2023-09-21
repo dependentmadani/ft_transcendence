@@ -8,21 +8,22 @@ import { Request } from 'express';
 import { Req, UnauthorizedException, UseGuards } from '@nestjs/common';
 import { WsGuard } from 'src/guards';
 
-export interface socketMetaPayload extends JwtPayload {
+export interface socketMetaPayload {
   socketId: string;
 }
 
-@WebSocketGateway({cors: {
+@WebSocketGateway({namespace: "notification",cors: {
   origin: 'localhost:8000*'
 }})
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  socketMap: Map<number, socketMetaPayload> = new Map<number, socketMetaPayload>;
 
+  socketMap: Map<number, Socket[]> = new Map<number, Socket[] >();
   constructor( private authservice: AuthService,
-    private readonly notificationsService: NotificationsService) {}
+    private readonly notificationsService: NotificationsService) {
+    }
 
   async handleConnection(client: Socket) {
     const token = client.handshake.headers.authorization?.split(' ')[1];
@@ -39,10 +40,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     console.log('payload:', payload);
     this.socketMap.set(
       payload['sub'],
-      {
-        sub: payload['sub'],
-        email: payload['email'],
-        socketId: client.id}
+      [client]
     );
   }
 
@@ -57,29 +55,34 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
   // }
 
   @UseGuards(WsGuard)
-  @SubscribeMessage('createNotification')
+  @SubscribeMessage('sendNotification')
   async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
         @Req() req: Request) {
       console.log('socketMap:', this.socketMap);
-      console.log('type of client id:', typeof(client.id))
+      console.log('type of client id:', typeof(client.id));
       if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
         throw new UnauthorizedException('something wrong with body');
       }
-      this.server.emit('notification',{msg: await this.notificationsService.create(createNotificationDto,
-                      req.user['sub'], client.id)});
+      if (!this.socketMap.has(req.user['sub'])) {
+        this.socketMap.get(req.user['sub']).push(client);
+      }
+      for (let i = 0; i < this.socketMap.get(req.user['sub']).length; ++i) {
+        this.socketMap.get(req.user['sub'])[i].emit('send notification',{msg: await this.notificationsService.create(createNotificationDto,
+                      req.user['sub'], this.socketMap.get(req.user['sub'])[i].id)});
+      }
   }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('allNotification')
-  async findAll(@Req() req: Request) {
-    this.server.emit('notification',{msg: await this.notificationsService.findAll(req.user['sub'])});
-  }
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('allNotification')
+  // async findAll(@Req() req: Request) {
+  //   this.server.emit('notification',{msg: await this.notificationsService.findAll(req.user['sub'])});
+  // }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('viewNotification')
-  async viewNotification(@Req() req: Request) {
-      this.server.emit('notification', {msg: await this.notificationsService.viewNotification(req.user['sub'])});
-  }
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('viewNotification')
+  // async viewNotification(@Req() req: Request) {
+  //     this.server.emit('notification', {msg: await this.notificationsService.viewNotification(req.user['sub'])});
+  // }
 
   @UseGuards(WsGuard)
   @SubscribeMessage('acceptNotification')

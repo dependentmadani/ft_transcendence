@@ -16,6 +16,7 @@ model Users {
   id                    Int             @id @default(autoincrement())
   username              String          @unique
   email                 String          @unique
+  // socketId              Int
   password              String?
   avatar                String?
   hashRt                String?
