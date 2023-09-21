@@ -22,28 +22,10 @@
     align-items: center;
     justify-content: space-around;
     background-color: aqua;
+    margin: auto auto;
 }
 
-.NavBarTree {
-    width: 3.5%;
-    height: 70%;
-    min-height: 400px;
-    max-height: 600px;
-    min-width: 40px;
-    /* max-width: 80px; */
-    border-radius: 20px;
-    background-color: rgba(97, 49, 141, .7);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 4vh;
-}
 
-.NavBarTree > img {
-    width: 68%;
-    cursor: pointer;
-}
 
 .select-section {
     width: 85%;

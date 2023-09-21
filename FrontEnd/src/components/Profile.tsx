@@ -1,5 +1,6 @@
 import '../css/Profile.css'
 import MyPieChart from './pieChart'
+import Myhlwa from './Test'
 
 
 function ProfileInfo () {
@@ -53,6 +54,7 @@ function Profile () {
                 </div>
                 <div className='statistic'>
                     <MyPieChart />
+                        {/* <Myhlwa/> */}
                 </div>
             </div>
             

@@ -1,7 +1,6 @@
 
 .NavBarTwo {
-    position: fixed;
-    right: 0;
+    position: sticky;
     top: 0;
     height: 15%;
     width: 100%;
@@ -47,6 +46,7 @@
     background-color: black;
     position: absolute;
     top: 6.1rem;
+    right: 15%;
     overflow: auto;
     background-color: rgba(114, 113, 113, 0.7);
     transition: height .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);

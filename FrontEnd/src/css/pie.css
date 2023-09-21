@@ -1,12 +1,13 @@
 
 .hlwa {
-    width: 100vw;
-    height: 100vh;
-    display: flex;
-    overflow: scroll;
+    width: 100%;
+    height: 100%;
+    /* display: flex;
+    overflow: scroll; */
     /* justify-content: center;
     align-items: center; */
     background-color: white;
+    /* font-size: clamp(10px, vw, 60px); */
 }
 
 /* .recharts-layer {
@@ -22,7 +23,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 100%;
+    width: 100%;
     /* font-size: larger; */
     background-color: rgb(52, 30, 68);
   }

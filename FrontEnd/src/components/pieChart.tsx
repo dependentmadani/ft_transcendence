@@ -25,19 +25,20 @@ const renderActiveShape = (props: any) => {
     value,
     nvalue
   } = props;
+  const lineP = ((outerRadius * 2) / 10);
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
   const sx = cx + (outerRadius + 10) * cos;
   const sy = cy + (outerRadius + 10) * sin;
-  const mx = cx + (outerRadius + 30) * cos;
-  const my = cy + (outerRadius + 30) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const mx = cx + (outerRadius + lineP) * cos;
+  const my = cy + (outerRadius + lineP) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * lineP;
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
 
   return (
     <g>
-      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill} fontWeight="bold" fontSize="20">
+      <text x={cx} y={cy}  textAnchor="middle" dominantBaseline="middle" fill={fill} style={{ fontSize: `clamp(.5vw, 1.5vw, 40px)`, fontWeight:`bold` }}>
         {payload.name}
       </text>
       <Sector
@@ -45,8 +46,8 @@ const renderActiveShape = (props: any) => {
         cy={cy}
         innerRadius={innerRadius}
         outerRadius={outerRadius} 
-        startAngle={startAngle + 3}
-        endAngle={endAngle - 3}
+        startAngle={startAngle + 1}
+        endAngle={endAngle - 1}
         fill={fill}
       />
       <Sector
@@ -71,17 +72,17 @@ const renderActiveShape = (props: any) => {
         textAnchor={textAnchor}
         fill="#333"
         fontWeight="bold"
-        // fontSize="15"
+        fontSize="15"
 
       >{`${nvalue} : ${value}`}</text>
       <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
+        x={ex + (cos >= 0 ? 1 : -1) * 1}
         y={ey}
         dy={18}
         textAnchor={textAnchor}
         fill="#999"
         fontWeight="bold"
-        // fontSize=""
+        fontSize="13px"
       >
         {`(Rate ${(percent * 100).toFixed(2)}%)`}
       </text>
@@ -107,16 +108,10 @@ export default function MyPieChart() {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          // cx={200}
-          // cy={200}
-          innerRadius={60}
-          outerRadius={80}
-          // fill="#8884d8"
+          innerRadius="40%"
+          outerRadius="50%"
           dataKey="value"
-          // fontWeight="bold"
           onMouseEnter={onPieEnter}
-          width="100%"
-          height="100%"
         >
           {data.map((entry, index) => (
             <Cell key={`cell-${index}`} fill={entry.color} />

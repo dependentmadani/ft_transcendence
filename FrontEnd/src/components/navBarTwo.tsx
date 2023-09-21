@@ -44,7 +44,9 @@ function NavBarTwo (props:any) {
 
     return ( 
         <>
-            <img className='logo-img1'  src="src/imgs/logo.png" alt="Mskota-logo" />
+            <Link to='/' >
+                <img className='logo-img1'  src="src/imgs/logo.png" alt="Mskota-logo" />
+            </Link>
             <div className='right-bar'>
                 <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
                 <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
