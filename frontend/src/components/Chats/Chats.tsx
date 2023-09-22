@@ -119,7 +119,7 @@ export  const Chats = ({ onValueChange }: any) => {
           const latestMessagesData = await Promise.all(
             chatIds.map(async (chatId) => {
               if (chatId !== undefined) {
-                const latestMessage = (await axios.get(`http://localhost:8000/message/${chatId}`, {withCredentials: true}))?.data;
+                const latestMessage = (await axios.get(`http://localhost:8000/message/chat/${chatId}`, {withCredentials: true}))?.data;
                 const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
                 return { [chatId]: latestTextContent || 'No messages' };
               }
@@ -146,7 +146,7 @@ export  const Chats = ({ onValueChange }: any) => {
           const latestMessagesData = await Promise.all(
             roomIds.map(async (roomId: number) => {
               if (roomId !== undefined) {
-                const latestMessage = (await axios.get(`http://localhost:8000/message/${roomId}`, {withCredentials: true}))?.data;
+                const latestMessage = (await axios.get(`http://localhost:8000/message/room/${roomId}`, {withCredentials: true}))?.data;
                 const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
                 return { [roomId]: latestTextContent || 'No messages' };
               }
@@ -164,7 +164,7 @@ export  const Chats = ({ onValueChange }: any) => {
   }, [rooms]);
 
   // newChats?.map((chat: Chat) => (
-  //   console.log('CHAT AVATAR', chat)
+    console.log('CHAT AVATAR', chats)
   // ))
 
   return (

@@ -53,13 +53,31 @@ export class MessageService {
         }
     }
 
-    async createMessage(msgChatId: number, msgRoomId: number, MessageSenId: number, textContent: string, type: string) : Promise<Message> {
+    async createChatMessage(msgChatId: number, MessageSenId: number, textContent: string, type: string) : Promise<Message> {
         // console.log(message.chatId)
         try {
             const message = await this.prisma.message.create({ 
                 data: {
                     textContent: textContent,
                     msgChatId: msgChatId,
+                    MessageSenId: MessageSenId,
+                    // MessageRecId: MessageRecId,
+                    type: type,
+                },
+            })
+            return message
+        }
+        catch {
+            throw new UnauthorizedException("Couldn't create message")
+        }
+    }
+
+    async createRoomMessage(msgRoomId: number, MessageSenId: number, textContent: string, type: string) : Promise<Message> {
+        // console.log(message.chatId)
+        try {
+            const message = await this.prisma.message.create({ 
+                data: {
+                    textContent: textContent,
                     msgRoomId: msgRoomId,
                     MessageSenId: MessageSenId,
                     // MessageRecId: MessageRecId,

@@ -2,6 +2,9 @@
 // import { useEffect, useState } from "react"
 // import { Messages } from "./Messages"
 
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 interface Message {
   MessageSenId: number,
   MessageRecId: number,
@@ -9,35 +12,44 @@ interface Message {
   createdAt: Date
 }
 
+interface User {
+  id: number,
+  username: string,
+  avatar: string,
+}
+
 export const Message = ({ currentMessage }: any) => {
-  // const [message, setMessage] = useState<Message[]>([])
 
-  // useEffect(() => {
-  //   const fetchMessage = async () => {
-  //     try {
-  //       const response = await axios.get(`http://localhost:8000/message`)
-  //       setMessage(response.data)
-  //     }
-  //     catch (err) {
-  //       console.error(`Couldn't find any message with id ${messageId}`)
-  //     }
-  //   }
-  //   fetchMessage()
-  // }, [])
+  const [sender, setSender] = useState<User>()
+  const [owner, setOwner] = useState<User>()
 
-  // console.log('lmessage: ->', currentMessage)
-  // let testText: String
-  // if (currentMessage?.MessageSenId === 1)
-  //   testText = currentMessage?.textContent
-  // else
-  //   testText = 'lala mabghitch'
+  useEffect(() => {
+    const getSender = async () => {
+      try {
+        setSender(await (await axios.get(`http://localhost:8000/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
+      }
+      catch (err) {
+        console.log('No messages', err)
+      }
+    }
+    getSender()
+  }, [currentMessage])
+
+  useEffect(() => {
+    const getOwner = async () => {
+      setOwner(await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data)
+    }
+    getOwner()
+  }, [currentMessage])
+
+  // console.log('SENDER ', sender)
+  // console.log('OWNER', owner, currentMessage.MessageSenId)
 
   return (
-    <div className={ `message ${currentMessage.MessageSenId === 1 && 'owner'}` } >
+    <div className={ `message ${currentMessage.MessageSenId === owner?.id && 'owner'}` } >
         <div className="messageInfo">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt=""  />
-            
-            <span>{ new Date(currentMessage?.createdAt).getMinutes() } : { new Date(currentMessage?.createdAt).getSeconds() }</span>
+            <img src={ sender?.avatar } alt="user_avatar" />
+            <span>{ new Date(currentMessage?.createdAt).getHours() } : { new Date(currentMessage?.createdAt).getMinutes() }</span>
         </div>
         <div className="messageContent">
             <p>{ currentMessage?.textContent }</p>

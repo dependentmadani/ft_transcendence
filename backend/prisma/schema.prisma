@@ -81,9 +81,9 @@ model Message {
   // receiverId  Users @relation("Messagereccontact", fields: [MessageRecId], references: [id])
   // MessageRecId       Int
   messageChatId  Chat? @relation(fields: [msgChatId], references: [chatId])
-  msgChatId       Int
+  msgChatId       Int?
   messageRoomId  Room? @relation(fields: [msgRoomId], references: [id])
-  msgRoomId       Int
+  msgRoomId       Int?
   type            String
 }
 

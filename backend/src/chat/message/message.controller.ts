@@ -27,12 +27,19 @@ export class MessageController {
         return this.messageService.getRoomMessages(roomId)
     }
 
-    @Post()
-    async createMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
-                        @Body("msgRoomId", ParseIntPipe) msgRoomId: number,
+    @Post('chat')
+    async createChatMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
                         @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
                         @Body('textContent') textContent: string,
                         @Body('type') type: string) : Promise<Message> {
-        return this.messageService.createMessage(msgChatId, msgRoomId, MessageSenId, textContent, type)
+        return this.messageService.createChatMessage(msgChatId, MessageSenId, textContent, type)
+    }
+
+    @Post('room')
+    async createRoomMessage(@Body("msgRoomId", ParseIntPipe) msgRoomId: number,
+                        @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
+                        @Body('textContent') textContent: string,
+                        @Body('type') type: string) : Promise<Message> {
+        return this.messageService.createRoomMessage(msgRoomId, MessageSenId, textContent, type)
     }
 }

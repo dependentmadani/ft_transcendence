@@ -4,7 +4,7 @@ import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
 
-const _MAIN_USER_ = 1 // for now
+
 
 interface Message {}
 
@@ -20,8 +20,9 @@ export const Input = ({ chatData, chat }: any) => {
 
   const createNewMessage = async (inputText: string) => {
     try {
-      const sender = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
-      const receiver = currentChat?.chatUsers[0] === _MAIN_USER_ ? currentChat?.chatUsers[1] : currentChat?.chatUsers[0];
+      const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+      const sender = currentChat?.chatUsers[0] === _MAIN_USER_.id ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
+      const receiver = currentChat?.chatUsers[0] === _MAIN_USER_.id ? currentChat?.chatUsers[1] : currentChat?.chatUsers[0];
       console.log('WA L ID ', currentChat?.chatId, sender, receiver)
       let type: string = ''
       if (currentChat.type === 'chat')
@@ -30,15 +31,29 @@ export const Input = ({ chatData, chat }: any) => {
         type = 'room'
       console.log('TYPPPPEEE', chatData._chat.type)
 
-      return await axios.post('http://localhost:8000/message', {
-        'MessageSenId': sender,
-        // 'MessageRecId': receiver,
-        'textContent': inputText,
-        'msgChatId': currentChat?.chatId,
-        'type': chatData._chat.type,
-      }, {
-        withCredentials: true
-      })
+      if (chatData._chat.type === 'chat') {
+          const res = await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
+          'msgChatId': currentChat?.chatId,
+          'MessageSenId': sender,
+          'textContent': inputText,
+          'type': chatData._chat.type,
+          // 'MessageRecId': receiver,
+        }, {
+          withCredentials: true
+        })
+      }
+      else if (chatData._chat.type === 'room'){
+        const res = await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
+          'msgRoomId': currentChat?.chatId,
+          'MessageSenId': sender,
+          'textContent': inputText,
+          'type': chatData._chat.type,
+          // 'MessageRecId': receiver,
+        }, {
+          withCredentials: true
+        })
+        console.log('MSG ROOM CREATED SUCC ', res)
+      }
     }
     catch
     {
@@ -76,7 +91,7 @@ export const Input = ({ chatData, chat }: any) => {
       setMessages([...messages, newMessage]);
     }
   };
-
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s"
   useEffect(() => {
     chatData._socket.emit('setup', chatData._user)
     chatData._socket.on('connected', () => setConnectedSocket(true))
@@ -86,7 +101,7 @@ export const Input = ({ chatData, chat }: any) => {
     const fetchMessages = async () => {
       try {
         if (currentChat.chatId !== undefined)
-            setMessages((await axios.get(`http://localhost:8000/message/${currentChat?.chatId}`, {withCredentials: true}))?.data)
+            setMessages((await axios.get(`http://localhost:8000/message/chat/${currentChat?.chatId}`, {withCredentials: true}))?.data)
       }
       catch (err) {
           console.log(`No message`)
@@ -100,7 +115,7 @@ export const Input = ({ chatData, chat }: any) => {
   
   return (
     <>
-    <Messages currentChat={ currentChat } />
+    <Messages messages={ messages } />
 
     <div className="input">
       <div className="inputContainer">
