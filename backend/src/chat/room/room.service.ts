@@ -26,6 +26,18 @@ export class RoomService {
         }
     }
 
+    async getRoomAvatar(id: number): Promise<string> {
+        try {
+            const room = await this.prisma.room.findUnique({
+                where: { id: id }
+            })
+            return room.roomAvatar
+        }
+        catch (err) {
+            console.error(`Couldn't find any room with id: ${id} ${err}`)
+        }
+    }
+
     async createRoom(roomName: string, roomAvatar: string, roomType: string) {
         return await this.prisma.room.create({
             data: {

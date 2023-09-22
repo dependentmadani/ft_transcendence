@@ -16,7 +16,7 @@ interface Chat {
 }
 
 interface Room {
-  roomId: number,
+  id: number,
   roomName: number;
   roomAvatar: string;
 }
@@ -39,6 +39,7 @@ export  const Chats = ({ onValueChange }: any) => {
   const [rooms, setRooms] = useState<Room[]>([])
   const [latestMessages, setLatestMessages] = useState<{ [chatId: number]: string }>({});
   const [latestRoomMessages, setLatestRoomMessages] = useState<{ [roomId: number]: string }>({});
+  // const [roomAvatar, setRoomAvatar] = useState('');
 
 
   
@@ -140,7 +141,7 @@ export  const Chats = ({ onValueChange }: any) => {
   useEffect(() => {
     const fetchLatestMessages = async () => {
       try {
-        const roomIds = rooms?.map((room) => room.roomId);
+        const roomIds = rooms?.map((room) => room.id);
 
         if (roomIds && roomIds.length > 0) {
           const latestMessagesData = await Promise.all(
@@ -163,8 +164,58 @@ export  const Chats = ({ onValueChange }: any) => {
     fetchLatestMessages();
   }, [rooms]);
 
+  // useEffect(() => {
+  //   const getRoomAvatar = async (id: number) => {
+  //     try {
+  //       const res = await axios.get(`http://localhost:8000/room/roomAvatar/${id}`, {
+  //         responseType: 'arraybuffer',
+  //       })
+  //       const avatarData = Buffer.from(res.data, 'binary').toString('base64');
+  //       const avatarUrl = `data:image/jpeg;base64,${avatarData}`;
+  
+  //       setRoomAvatar(avatarUrl)
+  //     }
+  //     catch (err) {
+  //       console.log('No Avarar: ', err)
+  //       // return ''
+  //     }
+  //   }
+  //   getRoomAvatar()
+  // }, [id])
+  const [roomAvatar, setRoomAvatar] = useState<{ [roomId: number]: string }>({});
+
+  useEffect(() => {
+    const fetchRoomAvatars = async () => {
+      try {
+        const roomAvatarUrls = await Promise.all(
+          rooms.map(async (room) => {
+            const res = await axios.get(`http://localhost:8000/room/roomAvatar/${room.id}`, {
+              responseType: 'arraybuffer',
+              withCredentials: true,
+            });
+            const avatarData = Buffer.from(res.data, 'binary').toString('base64');
+            const avatarUrl = `data:image/jpeg;base64,${avatarData}`;
+            console.log('WEWWE', avatarUrl)
+            return { id: room.id, url: avatarUrl };
+          })
+        );
+  
+        const roomAvatarMap = Object.fromEntries(
+          roomAvatarUrls.map((roomAvatar) => [roomAvatar.id, roomAvatar.url])
+        );
+  
+        setRoomAvatar(roomAvatarMap);
+      } catch (err) {
+        console.log('Error fetching room avatars: ', err);
+      }
+    };
+  
+    fetchRoomAvatars();
+  }, [rooms]);
+  
+
   // newChats?.map((chat: Chat) => (
-    console.log('CHAT AVATAR', chats)
+    // console.log('Room AVATAR', getRoomAvatar())
   // ))
 
   return (
@@ -183,10 +234,10 @@ export  const Chats = ({ onValueChange }: any) => {
         {
           rooms.map((room, index) => (
             <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
-                <img src={ room?.roomAvatar } alt="room_avatar" />
+                <img src={ roomAvatar[room.id] ? roomAvatar[room.id] : '' } alt="room_avatar" />
                 <div className="userChatInfo">
                     <span>{ room.roomName }</span>
-                    <p>{ latestRoomMessages[room.roomId] ? latestRoomMessages[room.roomId] : '' }</p>
+                    <p>{ latestRoomMessages[room.id] ? latestRoomMessages[room.id] : '' }</p>
                 </div>
             </div>
           ))
