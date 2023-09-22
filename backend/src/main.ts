@@ -6,6 +6,7 @@ import * as session from 'express-session';
 import * as passport from 'passport';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import * as express from 'express';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
@@ -15,6 +16,13 @@ async function bootstrap() {
     AppModule,
     new ExpressAdapter(server),
   );
+  const config = new DocumentBuilder()
+    .setTitle('app example')
+    .setDescription('The app API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
