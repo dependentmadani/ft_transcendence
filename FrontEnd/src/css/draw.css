@@ -1,0 +1,37 @@
+.draw-base {
+    width: 100vw;
+    height: 100vh;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* justify-content: space-around; */
+    /* flex-direction: column; */
+}
+
+.draw-1 {
+    width: 50%;
+    height: 200px;
+    background-color: black;
+}
+
+.draw-2 {
+    width: 20%;
+    height: 200px;
+    background-color: darkorange;
+}
+
+.draw-3 {
+    width: 10%;
+    height: 200px;
+    background-color: chartreuse;
+}
+
+@media (max-width: 700px){
+    
+    .draw-base{
+        /* display: none; */
+        background-color: brown;
+        flex-direction: column;
+    }
+}

@@ -9,6 +9,7 @@
     background-color: rgb(227, 220, 17);
     display: flex;
     align-items: center;
+    z-index: 500;
     justify-content: space-between;
 }
 

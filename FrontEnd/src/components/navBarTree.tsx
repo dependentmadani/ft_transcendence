@@ -8,7 +8,6 @@ function NavBarTree () {
             <img src="src/imgs/account-icon.png" alt="profile" />
             <img src="src/imgs/chat-icon.png" alt="chat" />
             <img src="src/imgs/racket-icon.png" alt="play" />
-            <img src="src/imgs/setting.png" alt="setting" />
             <img src="src/imgs/leaderboard.png" alt="leaderboard" />
         </>
     )

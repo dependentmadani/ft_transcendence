@@ -11,7 +11,8 @@ import Section from './Section'
 
 import MyPieChart from './pieChart'
 
-import Hlwa  from './Test'
+import Hlwa  from './pieChart'
+import Draw from './Draw'
 // import Kika from './pieChart'
 // import Zitona  from '../test/zitona'
 
@@ -37,8 +38,8 @@ function App(props:any)  {
             <Route path='/profile' element={<Section section='profile' />} />
             <Route path='/pie' element={<MyPieChart />} />
             <Route path='/hlwa' element={<Hlwa />} />
-            {/* <Route path='/kika' element={<Kika />} />
-            <Route path='/zitona' element={<Zitona />} /> */}
+            <Route path='/kika' element={<Draw />} />
+            {/* <Route path='/zitona' element={<Zitona />} /> */} 
         </Routes>
     )
 }

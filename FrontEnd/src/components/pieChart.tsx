@@ -28,11 +28,11 @@ const renderActiveShape = (props: any) => {
   const lineP = ((outerRadius * 2) / 10);
   const sin = Math.sin(-RADIAN * midAngle);
   const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
+  const sx = cx + (outerRadius + 5) * cos;
+  const sy = cy + (outerRadius + 5) * sin;
   const mx = cx + (outerRadius + lineP) * cos;
   const my = cy + (outerRadius + lineP) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * lineP;
+  const ex = mx + (cos >= 0 ? 1 : -1) * lineP / 2;
   const ey = my;
   const textAnchor = cos >= 0 ? "start" : "end";
 
@@ -46,17 +46,17 @@ const renderActiveShape = (props: any) => {
         cy={cy}
         innerRadius={innerRadius}
         outerRadius={outerRadius} 
-        startAngle={startAngle + 1}
-        endAngle={endAngle - 1}
+        startAngle={startAngle + 3}
+        endAngle={endAngle - 3}
         fill={fill}
       />
       <Sector
         cx={cx}
         cy={cy}
-        startAngle={startAngle}
-        endAngle={endAngle}
-        innerRadius={outerRadius + 6}
-        outerRadius={outerRadius + 10}
+        startAngle={startAngle + 2}
+        endAngle={endAngle - 2}
+        innerRadius={outerRadius + 4}
+        outerRadius={outerRadius + 6}
         fill={fill}
       />
       <path
@@ -70,13 +70,13 @@ const renderActiveShape = (props: any) => {
         x={ex + (cos >= 0 ? 1 : -1) * 12}
         y={ey}
         textAnchor={textAnchor}
-        fill="#333"
+        fill="#fff"
         fontWeight="bold"
         fontSize="15"
 
       >{`${nvalue} : ${value}`}</text>
       <text
-        x={ex + (cos >= 0 ? 1 : -1) * 1}
+        x={ex + (cos >= 0 ? 1 : -1) }
         y={ey}
         dy={18}
         textAnchor={textAnchor}
@@ -108,9 +108,12 @@ export default function MyPieChart() {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          innerRadius="40%"
-          outerRadius="50%"
+          innerRadius="35%"
+          outerRadius="42%"
           dataKey="value"
+          // cx="55%"
+          // cy="50%"
+          
           onMouseEnter={onPieEnter}
         >
           {data.map((entry, index) => (
