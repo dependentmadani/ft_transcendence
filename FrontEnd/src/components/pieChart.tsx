@@ -38,9 +38,18 @@ const renderActiveShape = (props: any) => {
 
   return (
     <g>
-      <text x={cx} y={cy}  textAnchor="middle" dominantBaseline="middle" fill={fill} style={{ fontSize: `clamp(.5vw, 1.5vw, 40px)`, fontWeight:`bold` }}>
+      <text 
+        x={cx} 
+        y={cy}  
+        textAnchor="middle" 
+        dominantBaseline="middle" 
+        fill={fill} 
+        style={{ 
+          // fontSize: `clamp(.5vw, 1.5vw, 40px)`, 
+          fontWeight:`bold` }}>
         {payload.name}
       </text>
+      <li>hlwa</li>
       <Sector
         cx={cx}
         cy={cy}
@@ -76,7 +85,7 @@ const renderActiveShape = (props: any) => {
 
       >{`${nvalue} : ${value}`}</text>
       <text
-        x={ex + (cos >= 0 ? 1 : -1) }
+        x={ex + (cos >= 0 ? 11 : -11) }
         y={ey}
         dy={18}
         textAnchor={textAnchor}
@@ -84,7 +93,7 @@ const renderActiveShape = (props: any) => {
         fontWeight="bold"
         fontSize="13px"
       >
-        {`(Rate ${(percent * 100).toFixed(2)}%)`}
+        {`(${(percent * 100).toFixed(2)}%)`}
       </text>
     </g>
   );
@@ -108,11 +117,9 @@ export default function MyPieChart() {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          innerRadius="35%"
-          outerRadius="42%"
+          innerRadius="40%"
+          outerRadius="52%"
           dataKey="value"
-          // cx="55%"
-          // cy="50%"
           
           onMouseEnter={onPieEnter}
         >

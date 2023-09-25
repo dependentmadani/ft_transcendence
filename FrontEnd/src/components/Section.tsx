@@ -33,10 +33,8 @@ function Section (props:any) {
 
     return (
         <div className='root-section'>
-            <div className='NavBarTwo'>
                 {/* hlwa */}
                 <NavBarTwo/>
-            </div>
             <div className='main-section'>
                 <div className='NavBarTree'>
                     <NavBarTree/>

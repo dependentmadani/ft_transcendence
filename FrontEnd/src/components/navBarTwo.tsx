@@ -44,18 +44,20 @@ function NavBarTwo (props:any) {
 
     return ( 
         <>
-            <Link to='/' >
-                <img className='logo-img1'  src="src/imgs/logo.png" alt="Mskota-logo" />
-            </Link>
-            <div className='right-bar'>
-                <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
-                <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
-                    {listNotific}
+            <div className='NavBarTwo'>
+                <Link to='/' >
+                    <img className='logo-img1'  src="src/imgs/logo.png" alt="Mskota-logo" />
+                </Link>
+                <div className='right-bar'>
+                    <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
+                    <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
+                        {listNotific}
+                    </div>
+                    <img className='user-img' src="src/imgs/example.jpg" alt="user-img" onClick={toggleMenu} />
                 </div>
-                <img className='user-img' src="src/imgs/user.jpg" alt="user-img" onClick={toggleMenu} />
                 <div className={`drop-menu2 ${isMenuOpen ? 'open-menu2' : ''}`}>
                     {listItems}
-                </div>
+                    </div>
             </div>
         </>
     )

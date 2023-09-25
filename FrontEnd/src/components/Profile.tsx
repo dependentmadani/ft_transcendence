@@ -49,6 +49,18 @@ function Badges() {
   );
 }
 
+function Friend() {
+    return (
+        <div className='friend'>
+            <img className='user-friend' src="src/imgs/example.jpg" alt="friend-img" />
+            <span className='status-friend'><span id='circle'></span> status</span>
+            <span className='name-friend'> Name</span>
+            {/* <span className='icon-chat'></span> */}
+            <img className='icon-chat' src="src/imgs/chat-room.png" alt="chat-img" />
+        </div>
+    )
+}
+
 function History () {
     return (
         <>
@@ -63,27 +75,49 @@ function Profile () {
         <div className='profile'>
             <div className='profile-col-1'>
                 <div className='profile-info'>
-                    <div className='profile-info-right'>
-                        {/* <img id='settings'  src="src/imgs/setting.png" alt="setting" />
+                    <div className='profile-info-left'>
+                        <img id='settings'  src="src/imgs/setting.png" alt="setting" />
                         <div className='profile-img'>
                             <img src="src/imgs/example.jpg" alt="user-img" />
                         </div>
                         <div className='profile-name-rank'>
                             <span className='profile-name'> Name </span>
                             <span className='profile-rank'> 5 </span>
-                        </div> */}
+                        </div>
                     </div>
-                    <div className='profile-info-left'>
-
+                    <div className='profile-info-right'>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
+                        <div className='achive'></div>
                     </div>
                 </div>
                 <div className='user-friends'>
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
+                    <Friend />
 
                 </div>
             </div>
             <div className='profile-col-2'>
                 <div className='history'>
-                    {/* <Badges />
                     <Badges />
                     <Badges />
                     <Badges />
@@ -101,11 +135,12 @@ function Profile () {
                     <Badges />
                     <Badges />
                     <Badges />
-                    <Badges /> */}
+                    <Badges />
+                    <Badges />
 
                 </div>
                 <div className='statistic'>
-                    {/* <MyPieChart /> */}
+                    <MyPieChart />
                 </div>
             </div>
             {/* <div className='blur' ></div>
