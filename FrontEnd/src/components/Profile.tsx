@@ -86,61 +86,70 @@ function Profile () {
                         </div>
                     </div>
                     <div className='profile-info-right'>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
-                        <div className='achive'></div>
+                        <div id='title' >
+                            <span>Achivements</span>
+                        </div>
+                        <div className='achivements'>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                            <div className='achive'></div>
+                        </div>
                     </div>
                 </div>
                 <div className='user-friends'>
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
-                    <Friend />
+                    <div id='search'>
+                        <img src="/src/imgs/search.png" alt="search" />
+                    </div>
+                    {/* <input type="text" className="search-input" placeholder="Search..." /> */}
+                    <div id='title' ><span>Friends </span></div>
+                    <div className='friends-list'>
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                        <Friend />
+                    </div>
 
                 </div>
             </div>
             <div className='profile-col-2'>
                 <div className='history'>
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
-                    <Badges />
+                    <div id='title' ><span>History </span></div>
+                    <div className='my-history'>
+                        
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        <Badges />
+                        </div>        
 
                 </div>
                 <div className='statistic'>
-                    <MyPieChart />
+                    <div id='title' ><span>Statistic </span></div>
+                    <div id='chart'>
+                        <MyPieChart />
+                    </div>
                 </div>
             </div>
             {/* <div className='blur' ></div>
