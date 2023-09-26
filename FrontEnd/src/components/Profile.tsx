@@ -1,6 +1,8 @@
 import '../css/Profile.css'
 import MyPieChart from './pieChart'
 import Myhlwa from './Test'
+import React, { useState, useEffect } from 'react';
+
 
 
 function ProfileInfo () {
@@ -71,6 +73,31 @@ function History () {
 
 function Profile () {
 
+    const [searchOpen, setSearchOpen] = useState(false);
+    const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
+    
+
+    // var icon_search:string = ;
+    
+    const search_open = () => {
+        const my_search = document.querySelector('.search-input') as HTMLElement
+        const search_icon = document.getElementById('search') as HTMLElement
+        // console.log ('hlwa')
+        if (!searchOpen) {
+            setIconSearch('/src/imgs/cancel-red.png');
+            my_search.style.width = '48%';
+            search_icon.style.borderRadius = '0px 20px 20px 0';
+            
+        }
+        else if (searchOpen) { 
+            setIconSearch('/src/imgs/search.png');
+            my_search.style.width = '36px' 
+            search_icon.style.borderRadius = '20px'
+        }
+        setSearchOpen(!searchOpen);
+    }
+
+
     return (
         <div className='profile'>
             <div className='profile-col-1'>
@@ -103,9 +130,9 @@ function Profile () {
                     </div>
                 </div>
                 <div className='user-friends'>
-                    {/* <input type="text" className="search-input" placeholder="Search..." /> */}
+                    <input type="search" className="search-input" placeholder="Search..." />
+                    <img id='search' src={iconSearch} alt="search" onClick={search_open} />
                     <div id='title' ><span>Friends </span></div>
-                    <img id='search' src="/src/imgs/search.png" alt="search" />
                     <div className='friends-list'>
                         <Friend />
                         <Friend />
@@ -157,8 +184,3 @@ function Profile () {
 }
 
 export default Profile;
-
-<div className='hlwa'>
-    <div className='hlaw1'></div>
-    <div className='hlaw2'></div>
-</div>

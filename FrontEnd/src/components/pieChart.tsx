@@ -3,9 +3,9 @@ import React, { useCallback, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
-  { name: "Wins", value: 12, nvalue: "W.V", color: "#00C49F"},
-  { name: "Loses", value: 10, nvalue: "L.V", color: "#FF8042" },
-  { name: "Ties", value: 15, nvalue: "T.V", color: "#0088FE" }
+  { name: "Wins", value: 12, color: "#00C49F"},
+  { name: "Loses", value: 10, color: "#FF8042" },
+  { name: "Ties", value: 15, color: "#00c8fe" }
 ];
 
 
@@ -40,16 +40,25 @@ const renderActiveShape = (props: any) => {
     <g>
       <text 
         x={cx} 
-        y={cy}  
+        y={cy - 10}  
         textAnchor="middle" 
         dominantBaseline="middle" 
-        fill={fill} 
+        fill={fill}
         style={{ 
           // fontSize: `clamp(.5vw, 1.5vw, 40px)`, 
           fontWeight:`bold` }}>
-        {payload.name}
+        {`${payload.name} : ${value}`}
       </text>
-      <li>hlwa</li>
+            <text
+              x={cx - 40}
+              y={cy}
+              dy={15}
+              fill="#d3d3d3"
+              fontWeight="bold"
+              fontSize="13px"
+            >
+              {`Rate (${(percent * 100).toFixed(2)}%)`}
+            </text>
       <Sector
         cx={cx}
         cy={cy}
@@ -68,33 +77,6 @@ const renderActiveShape = (props: any) => {
         outerRadius={outerRadius + 6}
         fill={fill}
       />
-      <path
-        d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`}
-        stroke={fill}
-        fill="none"
-        
-      />
-      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
-      <text
-        x={ex + (cos >= 0 ? 1 : -1) * 12}
-        y={ey}
-        textAnchor={textAnchor}
-        fill="#fff"
-        fontWeight="bold"
-        fontSize="15"
-
-      >{`${nvalue} : ${value}`}</text>
-      <text
-        x={ex + (cos >= 0 ? 11 : -11) }
-        y={ey}
-        dy={18}
-        textAnchor={textAnchor}
-        fill="#999"
-        fontWeight="bold"
-        fontSize="13px"
-      >
-        {`(${(percent * 100).toFixed(2)}%)`}
-      </text>
     </g>
   );
 };
@@ -117,8 +99,8 @@ export default function MyPieChart() {
           activeIndex={activeIndex}
           activeShape={renderActiveShape}
           data={data}
-          innerRadius="40%"
-          outerRadius="52%"
+          innerRadius="65%"
+          outerRadius="82%"
           dataKey="value"
           
           onMouseEnter={onPieEnter}
