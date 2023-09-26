@@ -77,11 +77,12 @@ export const RoomCreationModal = ({ onClose }: any) => {
             if (response.data) {
                 console.log('rah mzyaaan')
                 const roomId: number = response.data.id
-                const userId: number = 1 // for now
+                // const userId: number = 1 // for now
                 try {
+                    const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
                     const response = await axios.post(`http://localhost:8000/roomUsers`, {
                         roomId: roomId,
-                        userId: userId,
+                        userId: _MAIN_USER_.id,
                         role: 'OWNER',
                     }, {
                         withCredentials: true

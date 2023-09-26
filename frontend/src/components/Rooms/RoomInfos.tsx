@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBell, faBellSlash, faRightFromBracket, faMagnifyingGlass, faGear } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import { SearchResult } from '../Search/SearchResult';
 import { RoomSettings } from './RoomSettings';
+import axios from 'axios';
 
 // interface User {
 //     id: number;
@@ -12,41 +13,50 @@ import { RoomSettings } from './RoomSettings';
 
 
 export const RoomInfos = ({ currentRoom }: any) => {
+    
     const [showSettings, setShowSettings] = useState(false);
+
     const openSettings = () => {
-        setShowSettings(true);
-      };
+      setShowSettings(true);
+    };
       
-      const closeSettings = () => {
-        setShowSettings(false);
-      };
+    const closeSettings = () => {
+      setShowSettings(false);
+    };
 
-      console.log('current room', currentRoom)
+    const [roomAvatar, setRoomAvatar] = useState('');
 
-  return (
-      <div className="contactInfo container-flex">
-            <div className="contactInfos flex-item">
-                
-                <div className="contactAvatar">
-                    <img src={ currentRoom.roomAvatar } alt="room_avatar" />
+    useEffect(() => {
+        const fetchRoomAvatar = async () => {
+        try {
+            const res = (await axios.get(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`, {withCredentials: true}))?.data;
+            setRoomAvatar(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`);
+        }
+        catch (err) {
+            console.error('No latest messages');
+        }
+        };
+        fetchRoomAvatar();
+    }, [currentRoom.id]);
+
+    console.log('current room', currentRoom)
+
+    return (
+        <div className="contactInfo container-flex">
+                <div className="contactInfos flex-item">
+                    
+                    <div className="contactAvatar">
+                        <img src={ roomAvatar } alt="room_avatar" />
+                    </div>
+                    <span>{ currentRoom.roomName }</span>
                 </div>
-                <span>{ currentRoom.roomName }</span>
-            </div>
 
-            {/* <div className="mutualContact flex-item">
-                <p>members</p>
-                <p>room admin: { currentRoom.roomMembers }</p>
-                <p>room users: { currentRoom.roomMembers }</p>
-                <p>kicked users: { currentRoom.kickedUsers }</p>
-                <p>baned users: { currentRoom.bannedUsers }</p>
-                <p>muted users: { currentRoom.mutedUsers }</p>
-            </div> */}
-            <div className="contactPlay flex-item">
-                <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
-                <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
-            </div>
-            { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} />}
-    </div>
-  )
+                <div className="contactPlay flex-item">
+                    <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
+                    <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
+                    <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
+                </div>
+                { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} />}
+        </div>
+    )
 }

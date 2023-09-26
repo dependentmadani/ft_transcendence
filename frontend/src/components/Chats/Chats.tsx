@@ -88,8 +88,16 @@ export  const Chats = ({ onValueChange }: any) => {
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        let response = await axios.get(`http://localhost:8000/room`, {withCredentials: true})
-        setRooms(response.data)
+        _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        let rooms = await axios.get(`http://localhost:8000/roomUsers/user/${_MAIN_USER_.id}`, {withCredentials: true})
+        console.log('initial rooms', rooms.data, _MAIN_USER_.id)
+        let t: any = []
+        rooms.data.map(async (room: Room) => {
+          let res = await axios.get(`http://localhost:8000/room/${room.id}`, {withCredentials: true})
+          t.push(res.data)
+        })
+        // console.log('TTT', t)
+        setRooms(t)
       }
       catch (err) {
         console.error('No rooms')
@@ -187,33 +195,61 @@ export  const Chats = ({ onValueChange }: any) => {
   useEffect(() => {
     const fetchRoomAvatars = async () => {
       try {
-        const roomAvatarUrls = await Promise.all(
-          rooms.map(async (room) => {
-            const res = await axios.get(`http://localhost:8000/room/roomAvatar/${room.id}`, {
-              responseType: 'arraybuffer',
-              withCredentials: true,
-            });
-            const avatarData = Buffer.from(res.data, 'binary').toString('base64');
-            const avatarUrl = `data:image/jpeg;base64,${avatarData}`;
-            console.log('WEWWE', avatarUrl)
-            return { id: room.id, url: avatarUrl };
-          })
-        );
-  
-        const roomAvatarMap = Object.fromEntries(
-          roomAvatarUrls.map((roomAvatar) => [roomAvatar.id, roomAvatar.url])
-        );
-  
-        setRoomAvatar(roomAvatarMap);
+        const roomIds = rooms?.map((room) => room.id);
+
+        if (roomIds && roomIds.length > 0) {
+          const latestMessagesData = await Promise.all(
+            roomIds.map(async (roomId: number) => {
+              if (roomId !== undefined) {
+                const res = (await axios.get(`http://localhost:8000/room/roomAvatar/${roomId}`, {withCredentials: true}))?.data;
+                // const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
+                return { [roomId]: res || '' };
+              }
+            })
+          );
+
+          const latestMessagesObject = Object.assign({}, ...latestMessagesData);
+          setRoomAvatar(latestMessagesObject);
+        }
       } catch (err) {
-        console.log('Error fetching room avatars: ', err);
+        console.error('No latest messages');
       }
     };
-  
     fetchRoomAvatars();
   }, [rooms]);
-  
 
+  // useEffect(() => {
+  //   const fetchRoomAvatars = async () => {
+  //     try {
+  //       const roomAvatarUrls = await Promise.all(
+  //         rooms.map(async (room) => {
+  //           const res = await axios.get(`http://localhost:8000/room/roomAvatar/${room.id}`, {
+  //             // responseType: 'arraybuffer',
+  //             withCredentials: true,
+  //           });
+  //           // const avatarData = Buffer.from(res.data, 'binary').toString('base64');
+  //           // const avatarUrl = `data:image/jpeg;base64,${avatarData}`;
+  //           console.log('WEWWE', room.id, res.data)
+  //           return { [room.id]: [res.data] || '' };
+  //         })
+  //         );
+          
+  //         // const roomAvatarMap = Object.fromEntries(
+  //         //   roomAvatarUrls.map((roomAvatar) => [roomAvatar.id, roomAvatar.url])
+  //         //   );
+            
+  //         const roomAvatarMap = Object.assign({}, ...roomAvatarUrls);
+  //         setRoomAvatar(roomAvatarMap);
+  //     } catch (err) {
+  //       console.log('Error fetching room avatars: ', err);
+  //     }
+  //   };
+  
+  //   fetchRoomAvatars();
+  // }, [rooms]);
+  
+  console.log('OOO', roomAvatar)
+  console.log('Rooms', rooms)
   // newChats?.map((chat: Chat) => (
     // console.log('Room AVATAR', getRoomAvatar())
   // ))
@@ -228,17 +264,19 @@ export  const Chats = ({ onValueChange }: any) => {
                 <span>{ chat.receiver.username }</span>
                 <p>{ latestMessages[chat.chatId] ? latestMessages[chat.chatId] : '' }</p>
               </div>
+              {/* { 0 && <span className="notifSpan">n</span>} */}
             </div>
           ))
         }
         {
           rooms.map((room, index) => (
             <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
-                <img src={ roomAvatar[room.id] ? roomAvatar[room.id] : '' } alt="room_avatar" />
+                <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
                 <div className="userChatInfo">
                     <span>{ room.roomName }</span>
                     <p>{ latestRoomMessages[room.id] ? latestRoomMessages[room.id] : '' }</p>
                 </div>
+                {/* { 0 && <span className="notifSpan">n</span> } */}
             </div>
           ))
         }

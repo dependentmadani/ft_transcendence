@@ -15,8 +15,9 @@ export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
         console.log('joinina assi ', invitedUser, currentRoom)
 
         try {
+            const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
             const response = await axios.post(`http://localhost:8000/invitations`, {
-                sender: 1, // for now
+                sender: _MAIN_USER_.id,
                 receiver: invitedUser.id,
                 roomId: currentRoom.id,
             }, {

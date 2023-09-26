@@ -17,7 +17,7 @@ interface RoomUsers {
 
 export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
-    const [roomMembers, setRoomMembers] = useState<User[] | null>([])
+    // const [roomMembers, setRoomMembers] = useState<User[] | null>([])
     const [currentUserIsAdmin, setCurrentUserIsAdmin] = useState(false)
     const [newRoomType, setNewRoomType] = useState(currentRoom.roomType)
     const [newRoomName, setNewRoomName] = useState('')
@@ -45,35 +45,35 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
         isCurrentUserAdmin()
     }, [currentRoom.id])
 
-    useEffect(() =>{
-        const getRoomMembers = async () => {
-            try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`, {withCredentials: true})
-                console.log('yyyy', currentRoom.id)
-                if (result.data) {
-                    let membersIds: number[] = []
-                    result.data.map((member: RoomUsers) => (
-                        membersIds.push(member?.userId)
-                    ))
-                    let members: User[] = []
-                    for (let i=0; i<membersIds.length; i++) {
-                        try {
-                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
-                            members.push(user.data)
-                        }
-                        catch (err) {
-                            console.error(`Couldn't fetch any user`)
-                        }
-                    }
-                    setRoomMembers(members)
-                }
-            }
-            catch {
-                console.error('No users for this room')
-            }
-        }
-        getRoomMembers()
-    }, [])
+    // useEffect(() =>{
+    //     const getRoomMembers = async () => {
+    //         try {
+    //             const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`, {withCredentials: true})
+    //             console.log('yyyy', currentRoom.id)
+    //             if (result.data) {
+    //                 let membersIds: number[] = []
+    //                 result.data.map((member: RoomUsers) => (
+    //                     membersIds.push(member?.userId)
+    //                 ))
+    //                 let members: User[] = []
+    //                 for (let i=0; i<membersIds.length; i++) {
+    //                     try {
+    //                         const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
+    //                         members.push(user.data)
+    //                     }
+    //                     catch (err) {
+    //                         console.error(`Couldn't fetch any user`)
+    //                     }
+    //                 }
+    //                 setRoomMembers(members)
+    //             }
+    //         }
+    //         catch {
+    //             console.error('No users for this room')
+    //         }
+    //     }
+    //     getRoomMembers()
+    // }, [])
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewRoomType(event.target.value);
@@ -104,7 +104,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
         }
     }
 
-    console.log('ROOM MEMBERS ', roomMembers, currentUserIsAdmin)
+    console.log('ROOM MEMBERS ', currentUserIsAdmin)
     console.log(currentRoom.roomType)
 
     return (
