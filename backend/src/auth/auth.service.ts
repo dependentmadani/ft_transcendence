@@ -277,11 +277,6 @@ export class AuthService {
         },
       });
 
-    //did not find the username
-    if (!user)
-      throw new ForbiddenException(
-        'Access Denied',
-      );
     await this.prisma.users.update({
       where: {
         id: user.id,

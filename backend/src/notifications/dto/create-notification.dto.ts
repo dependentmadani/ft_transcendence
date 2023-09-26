@@ -3,7 +3,7 @@ import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class NotificationDto {
     @IsNumber()
-    receiverId: number;
+    receiverName: string;
 
     @IsString()
     title: string;
@@ -19,4 +19,18 @@ export class NotificationDto {
 
     @IsBoolean()
     read: boolean;
+}
+
+export class NotificationBody {
+    @IsNumber()
+    NotificationId: number;
+
+    @IsString()
+    senderName: string;
+
+    @IsString()
+    receiverName: string;
+
+    @IsString()
+    title: string;
 }

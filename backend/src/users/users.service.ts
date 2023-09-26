@@ -41,7 +41,7 @@ export class UsersService {
     return user;
   }
 
-  async searchUser(username: string) {
+  async searchUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
     }
@@ -50,6 +50,9 @@ export class UsersService {
         username: {
           startsWith: username,
           mode: 'insensitive',
+        },
+        email : {
+          not: users.email
         }
       }
     });
