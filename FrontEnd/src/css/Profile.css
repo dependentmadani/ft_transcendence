@@ -65,7 +65,7 @@ img {
         justify-content: center;
         align-items: center;
         margin: 1.5rem 1rem;
-        backdrop-filter: blur(30px);
+        /* backdrop-filter: blur(30px); */
     }
     
     .user-friends {
@@ -111,19 +111,20 @@ img {
 
         height: 14%;
         width: 100%;
-        margin: 0;
+        /* margin-top: ; */
         padding: 0;
         position: relative;
-        
+        /* background-color: red; */
     }
     
     #title > span {
         
         background-color: rgba(63,81,181,0.5);
+        height: 90%;
         position: absolute;
-        top: 0;
+        top: 15%;
         left: 0;
-        padding: .9rem 1.3rem;
+        padding: .5rem 1.3rem;
         border-radius: 10px 10px 0px 0px;
         font-size: larger;
         font-weight: 700;
@@ -131,40 +132,42 @@ img {
     }
 
     #search  {
-        position: absolute;
-        top: 1.5%;
+        cursor: pointer;
+        position: absolute; 
+        top: 2%;
         width: 27px;
         right: 2%;
         background-color: cadetblue;
-        padding: .3rem;
+        padding: .2rem .1rem;
         border-radius: 10px;
-        cursor: pointer;
     }
-
-    #search > img {
-        height: 100%;
-        width: 100%;
-        cursor: pointer;
-    }    
-
+    
+    #search:hover {
+        
+        background-color: rgb(121, 201, 203);
+    }
 
     /* .profile-info-right {
         background-color: aquamarine;
         padding: .5rem;
     }
     
-    .profile-info-left {
-        background-color: black;
-    }
     
-    .user-friends {
-        background-color: chartreuse;
-    }
-
+    
     .history {
         background-color: violet;
     } */
+    
+    /* .user-friends {
+        background-color: chartreuse;
+    } */
+    /* .profile-info-left {
+        background-color: black;
+    }
 
+    .profile-info-right {
+        background-color: seagreen;
+    } */
     .statistic {
         overflow: hidden;
     }
@@ -231,7 +234,9 @@ img {
 
     /* ACHIVEMENT */
     .profile-info-left {
-        flex-wrap: wrap;
+        /* max-width: 350px; */
+        /* flex-wrap: wrap; */
+
     }
     .achive {
         width: 100px;
@@ -381,14 +386,44 @@ img {
             height: 350px;
         }
     }
+    
+    @media (max-width: 300px) {
+        .profile-img {
+            height: 60%;
+        }
+
+        #settings {
+            width: 25px;
+            right: 1;
+        }
+    }
 
     @media (min-width: 600px) {
-        .profile-info-right,
-        .profile-info-left,
         .user-friends,
         .history,
         .statistic {
             height: 450px;
+        }
+        .profile-info-right,
+        .profile-info-left {
+            height: 350px;
+            width: 50%;
+            margin: .5rem;
+        }
+
+        .profile-img {
+            height: 60%;
+        }
+
+        .profile-info {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            /* background-color: coral; */
+        }
+
+        #title > span { 
+            padding:  1rem 1rem;
         }
     }
 

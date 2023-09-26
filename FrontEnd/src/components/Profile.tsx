@@ -103,11 +103,9 @@ function Profile () {
                     </div>
                 </div>
                 <div className='user-friends'>
-                    <div id='search'>
-                        <img src="/src/imgs/search.png" alt="search" />
-                    </div>
                     {/* <input type="text" className="search-input" placeholder="Search..." /> */}
                     <div id='title' ><span>Friends </span></div>
+                    <img id='search' src="/src/imgs/search.png" alt="search" />
                     <div className='friends-list'>
                         <Friend />
                         <Friend />
