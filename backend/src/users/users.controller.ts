@@ -113,8 +113,8 @@ export class UsersController {
 
   @Get('search/:username')
   @HttpCode(HttpStatus.OK)
-  async searchUser(@Param('username') username: string) {
-    return this.userService.searchUser(username);
+  async searchUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchUser(username, req.user);
   }
 
   @Get('/:id')

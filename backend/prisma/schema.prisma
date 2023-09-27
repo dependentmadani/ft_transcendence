@@ -41,7 +41,7 @@ model Users {
 
   // Messages
   MessageSenId     Message[] @relation("Messagesencontact")
-  MessageRecId     Message[] @relation("Messagereccontact")
+  // MessageRecId     Message[] @relation("Messagereccontact")
   
   // Rooms
   rooms       RoomUsers[]
@@ -78,10 +78,13 @@ model Message {
   createdAt   DateTime @default(now())
   senderId    Users @relation("Messagesencontact", fields: [MessageSenId], references: [id])
   MessageSenId       Int
-  receiverId  Users @relation("Messagereccontact", fields: [MessageRecId], references: [id])
-  MessageRecId       Int
-  messageChatId  Chat @relation(fields: [msgChatId], references: [chatId])
-  msgChatId       Int
+  // receiverId  Users @relation("Messagereccontact", fields: [MessageRecId], references: [id])
+  // MessageRecId       Int
+  messageChatId  Chat? @relation(fields: [msgChatId], references: [chatId])
+  msgChatId       Int?
+  messageRoomId  Room? @relation(fields: [msgRoomId], references: [id])
+  msgRoomId       Int?
+  type            String
 }
 
 model Room {
@@ -91,6 +94,7 @@ model Room {
   roomUsers   RoomUsers[]
   invitations Invitations[] @relation("room")
   roomType  String
+  msgRoomId     Message[]
 }
 
 model RoomUsers {

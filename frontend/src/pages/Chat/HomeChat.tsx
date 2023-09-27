@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react"
 import axios from "axios";
-import { Chat } from "../components/Chats/Chat"
-import { Rightbar } from "../components/Rightbar"
-import { Leftbar } from "../components/Leftbar"
+import { Chat } from "../../components/Chats/Chat"
+import { Rightbar } from "../../components/Rightbar"
+import { Leftbar } from "../../components/Leftbar"
 import io from 'socket.io-client';
 
 interface User {

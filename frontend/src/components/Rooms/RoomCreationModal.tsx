@@ -11,8 +11,9 @@ interface Room {}
 
 export const RoomCreationModal = ({ onClose }: any) => {
 
+    let fileUploaded: File;
     const [roomName, setRoomName] = useState('')
-    const [roomAvatar, setRoomAvatar] = useState<File | null>(null)
+    const [roomAvatar, setRoomAvatar] = useState<File | null>()
     const [roomType, setRoomType] = useState('')
     const [searchResults, setSearchResults] = useState<User | null>([])
     const [username, setUsername] = useState('')
@@ -20,11 +21,41 @@ export const RoomCreationModal = ({ onClose }: any) => {
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
         setRoomAvatar(file);
+        // localStorage.setItem('local_storage', file)
     };
 
     useEffect(() => {
         getResults()
     }, [username])
+
+    // const createRoom = (file: FileList | null) => {
+    //     if (roomName && file) {
+    //         if (file[0].size > 200000) {
+    //             // setErrorMessageFile("Image size is limited to 20 kb!")
+    //             return ;
+    //         }
+    //         fileUploaded = file[0];
+    //         // setErrorMessageFile("");
+    //         const fileRef= file[0] || ""
+    //         const fileType = fileRef.type
+    //         const reader = new FileReader()
+    //         reader.readAsBinaryString(fileRef)
+    //         reader.onload=(ev: any) => {
+    //             setRoomAvatar(`data:${fileType};base64,${btoa(ev.target.result)}`)
+    //         }
+    //         axios({
+    //             method: "POST",
+    //             withCredentials: true,
+    //             url: `http://localhost:8000/room`,
+    //             headers: {'Content-Type':'multipart/form-data'},
+    //             data: {
+    //                 roomName: roomName,
+    //                 roomAvatar: fileUploaded,
+    //                 roomType: roomType,
+    //             },
+    //         });
+    //     }
+    // }
 
     const uploadImage = async () => {
         if (roomName && roomAvatar) {
@@ -46,11 +77,12 @@ export const RoomCreationModal = ({ onClose }: any) => {
             if (response.data) {
                 console.log('rah mzyaaan')
                 const roomId: number = response.data.id
-                const userId: number = 1 // for now
+                // const userId: number = 1 // for now
                 try {
+                    const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
                     const response = await axios.post(`http://localhost:8000/roomUsers`, {
                         roomId: roomId,
-                        userId: userId,
+                        userId: _MAIN_USER_.id,
                         role: 'OWNER',
                     }, {
                         withCredentials: true
@@ -137,7 +169,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
                             <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
                         </div>
                     </div> */}
-                    <span className='sendIcon' onClick={uploadImage}><FontAwesomeIcon icon={faPaperPlane} /></span>
+                    <span className='sendIcon' onClick={uploadImage} ><FontAwesomeIcon icon={faPaperPlane} /></span>
                 </div>
             </div>
             <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>

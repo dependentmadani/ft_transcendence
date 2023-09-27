@@ -4,9 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
 import * as session from 'express-session';
 import * as passport from 'passport';
-// import { IoAdapter } from '@nestjs/platform-socket.io';
-// import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
-
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
@@ -18,6 +16,14 @@ async function bootstrap() {
     allowedHeaders: ['content-type'],
     credentials: true,
   });
+
+  const config = new DocumentBuilder()
+    .setTitle('app example')
+    .setDescription('The app API description')
+    .setVersion('1.0')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true

@@ -7,22 +7,32 @@ import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall, faMe
 //     avatar: string,
 // }
 
-export const ChatInfos = ({ currentUser }: any) => {
 
+export const ChatInfos = ({ currentUser }: any) => {
+    
+    console.log('current user:', currentUser)
+
+    const addFriend = () => {
+        console.log('add friend')
+    }
+    const removeFriend = () => {
+        console.log('remove friend')
+    }
+    
   return (
     <div className="contactInfo container-flex">
             <div className="contactInfos flex-item">
                 <div className="contactAvatar">
-                    <img src={ currentUser?.avatar ? currentUser.avatar : `https://assets.mycast.io/actor_images/actor-steve-minecraft-90370_large.jpg?1589410150` } alt="user_avatar" />
+                    <img src={ currentUser?.receiver?.avatar } alt="user_avatar" />
                 </div>
-                <span>{ currentUser?.username }</span>
+                <span>{ currentUser?.receiver?.username }</span>
                 <div className="contactPlay">
                     <span><FontAwesomeIcon icon={faTableTennisPaddleBall} /></span>
                     <span><FontAwesomeIcon icon={faUser} /></span>
                 </div>
             </div>
 
-            <div className="mutualContact flex-item">
+            {/* <div className="mutualContact flex-item">
                 <div className="mutualFriends">
                     <p>mutual Friends</p>
                     <div className="mutualFriendsContainer">
@@ -45,12 +55,12 @@ export const ChatInfos = ({ currentUser }: any) => {
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div> */}
             <div className="contactPlay flex-item">
                 {/* <button>mute</button>
                 <button>block</button> */}
                 <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} /></span>
+                <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} onClick={0 ? addFriend : removeFriend}/></span>
             </div>
     </div>
   )

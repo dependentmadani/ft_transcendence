@@ -26,6 +26,17 @@ export class RoomUsersService {
         }
     }
 
+    async getUserRooms(userId: number) {
+        try {
+            return this.prisma.roomUsers.findMany({
+                where: { userId: userId }
+            })
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
     async getRoomAdmins(roomId: number) {
         try {
             return this.prisma.roomUsers.findMany({

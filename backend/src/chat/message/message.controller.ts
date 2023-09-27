@@ -17,16 +17,29 @@ export class MessageController {
     //     return this.messageService.getOneMessage(messageId)
     // }
 
-    @Get('/:msgChatId')
-    async getChatMessage(@Param('msgChatId', ParseIntPipe) msgChatId) : Promise<Message[]> {
-        return this.messageService.getChatMessage(msgChatId)
+    @Get('chat/:chatId')
+    async getChatMessages(@Param('chatId', ParseIntPipe) chatId) : Promise<Message[]> {
+        return this.messageService.getChatMessages(chatId)
     }
 
-    @Post()
-    async createMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
+    @Get('room/:id')
+    async getRoomMessages(@Param('id', ParseIntPipe) roomId) : Promise<Message[]> {
+        return this.messageService.getRoomMessages(roomId)
+    }
+
+    @Post('chat')
+    async createChatMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
                         @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
-                        @Body('MessageRecId', ParseIntPipe) MessageRecId: number,
-                        @Body('textContent') textContent: string) : Promise<Message> {
-        return this.messageService.createMessage(msgChatId, MessageSenId, MessageRecId, textContent)
+                        @Body('textContent') textContent: string,
+                        @Body('type') type: string) : Promise<Message> {
+        return this.messageService.createChatMessage(msgChatId, MessageSenId, textContent, type)
+    }
+
+    @Post('room')
+    async createRoomMessage(@Body("msgRoomId", ParseIntPipe) msgRoomId: number,
+                        @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
+                        @Body('textContent') textContent: string,
+                        @Body('type') type: string) : Promise<Message> {
+        return this.messageService.createRoomMessage(msgRoomId, MessageSenId, textContent, type)
     }
 }

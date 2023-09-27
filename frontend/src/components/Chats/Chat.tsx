@@ -19,7 +19,7 @@ export const Chat = ({ chatData }: any) => {
         chatData._socket.emit('joinChat', chatData._chat?.chatId)
       }
       catch (err) {
-        console.error('Error fetching chats: ', err)
+        console.error('No chats')
       }
     }
     fetchChats()

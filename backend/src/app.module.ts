@@ -42,6 +42,6 @@ export class AppModule implements NestModule{
     consumer
       .apply(IfNotAuthenticatedMiddleware)
       .exclude({path:'/auth*', method: RequestMethod.ALL})
-      .forRoutes({ path: '/a7bass*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
+      .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
   }
 }

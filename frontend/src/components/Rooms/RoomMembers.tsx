@@ -1,8 +1,5 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { SearchInviteResults } from './SearchInviteResults';
 
 interface User {
     username: string,
@@ -21,7 +18,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom.id}`, {withCredentials: true})
+                const result = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
                 if (result.data) {
                     let membersIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -54,8 +51,8 @@ export const RoomMembers = ({ currentRoom }: any) => {
         <div className='roomMembers'>
             <p>Members</p>
             {
-                roomMembers?.map((user: User) => (
-                    <p className='roomMember' >{ user.username }</p>
+                roomMembers?.map((user: User, index: number) => (
+                    <p key={index} className='roomMember' >{ user.username }</p>
                 ))
             }
         </div>
