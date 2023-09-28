@@ -1,0 +1,23 @@
+FROM node:18
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+RUN npm i --save @nestjs/websockets @nestjs/platform-socket.io
+
+COPY . .
+
+EXPOSE 8000
+
+RUN npm run build
+# npm run start:dev
+RUN npm rebuild bcrypt --update-binary
+
+RUN npx prisma generate
+
+ENTRYPOINT [ "sh", "script_helper.sh" ]
+
+CMD [ "npm", "run", "start:dev" ]

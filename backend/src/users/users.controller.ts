@@ -1,0 +1,199 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
+import { Authenticated } from 'src/decorator/authenticated.decorator';
+import { AuthService } from 'src/auth/auth.service';
+import { UsersService } from './users.service';
+import { Users } from '@prisma/client';
+import { UserModify } from './dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { v4 as uuidv4 } from 'uuid';
+import * as path from 'path';
+import { join } from 'path';
+
+export const storage = {
+  storage: diskStorage({
+    destination:
+      `${process.cwd}}/frontend/public/uploadAvatar/`,
+    filename: (req, file, cb) => {
+      if (!path) return;
+      const filename: string =
+        path
+          ?.parse(file.originalname)
+          .name.replace(/\s/g, '') + uuidv4();
+      const extension: string = path?.parse(
+        file.originalname,
+      ).ext;
+
+      cb(null, `${filename}${extension}`);
+    },
+  }),
+};
+
+@Controller('users')
+@Authenticated()
+export class UsersController {
+  constructor(
+    private userService: UsersService,
+    private authService: AuthService,
+  ) {}
+
+  @Get('')
+  getNothing(): Promise<Users[]> {
+    return this.userService.findAllUsers();
+  }
+
+  @Get('me')
+  async getMe(
+    @Req() req: Request,
+    ): Promise<Users> {
+      const user: Users =
+      await this.userService.findUserById(
+        req.user['sub'],
+        );
+        return user;
+  }
+
+  @Post('add-friend/:id')
+  @HttpCode(HttpStatus.CREATED)
+  async addFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request,
+    @Res() res: Response)  {
+      const user = await this.userService.findUserById(req.user['sub']);
+      const friend = await this.userService.addFriend(user.id, friendId);
+      return res.send(friend);
+    }
+
+  @Post('block-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async blockFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req:Request,
+    @Res() res:Response) {
+    const user = await this.userService.findUserById(req.user['sub']);
+    const blockedFriend = await this.userService.blockFriend(user.id, friendId);
+    return res.send(blockedFriend);
+  }
+
+  @Post('unblock-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async unblockFriend(@Param('id', ParseIntPipe) friendId: number,
+  @Req() req:Request,
+  @Res() res: Response) {
+    const user = await this.userService.findUserById(req.user['sub']);
+    const unblock = await this.userService.unblockFriend(user.id, friendId);
+    return res.send(unblock);
+  }
+
+  @Get('mutual-friends/:id')
+  @HttpCode(HttpStatus.FOUND)
+  async mutualFriends(@Param('id', ParseIntPipe) friendId: number,
+  @Req() req:Request,
+  @Res() res: Response) {
+    const user = await this.userService.findUserById(req.user['sub']);
+    const mutual = await this.userService.mutualFriends(user.id, friendId);
+    return res.send(mutual);
+  }
+
+  @Get('search/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchUser(username, req.user);
+  }
+
+  @Get('/:id')
+  async getUser(
+    @Param('id', ParseIntPipe) userId: number,
+  ): Promise<Users> {
+    const currentUser: Users =
+      await this.userService.findUserById(userId);
+    if (!currentUser)
+      throw new NotFoundException(
+        'The user is not available',
+      );
+    return currentUser;
+  }
+
+  @Get('/:id/avatar')
+  async getAvatar(
+    @Param('id', ParseIntPipe) userId: number,
+    @Res() res,
+  ) {
+    const filenamePath =
+      await this.userService.getAvatar(userId);
+
+    return res.sendFile(
+      join(process.cwd(), filenamePath),
+    );
+  }
+
+  @Post('/:id/infos')
+  @UseInterceptors(
+    FileInterceptor('avatar', storage),
+  )
+  async uploadFile(
+    @Req() req: Request,
+    @Param('id', ParseIntPipe) userId: number,
+    @UploadedFile() file,
+  ) {
+    if (!file) {
+      throw new UnauthorizedException(
+        'Did not upload successfully',
+      );
+    }
+    return await this.userService.uploadAvatar(
+      userId,
+      file.filename,
+    );
+  }
+
+  @Patch('/:id')
+  async updateUser(
+    @Param('id', ParseIntPipe) userId: number,
+    @Req() req: Request,
+    @Body() body: UserModify,
+  ) {
+    const user: Users =
+      await this.authService.returnUser(
+        req.user['email'],
+      );
+
+    return await this.userService.updateUser(
+      userId,
+      user,
+      body,
+    );
+  }
+
+  @Delete('/:id')
+  async deleteUser(
+    @Param('id', ParseIntPipe) userId: number,
+  ) {
+    await this.userService.deleteUser(userId);
+  }
+
+  @Get('/:id/stats')
+  getUserStats() {
+    return 'the player stats will diplayed soon';
+  }
+}
+
+//TODO: need to check that username is "unique" in the database when sign up
+
+//TODO: update the user info only if he is the appropriate user info. You can know using decode method of bcrypt.
