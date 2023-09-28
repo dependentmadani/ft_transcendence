@@ -154,7 +154,7 @@ export const Input = ({ chatData, chat }: any) => {
     fetchRoomMessages()
   }, [currentChat?.id])
 
-  console.log('WAWAW', chatMessages, roomMessages)
+  // console.log('WAWAW', chatMessages, roomMessages)
 
   
   return (

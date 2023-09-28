@@ -12,6 +12,9 @@ export const Navebar = () => {
             <Link to='/chat'>Chat</Link>
           </li>
           <li id='navbar-li'>
+            <Link to='/game'>Game</Link>
+          </li>
+          <li id='navbar-li'>
             <Link to='/about'>About</Link>
           </li>
           <li id='navbar-li'>

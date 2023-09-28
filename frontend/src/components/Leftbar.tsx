@@ -5,7 +5,7 @@ export  const Leftbar = ({ onValueChange }: any) => {
       
   return (
     <div className="leftSidebar">
-        <Search />
+        {/* <Search /> */}
         <Chats onValueChange={onValueChange} />
     </div>
   )

@@ -60,6 +60,8 @@ export const HomeChat = () => {
     };
   }, []);
 
+  console.log('ChatData -- ', chatData, selectedChat)
+
   return (
     <div className='home'>
         <div className='container'>

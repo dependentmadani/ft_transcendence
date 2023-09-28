@@ -10,6 +10,8 @@ COPY . .
 
 EXPOSE 5173
 
+# npm install @mui/material @emotion/react
+
 RUN npm run build
 
 CMD [ "npm", "run", "dev" ]

@@ -19,10 +19,9 @@ export class ChatController {
     // getTestChats() : string[] {
     //     return this.chatService.getTestChats();
     // }
-    @Post()
-    async createChat(@Body("senId", ParseIntPipe) senId: number,
-                    @Body('recId', ParseIntPipe) recId: number) : Promise<Chat> {
-        return this.chatService.createChat(senId, recId)
+    @Get('id/:chatId')
+    async getChatId(@Param('chatId', ParseIntPipe) chatId: number) : Promise<Chat> {
+        return this.chatService.getChatId(chatId)
     }
 
     @Get('/:usrChatId')
@@ -35,6 +34,13 @@ export class ChatController {
                         @Param('receiver', ParseIntPipe) receiver: number) : Promise<Chat[]> {
         return this.chatService.getCommunChat(sender, receiver)
     }
+
+    @Post()
+    async createChat(@Body("senId", ParseIntPipe) senId: number,
+                    @Body('recId', ParseIntPipe) recId: number) : Promise<Chat> {
+        return this.chatService.createChat(senId, recId)
+    }
+
 
     @Delete()
     async deleteAllChats() {

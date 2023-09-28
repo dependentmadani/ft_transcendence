@@ -1,6 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
+import { Search } from "../Search/Search";
 
 interface User {
   id: number;
@@ -34,8 +35,9 @@ export  const Chats = ({ onValueChange }: any) => {
   // }, [])
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
-  const [chats, setChats] = useState<Chat[]>([])
+  const [initialChats, setInitialChats] = useState<Chat[]>()
   const [newChats, setNewChats] = useState<Chat[]>()
+  const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<Room[]>([])
   const [latestMessages, setLatestMessages] = useState<{ [chatId: number]: string }>({});
   const [latestRoomMessages, setLatestRoomMessages] = useState<{ [roomId: number]: string }>({});
@@ -74,16 +76,49 @@ export  const Chats = ({ onValueChange }: any) => {
                 sender: senderResponse.data,
                 receiver: receiverResponse.data,
               };
-              return newChat
+          
+              const chatMessages = await axios.get(`http://localhost:8000/message/chat/${chat.chatId}`, {withCredentials: true})
+              if (chatMessages.data.length !== 0)
+                return newChat
+              return null
             })
           );
-          setNewChats(newChatsData);
+          const filteredChatsData: Chat[] = newChatsData.filter((chat) => chat !== null);
+          setNewChats(filteredChatsData);
         } catch (err) {
           console.error('Error fetching users for chats: ', err);
         }
       };
       fetchChatUsers()
   }, [chats])
+
+//   useEffect(() => {
+//     const fetchChats = async () => {
+//       try {
+//         _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+//         const _chats = await Promise.all(
+//           newChats.map(async (chat) => {
+//             const sender = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[0] : chat.chatUsers[1];
+//             const receiver = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[1] : chat.chatUsers[0];
+//             const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
+//             const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
+
+//             const newChat: Chat = {
+//               chatId: chat.chatId,
+//               chatUsers: [sender, receiver],
+//               sender: senderResponse.data,
+//               receiver: receiverResponse.data,
+//             };
+//             return newChat
+//           })
+//         );
+//         setChats(_chats);
+//       } catch (err) {
+//         console.error('Error fetching users for chats: ', err);
+//       }
+//     };
+//     fetchChats()
+// }, [newChats])
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -248,38 +283,48 @@ export  const Chats = ({ onValueChange }: any) => {
   //   fetchRoomAvatars();
   // }, [rooms]);
   
-  console.log('OOO', roomAvatar)
-  console.log('Rooms', rooms)
+  // console.log('OOO', roomAvatar)
+  // console.log('Rooms', rooms)
   // newChats?.map((chat: Chat) => (
     // console.log('Room AVATAR', getRoomAvatar())
   // ))
+  const handleSelectedChat = (chat: any) => {
+    let type='chat'
+    setSelectedChat({chat, type})
+    onValueChange({chat, type})
+  }
+
+  console.log('HAANA', selectedChat)
 
   return (
-    <div className="chats">
-        {
-          newChats?.map((chat: Chat, index: number) => (
-            <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
-              <img src={ chat.receiver.avatar } alt="user_avatar" />
-              <div className="userChatInfo">
-                <span>{ chat.receiver.username }</span>
-                <p>{ latestMessages[chat.chatId] ? latestMessages[chat.chatId] : '' }</p>
-              </div>
-              {/* { 0 && <span className="notifSpan">n</span>} */}
-            </div>
-          ))
-        }
-        {
-          rooms.map((room, index) => (
-            <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
-                <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
+    <>
+      <Search selectedChat={handleSelectedChat} />
+      <div className="chats">
+          {
+            newChats?.map((chat: Chat, index: number) => (
+              <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
+                <img src={ chat.receiver.avatar } alt="user_avatar" />
                 <div className="userChatInfo">
-                    <span>{ room.roomName }</span>
-                    <p>{ latestRoomMessages[room.id] ? latestRoomMessages[room.id] : '' }</p>
+                  <span>{ chat?.receiver?.username }</span>
+                  <p>{ latestMessages[chat.chatId] ? latestMessages[chat.chatId] : '' }</p>
                 </div>
-                {/* { 0 && <span className="notifSpan">n</span> } */}
-            </div>
-          ))
-        }
-      </div>
+                {/* { 0 && <span className="notifSpan">n</span>} */}
+              </div>
+            ))
+          }
+          {
+            rooms.map((room, index) => (
+              <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
+                  <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
+                  <div className="userChatInfo">
+                      <span>{ room.roomName }</span>
+                      <p>{ latestRoomMessages[room.id] ? latestRoomMessages[room.id] : '' }</p>
+                  </div>
+                  {/* { 0 && <span className="notifSpan">n</span> } */}
+              </div>
+            ))
+          }
+        </div>
+      </>
   )
 }

@@ -39,7 +39,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
         fetchRoomAvatar();
     }, [currentRoom.id]);
 
-    console.log('current room', currentRoom)
+    // console.log('current room', currentRoom)
 
     return (
         <div className="contactInfo container-flex">

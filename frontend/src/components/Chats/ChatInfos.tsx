@@ -7,7 +7,6 @@ import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall, faMe
 //     avatar: string,
 // }
 
-
 export const ChatInfos = ({ currentUser }: any) => {
     
     console.log('current user:', currentUser)
@@ -18,6 +17,9 @@ export const ChatInfos = ({ currentUser }: any) => {
     const removeFriend = () => {
         console.log('remove friend')
     }
+
+    // console.log('what wronkk', currentUser)
+
     
   return (
     <div className="contactInfo container-flex">

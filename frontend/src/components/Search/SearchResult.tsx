@@ -1,14 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 interface User {
     id: number,
     username: string,
     usrChatId: number,
 }
+interface Chat {
+    chatId: number,
+}
 
-export const SearchResult = ({ onClose, searchResults }: any) => {
+export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
 
     const createChat = async (user: User) => {
 
@@ -27,13 +31,25 @@ export const SearchResult = ({ onClose, searchResults }: any) => {
                         withCredentials: true
                     })
                     console.log('chat created ', chat)
+                    selectedChat(chat);
                 }
                 catch (err) {
                     console.log(`Couldn't create new Chat: `, err)
                 }
             }
+            else {
+                const chatRelation = await axios.get(`http://localhost:8000/chat/${sender.id}/${receiver}`, {withCredentials: true})
+                const chat = await axios.get(`http://localhost:8000/chat/id/${chatRelation?.data[0]?.chatId}`, {withCredentials: true})
+                selectedChat(chat.data)
+                console.log('YPOOOOOOO', chat.data, selectedChat)
+            }
         }
     }
+    
+    // useEffect(() => {
+    //   }, [selectedChat]);
+
+    // console.log('HAANA 3', selectedChat)
 
     return (
         <div className="searchChatResults">
@@ -41,9 +57,9 @@ export const SearchResult = ({ onClose, searchResults }: any) => {
                 { searchResults.length ? 
                     searchResults.map((user: any, index: number) => (
                     <div key={index} className="userChats" onClick={() => createChat(user)} >
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTV73Nl_MHzYV13X62NIRC8IX6FT6fenPinqCSSOS0HTQ&s" alt="" />
+                        <img src={ user.avatar } alt="user_avatar" />
                         <div className="userChatInfo">
-                            <span>{user.username }</span>
+                            <span>{ user.username }</span>
                         </div>
                     </div>
                 )) : 'Ghayarha a sadi9'

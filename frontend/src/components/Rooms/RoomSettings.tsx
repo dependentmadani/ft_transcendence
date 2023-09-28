@@ -104,8 +104,8 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
         }
     }
 
-    console.log('ROOM MEMBERS ', currentUserIsAdmin)
-    console.log(currentRoom.roomType)
+    // console.log('ROOM MEMBERS ', currentUserIsAdmin)
+    // console.log(currentRoom.roomType)
 
     return (
         <div className="overlay">

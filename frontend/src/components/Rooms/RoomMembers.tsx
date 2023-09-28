@@ -44,8 +44,8 @@ export const RoomMembers = ({ currentRoom }: any) => {
         getRoomMembers()
     }, [])
 
-    console.log('ROOM Members ', roomMembers)
-    console.log(currentRoom)
+    // console.log('ROOM Members ', roomMembers)
+    // console.log(currentRoom)
 
     return (
         <div className='roomMembers'>

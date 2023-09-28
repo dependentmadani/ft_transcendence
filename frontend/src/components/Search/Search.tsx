@@ -7,7 +7,7 @@ import { SearchResult } from "./SearchResult";
 
 interface User {}
 
-export const Search = () => {
+export const Search = ({ selectedChat }: any) => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
     
@@ -37,6 +37,8 @@ export const Search = () => {
     setShowForm(false);
   };
 
+  // console.log('HAANA 2', selectedChat)
+
   return (
     <div className="search">
       <span>
@@ -44,7 +46,7 @@ export const Search = () => {
         <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
         <CreateRoom />
       </span>
-      { showForm && searchResults && <SearchResult onClose={closeForm} searchResults={searchResults} />}
+      { showForm && searchResults && <SearchResult onClose={closeForm} selectedChat={selectedChat} searchResults={searchResults} />}
     </div>
   )
 }

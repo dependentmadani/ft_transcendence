@@ -4,7 +4,7 @@ interface Message {}
 
 export const Messages = ({ messages }: any) => {
 
-  console.log('messages___', messages)
+  // console.log('messages___', messages)
   return (
     <div className="messages">
       {

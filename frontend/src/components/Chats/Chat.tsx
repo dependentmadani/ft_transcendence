@@ -27,6 +27,8 @@ export const Chat = ({ chatData }: any) => {
 
   currentChat = chatData._chat
 
+  console.log('layr7malidin', chatData)
+
   return (
     <div className='chat'>
       {/* <Messages messages={ messages } /> */}

@@ -47,8 +47,8 @@ export const RoomAdmins = ({ currentRoom }: any) => {
         getRoomAdmins()
     }, [])
 
-    console.log('ROOM ADMINS ', roomAdmins)
-    console.log(currentRoom)
+    // console.log('ROOM ADMINS ', roomAdmins)
+    // console.log(currentRoom)
 
     return (
         <div>
