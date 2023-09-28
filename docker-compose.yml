@@ -50,7 +50,7 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: pingpongBackend
     ports:
       - 8000:8000
@@ -65,7 +65,7 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     container_name: pingpongFrontend
     ports:
       - 5173:5173
