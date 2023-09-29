@@ -34,6 +34,7 @@ export const Search = ({ selectedChat }: any) => {
   };
   
   const closeForm = () => {
+    // setUsername('')
     setShowForm(false);
   };
 

@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faFloppyDisk, faImage } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { RoomMembers } from './RoomMembers';
 import { RoomFormInvite } from './RoomFormIvite';
@@ -106,10 +106,24 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
     // console.log('ROOM MEMBERS ', currentUserIsAdmin)
     // console.log(currentRoom.roomType)
+    const searchResultsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchResultsRef.current && !searchResultsRef.current.contains(event.target as Node)) {
+                onClose();
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
 
     return (
         <div className="overlay">
-            <div className="form-container">
+            <div className="form-container" ref={searchResultsRef}>
                 { currentUserIsAdmin && <RoomFormInvite currentRoom={currentRoom} /> }
                 <div className="changeRoomSettings">
                     <p>Change room settings</p>
@@ -152,7 +166,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                     <RoomMembers currentRoom={currentRoom} />
                 </div>
             </div>
-            <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
+            {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
         </div>
     );
 };

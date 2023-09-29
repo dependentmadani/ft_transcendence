@@ -83,7 +83,7 @@ export  const Chats = ({ onValueChange }: any) => {
               return null
             })
           );
-          const filteredChatsData: Chat[] = newChatsData.filter((chat) => chat !== null);
+          const filteredChatsData: any = newChatsData.filter((chat) => chat !== null);
           setNewChats(filteredChatsData);
         } catch (err) {
           console.error('Error fetching users for chats: ', err);
@@ -288,13 +288,26 @@ export  const Chats = ({ onValueChange }: any) => {
   // newChats?.map((chat: Chat) => (
     // console.log('Room AVATAR', getRoomAvatar())
   // ))
-  const handleSelectedChat = (chat: any) => {
+  const handleSelectedChat = async (_chat: any) => {
     let type='chat'
+    
+    const sender = _chat.chatUsers[0] === _MAIN_USER_.id ? _chat.chatUsers[0] : _chat.chatUsers[1];
+    const receiver = _chat.chatUsers[0] === _MAIN_USER_.id ? _chat.chatUsers[1] : _chat.chatUsers[0];
+    const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
+    const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
+    
+    const chat: Chat = {
+      chatId: _chat.chatId,
+      chatUsers: [sender, receiver],
+      sender: senderResponse.data,
+      receiver: receiverResponse.data,
+    };
+
     setSelectedChat({chat, type})
     onValueChange({chat, type})
   }
 
-  console.log('HAANA', selectedChat)
+  // console.log('HAANA', selectedChat)
 
   return (
     <>

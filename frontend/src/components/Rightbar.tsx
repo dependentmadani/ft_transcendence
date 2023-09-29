@@ -3,7 +3,7 @@ import { RoomInfos } from "./Rooms/RoomInfos"
 
 export const Rightbar = ({ chatData }: any) => {
 
-  console.log('what wronkk', chatData?._chat)
+  // console.log('what wronkk3', chatData?._chat?._chat)
 
   return (
     <div className="rightSidebar">

@@ -1,15 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface User {
     id: number,
     username: string,
     usrChatId: number,
-}
-interface Chat {
-    chatId: number,
 }
 
 export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
@@ -50,9 +47,24 @@ export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
     //   }, [selectedChat]);
 
     // console.log('HAANA 3', selectedChat)
+    const searchResultsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchResultsRef.current && !searchResultsRef.current.contains(event.target as Node)) {
+                onClose();
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
+  
 
     return (
-        <div className="searchChatResults">
+        <div className="searchChatResults" ref={searchResultsRef}>
             <div className="searchChatResults-container">
                 { searchResults.length ? 
                     searchResults.map((user: any, index: number) => (
@@ -62,10 +74,10 @@ export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
                             <span>{ user.username }</span>
                         </div>
                     </div>
-                )) : 'Ghayarha a sadi9'
+                )) : 'No Results :('
                 }
             </div>
-            <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
+            {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import  { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faPaperPlane, faImage, faUserPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
@@ -119,10 +119,24 @@ export const RoomCreationModal = ({ onClose }: any) => {
     };
     
     // console.log('CCCCURENT ROOM', currentRoom)
+    const searchResultsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (searchResultsRef.current && !searchResultsRef.current.contains(event.target as Node)) {
+                onClose();
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [onClose]);
 
     return (
         <div className="overlay">
-            <div className="form-container">
+            <div className="form-container" ref={searchResultsRef}>
                 <h2>Create New Room</h2>
                 <div className="roomFomrs">
                     <div className="roomFormInfos">
@@ -172,7 +186,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
                     <span className='sendIcon' onClick={uploadImage} ><FontAwesomeIcon icon={faPaperPlane} /></span>
                 </div>
             </div>
-            <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span>
+            {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
         </div>
     );
 };

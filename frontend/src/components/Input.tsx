@@ -154,7 +154,7 @@ export const Input = ({ chatData, chat }: any) => {
     fetchRoomMessages()
   }, [currentChat?.id])
 
-  // console.log('WAWAW', chatMessages, roomMessages)
+  // console.log('WeeeeeW', chatData)
 
   
   return (
@@ -165,7 +165,7 @@ export const Input = ({ chatData, chat }: any) => {
       <div className="inputContainer">
         <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
-          <span><FontAwesomeIcon icon={faFaceSmile} /></span>
+          {/* <span><FontAwesomeIcon icon={faFaceSmile} /></span> */}
           <span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>
         </div>
       </div>
