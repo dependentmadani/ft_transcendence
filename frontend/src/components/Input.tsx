@@ -11,14 +11,14 @@ interface Message {}
 export const Input = ({ chatData, chat }: any) => {
 
   const currentChat = chatData?._chat?.chat
-  console.log('CURRENT L3IBAT', chatData?._chat?.type)
+  // console.log('CURRENT L3IBAT', chatData?._chat?.type)
 
   // console.log('!!!!!!!!!', currentChat)
 
   const [inputText, setInputText] = useState('')
   const [chatMessages, setChatMessages] = useState<Message | null>([])
   const [roomMessages, setRoomMessages] = useState<Message | null>([])
-  const [connectedSocket, setConnectedSocket] = useState(false)
+  
 
   const createNewMessage = async (inputText: string) => {
     try {
@@ -96,7 +96,7 @@ export const Input = ({ chatData, chat }: any) => {
       // console.log('Input value on Enter:', inputText);
       if (inputText.trim() !== '') {
         createNewMessage(inputText)
-        chatData._socket?.emit("newMessage", inputText);
+        chatData._socket?.emit("message", inputText);
       }
       setInputText('')
 
@@ -118,10 +118,10 @@ export const Input = ({ chatData, chat }: any) => {
     }
   };
   
-  useEffect(() => {
-    chatData._socket.emit('setup', chatData._user)
-    chatData._socket.on('connected', () => setConnectedSocket(true))
-  }, [])
+  // useEffect(() => {
+  //   chatData._socket.emit('setup', chatData._user)
+  //   chatData._socket.on('connected', () => setConnectedSocket(true))
+  // }, [])
 
   useEffect(() => {
     const fetchChatMessages = async () => {
@@ -139,7 +139,7 @@ export const Input = ({ chatData, chat }: any) => {
   useEffect(() => {
     const fetchRoomMessages = async () => {
       try {
-          console.log('MAAAAAAAALNAAAAAAAA')
+          // console.log('MAAAAAAAALNAAAAAAAA')
           if (currentChat.id !== undefined) {
             let roomMessages: Message[] = (await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.id}`, { withCredentials: true }))?.data
             // console.log('WAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', roomMessages)
