@@ -22,13 +22,13 @@ export const ChatInfos = ({ currentUser }: any) => {
 
     
   return (
-    <div className="contactInfo container-flex">
-            <div className="contactInfos flex-item">
+    <div className="contactInfo">
+            <div className="contactInfos">
                 <div className="contactAvatar">
                     <img src={ currentUser?.receiver?.avatar } alt="user_avatar" />
                 </div>
                 <span>{ currentUser?.receiver?.username }</span>
-                <div className="contactPlay">
+                <div className="contactPlay1">
                     <span><FontAwesomeIcon icon={faTableTennisPaddleBall} /></span>
                     <span><FontAwesomeIcon icon={faUser} /></span>
                 </div>
@@ -58,11 +58,11 @@ export const ChatInfos = ({ currentUser }: any) => {
                     </div>
                 </div>
             </div> */}
-            <div className="contactPlay flex-item">
-                {/* <button>mute</button>
-                <button>block</button> */}
-                <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} onClick={0 ? addFriend : removeFriend}/></span>
+            <div className="contactPlay2">
+                <div className="section2">
+                    <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
+                    <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} onClick={0 ? addFriend : removeFriend}/></span>
+                </div>
             </div>
     </div>
   )

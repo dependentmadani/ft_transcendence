@@ -52,7 +52,7 @@ export  const CreateRoom = () => {
     
     return (
         <div className="createRoom">
-            <span className="createRoomIcon" onClick={openForm}><FontAwesomeIcon icon={faUserGroup} /></span>
+            <div className="createRoomIcon" onClick={openForm}><FontAwesomeIcon icon={faUserGroup} /></div>
             {showForm && <RoomCreationModal onClose={closeForm} />}
         </div>
     )

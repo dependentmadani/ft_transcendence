@@ -156,13 +156,16 @@
   }
   
   .form-container {
-    background-color: #0e225c;
+    background-color: #8490c5;
     padding: 20px;
     width: 40%;
-    max-height: 75%;
-    overflow: auto;
+    max-height: 50%;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+    h2 {
+      text-align: start;
+    }
 
     .changeRoomSettings {
       padding: 10px;
@@ -209,6 +212,8 @@
     width: 90%;
 
     .sendIcon {
+      background-color: #60679b;
+      color: aliceblue;
       display: flex;
       border-radius: 5px !important;
       padding: 5px;
@@ -224,13 +229,17 @@
       padding: 10px;
       border-radius: 10px;
       display: flex;
-      flex-direction: column;
-      width: 50%;
+      flex-direction: row;
+      // width: 50%;
     }
 
     .roomFormInfos {
       display: flex;
       flex-direction: row;
+
+      .roomCreationInput {
+        background-color: #5f659d !important;
+      }
 
       span {
         background-color: transparent !important;
@@ -305,7 +314,8 @@
       }
   
       .leftSidebar {
-        flex: 1;
+        // flex: 1;
+        width: 25%;
         background-color: #232760;
         position: relative;
   
@@ -356,22 +366,65 @@
           padding: 30px 10px;
           display: flex;
           flex-direction: column;
+          border-bottom: 1px solid #828ccb7d;
+
+          .searchContainer {
+            display: flex;
+            flex-direction: row;
+            background-color: #838ec8;
+            padding: 15px 10px;
+            border-radius: 25px;
+
+            input {
+              background-color: #828ccb;
+              border: none;
+              outline: none;
+              width: 100%;
+              &::placeholder {
+                color: lightgray;
+              }
+            }
+          }
+
+          .createIconSend {
+            background-color: #60679b;
+            color: aliceblue;
+            padding: 7px;
+            border-radius: 7px;
+          }
+
+          .serchChatInput {
+            width: 80%;
+            // background-color: yellow;
+          }
+
+          .searchChatIcon {
+            width: 10%;
+            // background: aqua;
+            margin: 0 3px;
+          }
+
+          .searchChatCreatRoomIcon {
+            width: 10%;
+            // background-color: chocolate;
+            margin: 0 3px;
+          }
   
           .searchForm {
             padding: 10px;
   
             
           }
-          input {
-            background-color: #828ccb;
-            border: none;
-            outline: none;
-            margin: 0 10px;
+          // input {
+          //   background-color: #828ccb;
+          //   border: none;
+          //   outline: none;
+          //   margin: 0 10px;
 
-            &::placeholder {
-              color: lightgray;
-            }
-          }
+          //   &::placeholder {
+          //     color: lightgray;
+          //   }
+          // }
           span {
             display: flex;
             border-radius: 20px;
@@ -417,21 +470,23 @@
 
       .createRoom {
         .createRoomIcon {
-          font-size: 1.2em;
+          font-size: 1em;
           color: #dddef6;
-          margin: 0 10px;
           cursor: pointer;
         }
       }
 
         .rightSidebar {
-          flex: 1;
+          // flex: 1;
+          width: 20%;
           background-color: #232760;
           position: relative;
     
 
             .contactInfo {
               height: 100%;
+              display: flex;
+              flex-direction: column;
             
 
             .flex-container {
@@ -459,26 +514,27 @@
             .contactInfos {
               display: flex;
               align-items: center;
-              margin-bottom: 10px;
+              // margin-bottom: 10px;
               flex-direction: column;
-              flex: 30%;
+              height: 75%;
             }
             
             .contactAvatar {
               display: flex;
+              padding: 50px 0 10px 0;
             }
 
             .contactAvatar img {
-              width: 70%;
-              // height: 50%;
-              // border-radius: 50%;
+              width: 100%;
               object-fit: cover;
               margin: auto;
+              border: 3px solid #dddef6;
+              border-radius: 10px;
             }
             
             .contactInfos span {
               font-size: 1.5rem;
-              // color: #333;
+              color: aliceblue;
               margin: 10px;
             }
 
@@ -580,12 +636,38 @@
             }
             
             /* Styling for buttons */
-            .contactPlay {
+            .contactPlay1 {
               display: flex;
               flex-direction: row;
+              height: 25%;
+              // border-top: 1px solid darkgray;
+              padding: 30px 0;
+            }
+
+            .contactPlay2 {
+              display: flex;
+              flex-direction: row;
+              height: 25%;
+              border-top: 1px solid #dddef6b8;
+              padding: 30px 0;
+
+              .section2 {
+                margin: 25px auto;
+              }
             }
             
-            .contactPlay span {
+            .contactPlay1 span {
+              // background-color: #007bff;
+                color: aliceblue;
+                border: none;
+                border-radius: 4px;
+                padding: 5px 5px;
+                font-size: 1.2em;
+                cursor: pointer;
+                margin: 10px;
+            }
+
+            .contactPlay2 span {
               // background-color: #007bff;
                 color: #fff;
                 border: none;
@@ -653,7 +735,8 @@
         }
       }
       .chat {
-        flex: 2;
+        // flex: 2;
+        width: 55%;
   
         .chatInfo {
           height: 50px;

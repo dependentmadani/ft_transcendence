@@ -140,7 +140,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
                 <h2>Create New Room</h2>
                 <div className="roomFomrs">
                     <div className="roomFormInfos">
-                        <input type="text" placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
+                        <input type="text" className='roomCreationInput' placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
                         <span>
                             <label htmlFor="image-upload" className="upload-label">
                                 <input
@@ -157,22 +157,22 @@ export const RoomCreationModal = ({ onClose }: any) => {
                         </span>
                     </div>
                     <div className='roomType'>
-                        <label>
+                        <span>
                             <input type="radio" value="Public" checked={roomType === 'Public'} onChange={handleOptionChange} />
                             public
-                        </label>
+                        </span>
 
-                        <label>
+                        <span>
                             <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
                             protected
-                        </label>
+                        </span>
 
-                        <label>
+                        <span>
                             <input type="radio" value="Private" checked={roomType === 'Private'} onChange={handleOptionChange} />
                             private
-                        </label>
+                        </span>
 
-                        <p>Selected Option: {roomType}</p>
+                        {/* <p>Selected Option: {roomType}</p> */}
                     </div>
                     
 
@@ -183,7 +183,9 @@ export const RoomCreationModal = ({ onClose }: any) => {
                             <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
                         </div>
                     </div> */}
-                    <span className='sendIcon' onClick={uploadImage} ><FontAwesomeIcon icon={faPaperPlane} /></span>
+                </div>
+                <div className="sendButton">
+                    <FontAwesomeIcon className='createIconSend' icon={faPaperPlane} />
                 </div>
             </div>
             {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}

@@ -11,20 +11,23 @@ export const Search = ({ selectedChat }: any) => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
     
-  const getResults = async () => {
-    try {
-      const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
-      setSearchResults(results.data)
-    }
-    catch {
-      setSearchResults(null)
-      console.error(`Couldn't find any user`)
-    }
-  }
-
+  
   useEffect(() => {
-    if (username.trim() !== '')
+    if (username.trim() !== '') {
+      const getResults = async () => {
+        try {
+          const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
+          setSearchResults(results.data)
+        }
+        catch {
+          setSearchResults(null)
+          console.error(`Couldn't find any user`)
+        }
+      }
+      
+      // setUsername('')
       getResults()
+    }
   }, [username])
 
   const [showForm, setShowForm] = useState(false);
@@ -34,7 +37,9 @@ export const Search = ({ selectedChat }: any) => {
   };
   
   const closeForm = () => {
-    // setUsername('')
+    setUsername('')
+    setSearchResults(null)
+    // console.log('YOOO', username)
     setShowForm(false);
   };
 
@@ -42,11 +47,17 @@ export const Search = ({ selectedChat }: any) => {
 
   return (
     <div className="search">
-      <span>
-        <input type="text" placeholder="Find a user" onChange={e => setUsername(e.target.value)} />
-        <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
-        <CreateRoom />
-      </span>
+      <div className="searchContainer">
+        <div className="serchChatInput">
+          <input type="text" placeholder="Find a user" value={username} onChange={e => setUsername(e.target.value)} />
+        </div>
+        <div className="searchChatIcon">
+          <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
+        </div>
+        <div className="searchChatCreatRoomIcon">
+          <CreateRoom />
+        </div>
+      </div>
       { showForm && searchResults && <SearchResult onClose={closeForm} selectedChat={selectedChat} searchResults={searchResults} />}
     </div>
   )

@@ -42,8 +42,8 @@ export const RoomInfos = ({ currentRoom }: any) => {
     // console.log('current room', currentRoom)
 
     return (
-        <div className="contactInfo container-flex">
-                <div className="contactInfos flex-item">
+        <div className="contactInfo">
+                <div className="contactInfos">
                     
                     <div className="contactAvatar">
                         <img src={ roomAvatar } alt="room_avatar" />
@@ -51,10 +51,12 @@ export const RoomInfos = ({ currentRoom }: any) => {
                     <span>{ currentRoom.roomName }</span>
                 </div>
 
-                <div className="contactPlay flex-item">
-                    <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
-                    <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                    <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
+                <div className="contactPlay2">
+                    <div className="section2">
+                        <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
+                        <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
+                        <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
+                    </div>
                 </div>
                 { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} />}
         </div>
