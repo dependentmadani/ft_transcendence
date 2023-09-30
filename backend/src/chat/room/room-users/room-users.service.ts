@@ -43,6 +43,22 @@ export class RoomUsersService {
                 where: {
                     AND: [
                         { roomId: roomId },
+                        { role: 'ADMIN' },
+                    ]
+                }
+            })
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
+    async getRoomOwner(roomId: number) {
+        try {
+            return this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
                         { role: 'OWNER' },
                     ]
                 }

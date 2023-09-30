@@ -4,6 +4,7 @@ import { Chat } from "../../components/Chats/Chat"
 import { Rightbar } from "../../components/Rightbar"
 import { Leftbar } from "../../components/Leftbar"
 import io from 'socket.io-client';
+import { ChatNav } from "../../components/Chats/ChatNav";
 
 interface User {
   id: number;
@@ -17,6 +18,7 @@ interface Chat {
 
 export const HomeChat = () => {
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
+  const [clickedVal, setClickedVal] = useState(0);
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
@@ -44,9 +46,9 @@ export const HomeChat = () => {
   // const [receivedMsg, setReceivedMsg] = useState('');
 
   
-  const sendMessage = () => {
-    socket.emit('sendMessage', 'HADA MSG CHADID LAHJA')
-  }
+  // const sendMessage = () => {
+  //   socket.emit('sendMessage', 'HADA MSG CHADID LAHJA')
+  // }
 
   const socketRef = useRef<SocketIOClient.Socket | null>(null);
 
@@ -100,10 +102,33 @@ export const HomeChat = () => {
   // }, [])
 
   // console.log('ChatData -- ', chatData, selectedChat)
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
+  const handleClickedVal = (val: number) => {
+    setClickedVal(val)
+    console.log('clicked val', clickedVal, val)
+  }
 
   return (
     <div className='home'>
         <div className='container'>
+            {/* { isMobile && <ChatNav onValueClick={handleClickedVal} /> }
+            { clickedVal===1 && <Leftbar onValueChange={handleSelectedChat} /> }
+            { clickedVal===2 && <Chat chatData={ chatData } /> }
+            { clickedVal===3 && <Rightbar chatData={ chatData } /> } */}
             <Leftbar onValueChange={handleSelectedChat} />
             <Chat chatData={ chatData } />
             <Rightbar chatData={ chatData } />

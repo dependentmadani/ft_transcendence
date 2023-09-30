@@ -523,8 +523,21 @@
 
               .roomMember {
                 background-color: #f0f8ffeb;
-                padding: 10px;
+                // padding: 10px;
                 border-radius: 10px;
+                padding: 10px 50px;
+                margin: 10px;
+
+                .owner {
+                  margin: 0 0 0 20px;
+                }
+                .admin {
+                  margin: 0 0 0 20px;
+                }
+
+                .roleIcon {
+                  color: #b8811e;
+                }
               }
             }
 
@@ -778,3 +791,20 @@
       }
     }
   }
+
+.ChatNavbar {
+  display: flex;
+  height: 20%;
+  border-radius: 20px;
+  margin: 10px;
+  
+  ul {
+    background-color: #a396dd;
+      height: 60%;
+      margin: 0;
+      border-radius: 10px;
+    }
+}
+@media screen and (max-width: 740px) {
+  
+}

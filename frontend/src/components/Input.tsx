@@ -3,10 +3,13 @@ import axios from "axios"
 import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
+import io from 'socket.io-client';
 
+const socket = io(`http://localhost:8000`);
 
-
-interface Message {}
+interface Message {
+  textContent: string,
+}
 
 export const Input = ({ chatData, chat }: any) => {
 
@@ -18,7 +21,42 @@ export const Input = ({ chatData, chat }: any) => {
   const [inputText, setInputText] = useState('')
   const [chatMessages, setChatMessages] = useState<Message | null>([])
   const [roomMessages, setRoomMessages] = useState<Message | null>([])
+  const [messages, setMessages] = useState<Message[]>([]);
+  // const socket = io("http://localhost:8000");
   
+
+  // useEffect(() => {
+  //   chatData?._socket?.on('message', (message: Message) => {
+  //     // Add the new message to the messages state
+  //     console.log('Emittttttttttttttted here', chatData?._socket)
+  //     setChatMessages(prevMessages => [...prevMessages, message]);
+  //   });
+
+  //   return () => {
+  //     chatData?._socket?.disconnect();
+  //   };
+  // });
+
+  useEffect(() => {
+    // Listen for socket messages
+    socket.on('message', (message: Message) => {
+      console.log('w33333333333333333')
+      if (inputText) {
+        console.log('w444444444444444') 
+        // Update chatMessages or roomMessages based on the chat type
+        if (chatData?._chat?.type === 'chat') {
+          setChatMessages(prevMessages => [...prevMessages, message]);
+        } else if (chatData?._chat?.type === 'room') {
+          setRoomMessages(prevMessages => [...prevMessages, message]);
+        }
+      }
+    });
+
+    return () => {
+      // Clean up socket listener when component unmounts
+      socket.off('message');
+    };
+  }, [chatData?._chat?.type]);
 
   const createNewMessage = async (inputText: string) => {
     try {
@@ -67,10 +105,30 @@ export const Input = ({ chatData, chat }: any) => {
     }
   }
 
+  // chatData?.socket?.on('message', (inputText: string) => {
+  //   console.log('Client received new message:', inputText);
+  //   // Handle the received message in your application UI
+  // });
+
+  // const [receivedMessages, setReceivedMessages] = useState<string[]>([]);
+  // useEffect(() => {
+  //   socket.on('message', (inputText: string) => {
+  //     // Add the new message to the messages state
+  //     console.log('Client received new message:', inputText);
+  //     setReceivedMessages((prevMessages) => [...prevMessages, inputText]);
+  //   });
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, [inputText]);
+  
+  // console.log('RECIEEEVED MSGS: ', receivedMessages)
+
   const handleClick = () => {
     if (inputText.trim() !== '') {
       createNewMessage(inputText)
-      chatData._socket?.emit("newMessage", inputText);
+      socket.emit("newMessage", inputText);
       setInputText('')
       
       let newMessage: Message= {}
@@ -90,30 +148,50 @@ export const Input = ({ chatData, chat }: any) => {
       }
     }
   }
+
+  // const handleClick = async () => {
+  //   if (inputText.trim() !== '') {
+  //     // Send the message to the server
+  //     chatData.socket.emit('newMessage', {
+  //       chatId: chatData._chat.chatId,
+  //       message: {
+  //         textContent: inputText,
+  //         msgRoomId: currentChat?.id,
+  //       }
+  //     });
+
+  //     setInputText('');
+  //   }
+  // };
+  // const [connectedSocket, setConnectedSocket] = useState(false)
+
+  // useEffect(() => {
+  //   chatData._socket.emit('setup', chatData._user)
+  //   chatData._socket.on('connected', () => setConnectedSocket(true))
+  // }, [])
   
   const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      // console.log('Input value on Enter:', inputText);
       if (inputText.trim() !== '') {
         createNewMessage(inputText)
-        chatData._socket?.emit("message", inputText);
-      }
-      setInputText('')
-
-      let newMessage: Message= {}
-      if (chatData?.chat?.type === 'chat') {
-        newMessage = {
-          textContent: inputText,
-          msgChatId: currentChat?.chatId,
-        };
-        setChatMessages([...chatMessages, newMessage]);
-      }
-      else if (chatData?.chat?.type === 'room') {
-        newMessage = {
-          textContent: inputText,
-          msgRoomId: currentChat?.id,
-        };
-        setRoomMessages([...roomMessages, newMessage]);
+        socket.emit("newMessage", inputText);
+        setInputText('')
+  
+        let newMessage: Message= {}
+        if (chatData?.chat?.type === 'chat') {
+          newMessage = {
+            textContent: inputText,
+            msgChatId: currentChat?.chatId,
+          };
+          setChatMessages([...chatMessages, newMessage]);
+        }
+        else if (chatData?.chat?.type === 'room') {
+          newMessage = {
+            textContent: inputText,
+            msgRoomId: currentChat?.id,
+          };
+          setRoomMessages([...roomMessages, newMessage]);
+        }
       }
     }
   };
@@ -154,7 +232,7 @@ export const Input = ({ chatData, chat }: any) => {
     fetchRoomMessages()
   }, [currentChat?.id])
 
-  // console.log('WeeeeeW', chatData)
+  console.log('WeeeeeW', chatMessages[chatMessages.length-1]?.textContent)
 
   
   return (

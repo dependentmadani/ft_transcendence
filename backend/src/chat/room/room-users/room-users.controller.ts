@@ -26,6 +26,11 @@ export class RoomUsersController {
         return this.roomUsersService.getRoomAdmins(roomId)
     }
 
+    @Get('owner/:roomId')
+    async getRoomOwner(@Param('roomId', ParseIntPipe) roomId: number) {
+        return this.roomUsersService.getRoomOwner(roomId)
+    }
+
     @Post()
     async createRoomUsers(@Body('roomId', ParseIntPipe) roomId: number,
                          @Body('userId', ParseIntPipe) userId: number, 

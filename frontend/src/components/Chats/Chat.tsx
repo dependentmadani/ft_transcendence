@@ -30,7 +30,7 @@ export const Chat = ({ chatData }: any) => {
   // console.log('what wronkk2', chatData?._chat)
 
   return (
-    <div className='chat'>
+    <div id='Conversation' className='chat'>
       {/* <Messages messages={ messages } /> */}
       <Input chatData={ chatData } chat={currentChat} />
     </div>
