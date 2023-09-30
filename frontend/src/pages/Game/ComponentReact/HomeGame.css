@@ -14,7 +14,14 @@ body
  justify-content: space-around;
 } */
 
-.akinator
+body
+{
+  margin: 0;
+  padding: 0;  
+  background-color:  #232760;
+
+} 
+.akinatorButton
 {
   display: flex;
   position: fixed;
@@ -47,7 +54,7 @@ body
 .akinat
 {
   display: flex;
-  position: relative;
+  position: fixed;
   width: 400px;
   height: 350px;  
 }

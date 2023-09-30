@@ -2,7 +2,7 @@
 
 import './HomeGame.css';
 import { Link } from 'react-router-dom';
-import Akinator from './akinator';
+
 // import { newRoomRef } from './match';
 // export const RoomRef = newRoomRef;
 
@@ -11,9 +11,9 @@ export default function HomeGame()
 
   return (
     <div className="GameHome">
-      <div className="akinator">
+      <div className="Akinator">
       <Link to="akinator">
-          <button className="akinator">
+          <button className="akinatorButton">
             <img className='akinat' src='/src/assets/img/akinat.png' alt="Akinator" />
           </button>
       </Link>
@@ -26,7 +26,7 @@ export default function HomeGame()
       </Link>
       </div>
       <div className="PingPong">
-      <Link to={"matchgame"}>
+      <Link to="matchgame">
         <button className="PingPong">
           <img className="match" src="/src/assets/img/match.jpg" alt="MatchGame" />
         </button>

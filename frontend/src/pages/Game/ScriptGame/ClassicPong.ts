@@ -17,7 +17,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
         img.src = "/src/assets/img/fancy-court.png";
         ball_sound.src = "/src/assets/sounds/beeep.ogg";
         paddle_sound.src = "/src/assets/sounds/Pop.ogg";
-        const socket = io('http://10.14.10.1:4000');
+        const socket = io('http://10.14.10.5:4000');
         
         start.addEventListener('click',()=> 
         {

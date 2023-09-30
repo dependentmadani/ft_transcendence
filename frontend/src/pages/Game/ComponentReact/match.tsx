@@ -44,11 +44,11 @@ export default function MatchGame()
   return (
     
     <div >
-    <div className= "vs">
-        <img src="/src/assets/img/vs.png"/>
+  
+    <div >
+        <img className= "vs" src="/src/assets/img/vs.png"/>
      
     </div>
-  
     <div id="profile1"> 
           <img className='profile1Img' src='/src/assets/img/akinator.png'></img>
           <strong className='profile1id'>Akinator</strong>

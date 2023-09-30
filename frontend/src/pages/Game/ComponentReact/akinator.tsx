@@ -37,11 +37,10 @@ export default function Akinator()
 
   return (
     
-    <div >
+    <div>
   
-    <div className= "vs">
-        <img src="/src/assets/img/vs.png"/>
-     
+    <div >
+        <img className= "vs" src="/src/assets/img/vs.png"/>
     </div>
   
     <div id="profile1"> 

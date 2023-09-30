@@ -1,21 +1,5 @@
 version: '3.8'
 
-volumes:
-  db_volume:
-    driver: local
-    name: db_volume
-    driver_opts:
-      type: none
-      o: bind
-      device: $HOME/goinfre/data/database
-      # device: /home/mbadaoui/data/database
-  backend_volume:
-    driver: local
-    name: backend_volume
-    driver_opts:
-      type: none
-      o: bind
-      device: $HOME/goinfre/data/backend
       # device: /home/mbadaoui/data/backend
   # frontend_volume:
   #   driver: local
@@ -46,6 +30,7 @@ services:
     container_name: pingpongBackend
     ports:
       - 8000:8000
+      - 4000:4000
     restart: always
     depends_on:
       - db
@@ -97,3 +82,19 @@ services:
   #     POSTGRES_DB: nest
   #   networks:
   #     - hadnetwork
+volumes:
+  db_volume:
+    driver: local
+    name: db_volume
+    driver_opts:
+      type: none
+      o: bind
+      device: /nfs/homes/sriyani/data/database
+      # device: /home/mbadaoui/data/database
+  backend_volume:
+    driver: local
+    name: backend_volume
+    driver_opts:
+      type: none
+      o: bind
+      device: /nfs/homes/sriyani/data/backend

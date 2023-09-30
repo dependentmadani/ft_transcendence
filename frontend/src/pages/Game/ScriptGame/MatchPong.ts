@@ -31,7 +31,7 @@ export function ping_pong(canvas :any, leftCallback:any , rightCallback:any)
         music.src = "/src/assets/sounds/hxh.mp3";
         img.src = "/src/assets/img/tenis.jpg"
         
-        const socket = io('http://10.14.10.1:5000');
+        const socket = io('http://10.14.10.5:5000');
         
         start.addEventListener('click',()=> 
         {

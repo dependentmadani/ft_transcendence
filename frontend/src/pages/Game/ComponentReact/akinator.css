@@ -1,16 +1,15 @@
-/* * {
+ /* * {
     margin: 0;
     padding: 0;
   
-  }
- body
+  } */
+  body
   {
-    display: grid;
-    position:fixed;
     margin: 0;
-    padding: 0;
-   background-color: rgb(36, 3, 63);
-  }  */
+    padding: 0; 
+    background-color:   #0e225c
+  }    
+  
   #canvas1
   {
     display: flex;
@@ -143,7 +142,8 @@
     position: fixed;
     top: 5%;
     left: 45%;
-    height: 120px;  
+    height: 120px;
+    width: 200px;
   }
   
   #profile1
@@ -264,9 +264,12 @@
   
   @media screen and (max-width: 1700px)
   {
-    body{
-      background-color: rgb(243, 17, 17);
-    }
+    body
+  {
+    margin: 0;
+    padding: 0; 
+    background-color:  #232760;
+  } 
     #canvas1
     {
        width: 1000px; 
@@ -341,7 +344,6 @@
     display: flex;
     position: fixed;
     right : 15%;
-  
   }
   .vs
   {
@@ -349,7 +351,8 @@
     position: fixed;
     top: 3%;
     left: 43%;
-    height: 120px;  
+    height: 120px;
+    width: 200px;
   }
   }
   
@@ -357,9 +360,12 @@
   @media screen and (max-width: 1300px)
   {
     
-    body{
-      background-color: burlywood;
-    }
+    body
+    {
+      margin: 0;
+      padding: 0; 
+      background-color:  #0e225c
+    } 
     #canvas1
     {
        width: 666px; 
@@ -482,7 +488,8 @@
     position: fixed;
     top: 7%;
     left: 43%;
-    height: 80px;  
+    height: 80px;
+    width: 150px;
   }
   
   }
@@ -492,9 +499,11 @@
   {
     
     body
-    {
-      background-color: aqua;
-    }
+  {
+    margin: 0;
+    padding: 0; 
+    background-color:  #0e225c
+  } 
     #canvas1
     {
       width: 500px; 
@@ -528,7 +537,8 @@
       position: fixed;
       top: 5%;
       left: 55vh;
-      height: 100px;  
+      height: 100px;
+      width: 150px;
     }
   
     #profile1
@@ -627,7 +637,8 @@
     position: fixed;
     top: 8%;
     left: 41%;
-    height: 80px;  
+    height: 80px;
+    width: 150px;
   }
   
   
@@ -638,8 +649,10 @@
     
     body
     {
-      background-color: blueviolet;
-    }
+      margin: 0;
+      padding: 0; 
+      background-color:  #232760;
+    } 
     #canvas1
     {
       width: 250px;
@@ -792,7 +805,8 @@
     position: fixed;
     top: 10%;
     left: 39%;
-    height: 40px;  
+    height: 40px;
+    width: 40px;
   }
   }
    

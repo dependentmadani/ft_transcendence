@@ -39,8 +39,8 @@ export default function ClassicGame()
     
     <div >
   
-    <div className= "vs">
-        <img src="./src/assets/img/vs.png"/>
+    <div >
+        <img className= "vs" src="/src/assets/img/vs.png"/>
      
     </div>
   
