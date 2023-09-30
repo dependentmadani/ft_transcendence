@@ -32,7 +32,7 @@ export const Chat = ({ chatData }: any) => {
   return (
     <div id='Conversation' className='chat'>
       {/* <Messages messages={ messages } /> */}
-      <Input chatData={ chatData } chat={currentChat} />
+      <Input chatData={ chatData } />
     </div>
   )
 }

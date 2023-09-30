@@ -50,7 +50,7 @@ export const HomeChat = () => {
   //   socket.emit('sendMessage', 'HADA MSG CHADID LAHJA')
   // }
 
-  const socketRef = useRef<SocketIOClient.Socket | null>(null);
+  // const socketRef = useRef<SocketIOClient.Socket | null>(null);
 
   const [mainUser, setMainUser] = useState<User | null>(null)
 
@@ -63,25 +63,25 @@ export const HomeChat = () => {
   }, [])
   
 
-  useEffect(() => {
-    socketRef.current = io('http://localhost:8000');
+  // useEffect(() => {
+  //   socketRef.current = io('http://localhost:8000');
 
-    // Example: Sending user ID during setup
-    // getUserId()
-    console.log('ID', mainUser)
-    if (mainUser?.id !== undefined) {
-      // console.log('WWWWWWWWWWWWWWWWWWWWW')
-      const userId = mainUser.id//_MAIN_USER?.id; // Replace with the actual user ID
-      socketRef.current.emit('setup', { userId });
-    }
+  //   // Example: Sending user ID during setup
+  //   // getUserId()
+  //   console.log('ID', mainUser)
+  //   if (mainUser?.id !== undefined) {
+  //     // console.log('WWWWWWWWWWWWWWWWWWWWW')
+  //     const userId = mainUser.id//_MAIN_USER?.id; // Replace with the actual user ID
+  //     socketRef.current.emit('setup', { userId });
+  //   }
 
-    // Cleanup socket connection on unmount
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.disconnect();
-      }
-    };
-  }, [mainUser]);
+  //   // Cleanup socket connection on unmount
+  //   return () => {
+  //     if (socketRef.current) {
+  //       socketRef.current.disconnect();
+  //     }
+  //   };
+  // }, [mainUser]);
 
   // useEffect(() => {
 
@@ -102,25 +102,25 @@ export const HomeChat = () => {
   // }, [])
 
   // console.log('ChatData -- ', chatData, selectedChat)
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     setIsMobile(window.innerWidth <= 768);
+  //   };
 
-    window.addEventListener('resize', handleResize);
+  //   window.addEventListener('resize', handleResize);
 
-    // Clean up the event listener on component unmount
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  //   // Clean up the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener('resize', handleResize);
+  //   };
+  // }, []);
   
-  const handleClickedVal = (val: number) => {
-    setClickedVal(val)
-    console.log('clicked val', clickedVal, val)
-  }
+  // const handleClickedVal = (val: number) => {
+  //   setClickedVal(val)
+  //   console.log('clicked val', clickedVal, val)
+  // }
 
   return (
     <div className='home'>
