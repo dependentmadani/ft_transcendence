@@ -18,6 +18,7 @@ interface Chat {
 
 interface Room {
   id: number,
+  roomId: number,
   roomName: number;
   roomAvatar: string;
 }
@@ -53,7 +54,7 @@ export  const Chats = ({ onValueChange }: any) => {
         setChats(response.data)
       }
       catch (err) {
-        console.error('No chats')
+        console.log('No chats')
       }
     }
     fetchChats()
@@ -86,7 +87,7 @@ export  const Chats = ({ onValueChange }: any) => {
           const filteredChatsData: any = newChatsData.filter((chat) => chat !== null);
           setNewChats(filteredChatsData);
         } catch (err) {
-          console.error('Error fetching users for chats: ', err);
+          console.log('Error fetching users for chats: ', err);
         }
       };
       fetchChatUsers()
@@ -128,14 +129,14 @@ export  const Chats = ({ onValueChange }: any) => {
         console.log('initial rooms', rooms.data, _MAIN_USER_.id)
         let t: any = []
         rooms.data.map(async (room: Room) => {
-          let res = await axios.get(`http://localhost:8000/room/${room.id}`, {withCredentials: true})
+          let res = await axios.get(`http://localhost:8000/room/${room?.roomId}`, {withCredentials: true})
           t.push(res.data)
         })
         // console.log('TTT', t)
         setRooms(t)
       }
       catch (err) {
-        console.error('No rooms')
+        console.log('No rooms')
       }
     }
     fetchRooms()
@@ -174,7 +175,7 @@ export  const Chats = ({ onValueChange }: any) => {
           setLatestMessages(latestMessagesObject);
         }
       } catch (err) {
-        console.error('No latest message');
+        console.log('No latest message');
       }
     };
     fetchLatestMessages();
@@ -201,7 +202,7 @@ export  const Chats = ({ onValueChange }: any) => {
           setLatestRoomMessages(latestMessagesObject);
         }
       } catch (err) {
-        console.error('No latest messages');
+        console.log('No latest messages');
       }
     };
     fetchLatestMessages();
@@ -247,7 +248,7 @@ export  const Chats = ({ onValueChange }: any) => {
           setRoomAvatar(latestMessagesObject);
         }
       } catch (err) {
-        console.error('No latest messages');
+        console.log('No latest messages');
       }
     };
     fetchRoomAvatars();
@@ -307,7 +308,15 @@ export  const Chats = ({ onValueChange }: any) => {
     onValueChange({chat, type})
   }
 
-  // console.log('HAANA', selectedChat)
+  // console.log('HAANA', rooms)
+  useEffect(() => {
+    const sortChats = async () => {
+      console.log('NEWWWWWWWWWWWWWWWWWWWWWW', latestRoomMessages)
+
+    }
+
+    sortChats()
+  }, [rooms])
 
   return (
     <>

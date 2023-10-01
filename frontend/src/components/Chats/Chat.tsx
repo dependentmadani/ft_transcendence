@@ -27,7 +27,7 @@ export const Chat = ({ chatData }: any) => {
 
   currentChat = chatData._chat
 
-  // console.log('what wronkk2', chatData?._chat)
+  // console.log('Chhhhhhhhhh', chatData?._chat?.chat)
 
   return (
     <div id='Conversation' className='chat'>

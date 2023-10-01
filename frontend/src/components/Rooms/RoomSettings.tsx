@@ -91,16 +91,17 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
             formData.append('roomAvatar', newRoomAvatar);
             formData.append('roomType', newRoomType)
 
-        try {
-            const response = await axios.patch(`http://localhost:8000/room/${currentRoom.id}`, formData, {
-                withCredentials: true,
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            console.log('Updated ROOM ', response.data)
-            
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const response = await axios.patch(`http://localhost:8000/room/${currentRoom.id}`, formData, {
+                    withCredentials: true,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                console.log('Updated ROOM ', response.data)
+                
+            }
+            catch (error) {
+                console.error(error);
+            }
         }
     }
 
@@ -124,45 +125,43 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
     return (
         <div className="overlay">
             <div className="form-container" ref={searchResultsRef}>
+                <h2>Change room settings</h2>
                 { currentUserIsAdmin && <RoomFormInvite currentRoom={currentRoom} /> }
                 <div className="changeRoomSettings">
-                    <p>Change room settings</p>
-                    <div className="mainInfos">
-                        <input type="text" placeholder={ currentRoom.roomName } onChange={e => setNewRoomName(e.target.value)} />
-                        <span>
-                            <label htmlFor="image-upload" className="upload-label">
-                                <input
-                                type="file"
-                                id="image-upload"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                style={{ display: 'none' }}
-                                />
-                                <div className="upload-icon">
-                                    <FontAwesomeIcon className='importNewAvatarIcon' icon={faImage} />
-                                </div>
+                    <div className="changes">
+                        <div className="mainInfos">
+                            <input type="text" placeholder={ currentRoom.roomName } onChange={e => setNewRoomName(e.target.value)} />
+                            <span>
+                                <label htmlFor="image-upload" className="upload-label">
+                                    <input type="file" id="image-upload" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
+                                    <div className="upload-icon">
+                                        <FontAwesomeIcon className='importNewAvatarIcon' icon={faImage} />
+                                    </div>
+                                </label>
+                            </span>
+                        </div>
+                        <div className='roomType'>
+                            <label>
+                                <input type="radio" value="Public" checked={newRoomType === 'Public'} onChange={handleOptionChange} />
+                                Public
                             </label>
-                        </span>
-                    </div>
-                    <div className='roomType'>
-                        <label>
-                            <input type="radio" value="Public" checked={newRoomType === 'Public'} onChange={handleOptionChange} />
-                            Public
-                        </label>
 
-                        <label>
-                            <input type="radio" value="Protected" checked={newRoomType === 'Protected'} onChange={handleOptionChange} />
-                            Protected
-                        </label>
+                            <label>
+                                <input type="radio" value="Protected" checked={newRoomType === 'Protected'} onChange={handleOptionChange} />
+                                Protected
+                            </label>
 
-                        <label>
-                            <input type="radio" value="Private" checked={newRoomType === 'Private'} onChange={handleOptionChange} />
-                            Private
-                        </label>
+                            <label>
+                                <input type="radio" value="Private" checked={newRoomType === 'Private'} onChange={handleOptionChange} />
+                                Private
+                            </label>
+                        </div>
                     </div>
-                    <span className='saveChanges'><FontAwesomeIcon className="saveChangesIcon" icon={faFloppyDisk} onClick={ saveChanges } /></span>
+                    <div className="saveIcon">
+                        <span className='saveChanges'><FontAwesomeIcon className="saveChangesIcon" icon={faFloppyDisk} onClick={ saveChanges } /></span>
+                    </div>
                 </div>
-                <div className="mutualContact flex-item">
+                <div className="FormRoomMember">
                     <RoomMembers currentRoom={currentRoom} />
                 </div>
             </div>

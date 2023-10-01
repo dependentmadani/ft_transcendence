@@ -1,126 +1,20 @@
 import  { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faPaperPlane, faImage, faUserPlus, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faPaperPlane, faImage } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import { SearchInviteResults } from './SearchInviteResults';
-import { RoomFormInvite } from './RoomFormIvite';
 
-interface User {}
+// interface User {}
 
-interface Room {}
 
 export const RoomCreationModal = ({ onClose }: any) => {
 
-    let fileUploaded: File;
     const [roomName, setRoomName] = useState('')
     const [roomAvatar, setRoomAvatar] = useState<File | null>()
     const [roomType, setRoomType] = useState('')
-    const [searchResults, setSearchResults] = useState<User | null>([])
-    const [username, setUsername] = useState('')
-
-    const handleImageChange = (e: any) => {
-        const file = e.target.files[0];
-        setRoomAvatar(file);
-        // localStorage.setItem('local_storage', file)
-    };
-
-    useEffect(() => {
-        getResults()
-    }, [username])
-
-    // const createRoom = (file: FileList | null) => {
-    //     if (roomName && file) {
-    //         if (file[0].size > 200000) {
-    //             // setErrorMessageFile("Image size is limited to 20 kb!")
-    //             return ;
-    //         }
-    //         fileUploaded = file[0];
-    //         // setErrorMessageFile("");
-    //         const fileRef= file[0] || ""
-    //         const fileType = fileRef.type
-    //         const reader = new FileReader()
-    //         reader.readAsBinaryString(fileRef)
-    //         reader.onload=(ev: any) => {
-    //             setRoomAvatar(`data:${fileType};base64,${btoa(ev.target.result)}`)
-    //         }
-    //         axios({
-    //             method: "POST",
-    //             withCredentials: true,
-    //             url: `http://localhost:8000/room`,
-    //             headers: {'Content-Type':'multipart/form-data'},
-    //             data: {
-    //                 roomName: roomName,
-    //                 roomAvatar: fileUploaded,
-    //                 roomType: roomType,
-    //             },
-    //         });
-    //     }
-    // }
-
-    const uploadImage = async () => {
-        if (roomName && roomAvatar) {
-            let formData = new FormData();
-            formData.append('roomName', roomName);
-            formData.append('roomAvatar', roomAvatar);
-            formData.append('roomType', roomType)
-            // formData.append('roomUsers', '1');
-            // formData.append('role', 'ADMIN');
-            console.log('hhh', formData)
-
-        try {
-            const response = await axios.post(`http://localhost:8000/room`, formData, {
-                withCredentials: true,
-                headers: { 'Content-Type': 'multipart/form-data' },
-            });
-            console.log('CREATED ROOM ', response)
-
-            if (response.data) {
-                console.log('rah mzyaaan')
-                const roomId: number = response.data.id
-                // const userId: number = 1 // for now
-                try {
-                    const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-                    const response = await axios.post(`http://localhost:8000/roomUsers`, {
-                        roomId: roomId,
-                        userId: _MAIN_USER_.id,
-                        role: 'OWNER',
-                    }, {
-                        withCredentials: true
-                    });
-        
-                    // if (response.data.imagePath) {
-                    //     console.log('rah mzyaaan')
-                    // }
-                } catch (error) {
-                    console.error(error);
-                }
-            }
-            
-        } catch (error) {
-            console.error(error);
-        }
-        }
-    };
-
-    // Search for Users to invite
-    const getResults = async () => {
-        try {
-          const results = await axios.get(`http://localhost:8000/users/search/${username}`, {withCredentials: true})
-          setSearchResults(results.data)
-        }
-        catch {
-            setSearchResults(null)
-          console.error(`Couldn't find any user`)
-        }
-    }
-
-    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRoomType(event.target.value);
-    };
-    
-    // console.log('CCCCURENT ROOM', currentRoom)
     const searchResultsRef = useRef<HTMLDivElement>(null);
 
+    
+    // handling the opening and the closing of the form
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (searchResultsRef.current && !searchResultsRef.current.contains(event.target as Node)) {
@@ -133,6 +27,60 @@ export const RoomCreationModal = ({ onClose }: any) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [onClose]);
+    
+
+    // Getting the Room avatar from the user
+    const handleImageChange = (e: any) => {
+        const file = e.target.files[0];
+        setRoomAvatar(file);
+    };
+
+
+    // Creating the new Room
+    const uploadImage = async () => {
+        if (roomName && roomAvatar) {
+            let formData = new FormData();
+            formData.append('roomName', roomName);
+            formData.append('roomAvatar', roomAvatar);
+            formData.append('roomType', roomType)
+
+            try {
+                const response = await axios.post(`http://localhost:8000/room`, formData, {
+                    withCredentials: true,
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                console.log('CREATED ROOM ', response)
+
+                if (response.data) {
+                    console.log('rah mzyaaan')
+                    const roomId: number = response.data.id
+                    try {
+                        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+                        await axios.post(`http://localhost:8000/roomUsers`, {
+                            roomId: roomId,
+                            userId: _MAIN_USER_.id,
+                            role: 'OWNER',
+                        }, {
+                            withCredentials: true
+                        });
+                    }
+                    catch (error) {
+                        console.log(error);
+                    }
+                }
+            }
+            catch (error) {
+                console.log(error);
+            }
+        }
+    };
+
+
+    // Setting Room type
+    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRoomType(event.target.value);
+    };
+    
 
     return (
         <div className="overlay">
@@ -143,13 +91,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
                         <input type="text" className='roomCreationInput' placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
                         <span>
                             <label htmlFor="image-upload" className="upload-label">
-                                <input
-                                type="file"
-                                id="image-upload"
-                                accept="image/*"
-                                onChange={handleImageChange}
-                                style={{ display: 'none' }}
-                                />
+                                <input type="file" id="image-upload" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
                                 <div className="upload-icon">
                                     <FontAwesomeIcon className='importAvatarIcon' icon={faImage} />
                                 </div>
@@ -161,34 +103,20 @@ export const RoomCreationModal = ({ onClose }: any) => {
                             <input type="radio" value="Public" checked={roomType === 'Public'} onChange={handleOptionChange} />
                             public
                         </span>
-
                         <span>
                             <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
                             protected
                         </span>
-
                         <span>
                             <input type="radio" value="Private" checked={roomType === 'Private'} onChange={handleOptionChange} />
                             private
                         </span>
-
-                        {/* <p>Selected Option: {roomType}</p> */}
                     </div>
-                    
-
-                    {/* { <RoomFormInvite currentRoom={currentRoom} /> } */}
-                    {/* <div className="roomFormInvite">
-                        <div className="searchInvite">
-                            <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
-                            <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
-                        </div>
-                    </div> */}
                 </div>
                 <div className="sendButton">
-                    <FontAwesomeIcon className='createIconSend' icon={faPaperPlane} />
+                    <FontAwesomeIcon className='createIconSend' onClick={uploadImage} icon={faPaperPlane} />
                 </div>
             </div>
-            {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
         </div>
     );
 };

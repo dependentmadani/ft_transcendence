@@ -5,7 +5,6 @@ import axios from 'axios';
 import { SearchInviteResults } from './SearchInviteResults';
 
 interface User {}
-// interface Room {}
 
 export const RoomFormInvite = ({ currentRoom }: any) => {
 
@@ -25,7 +24,7 @@ export const RoomFormInvite = ({ currentRoom }: any) => {
         }
         catch (err) {
             setSearchResults(null)
-          console.error(`Couldn't find any user`, err)
+          console.log(`Couldn't find any user`, err)
         }
     }
 

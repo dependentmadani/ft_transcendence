@@ -168,9 +168,13 @@
     }
 
     .changeRoomSettings {
-      padding: 10px;
+      padding: 20px;
       border: 1px solid gray;
-      margin: 10px 0;
+      margin: 25px 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      text-align: start;
 
       .mainInfos {
         display: flex;
@@ -193,11 +197,31 @@
         }
       }
 
+      .saveIcon {
+        margin: auto;
+      }
       .saveChanges {
         font-size: 1.2em;
         color: aliceblue;
         cursor: pointer;
+
+        .saveChangesIcon {
+          font-size: 1.3em;
+          color: #dfbf04;
+          background-color: aliceblue;
+          padding: 5px;
+          border-radius: 7px;
+        }
       }
+    }
+
+    .FormRoomMember {
+      padding: 10px;
+      border: 1px solid gray;
+      margin: 25px 0;
+      // display: flex;
+      // flex-direction: row;
+      align-items: center;
     }
   }
 
@@ -252,13 +276,7 @@
       }
     }
 
-    .searchInviteResult {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      border: solid 1px darkgray;
-      border-radius: 5px;
-    }
+    
 
     .inviteResults {
       display: flex;
@@ -278,12 +296,14 @@
           cursor: pointer;
         }
     }
+    
+    
 
-    .searchInvite {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-    }
+    // .searchInvite {
+    //   display: flex;
+    //   flex-direction: row;
+    //   align-items: center;
+    // }
 
     input {
       background-color: #828ccb;
@@ -549,19 +569,59 @@
             }
 
             .roomFormInvite {
-              // background-color: aliceblue;
-              width: 75%;
               padding: 10px;
-              border-radius: 10px;
-              margin: 20px;
+              border: 1px solid gray;
+              display: flex;
+              flex-direction: column;
+
+              .searchInvite {
+                width: 50%;
+                margin: 10px auto;
+
+              }
+              
+              .searchInviteResults {
+                background-color: #e7f0fac9;
+                width: 45%;
+                margin: auto;
+                padding: 10px;
+                border-radius: 5px;
+
+                .inviteResults {
+                  display: flex;
+                  flex-direction: row;
+                  background-color: #3f4777;
+                  padding: 10px 5px;
+                  width: 85%;
+                  margin: auto;
+                  border-radius: 30px;
+
+                  .resultName {
+                    width: 50%;
+                    text-align: center;
+                    color: aliceblue;
+                  }
+
+                  .resultIcon {
+                    width: 50%;
+                    text-align: center;
+
+                    .inviteIcon {
+                      font-size: 1em;
+                      color: aliceblue;
+                      cursor: pointer;
+                    }
+                  }
+                }
+              }
 
               input {
                 background-color: rgba(240, 248, 255, 0.9215686275);
                 border: none;
-                border-radius: 30px;
-                padding: 10px;
+                border-radius: 7px;
+                padding: 7px;
                 outline: none;
-                width: 75%;
+                width: 65%;
               }
 
               .searchIcon {
@@ -576,23 +636,59 @@
               width: 75%;
               background-color: #6b73a7;
               padding: 10px;
+              margin: auto;
+
+              .roomMemberItem {
+                width: 60%;
+                padding: 10px;
+                margin: 5px auto;
+                background: aliceblue;
+                border-radius: 10px;
+                display: flex;
+                flex-direction: row;
+              }
 
               .roomMember {
-                background-color: #f0f8ffeb;
-                // padding: 10px;
-                border-radius: 10px;
-                padding: 10px 50px;
-                margin: 10px;
+                width: 80%;
+                text-align: start;
+                margin-left: 10px;
+              }
 
-                .owner {
-                  margin: 0 0 0 20px;
-                }
-                .admin {
-                  margin: 0 0 0 20px;
+              .owner {
+                width: 10%;
+                text-align: end;
+                margin: 0 10px;
+              }
+              .admin {
+                width: 10%;
+                text-align: end;
+                margin: 0 10px;
+              }
+
+              .roleIcon {
+                color: #b8811e;
+              }
+
+              .memberActions {
+                display: flex;
+                flex-direction: row;
+
+                .muteMemberIcon {
+                  margin: 0 3px;
+                  cursor: pointer;
+                  color: #262a89bf;
                 }
 
-                .roleIcon {
-                  color: #b8811e;
+                .banMemberIcon {
+                  margin: 0 3px;
+                  cursor: pointer;
+                  color: #262a89bf;
+                }
+
+                .kickMemberIcon {
+                  margin: 0 3px;
+                  cursor: pointer;
+                  color: #262a89bf;
                 }
               }
             }

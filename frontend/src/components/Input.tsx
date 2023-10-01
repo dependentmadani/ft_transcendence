@@ -157,12 +157,12 @@ export const Input = ({ chatData }: any) => {
     fetchRoomMessages()
   }, [currentChat?.id])
 
-  console.log('WeeeeeW', chatMessages[chatMessages.length-1]?.textContent)
+  // console.log('WeeeeeW', chatMessages[chatMessages.length-1]?.textContent)
 
   
   return (
     <>
-    <Messages messages={ chatData?._chat?.type === 'chat' ? chatMessages : roomMessages } />
+    <Messages chatData={chatData} messages={ chatData?._chat?.type === 'chat' ? chatMessages : roomMessages } />
 
     <div className="input">
       <div className="inputContainer">
