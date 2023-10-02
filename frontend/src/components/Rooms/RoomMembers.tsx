@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase, faUser, faEllipsisVertical, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell } from '@fortawesome/free-solid-svg-icons';
 
 interface User {
     data: {
@@ -35,18 +35,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
                     for (let i=0; i<membersIds.length; i++) {
                         try {
                             const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
-                            // const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
                             const res = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${membersIds[i]}`, { withCredentials: true })
-                            // const result1 = await axios.get(`http://localhost:8000/roomUsers/owner/${currentRoom.id}`, {withCredentials: true})
-                            // const result2 = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`, {withCredentials: true})
-                            // let role: string
-                            // if (result1.data.length !== 0)
-                            //     role = 'OWNER'
-                            // else if (result2.data.length !== 0)
-                            //     role = 'ADMIN'
-                            // else
-                            //     role = 'MEMBER'
-                            // const role = 
                             members.push({'role': res?.data[0]?.role, 'data': user.data})
                         }
                         catch (err) {
@@ -60,22 +49,9 @@ export const RoomMembers = ({ currentRoom }: any) => {
                 console.log('No users for this room')
             }
         }
+
         getRoomMembers()
     }, [])
-
-    // const muteMember = async (user: User) => {
-    //     try {
-    //         const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.data.id}`, {
-    //             'role': 'MUTED'
-    //         }, {
-    //             withCredentials: true,
-    //         });
-    //         console.log('Muted', response)
-                
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
 
     const kickMember = async (user: User) => {
         try {
@@ -118,9 +94,6 @@ export const RoomMembers = ({ currentRoom }: any) => {
         }
     }
 
-    // console.log('ROOM Members ', roomMembers)
-    // console.log(currentRoom)
-    console.log('WAA KHONAAA', roomMembers)
 
     return (
         <div className='roomMembers'>
@@ -137,8 +110,6 @@ export const RoomMembers = ({ currentRoom }: any) => {
                                     <FontAwesomeIcon icon={faBan} className='kickMemberIcon' onClick={() => kickMember(user)} />
                                 </div>
                             }
-                            {/* <span className='owner'>{ user.role === 'owner' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span> */}
-                        
                     </div>
                 ))
             }

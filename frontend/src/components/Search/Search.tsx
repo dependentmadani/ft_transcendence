@@ -10,7 +10,7 @@ interface User {}
 export const Search = ({ selectedChat }: any) => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
-    
+  const [showForm, setShowForm] = useState(false);
   
   useEffect(() => {
     if (username.trim() !== '') {
@@ -25,12 +25,11 @@ export const Search = ({ selectedChat }: any) => {
         }
       }
       
-      // setUsername('')
       getResults()
     }
   }, [username])
 
-  const [showForm, setShowForm] = useState(false);
+  
   
   const openForm = () => {
     setShowForm(true);
@@ -39,11 +38,9 @@ export const Search = ({ selectedChat }: any) => {
   const closeForm = () => {
     setUsername('')
     setSearchResults(null)
-    // console.log('YOOO', username)
     setShowForm(false);
   };
 
-  // console.log('HAANA 2', selectedChat)
 
   return (
     <div className="search">

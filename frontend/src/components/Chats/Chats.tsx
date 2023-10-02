@@ -4,6 +4,7 @@ import { Chat } from "./Chat";
 import { Search } from "../Search/Search";
 
 interface User {
+  roomId: number,
   id: number;
   username: string;
   avatar: string,
@@ -18,9 +19,24 @@ interface Chat {
 
 interface Room {
   id: number,
+  
+  roomName: number,
+  roomAvatar: string,
+  roomType: string,
+}
+
+interface roomUsers {
+  id: number,
   roomId: number,
-  roomName: number;
-  roomAvatar: string;
+  userId: number,
+}
+
+interface Contact {
+  id: number,
+  name: string,
+  avatar: string,
+  type: string,
+  latestMessage: string,
 }
 
 var _MAIN_USER_: User
@@ -36,12 +52,13 @@ export  const Chats = ({ onValueChange }: any) => {
   // }, [])
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
-  const [initialChats, setInitialChats] = useState<Chat[]>()
+  // const [initialChats, setInitialChats] = useState<Chat[]>()
   const [newChats, setNewChats] = useState<Chat[]>()
+  const [newRooms, setNewRooms] = useState<Room[]>()
   const [chats, setChats] = useState<Chat[]>([])
-  const [rooms, setRooms] = useState<Room[]>([])
-  const [latestMessages, setLatestMessages] = useState<{ [chatId: number]: string }>({});
-  const [latestRoomMessages, setLatestRoomMessages] = useState<{ [roomId: number]: string }>({});
+  const [rooms, setRooms] = useState<roomUsers[]>([])
+  const [latestMessages, setLatestMessages] = useState<{ [id: number]: {type: string, content: string, date: Date} }>({});
+  const [latestRoomMessages, setLatestRoomMessages] = useState<{ [id: number]: {type: string, content: string, date: Date} }>({});
   // const [roomAvatar, setRoomAvatar] = useState('');
 
 
@@ -52,6 +69,7 @@ export  const Chats = ({ onValueChange }: any) => {
       try {
         let response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_.id}`, {withCredentials: true})
         setChats(response.data)
+        // console.log('GGG', response.data)
       }
       catch (err) {
         console.log('No chats')
@@ -61,7 +79,30 @@ export  const Chats = ({ onValueChange }: any) => {
   }, [])
   
   useEffect(() => {
+    const fetchRooms = async () => {
+      try {
+        _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        let response = await axios.get(`http://localhost:8000/roomUsers/user/${_MAIN_USER_.id}`, {withCredentials: true})
+        // console.log('initial rooms', rooms.data, _MAIN_USER_.id)
+        // let t: any = [{}]
+        // // t.pop()
+        // response.data.map(async (room: Room) => {
+        //   let res = await axios.get(`http://localhost:8000/room/${room?.id}`, {withCredentials: true})
+        //   t.push(res.data)
+        // })
+        // console.log('TTT', t)
+        setRooms(response.data)
+      }
+      catch (err) {
+        console.log('No rooms')
+      }
+    }
+    fetchRooms()
+  }, [])
+  
+  useEffect(() => {
       const fetchChatUsers = async () => {
+        // console.log('HAA CHATS', chats)
         try {
           _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
           const newChatsData = await Promise.all(
@@ -86,12 +127,46 @@ export  const Chats = ({ onValueChange }: any) => {
           );
           const filteredChatsData: any = newChatsData.filter((chat) => chat !== null);
           setNewChats(filteredChatsData);
-        } catch (err) {
+        }
+        catch (err) {
           console.log('Error fetching users for chats: ', err);
         }
       };
       fetchChatUsers()
   }, [chats])
+
+  useEffect(() => {
+    const fetchRoomUsers = async () => {
+      // console.log('HAA ROOMS', rooms)
+      try {
+        _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        const newRoomsData = await Promise.all(
+          rooms?.map(async (room: roomUsers) => {
+            // console.log('ARRIVED ROOMS', room.id)
+            // let t: any = [{}]
+        // t.pop()
+            let res = await axios.get(`http://localhost:8000/room/${room?.roomId}`, {withCredentials: true})
+          
+
+            const newRoom: Room = {
+              id: res.data.id,
+              roomName: res.data.roomName,
+              roomAvatar: res.data.roomAvatar,
+              roomType: res.data.roomType,
+            };
+
+            return newRoom
+          })
+        );
+        // console.log('3LAACH 1 ', newRoomsData)
+        setNewRooms(newRoomsData);
+      }
+      catch (err) {
+        console.log('Error fetching users for rooms: ', err);
+      }
+    };
+    fetchRoomUsers()
+}, [rooms])
 
 //   useEffect(() => {
 //     const fetchChats = async () => {
@@ -121,26 +196,7 @@ export  const Chats = ({ onValueChange }: any) => {
 //     fetchChats()
 // }, [newChats])
 
-  useEffect(() => {
-    const fetchRooms = async () => {
-      try {
-        _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-        let rooms = await axios.get(`http://localhost:8000/roomUsers/user/${_MAIN_USER_.id}`, {withCredentials: true})
-        console.log('initial rooms', rooms.data, _MAIN_USER_.id)
-        let t: any = []
-        rooms.data.map(async (room: Room) => {
-          let res = await axios.get(`http://localhost:8000/room/${room?.roomId}`, {withCredentials: true})
-          t.push(res.data)
-        })
-        // console.log('TTT', t)
-        setRooms(t)
-      }
-      catch (err) {
-        console.log('No rooms')
-      }
-    }
-    fetchRooms()
-  }, [])
+  
 
   useEffect(() => {
     onValueChange(selectedChat);
@@ -156,17 +212,19 @@ export  const Chats = ({ onValueChange }: any) => {
   
 
   useEffect(() => {
-    const fetchLatestMessages = async () => {
+    const fetchChatLatestMessages = async () => {
       try {
         const chatIds = newChats?.map((chat) => chat.chatId);
 
         if (chatIds && chatIds.length > 0) {
           const latestMessagesData = await Promise.all(
-            chatIds.map(async (chatId) => {
+            chatIds.map(async (chatId: number) => {
               if (chatId !== undefined) {
                 const latestMessage = (await axios.get(`http://localhost:8000/message/chat/${chatId}`, {withCredentials: true}))?.data;
                 const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
-                return { [chatId]: latestTextContent || 'No messages' };
+                const latestTextCreatedAt: Date = latestMessage[latestMessage.length - 1]?.createdAt;
+                // console.log('TYPPEEEEEEE', typeof(latestTextCreatedAt))
+                return { [chatId]: { 'type': 'chat', 'content': latestTextContent, 'date': latestTextCreatedAt} };
               }
             })
           );
@@ -175,15 +233,16 @@ export  const Chats = ({ onValueChange }: any) => {
           setLatestMessages(latestMessagesObject);
         }
       } catch (err) {
-        console.log('No latest message');
+        console.log('No Chat latest message');
       }
     };
-    fetchLatestMessages();
+    
+    fetchChatLatestMessages();
   }, [newChats]);
 
   
   useEffect(() => {
-    const fetchLatestMessages = async () => {
+    const fetchRoomLatestMessages = async () => {
       try {
         const roomIds = rooms?.map((room) => room.id);
 
@@ -193,20 +252,24 @@ export  const Chats = ({ onValueChange }: any) => {
               if (roomId !== undefined) {
                 const latestMessage = (await axios.get(`http://localhost:8000/message/room/${roomId}`, {withCredentials: true}))?.data;
                 const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
-                return { [roomId]: latestTextContent || 'No messages' };
+                const latestTextCreatedAt = latestMessage[latestMessage.length - 1]?.createdAt;
+                return { [roomId]: { 'type': 'room', 'content': latestTextContent, 'date': latestTextCreatedAt} };
               }
             })
           );
 
           const latestMessagesObject = Object.assign({}, ...latestMessagesData);
+          // console.log('UOOOOOOOOOOOOOO', latestMessagesObject)
           setLatestRoomMessages(latestMessagesObject);
         }
-      } catch (err) {
-        console.log('No latest messages');
+      }
+      catch (err) {
+        console.log('No Room latest messages');
       }
     };
-    fetchLatestMessages();
-  }, [rooms]);
+    
+    fetchRoomLatestMessages();
+  }, [newRooms]);
 
   // useEffect(() => {
   //   const getRoomAvatar = async (id: number) => {
@@ -309,38 +372,66 @@ export  const Chats = ({ onValueChange }: any) => {
   }
 
   // console.log('HAANA', rooms)
-  useEffect(() => {
-    const sortChats = async () => {
-      console.log('NEWWWWWWWWWWWWWWWWWWWWWW', latestRoomMessages)
-
-    }
-
-    sortChats()
-  }, [rooms])
+//   const [contacts, setContacts] = useState<Contact[]>()
+//   useEffect(() => {
+//     const sortContacts = async () => {
+//       // const _temp = [{...latestMessages, ...latestRoomMessages}]
+//       const _contacts = await Promise.all(
+//         _temp.map(async (e: any) => {
+//           // if (e !== undefined) {
+//             const latestMessage = (await axios.get(`http://localhost:8000/message/room/${roomId}`, {withCredentials: true}))?.data;
+//             const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
+//             const latestTextCreatedAt = latestMessage[latestMessage.length - 1]?.createdAt;
+//             return { [e.id]: { 'type': 'room', 'content': latestTextContent, 'date': latestTextCreatedAt} };
+//           // }
+//         })
+//       );
+//       // const sortedMessages = Object.entries(_contacts)
+//       //   .map(([roomId, message]) => ({ roomId: parseInt(roomId), ...message })) 
+//       //   .sort((a: any, b: any) => {
+//       //     const dateA: any = new Date(a.date);
+//       //     const dateB: any = new Date(b.date);
+//       //     return dateB - dateA;
+//       //   });
+//       console.log('WAAAAAAAAAAAAAW', _contacts)
+    
+//       // const sortedMessagesObject = sortedMessages.reduce((acc: any, message: any) => {
+//       //   acc[message.roomId] = { content: message.content, date: message.date };
+//       //   return acc;
+//       // }, {});
+//       // setContacts(sortedMessagesObject);
+//     }
+    
+    
+//     sortContacts()
+//     console.log('EWWE', contacts)
+//   // setLatestRoomMessages(sortedMessagesObject);
+// }, [newChats]);
 
   return (
     <>
       <Search selectedChat={handleSelectedChat} />
       <div className="chats">
+          
           {
             newChats?.map((chat: Chat, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
                 <img src={ chat.receiver.avatar } alt="user_avatar" />
                 <div className="userChatInfo">
                   <span>{ chat?.receiver?.username }</span>
-                  <p>{ latestMessages[chat.chatId] ? latestMessages[chat.chatId] : '' }</p>
+                  <p>{ latestMessages[chat.chatId]?.content ? latestMessages[chat.chatId].content : '' }</p>
                 </div>
                 {/* { 0 && <span className="notifSpan">n</span>} */}
               </div>
             ))
           }
           {
-            rooms.map((room, index) => (
+            newRooms?.map((room: Room, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
                   <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
                   <div className="userChatInfo">
                       <span>{ room.roomName }</span>
-                      <p>{ latestRoomMessages[room.id] ? latestRoomMessages[room.id] : '' }</p>
+                      <p>{ latestRoomMessages[room.id]?.content ? latestRoomMessages[room.id].content : '' }</p>
                   </div>
                   {/* { 0 && <span className="notifSpan">n</span> } */}
               </div>

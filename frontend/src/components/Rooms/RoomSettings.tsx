@@ -1,13 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleXmark, faFloppyDisk, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faFloppyDisk, faImage } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { RoomMembers } from './RoomMembers';
 import { RoomFormInvite } from './RoomFormIvite';
-
-interface User {
-    username: string,
-}
 
 interface RoomUsers {
     roomId: number,
@@ -15,14 +11,16 @@ interface RoomUsers {
     role: string
 }
 
+
 export const RoomSettings = ({ currentRoom, onClose }: any) => {
 
-    // const [roomMembers, setRoomMembers] = useState<User[] | null>([])
     const [currentUserIsAdmin, setCurrentUserIsAdmin] = useState(false)
-    const [newRoomType, setNewRoomType] = useState(currentRoom.roomType)
+    const [newRoomType, setNewRoomType] = useState(currentRoom?.roomType)
     const [newRoomName, setNewRoomName] = useState('')
     const [newRoomAvatar, setNewRoomAvatar] = useState<File | null>(null)
-
+    const searchResultsRef = useRef<HTMLDivElement>(null);
+    
+    
     useEffect(() => {
         const isCurrentUserAdmin = async () => {
             if (currentRoom.roomType === 'Public' || currentRoom.roomType === 'Protected')
@@ -42,38 +40,10 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                         setCurrentUserIsAdmin(true)
             }
         }
+
         isCurrentUserAdmin()
     }, [currentRoom.id])
 
-    // useEffect(() =>{
-    //     const getRoomMembers = async () => {
-    //         try {
-    //             const result = await axios.get(`http://localhost:8000/roomUsers/${currentRoom?.id}`, {withCredentials: true})
-    //             console.log('yyyy', currentRoom.id)
-    //             if (result.data) {
-    //                 let membersIds: number[] = []
-    //                 result.data.map((member: RoomUsers) => (
-    //                     membersIds.push(member?.userId)
-    //                 ))
-    //                 let members: User[] = []
-    //                 for (let i=0; i<membersIds.length; i++) {
-    //                     try {
-    //                         const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
-    //                         members.push(user.data)
-    //                     }
-    //                     catch (err) {
-    //                         console.error(`Couldn't fetch any user`)
-    //                     }
-    //                 }
-    //                 setRoomMembers(members)
-    //             }
-    //         }
-    //         catch {
-    //             console.error('No users for this room')
-    //         }
-    //     }
-    //     getRoomMembers()
-    // }, [])
 
     const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNewRoomType(event.target.value);
@@ -100,14 +70,11 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                 
             }
             catch (error) {
-                console.error(error);
+                console.log(error);
             }
         }
     }
 
-    // console.log('ROOM MEMBERS ', currentUserIsAdmin)
-    // console.log(currentRoom.roomType)
-    const searchResultsRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -165,7 +132,6 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                     <RoomMembers currentRoom={currentRoom} />
                 </div>
             </div>
-            {/* <span onClick={onClose}><FontAwesomeIcon icon={faCircleXmark} /></span> */}
         </div>
     );
 };

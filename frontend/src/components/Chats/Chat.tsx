@@ -4,12 +4,10 @@ import { Input } from '../Input'
 
 interface Chat {}
 
-let currentChat: {}
-
 export const Chat = ({ chatData }: any) => {
+
   const [, setChats] = useState<Chat[]>([])
   
-
   useEffect(() => {
     const fetchChats = async () => {
       try {
@@ -19,15 +17,12 @@ export const Chat = ({ chatData }: any) => {
         chatData._socket.emit('joinChat', chatData._chat?.chatId)
       }
       catch (err) {
-        console.error('No chats')
+        console.log('No chats')
       }
     }
     fetchChats()
   }, [])
 
-  currentChat = chatData._chat
-
-  // console.log('Chhhhhhhhhh', chatData?._chat?.chat)
 
   return (
     <div id='Conversation' className='chat'>

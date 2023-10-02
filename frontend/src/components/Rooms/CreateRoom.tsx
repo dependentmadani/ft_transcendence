@@ -45,15 +45,11 @@ export  const CreateRoom = () => {
         //   setMessages([...messages, newMessage]);
     }
 
-
-    
-
-  
     
     return (
         <div className="createRoom">
             <div className="createRoomIcon" onClick={openForm}><FontAwesomeIcon icon={faUserGroup} /></div>
-            {showForm && <RoomCreationModal onClose={closeForm} />}
+            { showForm && <RoomCreationModal onClose={closeForm} /> }
         </div>
     )
 }

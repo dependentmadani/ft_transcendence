@@ -1,15 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall, faMessage } from '@fortawesome/free-solid-svg-icons';
-
-// interface User {
-//     id: number;
-//     username: string;
-//     avatar: string,
-// }
+import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
 
 export const ChatInfos = ({ currentUser }: any) => {
-    
-    console.log('current user:', currentUser)
 
     const addFriend = () => {
         console.log('add friend')
@@ -18,52 +10,24 @@ export const ChatInfos = ({ currentUser }: any) => {
         console.log('remove friend')
     }
 
-    // console.log('what wronkk', currentUser)
-
-    
-  return (
-    <div className="contactInfo">
-            <div className="contactInfos">
-                <div className="contactAvatar">
-                    <img src={ currentUser?.receiver?.avatar } alt="user_avatar" />
-                </div>
-                <span>{ currentUser?.receiver?.username }</span>
-                <div className="contactPlay1">
-                    <span><FontAwesomeIcon icon={faTableTennisPaddleBall} /></span>
-                    <span><FontAwesomeIcon icon={faUser} /></span>
-                </div>
-            </div>
-
-            {/* <div className="mutualContact flex-item">
-                <div className="mutualFriends">
-                    <p>mutual Friends</p>
-                    <div className="mutualFriendsContainer">
-                        <ul>
-                            <li>gg</li>
-                            <li>gg</li>
-                            <li>gg</li>
-                            <li>gg</li>
-                            <li>gg</li>
-                        </ul>
+    return (
+        <div className="contactInfo">
+                <div className="contactInfos">
+                    <div className="contactAvatar">
+                        <img src={ currentUser?.receiver?.avatar } alt="user_avatar" />
+                    </div>
+                    <span>{ currentUser?.receiver?.username }</span>
+                    <div className="contactPlay1">
+                        <span><FontAwesomeIcon icon={faTableTennisPaddleBall} /></span>
+                        <span><FontAwesomeIcon icon={faUser} /></span>
                     </div>
                 </div>
-                <div className="mutualGroups">
-                    <p>mutual Groups</p>
-                    <div className="mutualGroupssContainer">
-                        <ul>
-                            <li>gg</li>
-                            <li>gg</li>
-                            <li>gg</li>
-                        </ul>
+                <div className="contactPlay2">
+                    <div className="section2">
+                        <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
+                        <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} onClick={0 ? addFriend : removeFriend}/></span>
                     </div>
                 </div>
-            </div> */}
-            <div className="contactPlay2">
-                <div className="section2">
-                    <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                    <span><FontAwesomeIcon icon={0 ? faUser : faUserSlash} onClick={0 ? addFriend : removeFriend}/></span>
-                </div>
-            </div>
-    </div>
-  )
+        </div>
+    )
 }

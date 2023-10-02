@@ -1,20 +1,15 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faBellSlash, faRightFromBracket, faMagnifyingGlass, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faBell, faBellSlash, faRightFromBracket, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
-// import { SearchResult } from '../Search/SearchResult';
 import { RoomSettings } from './RoomSettings';
 import axios from 'axios';
-
-// interface User {
-//     id: number;
-//     username: string;
-//     avatar: string,
-// }
 
 
 export const RoomInfos = ({ currentRoom }: any) => {
     
     const [showSettings, setShowSettings] = useState(false);
+    const [roomAvatar, setRoomAvatar] = useState('');
+
 
     const openSettings = () => {
       setShowSettings(true);
@@ -24,22 +19,21 @@ export const RoomInfos = ({ currentRoom }: any) => {
       setShowSettings(false);
     };
 
-    const [roomAvatar, setRoomAvatar] = useState('');
 
     useEffect(() => {
         const fetchRoomAvatar = async () => {
-        try {
-            const res = (await axios.get(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`, {withCredentials: true}))?.data;
-            setRoomAvatar(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`);
-        }
-        catch (err) {
-            console.error('No latest messages');
-        }
+            try {
+                await axios.get(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`, {withCredentials: true})
+                setRoomAvatar(`http://localhost:8000/room/roomAvatar/${currentRoom.id}`);
+            }
+            catch (err) {
+                console.log('No latest messages');
+            }
         };
+
         fetchRoomAvatar();
     }, [currentRoom.id]);
 
-    // console.log('current room', currentRoom)
 
     return (
         <div className="contactInfo">
@@ -58,7 +52,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
                         <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
                     </div>
                 </div>
-                { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} />}
+                { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} /> }
         </div>
     )
 }

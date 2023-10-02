@@ -35,11 +35,9 @@ export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
             {
                 withCredentials: true,
             });
-
             console.log('rah mzyaaan', currentRoom.id, invitedUser.id)
-            // if (response.data) {
-            // }
-        } catch (error) {
+        }
+        catch (error) {
             console.log(error);
         }
     }

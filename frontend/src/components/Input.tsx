@@ -9,6 +9,8 @@ const socket = io(`http://localhost:8000`);
 
 interface Message {
   textContent: string,
+  msgRoomId: number,
+  msgChatId: number,
 }
 
 export const Input = ({ chatData }: any) => {
@@ -16,27 +18,27 @@ export const Input = ({ chatData }: any) => {
   const currentChat = chatData?._chat?.chat
 
   const [inputText, setInputText] = useState('')
-  const [chatMessages, setChatMessages] = useState<Message | null>([])
-  const [roomMessages, setRoomMessages] = useState<Message | null>([])
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [chatMessages, setChatMessages] = useState<any[]>([])
+  const [roomMessages, setRoomMessages] = useState<any[]>([])
+  // const [messages, setMessages] = useState<Message[]>([]);
 
   useEffect(() => {
+    console.log('w33333333333333333', chatData?._socket)
     chatData?._socket.on('message', (message: Message) => {
-      console.log('w33333333333333333')
-      if (inputText) {
+      // if (inputText) {
         console.log('w444444444444444')
         if (chatData?._chat?.type === 'chat') {
           setChatMessages(prevMessages => [...prevMessages, message]);
         } else if (chatData?._chat?.type === 'room') {
           setRoomMessages(prevMessages => [...prevMessages, message]);
         }
-      }
+      // }
     });
 
     return () => {
-      socket.off('message');
+      chatData?._socket.off('message');
     };
-  }, [currentChat?.chatId]);
+  }, [chatMessages, roomMessages]);
 
   const createNewMessage = async (inputText: string) => {
     try {
@@ -45,9 +47,9 @@ export const Input = ({ chatData }: any) => {
       if (chatData._chat.type === 'chat') {
         const sender = currentChat?.chatUsers[0] === _MAIN_USER_.id ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
         const receiver = currentChat?.chatUsers[0] === _MAIN_USER_.id ? currentChat?.chatUsers[1] : currentChat?.chatUsers[0];
-        console.log('WA L ID ', currentChat?.chatId, sender, receiver)
+        // console.log('WA L ID ', currentChat?.chatId, sender, receiver)
         
-        const res = await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
+        await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
           'msgChatId': currentChat?.chatId,
           'MessageSenId': sender,
           'textContent': inputText,
@@ -59,7 +61,7 @@ export const Input = ({ chatData }: any) => {
       }
       else if (chatData._chat.type === 'room'){
         
-        console.log('HOLAAA', currentChat)
+        // console.log('HOLAAA', currentChat)
         const res = await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
           'msgRoomId': currentChat?.id,
           'MessageSenId': _MAIN_USER_.id,
@@ -69,7 +71,7 @@ export const Input = ({ chatData }: any) => {
         }, {
           withCredentials: true
         })
-        console.log('MSG ROOM CREATED SUCC ', res)
+        // console.log('MSG ROOM CREATED SUCC ', res)
       }
     }
     catch (err)
@@ -84,7 +86,7 @@ export const Input = ({ chatData }: any) => {
       socket.emit("newMessage", inputText);
       setInputText('')
       
-      let newMessage: Message= {}
+      let newMessage: any
       if (chatData?.chat?.type === 'chat') {
         newMessage = {
           textContent: inputText,
@@ -109,7 +111,7 @@ export const Input = ({ chatData }: any) => {
         socket.emit("newMessage", inputText);
         setInputText('')
   
-        let newMessage: Message= {}
+        let newMessage: any
         if (chatData?.chat?.type === 'chat') {
           newMessage = {
             textContent: inputText,
@@ -135,11 +137,11 @@ export const Input = ({ chatData }: any) => {
           setChatMessages((await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.chatId}`, {withCredentials: true}))?.data)
       }
       catch (err) {
-          console.log(`No message`)
+          // console.log(`No message`)
       }
     }
     fetchChatMessages()
-  }, [currentChat?.chatId])
+  }, [chatData?._chat?.chat?.chatId])
 
   useEffect(() => {
     const fetchRoomMessages = async () => {
@@ -151,11 +153,11 @@ export const Input = ({ chatData }: any) => {
           }
       }
       catch (err) {
-          console.log(`No message`)
+          // console.log(`No message`)
       }
     }
     fetchRoomMessages()
-  }, [currentChat?.id])
+  }, [chatData?._chat?.chat?.id])
 
   // console.log('WeeeeeW', chatMessages[chatMessages.length-1]?.textContent)
 

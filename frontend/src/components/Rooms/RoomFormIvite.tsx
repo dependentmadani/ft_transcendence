@@ -11,11 +11,11 @@ export const RoomFormInvite = ({ currentRoom }: any) => {
     const [searchResults, setSearchResults] = useState<User | null>([])
     const [username, setUsername] = useState('')
 
+
     useEffect(() => {
         getResults()
     }, [username])
     
-
     // Search for Users to invite
     const getResults = async () => {
         try {
@@ -27,6 +27,7 @@ export const RoomFormInvite = ({ currentRoom }: any) => {
           console.log(`Couldn't find any user`, err)
         }
     }
+
 
     return (
         <div className="roomFormInvite">

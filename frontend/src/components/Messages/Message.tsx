@@ -1,7 +1,3 @@
-// import axios from "axios"
-// import { useEffect, useState } from "react"
-// import { Messages } from "./Messages"
-
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -35,15 +31,13 @@ export const Message = ({ currentMessage }: any) => {
     getSender()
   }, [currentMessage])
 
+
   useEffect(() => {
     const getOwner = async () => {
       setOwner(await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data)
     }
     getOwner()
   }, [currentMessage])
-
-  // console.log('SENDER ', sender)
-  // console.log('OWNER', owner, currentMessage.MessageSenId)
 
   return (
     <div className={ `message ${currentMessage.MessageSenId === owner?.id && 'owner'}` } >
@@ -53,7 +47,6 @@ export const Message = ({ currentMessage }: any) => {
         </div>
         <div className="messageContent">
             <p>{ currentMessage?.textContent }</p>
-            {/* <img src="https://wallpapers-clan.com/wp-content/uploads/2022/11/chopper-crying-meme-pfp-7.jpg" alt=""  /> */}
         </div>
     </div>
   )
