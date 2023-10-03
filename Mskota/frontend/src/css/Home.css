@@ -1,0 +1,155 @@
+
+
+.main-home {
+    height: 120%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* height: 80vh; */
+    margin-top: 2rem;
+    background-color: white;
+}
+
+.dscp-home {
+    display: flex;
+    flex:1;
+    align-items: center;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* margin-left: 2rem; */
+    /* margin: 0 auto; */
+    /* background-color: aquamarine; */
+}
+
+
+.title1 {
+    color: #558faa;
+    /* background-color: rgb(179, 119, 45); */
+    opacity: 0.5;
+    font-weight: 1000; 
+    font-size: clamp(100px, 11vw, 250px);
+    
+}
+
+.title2 {
+    color: #00AEFF;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 600;
+    /* background-color: rgb(185, 73, 73); */
+    font-size: clamp(50px, 6vw, 120px);
+}
+
+.tab {
+    padding-left: 90px;
+}
+
+.tab1 {
+    padding-left: 20px;
+}
+
+.comment {
+    
+    font-size: clamp(20px, 1vw, 50px);
+    /* background-color: blue; */
+    max-width: 900px;
+    margin-top: 2rem;
+    margin-left: 2rem;
+}
+
+.getStart-b {
+    display: flex;
+    color: #00AEFF;
+    border: none;
+    border-radius: 20px;
+    /* font-size: 60px; */
+    font-size: clamp(35px, 1vw, 50px);
+    font-weight: 700;
+    margin-top: 40px;
+    padding: 20px 40px 20px 40px;
+    background-color: rgba(104 , 116, 181, 0.5);
+
+}
+
+
+.getStart-b:hover {
+    background-color: rgb(17, 122, 161);
+    scale: 1.07;
+}
+
+.getStart-b:active {
+    scale: 0.95;
+}
+
+.home-img {
+    align-self: flex-end;
+    flex: 1;
+    max-width: 930px;
+    min-width: 500px;
+    margin-right: 50px;
+}
+
+.home-img > img{
+    width: 100%;
+}
+
+
+.home-2 img {
+    display: none;
+}
+
+@media (max-width: 990px) {
+    
+    .main-home {
+        top: 5erm;
+    }
+
+    .home-img {
+        display: none;
+    }
+
+    .dscp-home {
+        align-items: flex-start;
+        margin: 2rem;
+    }
+
+    .home-2 {
+        background-color: rgb(88, 156, 133);
+        display: flex;
+        /* justify-content: center; */
+        align-items: center;
+    }
+
+    .home-2 img {
+        display: block;
+        width: 50%;
+    }
+
+    .title1 {
+        font-size: clamp(100px, 16vw, 250px);
+    }
+
+    .title2 {
+        font-size: clamp(50px, 8vw, 120px);
+    }
+
+    .comment {
+        font-size: clamp(18px, 1vw, 50px);
+    }
+
+}
+
+@media (max-width: 600px) {
+    .home-2 img {
+        display: none;
+    }
+
+    .title1 {
+        font-size: clamp(50px, 10vw, 250px);
+    }
+
+    .title2 {
+        font-size: clamp(20px, 6vw, 120px);
+
+    }
+}
