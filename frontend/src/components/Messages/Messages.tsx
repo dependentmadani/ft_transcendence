@@ -29,7 +29,6 @@ export const Messages = ({ chatData, messages }: any) => {
     checkUserPermission()
   }, [chatData?._chat?.chat])
 
-
   return (
     <div className="messages">
       { 

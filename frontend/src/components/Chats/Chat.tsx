@@ -20,6 +20,7 @@ export const Chat = ({ chatData }: any) => {
         console.log('No chats')
       }
     }
+    
     fetchChats()
   }, [])
 

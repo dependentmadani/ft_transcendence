@@ -170,7 +170,7 @@ export const Input = ({ chatData }: any) => {
       <div className="inputContainer">
         <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
-          <span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>
+          {<span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>}
         </div>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell } from '@fortawesome/free-solid-svg-icons';
+import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 interface User {
     data: {
@@ -20,6 +20,7 @@ interface RoomUsers {
 export const RoomMembers = ({ currentRoom }: any) => {
 
     const [roomMembers, setRoomMembers] = useState<User[] | null>([])
+    const [mainUser, setMainUser] = useState<any>()
 
     useEffect(() =>{
         const getRoomMembers = async () => {
@@ -52,6 +53,21 @@ export const RoomMembers = ({ currentRoom }: any) => {
 
         getRoomMembers()
     }, [])
+
+
+    useEffect(() => {
+        const getMainUser = async () => {
+            try {
+                const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+                setMainUser(_MAIN_USER_.data)
+            }
+            catch (err) {
+                console.log(err)
+            }
+        }
+
+        getMainUser()
+    })
 
     const kickMember = async (user: User) => {
         try {
@@ -95,6 +111,23 @@ export const RoomMembers = ({ currentRoom }: any) => {
     }
 
 
+    useEffect(() => {
+        const oneUserRoomCase = async () => {
+            const response = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
+            if (response.data.role !== 'OWNER' && response.data.length === 1) {
+                const res = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${response?.data[0]?.userId}`, {
+                    'role': 'ADMIN',
+                }, {
+                    withCredentials: true,
+                });
+                console.log(res)
+            }
+        }
+
+        oneUserRoomCase()
+    }, [currentRoom])
+
+
     return (
         <div className='roomMembers'>
             <p>Members</p>
@@ -102,11 +135,12 @@ export const RoomMembers = ({ currentRoom }: any) => {
                 roomMembers?.map((user: User, index: number) => (
                     <div key={index} className="roomMemberItem">
                         <span key={index} className='roomMember' >{ user.data.username }</span>
-                            <span className='admin'>{ user.role === 'admin' && <FontAwesomeIcon className='roleIcon' icon={faUser} /> || user.role === 'owner' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
+                            <span className='admin'>{ user.role === 'OWNER' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
                             {
-                                user.role !== 'OWNER' && <div className="memberActions">
-                                    { user.role === 'MUTED' ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
-                                    { user.role === 'BANNED' ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
+                                user.data.id !== mainUser?.id && user.role !== 'OWNER' && <div className="memberActions">
+                                    { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
+                                    { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
+                                    { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'OWNER')} /> }
                                     <FontAwesomeIcon icon={faBan} className='kickMemberIcon' onClick={() => kickMember(user)} />
                                 </div>
                             }

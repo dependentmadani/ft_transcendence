@@ -34,6 +34,19 @@ export const RoomInfos = ({ currentRoom }: any) => {
         fetchRoomAvatar();
     }, [currentRoom.id]);
 
+    const kickMember = async () => {
+        try {
+            const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {
+                withCredentials: true,
+            });
+            console.log(_MAIN_USER_?.data?.username , 'Kicked', response)
+                
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     return (
         <div className="contactInfo">
@@ -49,7 +62,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
                     <div className="section2">
                         <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
                         <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                        <span><FontAwesomeIcon icon={faRightFromBracket} /></span>
+                        <span><FontAwesomeIcon icon={faRightFromBracket} onClick={kickMember} /></span>
                     </div>
                 </div>
                 { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} /> }

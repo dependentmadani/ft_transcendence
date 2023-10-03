@@ -14,7 +14,9 @@ interface Chat {
   chatId: number,
   chatUsers: number[],
   sender: User,
-  receiver: User
+  receiver: User,
+  latestMessageDate: string,
+  latestMessageContent: string,
 }
 
 interface Room {
@@ -23,6 +25,8 @@ interface Room {
   roomName: number,
   roomAvatar: string,
   roomType: string,
+  latestMessageDate: string,
+  latestMessageContent: string,
 }
 
 interface roomUsers {
@@ -111,12 +115,17 @@ export  const Chats = ({ onValueChange }: any) => {
               const receiver = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[1] : chat.chatUsers[0];
               const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
               const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
-
+              const _latestMessage = (await axios.get(`http://localhost:8000/message/chat/${chat?.chatId}`, {withCredentials: true}))?.data;
+              const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt;
+              const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent;
+              
               const newChat: Chat = {
                 chatId: chat.chatId,
                 chatUsers: [sender, receiver],
                 sender: senderResponse.data,
                 receiver: receiverResponse.data,
+                latestMessageDate: latestMessageDate,
+                latestMessageContent: latestMessageContent,
               };
           
               const chatMessages = await axios.get(`http://localhost:8000/message/chat/${chat.chatId}`, {withCredentials: true})
@@ -147,12 +156,17 @@ export  const Chats = ({ onValueChange }: any) => {
         // t.pop()
             let res = await axios.get(`http://localhost:8000/room/${room?.roomId}`, {withCredentials: true})
           
+            const _latestMessage = (await axios.get(`http://localhost:8000/message/room/${room?.roomId}`, {withCredentials: true}))?.data;
+            const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt;
+            const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent;
 
             const newRoom: Room = {
               id: res.data.id,
               roomName: res.data.roomName,
               roomAvatar: res.data.roomAvatar,
               roomType: res.data.roomType,
+              latestMessageDate: latestMessageDate,
+              latestMessageContent: latestMessageContent,
             };
 
             return newRoom
@@ -372,41 +386,60 @@ export  const Chats = ({ onValueChange }: any) => {
   }
 
   // console.log('HAANA', rooms)
-//   const [contacts, setContacts] = useState<Contact[]>()
-//   useEffect(() => {
-//     const sortContacts = async () => {
-//       // const _temp = [{...latestMessages, ...latestRoomMessages}]
-//       const _contacts = await Promise.all(
-//         _temp.map(async (e: any) => {
-//           // if (e !== undefined) {
-//             const latestMessage = (await axios.get(`http://localhost:8000/message/room/${roomId}`, {withCredentials: true}))?.data;
-//             const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
-//             const latestTextCreatedAt = latestMessage[latestMessage.length - 1]?.createdAt;
-//             return { [e.id]: { 'type': 'room', 'content': latestTextContent, 'date': latestTextCreatedAt} };
-//           // }
-//         })
-//       );
-//       // const sortedMessages = Object.entries(_contacts)
-//       //   .map(([roomId, message]) => ({ roomId: parseInt(roomId), ...message })) 
-//       //   .sort((a: any, b: any) => {
-//       //     const dateA: any = new Date(a.date);
-//       //     const dateB: any = new Date(b.date);
-//       //     return dateB - dateA;
-//       //   });
-//       console.log('WAAAAAAAAAAAAAW', _contacts)
+  const [contacts, setContacts] = useState<Contact[]>()
+  useEffect(() => {
+    const sortContacts = async () => {
+      const allChats: any = newChats || [];
+      const allRooms: any = newRooms || [];
+
+      const _contacts = allChats.concat(allRooms);
+      // console.log('HMMMM', _contacts)
+      // const _temp = [{...newChats, ...newRooms}]
+      // const _contacts: any = await Promise.all(
+      //   newChats.map(async (chat: Chat) => {
+      //     // if (e !== undefined) {
+      //       const latestMessage = (await axios.get(`http://localhost:8000/message/chat/${roomId}`, {withCredentials: true}))?.data;
+      //       const latestTextContent = latestMessage[latestMessage.length - 1]?.textContent;
+      //       const latestTextCreatedAt = latestMessage[latestMessage.length - 1]?.createdAt;
+      //       return { [e.id]: { 'type': 'room', 'content': latestTextContent, 'date': latestTextCreatedAt} };
+      //       // }
+      //     })
+      //   );
+      // const sortedMessages = Object.entries(_contacts)
+      // .map(([roomId, message]) => ({ roomId: parseInt(roomId), ...message })) 
+      // .sort((a: any, b: any) => {
+      //   const dateA: any = new Date(a.date);
+      //   const dateB: any = new Date(b.date);
+      //   return dateB - dateA;
+      // });
+      // console.log('WAAAAAAAAAAAAAW', sortedMessages)
+      
+      // const sortedMessagesObject = sortedMessages.reduce((acc: any, message: any) => {
+      //   acc[message.roomId] = { content: message.content, date: message.date };
+      //   return acc;
+      // }, {});
+      _contacts.sort((a: any, b: any) => {
+        const dateA: any = new Date(a.latestMessageDate);
+        const dateB: any = new Date(b.latestMessageDate);
+        return dateA - dateB;
+      });
     
-//       // const sortedMessagesObject = sortedMessages.reduce((acc: any, message: any) => {
-//       //   acc[message.roomId] = { content: message.content, date: message.date };
-//       //   return acc;
-//       // }, {});
-//       // setContacts(sortedMessagesObject);
-//     }
+      // console.log('_contacts', [_contacts])
+      // Now _contacts is sorted by latestMessageDate in descending order
+    
+      // const sortedMessagesObject = _contacts.reduce((acc: any, message: any) => {
+      //   acc[message.roomId] = { content: message.latestMessageContent, date: message.latestMessageDate };
+      //   return acc;
+      // }, {});
+      // console.log('tempp', sortedMessagesObject)
+      setContacts([_contacts]);
+    }
     
     
-//     sortContacts()
-//     console.log('EWWE', contacts)
-//   // setLatestRoomMessages(sortedMessagesObject);
-// }, [newChats]);
+    sortContacts()
+    console.log('EWWE', contacts)
+  // setLatestRoomMessages(sortedMessagesObject);
+}, [newChats, newRooms]);
 
   return (
     <>
@@ -416,11 +449,15 @@ export  const Chats = ({ onValueChange }: any) => {
           {
             newChats?.map((chat: Chat, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(chat, 'chat')}>
-                <img src={ chat.receiver.avatar } alt="user_avatar" />
-                <div className="userChatInfo">
+                <div className="chatAvatar">
+                  <img src={ chat.receiver.avatar } alt="user_avatar" />
+                </div>
+                <div className="chatData">
                   <span>{ chat?.receiver?.username }</span>
                   <p>{ latestMessages[chat.chatId]?.content ? latestMessages[chat.chatId].content : '' }</p>
                 </div>
+                {/* <div className="userChatInfo">
+                </div> */}
                 {/* { 0 && <span className="notifSpan">n</span>} */}
               </div>
             ))
@@ -428,8 +465,10 @@ export  const Chats = ({ onValueChange }: any) => {
           {
             newRooms?.map((room: Room, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(room, 'room')} >
-                  <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
-                  <div className="userChatInfo">
+                  <div className="chatAvatar">
+                    <img src={ `http://localhost:8000/room/roomAvatar/${room.id}` } alt="room_avatar" />
+                  </div>
+                  <div className="chatData">
                       <span>{ room.roomName }</span>
                       <p>{ latestRoomMessages[room.id]?.content ? latestRoomMessages[room.id].content : '' }</p>
                   </div>
