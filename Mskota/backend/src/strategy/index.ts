@@ -1,0 +1,5 @@
+export * from './fourtyTwo.strategy'
+export * from './jwt.strategy'
+export * from './ws.strategy'
+export * from './google.strategy'
+export * from './rt.strategy'
