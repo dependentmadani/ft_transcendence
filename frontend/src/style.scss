@@ -405,6 +405,8 @@
           }
         }
 
+        
+
         .search {
           height: 7%;
           padding: 30px 10px;
@@ -419,11 +421,17 @@
             padding: 15px 10px;
             border-radius: 25px;
 
+            span {
+              margin: 0px !important;
+              padding: 0;
+            }
+
             input {
               background-color: #828ccb;
               border: none;
               outline: none;
               width: 100%;
+              margin: 0px !important;
               &::placeholder {
                 color: lightgray;
               }
@@ -1020,6 +1028,76 @@
       border-radius: 10px;
     }
 }
-@media screen and (max-width: 740px) {
-  
+
+@media screen and (max-width: 600px) {
+
+  .search {
+    padding: 10px !important;
+    
+    .searchContainer {
+      height: 70%;
+      padding: 0px !important;
+      font-size: 0.5em !important;
+    }
+
+    .searchChatIcon {
+      width: 50px !important;
+      margin: auto !important;
+    }
+
+    .searchChatCreatRoomIcon {
+      width: 50px !important;
+      margin: auto !important;
+    }
+
+    .serchChatInput {
+      padding: 10%;
+    }
+
+    
+  }
+  .input {
+    font-size: 0.5em;
+
+    input {
+      font-size: 0.9em !important;
+    }
+  }
+
+  .contactInfos span {
+    font-size: 0.5em !important;
+  }
+
+  .userChats {
+    height: 5%;
+
+    .chatAvatar {
+      padding: 0px;
+    }
+
+    .chatData {
+      font-size: 0.1em;
+    }
+  }
+
+  .message {
+          font-size: 0.5em;
+          gap: 5px !important;
+
+          .messageInfo {
+            img {
+              width: 25px !important;
+              height: 25px !important;
+              margin: 0px;
+            }
+
+          }
+            .messageContent {
+              p {
+                padding: 5px 10px !important;
+              }
+            }
+    }
+    
+
 }

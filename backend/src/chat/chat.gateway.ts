@@ -1,11 +1,12 @@
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { log } from 'console';
-// import { Server } from 'http';
 import { array } from 'joi';
 import { Server, Socket } from 'socket.io';
+import { Message, Users } from '@prisma/client';
 
- //@WebSocketGateway()
-@WebSocketGateway({ cors: { origin: "http://localhost:5173" } })
+
+//@WebSocketGateway()
+@WebSocketGateway({namespace: 'chat', cors: { origin: "http://localhost:5173" } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
@@ -21,7 +22,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     // console.log(`Client connected: ${client.id}`);
 
     client.on('setup', (userData) => {
-      const userId = userData.userId; // Assuming you pass the user ID from the client
+      const userId = userData.userId;
 
       if (!this.onlineUsers.has(userId)) {
         this.onlineUsers.set(userId, client.id);
@@ -85,13 +86,13 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   //   console.log(`user ${client.id}: joined room ${room}`)
   // }
 
-  @SubscribeMessage('newMessage')
-  newMessage(client: Socket, newMessageReceived: any) {
-    // const chat = newMessageReceived.chatId
-    // this.server.emit('receivedMessage', data);
-    this.server.emit('message received', newMessageReceived)
-    // console.log(`user ${client.id}: joined room ${room}`)
-  }
+  // @SubscribeMessage('newMessage')
+  // newMessage(client: Socket, newMessageReceived: any) {
+  //   // const chat = newMessageReceived.chatId
+  //   // this.server.emit('receivedMessage', data);
+  //   this.server.emit('message received', newMessageReceived)
+  //   // console.log(`user ${client.id}: joined room ${room}`)
+  // }
 
   // updateOnlineUsers() {
   //   const onlineUserIds = Array.from(this.onlineUsers.values());
@@ -105,7 +106,14 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   // }
 
   @SubscribeMessage('message')
-  handleMessage(@MessageBody() message: string) {
+  handleMessage(@MessageBody() message: Message): void {
+    console.log(message)
     this.server.emit('message', message);
+  }
+
+  @SubscribeMessage('roomMembers')
+  handleRoomMembers(@MessageBody() user: Users): void {
+    console.log(user)
+    this.server.emit('roomMembers', user);
   }
 }

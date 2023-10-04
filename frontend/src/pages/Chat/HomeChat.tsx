@@ -38,9 +38,9 @@ export const HomeChat = () => {
     setSelectedChat(chat)
   }
 
-  const socket = io(`http://localhost:8000`);
+  // const socket = io(`http://localhost:8000`);
   const currentUser = selectedChat ? users.find(_u => _u.id === selectedChat.recId) : null;
-  var chatData = { _user: currentUser, _chat: selectedChat, _socket: socket }
+  var chatData = { _user: currentUser, _chat: selectedChat, _socket: '' }
 
   const [onlineUsers, setOnlineUsers] = useState([]);
   // const [receivedMsg, setReceivedMsg] = useState('');

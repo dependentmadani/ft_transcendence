@@ -14,7 +14,7 @@ export const Chat = ({ chatData }: any) => {
         const response = await axios.get(`http://localhost:8000/chat`, {withCredentials: true})
         setChats(response.data)
         
-        chatData._socket.emit('joinChat', chatData._chat?.chatId)
+        // chatData._socket.emit('joinChat', chatData._chat?.chatId)
       }
       catch (err) {
         console.log('No chats')

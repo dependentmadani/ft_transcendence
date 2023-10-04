@@ -29,10 +29,12 @@ export const Messages = ({ chatData, messages }: any) => {
     checkUserPermission()
   }, [chatData?._chat?.chat])
 
+  // console.log('LMSGAAT', messages)
+
   return (
     <div className="messages">
       { 
-        isAllowed && messages?.map((message: any, index:number) => (
+        isAllowed && messages?.map((message: Message, index:number) => (
           <Message key={ index } currentMessage={ message } />
         ))
       }

@@ -246,8 +246,8 @@ export  const Chats = ({ onValueChange }: any) => {
                   <img src={ contact?.receiver ? contact?.receiver?.avatar : `http://localhost:8000/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
                 </div>
                 <div className="chatData">
-                  <span>{ contact?.roomName ? contact.roomName : contact?.receiver?.username }</span>
-                  <p>{ contact.latestMessageContent }</p>
+                  <span>{ contact?.roomName ? ((contact.roomName).length <= 8 ? contact.roomName : (contact.roomName).substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>
+                  <p>{ (contact.latestMessageContent).length <= 8 ? contact.latestMessageContent : (contact.latestMessageContent).substring(0,8)+'...' }</p>
                 </div>
                 {/* { 0 && <span className="notifSpan">n</span>} */}
               </div>

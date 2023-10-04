@@ -22,12 +22,14 @@ export const Message = ({ currentMessage }: any) => {
   useEffect(() => {
     const getSender = async () => {
       try {
+        // console.log('ggg', currentMessage)
         setSender(await (await axios.get(`http://localhost:8000/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
       }
       catch (err) {
         console.log('No messages', err)
       }
     }
+
     getSender()
   }, [currentMessage])
 
@@ -39,8 +41,10 @@ export const Message = ({ currentMessage }: any) => {
     getOwner()
   }, [currentMessage])
 
+  // console.log('CURRCURR', currentMessage)
+
   return (
-    <div className={ `message ${currentMessage.MessageSenId === owner?.id && 'owner'}` } >
+    <div className={ `message ${currentMessage?.MessageSenId === owner?.id && 'owner'}` } >
         <div className="messageInfo">
             <img src={ sender?.avatar } alt="user_avatar" />
             <span>{ new Date(currentMessage?.createdAt).getHours() } : { new Date(currentMessage?.createdAt).getMinutes() }</span>
