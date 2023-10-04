@@ -5,7 +5,7 @@ import { array } from 'joi';
 import { Server, Socket } from 'socket.io';
 
  //@WebSocketGateway()
-@WebSocketGateway({ cors: { origin: "http://localhost:5173" } })
+@WebSocketGateway({ cors: { origin: "http://localhost:7173" } })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;

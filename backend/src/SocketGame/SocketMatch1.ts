@@ -4,7 +4,7 @@ import paddle_right from "./MatchPong/MatchPaddle2";
 
 const io = require('socket.io')(5000, {
     cors: {
-        origin: ["http://10.14.10.1:5173"],
+        origin: ["http://10.14.10.5:5173"],
     },
 })
 

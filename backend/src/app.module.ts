@@ -16,12 +16,9 @@ import { InvitationsModule } from './chat/room/invitations/invitations.module';
 import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
 
-///
-import "./SocketGame/SocketClassic1"
-import "./SocketGame/SocketClassic2"
-import "./SocketGame/SocketMatch1"
-import "./SocketGame/SocketMatch2"
-///
+import { ClassicSocketGateway } from './websocket/Classicsocket.gateway';
+import { MatchSocketGateway } from './websocket/MatchSocket.gateway';
+
 
 @Module({
   imports: [
@@ -41,7 +38,9 @@ import "./SocketGame/SocketMatch2"
   providers: [{
     provide: APP_GUARD,
     useClass: AtGuard,
-  }],
+   
+  }, ClassicSocketGateway,
+    MatchSocketGateway],
   controllers: [HomeController]
 })
 export class AppModule implements NestModule{

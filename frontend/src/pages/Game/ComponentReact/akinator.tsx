@@ -4,7 +4,12 @@ import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/AkinatorPong'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
+interface User {
+  username: string,
+  avatar: string,
+}
 
 export default function Akinator()
 {
@@ -34,6 +39,17 @@ export default function Akinator()
     }
   },  [leftballs,rightballs])
 
+  const [Userdata, setUserdata] = useState<User>()
+
+  useEffect(() => {
+    const getUserData = async () => {
+      const res = await axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+      setUserdata(res.data)
+    }
+
+    getUserData()
+  }, [])
+
 
   return (
     
@@ -45,7 +61,7 @@ export default function Akinator()
   
     <div id="profile1"> 
           <img className='profile1Img' src='/src/assets/img/akinator.png'></img>
-          <strong className='profile1id'>Akinator</strong>
+          <strong className='profile1id'>{ Userdata?.username }</strong>
           
           <div className="BallScore1">
           {leftballs.map((color, index) => (

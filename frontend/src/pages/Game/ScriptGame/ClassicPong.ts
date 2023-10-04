@@ -14,22 +14,23 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
         let SoundValue:boolean = true;
         let play_start = 0;
         
-        img.src = "/src/assets/img/fancy-court.png";
-        ball_sound.src = "/src/assets/sounds/beeep.ogg";
-        paddle_sound.src = "/src/assets/sounds/Pop.ogg";
-        const socket = io('http://10.14.10.5:4000');
+        img.src = "/src/FrontGame/img/fancy-court.png";
+        ball_sound.src = "/src/FrontGame/sounds/beeep.ogg";
+        paddle_sound.src = "/src/FrontGame/sounds/Pop.ogg";
+        
+        const socket = io('http://10.14.10.1:4000');
         
         start.addEventListener('click',()=> 
         {
             start.style.display = 'none';
             play_start++;
-            socket.emit("youcan start",socket.id);
+            socket.emit("youcan start", socket.id);
             console.log(`start\\\\\\${play_start}`)
         })
         switchSound.addEventListener('change', () => 
         {
             SoundValue = switchSound.checked;
-            console.log(`||||||||| switch |||||||||${SoundValue}`)
+       
         });
         socket.on('connect',()=>
         {
@@ -40,7 +41,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
         let player:number;
         let clientRoom:number =0;
         let max_room=0;
-        socket.emit("canvas",canvas.width, canvas.height,1);
+        socket.emit("canvas",canvas.width, canvas.height);
         socket.on("playerId",(play, data) =>
         {
             player = play;
@@ -48,7 +49,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
             if(max_room<clientRoom)
                 max_room = clientRoom;
             socket.emit("new value room", clientRoom);
-            // console.log(`${player}|--||--|---||---|${clientRoom}|`)
         })
         function drawline()
         {
@@ -67,12 +67,12 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
             if (event.keyCode === 40) 
             { 
                 console.log("down_RIGHT")
-                socket.emit("move_paddle_right","down",player,clientRoom);
+                socket.emit("move_paddle","down", player, clientRoom);
             }
             else if (event.keyCode === 38) 
             {
                 console.log("up_Right")
-                socket.emit("move_paddle_right","up",player,clientRoom);
+                socket.emit("move_paddle","up",player,clientRoom);
             }
         }
             
@@ -143,8 +143,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
     
         class ball
         {
-            flag:number = 0;
-            num:number = Math.floor(Math.random()*4);
             x:number = canvas.width/2;
             y:number = canvas.height/2;
             direction_x:number = 0;
@@ -161,7 +159,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
                 ctx.fillRect(this.x, this.y, this.ball_size, this.ball_size);
                 ctx.fill();
                 ctx.closePath()
-                this.flag++;
             }
             
             get ball_x(){
@@ -177,14 +174,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
             set ball_y(nb:number)
             {
                 this.y = nb;;
-            }
-            get random_num()
-            {
-                return this.num;
-            }
-            set random_num(nb:number)
-            {
-                this.num = nb;
             }
             get sound_walls()
             {
@@ -215,7 +204,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
         score_right:number = 0;
         update_score()
         {
-            socket.on("score",(l,r)=>
+            socket.on("score",(l, r)=>
             {
                 this.score_left = l;
                 this.score_right = r;
@@ -322,6 +311,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
 
     socket.on("game_state",(gameState)=>
     {
+        console.log(`msg----------------------|${gameState.paddles.left}`);
         const room = gameState.room.id;
         if (room === clientRoom)
         {
@@ -335,7 +325,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any)
             bl.ball_y = gameState.ball.y
             bl.sound_paddle = gameState.sound.sound_paddle;
             bl.sound_walls = gameState.sound.sound_wall;
-            // console.log(`${}|-------|${ bl.sound_paddle}|`);
             if(SoundValue && bl.sound_walls)
             {
                 ball_sound.play();

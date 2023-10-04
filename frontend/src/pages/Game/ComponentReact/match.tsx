@@ -24,7 +24,6 @@ export default function MatchGame()
   useEffect(() => {
     if (flag.current === false)
     {
-
       ping_pong(canvas.current
         ,(left:any) =>
         {

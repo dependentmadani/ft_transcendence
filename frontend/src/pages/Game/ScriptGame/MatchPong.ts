@@ -31,7 +31,7 @@ export function ping_pong(canvas :any, leftCallback:any , rightCallback:any)
         music.src = "/src/assets/sounds/hxh.mp3";
         img.src = "/src/assets/img/tenis.jpg"
         
-        const socket = io('http://10.14.10.5:5000');
+        const socket = io('http://10.14.10.1:5000');
         
         start.addEventListener('click',()=> 
         {
@@ -86,12 +86,12 @@ export function ping_pong(canvas :any, leftCallback:any , rightCallback:any)
             if (event.clientY > prev_right_y)
             {
                 console.log("down_RIGHT");
-                socket.emit("move_paddle_right", "down",player, clientRoom);
+                socket.emit("move_paddle", "down",player, clientRoom);
             }
             else if (event.clientY < prev_right_y)
             {
                 console.log("up_Right");
-                socket.emit("move_paddle_right", "up",player, clientRoom);
+                socket.emit("move_paddle", "up",player, clientRoom);
             }
             prev_right_y = event.clientY;
         }
