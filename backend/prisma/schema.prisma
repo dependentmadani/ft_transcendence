@@ -48,6 +48,20 @@ model Users {
   rooms       RoomUsers[]
   roomInvitationSender Invitations[] @relation("sender")
   roomInvitationReceiver Invitations[] @relation("receiver")
+
+  // Game
+  games                 Game[]          @relation("game")
+}
+
+model Game {
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  id              Int         @id @default(autoincrement())
+  user            Users       @relation("game", fields: [userId], references: [id])
+  userId          Int
+  gamesPlayed     Int         @default(0)
+  wins            Int         @default(0)
+  loses           Int         @default(0)
 }
 
 model Notifications {

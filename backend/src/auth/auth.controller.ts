@@ -62,8 +62,8 @@ export class AuthController {
       await this.authService.signupLocal(dto);
     res.cookie('token', tokens.access_token, {
       expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+        new Date().getTime() + 60 * 60 * 24 * 1000,
+      ), // expires in 1 days
       httpOnly: true, // for security
       secure: true,
     });
@@ -73,8 +73,8 @@ export class AuthController {
       {
         expires: new Date(
           new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+            60 * 60 * 24 * 7 * 1000,
+        ), // expires in 7 days
         httpOnly: true, // for security
         secure: true,
       },
@@ -93,8 +93,8 @@ export class AuthController {
       await this.authService.signinLocal(dto);
     res.cookie('token', tokens.access_token, {
       expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+        new Date().getTime() + 60 * 60 * 24 * 1000,
+      ), // expires in 1 days
       httpOnly: true, // for security
       secure: true,
     });
@@ -104,8 +104,8 @@ export class AuthController {
       {
         expires: new Date(
           new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+          60 * 60 * 24 * 7 * 1000,
+          ), // expires in 7 days
         httpOnly: true, // for security
         secure: true,
       },
@@ -132,8 +132,8 @@ export class AuthController {
       await this.authService.signinGoogle(req);
     res.cookie('token', tokens.access_token, {
       expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+        new Date().getTime() + 60 * 60 * 24 * 1000,
+      ), // expires in 1 days
       httpOnly: true, // for security
       secure: true,
     });
@@ -143,8 +143,8 @@ export class AuthController {
       {
         expires: new Date(
           new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+          60 * 60 * 24 * 7 * 1000,
+        ), // expires in 7 days
         httpOnly: true, // for security
         secure: true,
       },
@@ -280,8 +280,8 @@ export class AuthController {
       );
     res.cookie('token', tokens.access_token, {
       expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+        new Date().getTime() + 60 * 60 * 24 * 1000,
+      ), // expires in 1 day
       httpOnly: true, // for security
       secure: true,
     });
@@ -291,8 +291,8 @@ export class AuthController {
       {
         expires: new Date(
           new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+            60 * 60 * 24 * 7 * 1000,
+        ), // expires in 7 days
         httpOnly: true, // for security
         secure: true,
       },
