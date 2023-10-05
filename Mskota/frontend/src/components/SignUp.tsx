@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import '/src/css/SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { useClient } from '../client/clientContext';
 
 
 function SetInfo() {
@@ -9,22 +10,27 @@ function SetInfo() {
   const [userId, setUserId] = useState<number | null>(null);
   const [username, setUsername] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
+  const {client, updateClient} = useClient();
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchUserData() {
       try {
-        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, {
-          withCredentials: true,
-        });
+        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
+          { withCredentials: true, }
+        );
         const data = response.data;
         setUserId(data.id);
         setAvatar(data.avatar);
         setUsername(data.username);
+        updateClient(data);
+        console.log('data : ')
         console.log(data)
+        console.log('client data : ')
+        console.log(client);
 
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching data: ', error);
       }
     }
 
@@ -75,8 +81,9 @@ function SetInfo() {
       } catch (error) {
         console.error('Error submitting data:', error);
       }
-      navigate('/');
+      navigate('/login');
   };
+  console.log('login');
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {

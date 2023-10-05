@@ -176,6 +176,7 @@ export class AuthController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
+    console.log('hello hmida')
     this.authService.logout(userId, req.cookies);
     if (req.cookies['token']) {
       res.cookie('token', req.cookies['token'], {

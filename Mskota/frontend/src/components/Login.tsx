@@ -18,20 +18,17 @@ function  Login(props:any) {
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const log = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true })
-          console.log(log)
+          await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true })
           setLogin(true)
-          updateClient({
-            ...client,
-            _username: 'hamid',
-          });
-          console.log(client);
-          
-          // updateClient(newClient)
-          // console.log(client.toString());
-          // props.client._id = 20;
-          // props.client._socket =  io(`${import.meta.env.VITE_BACK_ADDRESS}`);
-          // socket = io(`${import.meta.env.VITE_BACK_ADDRESS}`);
+          try {
+            const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
+              { withCredentials: true, }
+            );
+            updateClient(response.data)
+          } catch (error) {
+            console.log('Error to fetch user data : ', error);
+          }
+          console.log(`client : ${client}`);
           console.log('log in :)');
           navigate('/')
         } catch (error) {
