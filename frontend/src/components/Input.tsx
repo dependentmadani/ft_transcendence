@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import axios from "axios"
 import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -27,20 +27,17 @@ export const Input = ({ chatData }: any) => {
   useEffect(() => {
     const _socket = io(`http://localhost:8000/chat`);
     setSocket(_socket)
-
+    
     return () => {
       socket?.disconnect()
     }
-  }, [setSocket]);
+  }, []);
 
   const messageListener = (message: Message) => {
-    // if (!chatMessages.find(m => m.id === message.id)) {
       if (message.type === 'chat')
         setChatMessages([...chatMessages, message])
       else  if (message.type === 'room')
         setRoomMessages([...roomMessages, message])
-    // }
-      // console.log('wow', message)
   }
 
   
@@ -48,15 +45,21 @@ export const Input = ({ chatData }: any) => {
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [roomMessages, setRoomMessages] = useState<Message[]>([])
   
+
+  // const flag = useRef(true)
+
   useEffect(() => {
     
     socket?.on('sendMessage', messageListener);
-    console.log('socket', socket)
-
-    return () => {
-      socket?.off('sendMessage', messageListener);
-    };
-  }, [chatMessages, roomMessages]);
+      // console.log('socket', socket)
+      
+      // flag.current = false
+      
+      
+      return () => {
+        socket?.off('sendMessage');
+      };
+    }, [socket]);
 
 
   // const [messages, setMessages] = useState<Message[]>([]);
@@ -122,6 +125,8 @@ export const Input = ({ chatData }: any) => {
   const handleClick = async () => {
     if (inputText.trim() !== '') {
       const msg: any = await createNewMessage(inputText)
+      // const rec = chatData?._chat?.chat?.receiver.id
+      // const data = msg.data
       socket?.emit("message", msg.data);
       setInputText('')
       
@@ -147,10 +152,10 @@ export const Input = ({ chatData }: any) => {
     if (event.key === 'Enter') {
       if (inputText.trim() !== '') {
         // createNewMessage(inputText)
-        // socket?.emit("newMessage", inputText);
         const msg: any = await createNewMessage(inputText)
-        // console.log('WAA ', msg.data)
         socket?.emit("message", msg.data);
+        // console.log('WAA ', msg.data)
+        // socket?.emit("message", msg.data);
         setInputText('')
   
         let newMessage: any
@@ -209,12 +214,12 @@ export const Input = ({ chatData }: any) => {
     <Messages chatData={chatData} messages={ chatData?._chat?.type === 'chat' ? chatMessages : roomMessages } />
 
     <div className="input">
-      <div className="inputContainer">
+      {chatData?._chat?.chat && <div className="inputContainer">
         <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
           {<span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>}
         </div>
-      </div>
+      </div>}
     </div>
     </>
   )

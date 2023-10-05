@@ -5,6 +5,7 @@ import { Rightbar } from "../../components/Rightbar"
 import { Leftbar } from "../../components/Leftbar"
 import io from 'socket.io-client';
 import { ChatNav } from "../../components/Chats/ChatNav";
+import './style.scss'
 
 interface User {
   id: number;

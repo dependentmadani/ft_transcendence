@@ -34,24 +34,24 @@ export const RoomMembers = ({ currentRoom }: any) => {
         setMembers(roomMembers)
     }, [roomMembers])
 
-    useEffect(() => {
-        const _socket = io(`http://localhost:8000/chat`);
-        setSocket(_socket)
-    }, [setSocket]);
+    // useEffect(() => {
+    //     const _socket = io(`http://localhost:8000/chat`);
+    //     setSocket(_socket)
+    // }, [setSocket]);
 
     const messageListener = (user: User) => {
         setMembers([...members, user])
         console.log('wow', user)
     }
 
-    useEffect(() => {
-        console.log('wow wow')
-        socket?.on('roomMembers', messageListener)
+    // useEffect(() => {
+    //     console.log('wow wow')
+    //     socket?.on('roomMembers', messageListener)
 
-        return () => {
-        socket?.off('roomMembers', messageListener)
-        }
-    }, [messageListener])
+    //     return () => {
+    //     socket?.off('roomMembers', messageListener)
+    //     }
+    // }, [messageListener])
 
     useEffect(() =>{
         const getRoomMembers = async () => {

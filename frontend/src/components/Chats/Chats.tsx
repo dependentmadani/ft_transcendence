@@ -56,15 +56,6 @@ interface Contact {
 var _MAIN_USER_: User
 
 export  const Chats = ({ onValueChange }: any) => {
-  
-  // const [mainUser, setMainUser] = useState<User | null>(null)
-  // useEffect(() => {
-  //   const getMainUser = async () => {
-  //     const res = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-  //     setMainUser(res.data)
-  //   }
-  //   getMainUser()
-  // }, [])
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [newChats, setNewChats] = useState<Chat[]>()
@@ -74,7 +65,6 @@ export  const Chats = ({ onValueChange }: any) => {
   const [contacts, setContacts] = useState<Contact[]>()
 
 
-  
   useEffect(() => {
     const fetchChats = async () => {
       _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
@@ -246,8 +236,8 @@ export  const Chats = ({ onValueChange }: any) => {
                   <img src={ contact?.receiver ? contact?.receiver?.avatar : `http://localhost:8000/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
                 </div>
                 <div className="chatData">
-                  <span>{ contact?.roomName ? ((contact.roomName).length <= 8 ? contact.roomName : (contact.roomName).substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>
-                  <p>{ (contact.latestMessageContent).length <= 8 ? contact.latestMessageContent : (contact.latestMessageContent).substring(0,8)+'...' }</p>
+                  <span>{ contact?.roomName ? ((contact.roomName)?.length <= 8 ? contact.roomName : (contact.roomName)?.substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>
+                  <p>{ contact?.latestMessageContent ? (contact?.latestMessageContent)?.length <= 8 ? contact?.latestMessageContent : (contact.latestMessageContent)?.substring(0,8)+'...' : 'No messages' }</p>
                 </div>
                 {/* { 0 && <span className="notifSpan">n</span>} */}
               </div>
