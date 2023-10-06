@@ -8,7 +8,7 @@ import io, { Socket } from 'socket.io-client';
 // const socket = io(`http://localhost:8000`);
 
 interface Message {
-  id: number,
+  messageId: number,
   textContent: string,
   msgRoomId: number,
   msgChatId: number,
@@ -34,10 +34,14 @@ export const Input = ({ chatData }: any) => {
   }, []);
 
   const messageListener = (message: Message) => {
-      if (message.type === 'chat')
-        setChatMessages([...chatMessages, message])
-      else  if (message.type === 'room')
-        setRoomMessages([...roomMessages, message])
+      if (message.type === 'chat' && chatMessages.find(m => m.messageId === message.messageId) === undefined){
+        console.log('HWEEEEE')
+        setChatMessages([...chatMessages, message])}
+      else  if (message.type === 'room' && roomMessages.find(m => m.messageId === message.messageId) === undefined) {
+        console.log('NNNNNNNNN1', roomMessages.find(m => m.messageId === message.messageId))
+        setRoomMessages([...roomMessages, message])}
+      
+        console.log('Holaa', message)
   }
 
   
@@ -59,7 +63,7 @@ export const Input = ({ chatData }: any) => {
       return () => {
         socket?.off('sendMessage');
       };
-    }, [socket]);
+    }, [messageListener]);
 
 
   // const [messages, setMessages] = useState<Message[]>([]);
@@ -130,21 +134,21 @@ export const Input = ({ chatData }: any) => {
       socket?.emit("message", msg.data);
       setInputText('')
       
-      let newMessage: any
-      if (chatData?.chat?.type === 'chat') {
-        newMessage = {
-          textContent: inputText,
-          msgChatId: currentChat?.chatId,
-        };
-        setChatMessages([...chatMessages, newMessage]);
-      }
-      else if (chatData?.chat?.type === 'room') {
-        newMessage = {
-          textContent: inputText,
-          msgRoomId: currentChat?.id,
-        };
-        setRoomMessages([...roomMessages, newMessage]);
-      }
+      // let newMessage: any
+      // if (chatData?.chat?.type === 'chat') {
+      //   newMessage = {
+      //     textContent: inputText,
+      //     msgChatId: currentChat?.chatId,
+      //   };
+      //   // setChatMessages([...chatMessages, newMessage]);
+      // }
+      // else if (chatData?.chat?.type === 'room') {
+      //   newMessage = {
+      //     textContent: inputText,
+      //     msgRoomId: currentChat?.id,
+      //   };
+      //   // setRoomMessages([...roomMessages, newMessage]);
+      // }
     }
   }
   
@@ -158,45 +162,49 @@ export const Input = ({ chatData }: any) => {
         // socket?.emit("message", msg.data);
         setInputText('')
   
-        let newMessage: any
-        if (chatData?.chat?.type === 'chat') {
-          newMessage = {
-            textContent: inputText,
-            msgChatId: currentChat?.chatId,
-          };
-          setChatMessages([...chatMessages, newMessage]);
-        }
-        else if (chatData?.chat?.type === 'room') {
-          newMessage = {
-            textContent: inputText,
-            msgRoomId: currentChat?.id,
-          };
-          setRoomMessages([...roomMessages, newMessage]);
-        }
+        // let newMessage: any
+        // if (chatData?.chat?.type === 'chat') {
+        //   newMessage = {
+        //     textContent: inputText,
+        //     msgChatId: currentChat?.chatId,
+        //   };
+        //   // setChatMessages([...chatMessages, newMessage]);
+        // }
+        // else if (chatData?.chat?.type === 'room') {
+        //   newMessage = {
+        //     textContent: inputText,
+        //     msgRoomId: currentChat?.id,
+        //   };
+        //   // setRoomMessages([...roomMessages, newMessage]);
+        // }
       }
     }
   };
 
   useEffect(() => {
+    console.log('IIIIII')
     const fetchChatMessages = async () => {
       try {
-        if (currentChat.chatId !== undefined)
+        if (currentChat.chatId !== undefined) {
+          console.log('HWEEEEE')
           setChatMessages((await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.chatId}`, {withCredentials: true}))?.data)
+        }
       }
       catch (err) {
           console.log(`No message`)
       }
     }
     fetchChatMessages()
-  }, [chatData?._chat])
+  }, [chatData?._chat?.chat?.chatId])
 
   useEffect(() => {
     const fetchRoomMessages = async () => {
       try {
           if (currentChat.id !== undefined) {
             let roomMessages: Message[] = (await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.id}`, { withCredentials: true }))?.data
-            if (roomMessages !== undefined)
+            if (roomMessages !== undefined) {
               setRoomMessages(roomMessages)
+              console.log('NNNNNNNNN2')}
           }
       }
       catch (err) {
@@ -204,7 +212,7 @@ export const Input = ({ chatData }: any) => {
       }
     }
     fetchRoomMessages()
-  }, [chatData?._chat])
+  }, [chatData?._chat?.chat?.id])
 
   // console.log('WeeeeeW', chatMessages[chatMessages.length-1]?.textContent)
 

@@ -25,33 +25,39 @@ interface RoomUsers {
 export const RoomMembers = ({ currentRoom }: any) => {
 
     const [roomMembers, setRoomMembers] = useState<User[]>([])
-    const [members, setMembers] = useState<User[]>([])
+    // const [members, setMembers] = useState<User[]>([])
     const [mainUser, setMainUser] = useState<any>()
-    const [socket, setSocket] = useState<Socket>()
 
-
-    useEffect(() => {
-        setMembers(roomMembers)
-    }, [roomMembers])
 
     // useEffect(() => {
-    //     const _socket = io(`http://localhost:8000/chat`);
-    //     setSocket(_socket)
-    // }, [setSocket]);
+    //     setMembers(roomMembers)
+    // }, [roomMembers])
+
+    const [socket, setSocket] = useState<Socket>()
+
+  useEffect(() => {
+    const _socket = io(`http://localhost:8000/chat`);
+    setSocket(_socket)
+    
+    return () => {
+      socket?.disconnect()
+    }
+  }, []);
 
     const messageListener = (user: User) => {
-        setMembers([...members, user])
+        if (roomMembers.find(u => u.id === user.id) === undefined)
+            setRoomMembers([...roomMembers, user])
         console.log('wow', user)
     }
 
-    // useEffect(() => {
-    //     console.log('wow wow')
-    //     socket?.on('roomMembers', messageListener)
+    useEffect(() => {
+        console.log('wow wow')
+        socket?.on('members', messageListener)
 
-    //     return () => {
-    //     socket?.off('roomMembers', messageListener)
-    //     }
-    // }, [messageListener])
+        return () => {
+            socket?.off('members')
+        }
+    }, [messageListener])
 
     useEffect(() =>{
         const getRoomMembers = async () => {
@@ -83,9 +89,9 @@ export const RoomMembers = ({ currentRoom }: any) => {
         }
 
         getRoomMembers()
-    }, [])
+    }, [currentRoom])
 
-    console.log('Room members', roomMembers)
+    // console.log('Room members', roomMembers)
 
 
     useEffect(() => {
@@ -160,12 +166,13 @@ export const RoomMembers = ({ currentRoom }: any) => {
         oneUserRoomCase()
     }, [currentRoom])
 
+    console.log('Members', roomMembers)
 
     return (
         <div className='roomMembers'>
             <p>Members</p>
             {
-                members?.map((user: User, index: number) => (
+                roomMembers?.map((user: User, index: number) => (
                     <div key={index} className="roomMemberItem">
                         <span key={index} className='roomMember' >{ user.username }</span>
                             <span className='admin'>{ user.role === 'OWNER' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
