@@ -4,11 +4,18 @@ import { useEffect, useState } from 'react';
 import { RoomSettings } from './RoomSettings';
 import axios from 'axios';
 
+interface Room {
+    id: number,
+    roomName: string,
+}
 
-export const RoomInfos = ({ currentRoom }: any) => {
+export const RoomInfos = ({ chatData }: any) => {
     
     const [showSettings, setShowSettings] = useState(false);
     const [roomAvatar, setRoomAvatar] = useState('');
+    
+    const currentRoom: Room = chatData?._chat?.chat
+    // console.log('CurCur', currentRoom)
 
 
     const openSettings = () => {
@@ -41,6 +48,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
                 withCredentials: true,
             });
             console.log(_MAIN_USER_?.data?.username , 'Kicked', response)
+            chatData?._socket?.emit('leaveRoom', response.data)
                 
         } catch (error) {
             console.log(error);
@@ -65,7 +73,7 @@ export const RoomInfos = ({ currentRoom }: any) => {
                         <span><FontAwesomeIcon icon={faRightFromBracket} onClick={kickMember} /></span>
                     </div>
                 </div>
-                { showSettings && <RoomSettings onClose={closeSettings} currentRoom={currentRoom} /> }
+                { showSettings && <RoomSettings onClose={closeSettings} chatData={ chatData } /> }
         </div>
     )
 }

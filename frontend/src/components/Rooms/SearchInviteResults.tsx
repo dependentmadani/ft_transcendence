@@ -1,21 +1,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-import io, { Socket } from 'socket.io-client';
-import { useEffect, useState } from 'react';
 
 interface User {
     id: number,
 }
 
-export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
+export const SearchInviteResults = ({ chatData, searchResults }: any) => {
 
-    const [socket, setSocket] = useState<Socket>()
-    
-    useEffect(() => {
-        const _socket = io(`http://localhost:8000/chat`);
-        setSocket(_socket)
-    }, []);
+    const currentRoom = chatData?._chat?.chat
 
     const sendInvite = async (invitedUser: User) => {
         console.log('joinina assi ', invitedUser.id, currentRoom.id)
@@ -36,7 +29,7 @@ export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
         //     console.log(error);
         // }
         try {
-            const res = await axios.post(`http://localhost:8000/roomUsers`, {
+            await axios.post(`http://localhost:8000/roomUsers`, {
                 roomId: currentRoom.id,
                 userId: invitedUser.id,
                 role: 'MEMBER',
@@ -44,7 +37,7 @@ export const SearchInviteResults = ({ currentRoom, searchResults }: any) => {
             {
                 withCredentials: true,
             });
-            socket?.emit('roomMembers', invitedUser)
+            chatData?._socket?.emit('roomMembers', invitedUser)
             console.log('rah mzyaaan', invitedUser)
         }
         catch (error) {

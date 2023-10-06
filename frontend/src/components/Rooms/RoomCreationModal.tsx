@@ -6,7 +6,7 @@ import axios from 'axios';
 // interface User {}
 
 
-export const RoomCreationModal = ({ onClose }: any) => {
+export const RoomCreationModal = ({ onClose, chatData }: any) => {
 
     const [roomName, setRoomName] = useState('')
     const [roomAvatar, setRoomAvatar] = useState<File | null>()
@@ -49,6 +49,7 @@ export const RoomCreationModal = ({ onClose }: any) => {
                     withCredentials: true,
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
+                chatData?._socket?.emit('createRoom', response.data)
                 console.log('CREATED ROOM ', response)
 
                 if (response.data) {

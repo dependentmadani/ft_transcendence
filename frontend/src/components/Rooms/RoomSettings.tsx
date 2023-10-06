@@ -11,9 +11,15 @@ interface RoomUsers {
     role: string
 }
 
+interface Room {
+    id: number,
+    roomName: string,
+    roomType: string,
+}
 
-export const RoomSettings = ({ currentRoom, onClose }: any) => {
+export const RoomSettings = ({ chatData, onClose }: any) => {
 
+    const currentRoom: Room = chatData?._chat?.chat
     const [currentUserIsAdmin, setCurrentUserIsAdmin] = useState(false)
     const [newRoomType, setNewRoomType] = useState(currentRoom?.roomType)
     const [newRoomName, setNewRoomName] = useState('')
@@ -93,7 +99,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
         <div className="overlay">
             <div className="form-container" ref={searchResultsRef}>
                 <h2>Change room settings</h2>
-                { currentUserIsAdmin && <RoomFormInvite currentRoom={currentRoom} /> }
+                { currentUserIsAdmin && <RoomFormInvite chatData={ chatData } /> }
                 <div className="changeRoomSettings">
                     <div className="changes">
                         <div className="mainInfos">
@@ -129,7 +135,7 @@ export const RoomSettings = ({ currentRoom, onClose }: any) => {
                     </div>
                 </div>
                 <div className="FormRoomMember">
-                    <RoomMembers currentRoom={currentRoom} />
+                    <RoomMembers chatData={ chatData } />
                 </div>
             </div>
         </div>

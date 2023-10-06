@@ -7,7 +7,7 @@ import { SearchResult } from "./SearchResult";
 
 interface User {}
 
-export const Search = ({ selectedChat }: any) => {
+export const Search = ({ selectedChat, chatData }: any) => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
   const [showForm, setShowForm] = useState(false);
@@ -52,7 +52,7 @@ export const Search = ({ selectedChat }: any) => {
           <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
         </div>
         <div className="searchChatCreatRoomIcon">
-          <CreateRoom />
+          <CreateRoom chatData={ chatData } />
         </div>
       </div>
       { showForm && searchResults && <SearchResult onClose={closeForm} selectedChat={selectedChat} searchResults={searchResults} />}

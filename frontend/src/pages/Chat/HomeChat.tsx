@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
 import { Chat } from "../../components/Chats/Chat"
 import { Rightbar } from "../../components/Rightbar"
 import { Leftbar } from "../../components/Leftbar"
-import io from 'socket.io-client';
-import { ChatNav } from "../../components/Chats/ChatNav";
+import io, { Socket } from 'socket.io-client';
 import './style.scss'
 
 interface User {
@@ -19,7 +18,6 @@ interface Chat {
 
 export const HomeChat = () => {
   const [selectedChat, setSelectedChat] = useState<any | null>(null);
-  const [clickedVal, setClickedVal] = useState(0);
   const [users, setUsers] = useState<User[]>([])
 
   useEffect(() => {
@@ -39,11 +37,22 @@ export const HomeChat = () => {
     setSelectedChat(chat)
   }
 
-  // const socket = io(`http://localhost:8000`);
-  const currentUser = selectedChat ? users.find(_u => _u.id === selectedChat.recId) : null;
-  var chatData = { _user: currentUser, _chat: selectedChat, _socket: '' }
+  const [socket, setSocket] = useState<Socket>()
 
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  useEffect(() => {
+    const _socket = io(`http://localhost:8000/chat`);
+    setSocket(_socket)
+    
+    return () => {
+      socket?.disconnect()
+    }
+  }, []);
+
+  // const socket = io(`http://localhost:8000`);
+  // const currentUser = selectedChat ? users.find(_u => _u.id === selectedChat.recId) : null;
+  var chatData = { _chat: selectedChat, _socket: socket }
+
+  // const [onlineUsers, setOnlineUsers] = useState([]);
   // const [receivedMsg, setReceivedMsg] = useState('');
 
   
@@ -130,7 +139,7 @@ export const HomeChat = () => {
             { clickedVal===1 && <Leftbar onValueChange={handleSelectedChat} /> }
             { clickedVal===2 && <Chat chatData={ chatData } /> }
             { clickedVal===3 && <Rightbar chatData={ chatData } /> } */}
-            <Leftbar onValueChange={handleSelectedChat} />
+            <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
             <Chat chatData={ chatData } />
             <Rightbar chatData={ chatData } />
         </div>

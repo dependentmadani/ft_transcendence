@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell, faUserTie } from '@fortawesome/free-solid-svg-icons';
-import io, { Socket } from 'socket.io-client';
 
 interface User {
     id: number,
@@ -19,11 +18,12 @@ interface User {
 interface RoomUsers {
     roomId: number,
     userId: number,
-    role: string
+    role: string,
 }
 
-export const RoomMembers = ({ currentRoom }: any) => {
+export const RoomMembers = ({ chatData }: any) => {
 
+    const currentRoom = chatData?._chat?.chat
     const [roomMembers, setRoomMembers] = useState<User[]>([])
     // const [members, setMembers] = useState<User[]>([])
     const [mainUser, setMainUser] = useState<any>()
@@ -33,31 +33,46 @@ export const RoomMembers = ({ currentRoom }: any) => {
     //     setMembers(roomMembers)
     // }, [roomMembers])
 
-    const [socket, setSocket] = useState<Socket>()
+    // const [socket, setSocket] = useState<Socket>()
 
-  useEffect(() => {
-    const _socket = io(`http://localhost:8000/chat`);
-    setSocket(_socket)
+//   useEffect(() => {
+//     const _socket = io(`http://localhost:8000/chat`);
+//     setSocket(_socket)
     
-    return () => {
-      socket?.disconnect()
-    }
-  }, []);
+//     return () => {
+//       socket?.disconnect()
+//     }
+//   }, []);
 
-    const messageListener = (user: User) => {
+    const addMemberListener = (user: User) => {
         if (roomMembers.find(u => u.id === user.id) === undefined)
             setRoomMembers([...roomMembers, user])
-        console.log('wow', user)
+        // console.log('wow', user)
     }
 
     useEffect(() => {
-        console.log('wow wow')
-        socket?.on('members', messageListener)
+        chatData?._socket?.on('members', addMemberListener)
+        // console.log('wow wow', socket)
 
         return () => {
-            socket?.off('members')
+            chatData?._socket?.off('members')
         }
-    }, [messageListener])
+    }, [addMemberListener])
+
+    const removeMemberListener = (user: User) => {
+        if (roomMembers.find(u => u.id === user.id) !== undefined)
+            setRoomMembers(prevMembers => prevMembers.filter(member => member.id !== user.id))
+        // console.log('waw', user)
+    }
+
+    useEffect(() => {
+        chatData?._socket?.on('removeMembers', removeMemberListener)
+        // console.log('wow wow', socket)
+
+        return () => {
+            chatData?._socket?.off('removeMembers')
+        }
+    }, [removeMemberListener])
 
     useEffect(() =>{
         const getRoomMembers = async () => {
@@ -68,27 +83,30 @@ export const RoomMembers = ({ currentRoom }: any) => {
                     result.data.map((member: RoomUsers) => (
                         membersIds.push(member?.userId)
                     ))
-
+                    
                     let members: any = []
                     for (let i=0; i<membersIds.length; i++) {
                         try {
                             const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
                             const res = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${membersIds[i]}`, { withCredentials: true })
+                            // console.log('HMMMMMMM')
                             members.push({'id': user?.data?.id, 'username': user?.data?.username, 'role': res?.data[0]?.role})
                         }
                         catch (err) {
                             console.log(`Couldn't fetch any user`)
                         }
                     }
+                    // console.log('useeeers', members)
                     setRoomMembers(members)
                 }
             }
-            catch {
-                console.log('No users for this room')
+            catch (err) {
+                console.log('No users for this room: ', err)
             }
         }
-
+        
         getRoomMembers()
+        // console.log('Roooooooom', roomMembers)
     }, [currentRoom])
 
     // console.log('Room members', roomMembers)
@@ -110,9 +128,10 @@ export const RoomMembers = ({ currentRoom }: any) => {
 
     const kickMember = async (user: User) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.data.id}`, {
+            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
                 withCredentials: true,
             });
+            chatData?._socket?.emit('removeRoomMembers', user)
             console.log(user.username , 'Kicked', response)
                 
         } catch (error) {
@@ -121,9 +140,9 @@ export const RoomMembers = ({ currentRoom }: any) => {
     }
 
     const muteBanMember = async (user: User, role: string) => {
-        console.log('YooPlaaaaaaaaaaa')
+        // console.log('YooPlaaaaaaaaaaa')
         try {
-            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.data.id}`, {
+            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
                 'role': role,
             }, {
                 withCredentials: true,
@@ -137,7 +156,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
 
     const unMuteBanMember = async (user: User, role: string) => {
         try {
-            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.data.id}`, {
+            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
                 'role': role,
             }, {
                 withCredentials: true,
@@ -166,7 +185,7 @@ export const RoomMembers = ({ currentRoom }: any) => {
         oneUserRoomCase()
     }, [currentRoom])
 
-    console.log('Members', roomMembers)
+    // console.log('Members', roomMembers)
 
     return (
         <div className='roomMembers'>

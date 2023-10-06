@@ -3,7 +3,7 @@ import axios from "axios"
 import { Messages } from './Messages/Messages'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane, faFaceSmile } from '@fortawesome/free-solid-svg-icons';
-import io, { Socket } from 'socket.io-client';
+// import io, { Socket } from 'socket.io-client';
 
 // const socket = io(`http://localhost:8000`);
 
@@ -22,26 +22,26 @@ export const Input = ({ chatData }: any) => {
   const currentChat = chatData?._chat?.chat
   // chatData._socket = io(`http://localhost:8000`);
   
-  const [socket, setSocket] = useState<Socket>()
+  // const [socket, setSocket] = useState<Socket>()
 
-  useEffect(() => {
-    const _socket = io(`http://localhost:8000/chat`);
-    setSocket(_socket)
+  // useEffect(() => {
+  //   const _socket = io(`http://localhost:8000/chat`);
+  //   setSocket(_socket)
     
-    return () => {
-      socket?.disconnect()
-    }
-  }, []);
+  //   return () => {
+  //     socket?.disconnect()
+  //   }
+  // }, []);
 
   const messageListener = (message: Message) => {
       if (message.type === 'chat' && chatMessages.find(m => m.messageId === message.messageId) === undefined){
-        console.log('HWEEEEE')
+        // console.log('HWEEEEE')
         setChatMessages([...chatMessages, message])}
       else  if (message.type === 'room' && roomMessages.find(m => m.messageId === message.messageId) === undefined) {
-        console.log('NNNNNNNNN1', roomMessages.find(m => m.messageId === message.messageId))
+        // console.log('NNNNNNNNN1', roomMessages.find(m => m.messageId === message.messageId))
         setRoomMessages([...roomMessages, message])}
-      
-        console.log('Holaa', message)
+      chatData?._socket?.emit('sortChats')
+        // console.log('Holaa', message)
   }
 
   
@@ -54,14 +54,15 @@ export const Input = ({ chatData }: any) => {
 
   useEffect(() => {
     
-    socket?.on('sendMessage', messageListener);
+    chatData?._socket?.on('sendMessage', messageListener);
+    
       // console.log('socket', socket)
       
       // flag.current = false
       
       
       return () => {
-        socket?.off('sendMessage');
+        chatData?._socket?.off('sendMessage');
       };
     }, [messageListener]);
 
@@ -131,7 +132,7 @@ export const Input = ({ chatData }: any) => {
       const msg: any = await createNewMessage(inputText)
       // const rec = chatData?._chat?.chat?.receiver.id
       // const data = msg.data
-      socket?.emit("message", msg.data);
+      chatData?._socket?.emit("message", msg.data);
       setInputText('')
       
       // let newMessage: any
@@ -157,7 +158,7 @@ export const Input = ({ chatData }: any) => {
       if (inputText.trim() !== '') {
         // createNewMessage(inputText)
         const msg: any = await createNewMessage(inputText)
-        socket?.emit("message", msg.data);
+        chatData?._socket?.emit("message", msg.data);
         // console.log('WAA ', msg.data)
         // socket?.emit("message", msg.data);
         setInputText('')

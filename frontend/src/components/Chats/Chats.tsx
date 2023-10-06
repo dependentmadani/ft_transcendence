@@ -22,8 +22,7 @@ interface Chat {
 
 interface Room {
   id: number,
-  
-  roomName: number,
+  roomName: string,
   roomAvatar: string,
   roomType: string,
   latestMessageDate: string,
@@ -55,11 +54,11 @@ interface Contact {
 
 var _MAIN_USER_: User
 
-export  const Chats = ({ onValueChange }: any) => {
+export  const Chats = ({ onValueChange, chatData }: any) => {
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [newChats, setNewChats] = useState<Chat[]>()
-  const [newRooms, setNewRooms] = useState<Room[]>()
+  const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<roomUsers[]>([])
   const [contacts, setContacts] = useState<Contact[]>()
@@ -190,13 +189,76 @@ export  const Chats = ({ onValueChange }: any) => {
       }
       
       sortContacts()
-  }, [newChats, newRooms]);
+  }, [chatData?._socket, newChats, newRooms]);
+
+  const sorsor = async () => {
+      const allChats: any = newChats || [];
+      const allRooms: any = newRooms || [];
+
+      const _contacts = allChats.concat(allRooms);
+      
+      _contacts.sort((a: Chat, b: Chat) => {
+        const dateA: any = new Date(a.latestMessageDate);
+        const dateB: any = new Date(b.latestMessageDate);
+        return dateB - dateA;
+      });
+    
+      setContacts(_contacts);
+      console.log('SOOOOORTED', contacts)
+  }
+  // console.log('lllllll', chatData?._socket)
+
+  useEffect(() => {
+    
+    console.log('WEE SORTING HERE')
+    chatData?._socket?.on('sortChats', sorsor);
+      
+      return () => {
+        chatData?._socket?.off('sortChats');
+      };
+    }, []);
 
 
   const handleClick = (chat: any, type: string) => {
     setSelectedChat({chat, type});
     onValueChange({chat, type})
   };
+
+  useEffect(() => {
+    
+    chatData?._socket?.on('newRoom', (room: Room) => {
+      const newRoom: Room = {
+        id: room.id,
+        roomName: room.roomName,
+        roomAvatar: room.roomAvatar,
+        roomType: room.roomType,
+        latestMessageDate: 'latestMessageDate',
+        latestMessageContent: 'latestMessageContent',
+        type: 'room',
+      };
+      setNewRooms([...newRooms, newRoom])
+      console.log('NEW ROOOMS', newRooms)
+    });
+
+    chatData?._socket?.on('leaveRoom', (room: Room) => {
+      // const newRoom: Room = {
+      //   id: room.id,
+      //   roomName: room.roomName,
+      //   roomAvatar: room.roomAvatar,
+      //   roomType: room.roomType,
+      //   latestMessageDate: 'latestMessageDate',
+      //   latestMessageContent: 'latestMessageContent',
+      //   type: 'room',
+      // };
+      // setNewRooms([...newRooms, newRoom])
+      // console.log('NEW ROOOMS', newRooms)
+    });
+      
+      return () => {
+        chatData?._socket?.off('newRoom');
+        chatData?._socket?.off('leaveRoom');
+      };
+}, []);
 
 
   const handleSelectedChat = async (_chat: any) => {
@@ -227,7 +289,7 @@ export  const Chats = ({ onValueChange }: any) => {
 
   return (
     <>
-      <Search selectedChat={handleSelectedChat} />
+      <Search selectedChat={handleSelectedChat} chatData={ chatData } />
       <div className="chats">
           {
             contacts?.map((contact: Contact, index: number) => (
