@@ -176,31 +176,32 @@ export class AuthController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    console.log('hello hmida')
     this.authService.logout(userId, req.cookies);
     if (req.cookies['token']) {
+      console.log('hello hmida')
       res.cookie('token', req.cookies['token'], {
-        expires: new Date(0),
+        expires: new Date(),
       });
       res.cookie(
         'refresh_token',
         req.cookies['refresh_token'],
-        { expires: new Date(0) },
-      );
-    }
-    const userNew =
+        { expires: new Date() },
+        );
+      }
+      const userNew =
       await this.authService.returnUser(
         req.user['email'],
-      );
+        );
     await this.authService.updateUserState(
       userNew.id,
       false,
       'OFFLINE'
     );
+    res.send('cookies deleted');
 
-    res.redirect(
-      `http://${process.env.VITE_ADDRESS}:5173/`,
-    );
+    // res.redirect(
+    //   `http://${process.env.VITE_ADDRESS}:5173/`,
+    // );
   }
 
   @Get('refresh')

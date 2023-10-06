@@ -68,13 +68,13 @@
 
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import Client from './client'; // Import your Client class
+import Client from './client';
 import { AES, enc } from "crypto-js";
 
 
 const CLIENT_STORAGE_KEY = 'client_data'; // Key for localStorage
 const ENCRYPTION_KEY = 'hlwa'
-const ClientContext = createContext();
+const ClientContext = createContext<Client | undefined>(undefined);
 
 export const useClient = () => {
   const client = useContext(ClientContext);
@@ -109,7 +109,7 @@ export const ClientProvider = ({ children }) => {
   }, [client]);
 
   const updateClient = (data) => {
-    setClient(data); // Use the 'data' parameter to update the 'client'
+    setClient(data); 
   };
 
   return (

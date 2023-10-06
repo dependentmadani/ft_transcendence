@@ -17,6 +17,7 @@ class Client {
     twofaEmail: string | null;
     twoEnabled: boolean;
     updatedAt: Date | null;
+    login: boolean;
   
     constructor() {
       this.socket = null;
@@ -32,13 +33,15 @@ class Client {
       this.twofa = null;
       this.twofaEmail = null;
       this.updatedAt = null;
-      this.userStatus = 'ONLINE';
+      this.userStatus = 'OFLINE';
+      this.login = false;
     }
 
 
     toString() {
         return `
             Client Data:
+            Login: ${this.login}
             ID: ${this.id}
             Username: ${this.username}
             Avatar: ${this.avatar}
@@ -53,6 +56,24 @@ class Client {
             Updated At: ${this.updatedAt}
             User Status: ${this.userStatus}
         `;
+    }
+
+    clean() {
+        this.socket = null;
+        this.id = -1;
+        this.username = '';
+        this.avatar = null;
+        this.createdAt = null; // Corrected typo 'ceeatedAt' to 'createdAt'
+        this.email = null;
+        this.hashRt = null;
+        this.isActive = true;
+        this.password = null;
+        this.twoEnabled = false;
+        this.twofa = null;
+        this.twofaEmail = null;
+        this.updatedAt = null;
+        this.userStatus = 'OFLINE';
+        this.login = false;
     }
 }
   

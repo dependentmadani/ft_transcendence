@@ -25,14 +25,18 @@ export default function Home(props:any) {
     }
     
     const handleLogout = async() => {
-        // try {
-        // await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
-        //     {withCredentials: true,}
-        // )
-            updateClient({});
-        // } catch (error) {
-        //     console.error('Error logout: ', error);
-        // }
+        try {
+            await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
+                {withCredentials: true,}
+            )
+            // let tmp = client;
+            // client.clean();
+            // console.log("tmp : ")
+            // console.log(tmp.clean)
+            updateClient({...(client.clean)});
+        } catch (error) {
+            console.error('Error logout: ', error);
+        }
         // navigate('/login')
     }
 

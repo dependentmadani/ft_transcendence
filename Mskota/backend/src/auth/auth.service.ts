@@ -178,7 +178,6 @@ export class AuthService {
         hashRt: null,
       },
     });
-    console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
