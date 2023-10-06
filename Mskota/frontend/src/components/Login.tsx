@@ -6,14 +6,16 @@ import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import axios from "axios";
 import { useClient } from '../client/clientContext';
 import Client from '../client/client';
-// import Client from '../client/clinet';
-// import {io, Socket } from 'socket.io-client'
+import { iconName } from '@fortawesome/free-brands-svg-icons/faAccessibleIcon';
+import {io, Socket } from 'socket.io-client'
 
 function  Login(props:any) {
   
   const navigate = useNavigate();
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState<boolean>(true);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const {client, updateClient} = useClient();
+  
 
     useEffect(() => {
       const fetchData = async () => {
@@ -22,21 +24,31 @@ function  Login(props:any) {
           setLogin(true)
           try {
             const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-              { withCredentials: true, }
+            { withCredentials: true, }
             );
-            updateClient(response.data)
+            const newSocket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}`);
+            setSocket(newSocket);
+            console.log(newSocket)
+            console.log('socket : ')
+            console.log(socket)
+            updateClient({...response.data, socket: socket})
           } catch (error) {
             console.log('Error to fetch user data : ', error);
           }
-          console.log(`client : ${client}`);
-          console.log('log in :)');
-          navigate('/')
+          // navigate('/')
         } catch (error) {
             setLogin(false)
           console.log('Did not login yet! :)');
         }
       };
+
       fetchData();
+
+      return () => {
+        if (socket)
+          socket.disconnect();
+      }
+
     }, []);
   
     const request42 = () => {

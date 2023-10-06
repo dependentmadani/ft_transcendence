@@ -15,7 +15,7 @@ export interface socketMetaPayload {
 }
 
 @WebSocketGateway({namespace: "notification",cors: {
-  origin: 'localhost:8000*'
+  origin: '*'
 }})
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

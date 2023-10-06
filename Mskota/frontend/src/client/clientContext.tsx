@@ -72,8 +72,8 @@ import Client from './client';
 import { AES, enc } from "crypto-js";
 
 
-const CLIENT_STORAGE_KEY = 'client_data'; // Key for localStorage
-const ENCRYPTION_KEY = 'hlwa'
+const CLIENT_STORAGE_KEY = import.meta.env.VITE_CLIENT_STORAGE_KEY;
+const ENCRYPTION_KEY = import.meta.env.VITE_ENCRYPTION_KEY;
 const ClientContext = createContext<Client | undefined>(undefined);
 
 export const useClient = () => {

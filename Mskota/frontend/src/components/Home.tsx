@@ -1,13 +1,17 @@
 import '../css/Home.css'
+import { useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from "react-router-dom"
 import Client from '../client/client';
 import { useClient } from '../client/clientContext';
 import axios from 'axios';
+import {io, Socket } from 'socket.io-client'
+
 
 export default function Home(props:any) {
 
     const my_img:string = 'src/imgs/home.png'
     const { client, updateClient }  = useClient();
+    const [socket, setSocket] = useState<Socket>(client.socket);
     const navigate = useNavigate();
 
 
@@ -33,10 +37,12 @@ export default function Home(props:any) {
             // client.clean();
             // console.log("tmp : ")
             // console.log(tmp.clean)
-            updateClient({...(client.clean)});
+            // socket.disconnect();
+            // updateClient({...(client.clean)});
         } catch (error) {
             console.error('Error logout: ', error);
         }
+        updateClient({...(client.clean)});
         // navigate('/login')
     }
 
