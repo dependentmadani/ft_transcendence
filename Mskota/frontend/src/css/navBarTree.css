@@ -30,3 +30,11 @@
         display: none;
     }
 }
+
+@media(min-height: 1100px) {
+    .NavBarTree > img {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+    }
+}

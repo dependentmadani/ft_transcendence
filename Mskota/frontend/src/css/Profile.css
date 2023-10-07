@@ -88,6 +88,7 @@ img {
     
     .user-friends {
         overflow: none;
+        /* background-color: slategray; */
     }
     
     .friends-list,
@@ -102,8 +103,7 @@ img {
         flex-wrap: wrap;
         justify-content: center;
         align-items: center;
-        border-radius: 0px 10px 10px 10px ;
-        backdrop-filter: blur(30px);
+        border-radius: 10px ;
         background-color: #3e4aa0;
 
     }
@@ -113,7 +113,7 @@ img {
     }
     
     .profile-info-left {
-        
+        flex-wrap: nowrap;
         border-radius: 10px;
         background-color: #3e4aa0;
         margin-top: 0;
@@ -130,38 +130,50 @@ img {
         font-size: 50px;
     }
     
-    #title {
+    #title,
+    #title-achive {
         height: 14%;
         width: 100%;
-        /* margin-top: ; */
         padding: 0;
         position: relative;
-        /* padding: ; */
-        /* background-color: red; */
-    }
-    
-    #title > span {
-        
-        background-color: rgba(63,81,181,0.5);
-        height: 90%;
-        position: absolute;
-        top: 14%;
-        left: 0;
-        padding: .5rem 1rem;
-        border-radius: 10px 10px 0px 0px;
-        font-size: larger;
-        font-weight: 700;
+        display: flex;
+        align-items: center;
     }
 
+    #title > img {
+        height: 100%;
+        width: 40%;
+        min-width: 130px;
+        max-width: 230px;
+    } 
+
+    #title-achive > img {
+        height: 100%;
+        width: 65%;
+        min-width: 170px;
+        max-width: 230px;
+    }
+    
+    #title-achive > span,
+    #title > span {
+        font-size: larger;
+        font-weight: 700;
+        position: absolute;
+        left: 4rem;
+    }
+    
+    #title-achive > span {
+        left: 2.5rem;
+    }
+    
     #search  {
         cursor: pointer;
         position: absolute; 
         top: 2%;
-        /* width: 27px; */
         right: 1.96%;
         height: 26px;
         background-color: rgb(63, 100, 132);
-        padding: 5px;
+        padding: 5.1px;
         border-radius: 20px;
         z-index: 110;
     }
@@ -169,7 +181,6 @@ img {
     #search:hover {
         scale: 1.05;
         background-color: rgb(45, 71, 94);
-        /* background-color: rgb(121, 201, 203); */
     }
     
         /* PROFILE-INFO */
@@ -181,7 +192,6 @@ img {
     
         .profile-img {
             height: 70%;
-            margin-bottom: 1rem;
         }
     
         .profile-img > img {
@@ -193,31 +203,50 @@ img {
     
         .profile-name-rank {
             width: 60%;
+            height: 20%;
             margin-top: 1rem;
             font-size: large;
             font-weight: bolder;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* background-color: #c5cae9; */
         }
     
         .profile-name {
-            width: 60%;
+            width: 70%;
             text-align: center;
             padding: .4rem .4rem;
             border-radius: 5px;
-            background-color: rgb(56, 58, 58);
+            position: relative;
+            /* background-color: rgb(0, 255, 255); */
+        }
+
+        .profile-name > img {
+            width: 100%;
+            height: 50px;
         }
     
         .profile-rank {
+            position: relative;
             text-align: center;
             padding: .3rem .3rem;
             border-radius: 5px;
-            width: 15%;
+            width: 20%;
             font-size: larger;
             font-weight: bolder;
-            background-color: rgba(241, 43, 237, 0.7);
+            /* background-color: rgba(241, 43, 237, 0.7); */
+        }
+
+        .profile-rank > img {
+            width: 100%;
+        }
+
+        #rank {
+            position: absolute;
+            left: 50%;
+            top: 46%;
+            z-index: 5;
+            transform: translate(-50%, -50%); 
         }
     
         #settings {
@@ -309,7 +338,6 @@ img {
 
 /* FRIENDS */
 .friend {
-    /* width: 92%; */
     height: 54px;
     margin: .6rem;
     border-radius: 10px;
@@ -363,7 +391,6 @@ img {
     position: absolute;
     height: 80%;
     aspect-ratio: 4/4;
-    /* width: 10px; */
     left: 0;
     border: .5px solid yellow;
     border-radius: 10px;
@@ -372,14 +399,24 @@ img {
 
 
 @media (orientation: portrait) {
+
+    .profile {
+        background-color: chartreuse;
+    }
     
     @media (max-width: 600px) {
+
+
         .profile-info-right,
         .profile-info-left,
         .history {
             height: 300px;
         }
-        
+
+        .profile-img {
+            height: 70%;
+        }
+
         .user-friends,
         .statistic {
             height: 350px;
@@ -418,6 +455,14 @@ img {
     .statistic {
         height: 450px;
     }
+
+    .profile-info {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        
+    }
+
     .profile-info-right,
     .profile-info-left {
         height: 350px;
@@ -429,42 +474,67 @@ img {
         height: 60%;
     }
 
-    .profile-info {
-        display: flex;
-        width: 100%;
-        align-items: center;
-    }
-
-    #title > span { 
-        padding:  1rem 1rem;
-    }
 
     .badge-history {
         margin: .5rem;
-        /* background-color: #3e4aa0; */
     }
 }
 
 @media (orientation: landscape) {
     
+    .profile-col-1 {
+        display: flex;
+        flex-direction: column;
+    }
+
     .profile-col-2 {
         display: flex;
     }
 
-    .history, 
+    .history,
+    .user-friends,
+    .profile-info, 
     .statistic {
-        width: 48%;
+        width: 100%;
         margin: auto;
-        /* height: 350px; */
+        height: 48%;
+    }
+
+    
+    .profile-info {
+        background-color: #3e4aa0;
+        border-radius: 10px;
+
+    }
+
+    .profile-info-right,
+    .profile-info-left {
+        height: 100%;
+        background-color: transparent;
+    }
+    
+    .achivements {
+        background-color: #384080;
+        border-radius: 10px;
+        /* margin: 1rem; */
     }
 
     .friend {
         width: 45%;
     }
+    
+    @media (max-width: 1220px) {
+        .profile-info-left {
+            min-width: 260px;
+        }
 
-    @media (min-width: 1024px) and (min-height: 737px) {
-        
-        
+        .achive {
+            width: 70px;
+            height: 90px;
+        }
+
+    }
+
         .profile {
             width: 100%;
             height: 100%;
@@ -475,11 +545,16 @@ img {
         .profile-col-1 {
             width: 50%;
             height: 100%;
-            background-color: red;
         }
 
+        .profile-col-1 {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+
         .profile-col-2 {
-            /* background-color: saddlebrown; */
             flex-direction: column;
         }
 
@@ -487,14 +562,8 @@ img {
         .statistic {
             width: 90%;
             margin: auto;
-            /* height: 350px; */
         }
-        /* .my-history,
-        #chart {
-            width: 80%;
-        } */
-        /* .history */
-
-    }
 
 }
+
+

@@ -5,29 +5,6 @@ import React, { useState, useEffect } from 'react';
 
 
 
-function ProfileInfo () {
-
-    return (
-        <>
-        </>
-    )
-}
-
-function Achivements() {
-
-    return (
-        <>
-        </>
-    )
-}
-
-function Frindes () {
-
-    return (
-        <>
-        </>
-    )
-}
 
 function Badges() {
   return (
@@ -65,13 +42,76 @@ function Friend() {
 
 function History () {
     return (
-        <>
-        </>
+        <div className='history'>
+            <div id='title' >
+                <img src="src/imgs/bg-title.png" alt="title" />
+                <span>History </span>
+            </div>
+            <div className='my-history'>
+                
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+                <Badges />
+            </div>        
+        </div>
     )
 }
 
 
-function Profile () {
+function ProfileInfo () {
+
+    return (
+        <div className='profile-info'>
+            <div className='profile-info-left'>
+                <img id='settings'  src="src/imgs/setting.png" alt="setting" />
+                <div className='profile-img'>
+                    <img src="src/imgs/example.jpg" alt="user-img" />
+                </div>
+                <div className='profile-name-rank'>
+                    {/* <span className='profile-name'> Name </span> */}
+                    <div className='profile-name'>
+                        <img src="src/imgs/name-title.png" alt="name" />
+                        <span id='rank' > Hamid </span> 
+                    </div>
+                    <div className='profile-rank'>
+                        <img src="src/imgs/sircl.png" alt="rank" />
+                        <span id='rank' > 5 </span> 
+                    </div>
+                </div>
+            </div>
+            <div className='profile-info-right'>
+                <div id='title-achive' >
+                    <img src="src/imgs/bg-title.png" alt="title" />
+                    <span>Achivements</span>
+                </div>
+                <div className='achivements'>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                    <div className='achive'></div>
+                </div>
+            </div>
+        </div>
+    )
+}
+
+function Frindes () {
+
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
@@ -97,85 +137,61 @@ function Profile () {
         setSearchOpen(!searchOpen);
     }
 
+    return (
+        <div className='user-friends'>
+            <input type="search" className="search-input" placeholder="Search..." />
+            <img id='search' src={iconSearch} alt="search" onClick={search_open} />
+            <div id='title' >
+                <img src="src/imgs/bg-title.png" alt="title" />
+                <span>Friends </span>
+            </div>
+            <div className='friends-list'>
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+                <Friend />
+            </div>
+        </div>
+    )
+}
+
+
+function Statistic() {
+
+    return (
+        <div className='statistic'>
+            <div id='title' >
+                <img src="src/imgs/bg-title.png" alt="title" />
+                <span>Statistic </span>
+            </div>
+            <div id='chart'>
+                <MyPieChart />
+            </div>
+        </div>
+    )
+}
+
+
+
+function Profile () {
+
 
     return (
         <div className='profile'>
             <div className='profile-col-1'>
-                <div className='profile-info'>
-                    <div className='profile-info-left'>
-                        <img id='settings'  src="src/imgs/setting.png" alt="setting" />
-                        <div className='profile-img'>
-                            <img src="src/imgs/example.jpg" alt="user-img" />
-                        </div>
-                        <div className='profile-name-rank'>
-                            <span className='profile-name'> Name </span>
-                            <span className='profile-rank'> 5 </span>
-                        </div>
-                    </div>
-                    <div className='profile-info-right'>
-                        <div id='title' >
-                            <span>Achivements</span>
-                        </div>
-                        <div className='achivements'>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                            <div className='achive'></div>
-                        </div>
-                    </div>
-                </div>
-                <div className='user-friends'>
-                    <input type="search" className="search-input" placeholder="Search..." />
-                    <img id='search' src={iconSearch} alt="search" onClick={search_open} />
-                    <div id='title' ><span>Friends </span></div>
-                    <div className='friends-list'>
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                        <Friend />
-                    </div>
-
-                </div>
+                <ProfileInfo />
+                <Frindes />
             </div>
             <div className='profile-col-2'>
-                <div className='history'>
-                    <div id='title' ><span>History </span></div>
-                    <div className='my-history'>
-                        
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        <Badges />
-                        </div>        
-
-                </div>
-                <div className='statistic'>
-                    <div id='title' ><span>Statistic </span></div>
-                    <div id='chart'>
-                        <MyPieChart />
-                    </div>
-                </div>
+                <History />
+                <Statistic />
             </div>
             {/* <div className='blur' ></div>
             <div className='popup'></div> */}
