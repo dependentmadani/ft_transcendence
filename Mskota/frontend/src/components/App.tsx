@@ -31,8 +31,8 @@ function App()  {
               <NavBarOne />
               <Developers /></>} 
             />
-            <Route path='/login' element={<Login />} />
-            <Route path='/signup' element={<SignUp />} />
+            <Route path='/login' element={<Login tag='login' />} />
+            <Route path='/signup' element={<Login tag='signup' />} />
             <Route path='/profile' element={<Section section='profile' />} />
             <Route path='/pie' element={<MyPieChart />} />
             <Route path='/hlwa' element={<Hlwa />} />

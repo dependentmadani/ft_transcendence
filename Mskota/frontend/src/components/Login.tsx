@@ -9,6 +9,37 @@ import Client from '../client/client';
 import { iconName } from '@fortawesome/free-brands-svg-icons/faAccessibleIcon';
 import {io, Socket } from 'socket.io-client'
 
+
+
+function LoginInfo () {
+
+  const request42 = () => {
+    window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
+  };
+
+  const requestGoogle = () => {
+      window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
+  };
+
+  return (
+    <div className='col1'>
+      <h1 id="project-name">Mskota 👋</h1>
+      <h1 id="comment" >Welcome to our <span id='pong'>Pong</span> login Page 🏓</h1>
+      <div id="log">
+        <button onClick={request42} className="log-b-42">
+          <img src="src/imgs/42-white.png" alt="42 Logo" />
+          Log In With 42 intra
+        </button>
+        <button onClick={requestGoogle} className="log-b-google">
+          <img src="src/imgs/google1.png" alt="Google Logo" />
+          Log In With Google
+        </button>
+      </div>
+    </div>
+  )
+}
+
+
 function  Login(props:any) {
   
   const navigate = useNavigate();
@@ -50,14 +81,6 @@ function  Login(props:any) {
       }
 
     }, []);
-  
-    const request42 = () => {
-        window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
-    };
-    
-    const requestGoogle = () => {
-        window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
-    };
     
     return (
       <>
@@ -68,20 +91,7 @@ function  Login(props:any) {
             </Link>
           </div>
           <div className='body-login'>
-              <div className='col1'>
-                <h1 id="project-name">Mskota 👋</h1>
-                <h1 id="comment" >Welcome to our <span id='pong'>Pong</span> login Page 🏓</h1>
-                <div id="log">
-                  <button onClick={request42} className="log-b-42">
-                    <img src="src/imgs/42-white.png" alt="42 Logo" />
-                    Log In With 42 intra
-                  </button>
-                  <button onClick={requestGoogle} className="log-b-google">
-                    <img src="src/imgs/google1.png" alt="Google Logo" />
-                    Log In With Google
-                    </button>
-                </div>
-              </div>
+              {(props.tag === 'login') ? <LoginInfo /> : <SignUp />}
             <div className='col2'>
               <img src="src/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>
