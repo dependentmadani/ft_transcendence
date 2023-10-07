@@ -91,7 +91,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         }
       }
       fetchRooms()
-    }, [])
+  }, [])
   
   useEffect(() => {
       const fetchChatUsers = async () => {
@@ -130,11 +130,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             console.log('Error fetching users for chats: ', err);
           }
         };
-        fetchChatUsers()
-    }, [chats])
-
-    useEffect(() => {
-      const fetchRoomUsers = async () => {
+        
+        const fetchRoomUsers = async () => {
           try {
             _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
             const newRoomsData = await Promise.all(
@@ -144,7 +141,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                 const _latestMessage = (await axios.get(`http://localhost:8000/message/room/${room?.roomId}`, {withCredentials: true}))?.data;
                 const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt;
                 const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent;
-
+  
                 const newRoom: Room = {
                   id: res.data.id,
                   roomName: res.data.roomName,
@@ -155,7 +152,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                   roomPass: res.data.roomPass,
                   type: 'room',
                 };
-
+  
                 return newRoom
               })
             );
@@ -165,8 +162,14 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             console.log('Error fetching users for rooms: ', err);
           }
         };
+
+
         fetchRoomUsers()
-    }, [rooms])
+        fetchChatUsers()
+    }, [chats, rooms])
+
+    // useEffect(() => {
+    // }, [rooms])
 
   
   // useEffect(() => {
@@ -186,14 +189,15 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             const dateB: any = new Date(b.latestMessageDate);
             return dateB - dateA;
           });
+          console.log('srrsrrr', _contacts)
         
           setContacts(_contacts);
         }
         
         sortContacts()
-    }, [chatData?._socket, newChats, newRooms]);
+    }, [newChats, newRooms]);
 
-    const sorsor = async () => {
+    const sortChats = async () => {
         const allChats: any = newChats || [];
         const allRooms: any = newRooms || [];
 
@@ -204,19 +208,21 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
           const dateB: any = new Date(b.latestMessageDate);
           return dateB - dateA;
         });
-      
+       
         setContacts(_contacts);
-        console.log('SOOOOORTED', contacts)
+        console.log('SOOOOORTED', _contacts)
     }
 
     useEffect(() => {
     
-      chatData?._socket?.on('sorting', sorsor);
-        
+      chatData?._socket?.on('sorting', () => {
+        console.log('wewewewewewewewewewewe')
+        sortChats()
+      });
       return () => {
         chatData?._socket?.off('sorting');
       };
-    }, [newChats, newRooms]);
+    }, [sortChats]);
 
 
     const handleClick = (chat: any, type: string) => {

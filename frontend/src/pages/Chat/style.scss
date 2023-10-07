@@ -182,7 +182,7 @@
     background-color: #8490c5;
     padding: 20px;
     width: 40%;
-    max-height: 50%;
+    max-height: 100%;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
@@ -509,6 +509,29 @@
             padding: 10px;
             border-radius: 10px;
             margin: 10px;
+
+            .searchResInfo {
+              padding: 2px 10px;
+              background-color: #666fca87;
+              border-radius: 65px;
+              margin: 5px auto;
+              width: 75%;
+              display: flex;
+              flex-direction: row;
+              cursor: pointer;
+
+              img {
+                border-radius: 70px;
+                width: 40px;
+                height: 40px;
+                margin-right: 10px;
+              }
+
+              span {
+                font-size: 1.4em;
+                background-color: transparent;
+              }
+            }
           }
         }
 
@@ -1110,6 +1133,30 @@
 
     .chatData {
       font-size: 0.1em;
+    }
+  }
+
+  .searchChatResults {
+    margin: 0;
+
+    .searchResInfo {
+      padding: 0;
+      background-color: #666fca87;
+      border-radius: 65px;
+      margin: 0;
+      width: 75%;
+      display: flex;
+      flex-direction: row;
+      cursor: pointer;
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+
+      span {
+        display: none;
+      }
     }
   }
 

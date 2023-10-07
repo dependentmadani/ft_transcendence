@@ -60,18 +60,14 @@ export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
 
     return (
         <div className="searchChatResults" ref={searchResultsRef}>
-            <div className="searchChatResults-container">
-                { searchResults.length ? 
-                    searchResults.map((user: any, index: number) => (
-                    <div key={index} className="userChats" onClick={() => createChat(user)} >
-                        <img src={ user.avatar } alt="user_avatar" />
-                        <div className="userChatInfo">
-                            <span>{ user.username }</span>
-                        </div>
-                    </div>
-                )) : 'No Results :('
-                }
-            </div>
+            { searchResults.length ? 
+                searchResults.map((user: any, index: number) => (
+                <div key={index} className="searchResInfo" onClick={() => createChat(user)} >
+                    <img src={ user.avatar } alt="user_avatar" />
+                    <span>{ user.username }</span>
+                </div>
+            )) : 'No Results :('
+            }
         </div>
     );
 };
