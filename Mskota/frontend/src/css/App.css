@@ -9,8 +9,7 @@
     width: 100vw;
     height: 100vh;
 } */
-
-body {
+#root {
     display: flex;
     flex-direction: column;
     /* height: 100vh; */
@@ -28,14 +27,14 @@ body {
 }
 
 @media (min-width: 3000px) {
-  body {
+  #root {
     align-items: center;
   }
 }
 
 
 @media (max-height: 600px) {
-  body {
+  #root {
     background-color: chartreuse;
   }
 }

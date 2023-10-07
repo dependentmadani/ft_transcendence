@@ -63,28 +63,30 @@ function  Login(props:any) {
       <>
         { !login && <div className="row">
           <div className="logo-login">
-              <Link to="/">
-                  <img className="logo-login-img" src="src/imgs/logo.png" alt="Mskota-Logo" />
-              </Link>
-              </div>
-              <div id="col-1">
-              <h1 id="project-name">Mskota 👋</h1>
-              <h1>Welcome to our PingPong login Page 🏓</h1>
-              <div id="log">
+            <Link to="/">
+                <img className="logo-login-img" src="src/imgs/logo1.png" alt="Mskota-Logo" />
+            </Link>
+          </div>
+          <div className='body-login'>
+              <div className='col1'>
+                <h1 id="project-name">Mskota 👋</h1>
+                <h1 id="comment" >Welcome to our <span id='pong'>Pong</span> login Page 🏓</h1>
+                <div id="log">
                   <button onClick={request42} className="log-b-42">
-                  <img src="src/imgs/42-white.png" alt="42 Logo" />
-                  Log In With 42 intra
+                    <img src="src/imgs/42-white.png" alt="42 Logo" />
+                    Log In With 42 intra
                   </button>
                   <button onClick={requestGoogle} className="log-b-google">
-                  <img src="src/imgs/google1.png" alt="Google Logo" />
-                  Log In With Google
-                  </button>
+                    <img src="src/imgs/google1.png" alt="Google Logo" />
+                    Log In With Google
+                    </button>
+                </div>
               </div>
-              </div>
-              <div id="col-2">
+            <div className='col2'>
               <img src="src/imgs/pingpong.gif" alt="pingpong-gif" />
-              </div> 
+            </div>
           </div>
+        </div>
         }
       </>
     )
