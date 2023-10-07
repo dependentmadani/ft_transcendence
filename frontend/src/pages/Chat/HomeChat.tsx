@@ -1,144 +1,39 @@
 import { useEffect, useState } from "react"
-import axios from "axios";
-import { Chat } from "../../components/Chats/Chat"
-import { Rightbar } from "../../components/Rightbar"
-import { Leftbar } from "../../components/Leftbar"
+import { Chat } from "../../components/Chat/Chats/Chat"
+import { Rightbar } from "../../components/Chat/Rightbar"
+import { Leftbar } from "../../components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
 import './style.scss'
 
-interface User {
-  id: number;
-  username: string;
-}
-
-interface Chat {
-  recId: number;
-  msg: string;
-}
 
 export const HomeChat = () => {
-  const [selectedChat, setSelectedChat] = useState<any | null>(null);
-  const [users, setUsers] = useState<User[]>([])
 
-  useEffect(() => {
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/users`, {withCredentials: true})
-        setUsers(response.data)
-      }
-      catch (err) {
-        console.error('Error fetching users: ', err)
-      }
-    }
-    fetchUsers()
-  }, [])
-
-  const handleSelectedChat = (chat: any) => {
-    setSelectedChat(chat)
-  }
-
+  const [selectedChat, setSelectedChat] = useState<any>();
   const [socket, setSocket] = useState<Socket>()
+  
 
   useEffect(() => {
-    const _socket = io(`http://localhost:8000/chat`);
+    const _socket: any = io(`http://localhost:8000/chat`);
     setSocket(_socket)
     
     return () => {
       socket?.disconnect()
     }
   }, []);
-
-  // const socket = io(`http://localhost:8000`);
-  // const currentUser = selectedChat ? users.find(_u => _u.id === selectedChat.recId) : null;
-  var chatData = { _chat: selectedChat, _socket: socket }
-
-  // const [onlineUsers, setOnlineUsers] = useState([]);
-  // const [receivedMsg, setReceivedMsg] = useState('');
-
   
-  // const sendMessage = () => {
-  //   socket.emit('sendMessage', 'HADA MSG CHADID LAHJA')
-  // }
+  const handleSelectedChat = (chat: any) => {
+    setSelectedChat(chat)
+    chatData._chat = selectedChat
+  }
 
-  // const socketRef = useRef<SocketIOClient.Socket | null>(null);
+  const chatData = { _chat: selectedChat, _socket: socket }
 
-  const [mainUser, setMainUser] = useState<User | null>(null)
+  console.log('chatdata', chatData, selectedChat)
 
-  useEffect(() => {
-    const getUserId = async () => {
-      const res = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-      setMainUser(res.data)
-    }
-    getUserId()
-  }, [])
-  
-
-  // useEffect(() => {
-  //   socketRef.current = io('http://localhost:8000');
-
-  //   // Example: Sending user ID during setup
-  //   // getUserId()
-  //   console.log('ID', mainUser)
-  //   if (mainUser?.id !== undefined) {
-  //     // console.log('WWWWWWWWWWWWWWWWWWWWW')
-  //     const userId = mainUser.id//_MAIN_USER?.id; // Replace with the actual user ID
-  //     socketRef.current.emit('setup', { userId });
-  //   }
-
-  //   // Cleanup socket connection on unmount
-  //   return () => {
-  //     if (socketRef.current) {
-  //       socketRef.current.disconnect();
-  //     }
-  //   };
-  // }, [mainUser]);
-
-  // useEffect(() => {
-
-  //   socket.on('connected', (userIds) => {
-  //     console.log('connected to server', userIds)
-  //     // setOnlineUsers(userIds);
-  //   });
-
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  // const [connectedSocket, setConnectedSocket] = useState(false)
-  // useEffect(() => {
-  //   chatData._socket.emit('setup', chatData._user)
-  //   chatData._socket.on('connected', () => setConnectedSocket(true))
-  // }, [])
-
-  // console.log('ChatData -- ', chatData, selectedChat)
-  // const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     setIsMobile(window.innerWidth <= 768);
-  //   };
-
-  //   window.addEventListener('resize', handleResize);
-
-  //   // Clean up the event listener on component unmount
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, []);
-  
-  // const handleClickedVal = (val: number) => {
-  //   setClickedVal(val)
-  //   console.log('clicked val', clickedVal, val)
-  // }
 
   return (
     <div className='home'>
         <div className='container'>
-            {/* { isMobile && <ChatNav onValueClick={handleClickedVal} /> }
-            { clickedVal===1 && <Leftbar onValueChange={handleSelectedChat} /> }
-            { clickedVal===2 && <Chat chatData={ chatData } /> }
-            { clickedVal===3 && <Rightbar chatData={ chatData } /> } */}
             <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
             <Chat chatData={ chatData } />
             <Rightbar chatData={ chatData } />

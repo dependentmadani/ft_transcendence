@@ -24,6 +24,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     const [newRoomType, setNewRoomType] = useState(currentRoom?.roomType)
     const [newRoomName, setNewRoomName] = useState('')
     const [newRoomAvatar, setNewRoomAvatar] = useState<File | null>(null)
+    const [newRoomPass, setNewRoomPass] = useState('')
     const searchResultsRef = useRef<HTMLDivElement>(null);
     
     
@@ -61,11 +62,12 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     };
 
     const saveChanges = async () => {
-        if (newRoomName && newRoomAvatar) {
+        if (newRoomName && newRoomAvatar && newRoomPass) {
             let formData = new FormData();
             formData.append('roomName', newRoomName);
             formData.append('roomAvatar', newRoomAvatar);
             formData.append('roomType', newRoomType)
+            formData.append('roomPass', newRoomPass)
 
             try {
                 const response = await axios.patch(`http://localhost:8000/room/${currentRoom.id}`, formData, {
@@ -129,6 +131,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                                 Private
                             </label>
                         </div>
+                        { newRoomType === 'Private' && <input type="text" className='roomPassword' placeholder="Room password" value={newRoomPass} onChange={(e) => setNewRoomPass(e.target.value)} />}
                     </div>
                     <div className="saveIcon">
                         <span className='saveChanges'><FontAwesomeIcon className="saveChangesIcon" icon={faFloppyDisk} onClick={ saveChanges } /></span>

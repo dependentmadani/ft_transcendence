@@ -29,8 +29,7 @@ export const Search = ({ selectedChat, chatData }: any) => {
     }
   }, [username])
 
-  
-  
+
   const openForm = () => {
     setShowForm(true);
   };

@@ -14,6 +14,7 @@ export const SearchResult = ({ onClose, searchResults, selectedChat }: any) => {
 
 
     const createChat = async (user: User) => {
+        
         // check if we find a commun chatId between the current user and this user
         const sender = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
         const receiver = user.id

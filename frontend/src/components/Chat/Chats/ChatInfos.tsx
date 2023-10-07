@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faUser, faBellSlash, faUserSlash, faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
-import axios from 'axios';
+import { faBell, faUser, faBellSlash, faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export const ChatInfos = ({ currentUser }: any) => {
 
     const [isFriend, setIsFriend] = useState(false)
 
+    
     useEffect(() => {
         const getFriends = async () => {
             try {
@@ -19,54 +20,33 @@ export const ChatInfos = ({ currentUser }: any) => {
             catch (err) {
                 console.log(`Coudn't fetch friends: `, err)
             }
-
         }
 
         getFriends()
     }, [currentUser])
 
 
-    const addFriend = async () => {
-        try {
-            await axios.post(`http://localhost:8000/users/unblock-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
-        }
-        catch (err) {
-            console.log(`Coudn't add friend: `, err)
-        }
-        console.log(currentUser?.receiver?.id, 'added!')
-    }
-
-    const removeFriend = async () => {
-        try {
-            await axios.post(`http://localhost:8000/users/block-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
-        }
-        catch (err) {
-            console.log(`Coudn't remove friend: `, err)
-        }
-        console.log(currentUser?.receiver?.id, 'removed!')
-    }
-
     const muteFriend = async () => {
         try {
-            await axios.post(`http://localhost:8000/users/mute-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
+            await axios.post(`http://localhost:8000/users/block-friend/${currentUser?.receiver?.id}`, { withCredentials: true,})
+            console.log(currentUser?.receiver?.id, 'blocked!')
         }
         catch (err) {
-            console.log(`Coudn't add friend: `, err)
+            console.log(`Coudn't block friend: `, err)
         }
-        console.log(currentUser?.receiver?.id, 'added!')
     }
 
     const unmuteFriend = async () => {
         try {
-            await axios.post(`http://localhost:8000/users/unmute-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
+            await axios.post(`http://localhost:8000/users/unblock-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
         }
         catch (err) {
-            console.log(`Coudn't remove friend: `, err)
+            console.log(`Coudn't unblock friend: `, err)
         }
-        console.log(currentUser?.receiver?.id, 'removed!')
+        console.log(currentUser?.receiver?.id, 'unblocked')
     }
 
-    // console.log('FF', isFriend)
+
     return (
         <div className="contactInfo">
                 <div className="contactInfos">
@@ -81,8 +61,7 @@ export const ChatInfos = ({ currentUser }: any) => {
                 </div>
                 <div className="contactPlay2">
                     <div className="section2">
-                        {/* <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} onClick={!isFriend ? unmuteFriend : muteFriend} /></span> */}
-                        <span><FontAwesomeIcon icon={!isFriend ? faUser : faUserSlash} onClick={!isFriend ? addFriend : removeFriend} /></span>
+                        <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} onClick={isFriend ? unmuteFriend : muteFriend} /></span>
                     </div>
                 </div>
         </div>

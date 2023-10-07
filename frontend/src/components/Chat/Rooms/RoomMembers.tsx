@@ -9,12 +9,6 @@ interface User {
     role: string,
 }
 
-// interface Users {
-//     id: number,
-//     username: string,
-//     role: string,
-// }
-
 interface RoomUsers {
     roomId: number,
     userId: number,
@@ -25,34 +19,16 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const currentRoom = chatData?._chat?.chat
     const [roomMembers, setRoomMembers] = useState<User[]>([])
-    // const [members, setMembers] = useState<User[]>([])
     const [mainUser, setMainUser] = useState<any>()
 
-
-    // useEffect(() => {
-    //     setMembers(roomMembers)
-    // }, [roomMembers])
-
-    // const [socket, setSocket] = useState<Socket>()
-
-//   useEffect(() => {
-//     const _socket = io(`http://localhost:8000/chat`);
-//     setSocket(_socket)
-    
-//     return () => {
-//       socket?.disconnect()
-//     }
-//   }, []);
 
     const addMemberListener = (user: User) => {
         if (roomMembers.find(u => u.id === user.id) === undefined)
             setRoomMembers([...roomMembers, user])
-        // console.log('wow', user)
     }
 
     useEffect(() => {
         chatData?._socket?.on('members', addMemberListener)
-        // console.log('wow wow', socket)
 
         return () => {
             chatData?._socket?.off('members')
@@ -62,17 +38,16 @@ export const RoomMembers = ({ chatData }: any) => {
     const removeMemberListener = (user: User) => {
         if (roomMembers.find(u => u.id === user.id) !== undefined)
             setRoomMembers(prevMembers => prevMembers.filter(member => member.id !== user.id))
-        // console.log('waw', user)
     }
 
     useEffect(() => {
         chatData?._socket?.on('removeMembers', removeMemberListener)
-        // console.log('wow wow', socket)
 
         return () => {
             chatData?._socket?.off('removeMembers')
         }
     }, [removeMemberListener])
+
 
     useEffect(() =>{
         const getRoomMembers = async () => {
@@ -89,14 +64,12 @@ export const RoomMembers = ({ chatData }: any) => {
                         try {
                             const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
                             const res = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${membersIds[i]}`, { withCredentials: true })
-                            // console.log('HMMMMMMM')
                             members.push({'id': user?.data?.id, 'username': user?.data?.username, 'role': res?.data[0]?.role})
                         }
                         catch (err) {
                             console.log(`Couldn't fetch any user`)
                         }
                     }
-                    // console.log('useeeers', members)
                     setRoomMembers(members)
                 }
             }
@@ -106,10 +79,8 @@ export const RoomMembers = ({ chatData }: any) => {
         }
         
         getRoomMembers()
-        // console.log('Roooooooom', roomMembers)
     }, [currentRoom])
 
-    // console.log('Room members', roomMembers)
 
 
     useEffect(() => {
@@ -140,7 +111,6 @@ export const RoomMembers = ({ chatData }: any) => {
     }
 
     const muteBanMember = async (user: User, role: string) => {
-        // console.log('YooPlaaaaaaaaaaa')
         try {
             const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
                 'role': role,
@@ -185,7 +155,7 @@ export const RoomMembers = ({ chatData }: any) => {
         oneUserRoomCase()
     }, [currentRoom])
 
-    // console.log('Members', roomMembers)
+    
 
     return (
         <div className='roomMembers'>

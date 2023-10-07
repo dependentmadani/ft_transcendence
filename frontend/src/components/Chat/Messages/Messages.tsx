@@ -29,7 +29,6 @@ export const Messages = ({ chatData, messages }: any) => {
     checkUserPermission()
   }, [chatData?._chat?.chat])
 
-  // console.log('LMSGAAT', messages)
 
   return (
     <div className="messages">

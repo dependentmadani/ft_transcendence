@@ -13,9 +13,7 @@ export const RoomInfos = ({ chatData }: any) => {
     
     const [showSettings, setShowSettings] = useState(false);
     const [roomAvatar, setRoomAvatar] = useState('');
-    
     const currentRoom: Room = chatData?._chat?.chat
-    // console.log('CurCur', currentRoom)
 
 
     const openSettings = () => {
@@ -48,7 +46,7 @@ export const RoomInfos = ({ chatData }: any) => {
                 withCredentials: true,
             });
             console.log(_MAIN_USER_?.data?.username , 'Kicked', response)
-            chatData?._socket?.emit('leaveRoom', response.data)
+            chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
                 
         } catch (error) {
             console.log(error);

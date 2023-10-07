@@ -11,6 +11,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
     const [roomName, setRoomName] = useState('')
     const [roomAvatar, setRoomAvatar] = useState<File | null>()
     const [roomType, setRoomType] = useState('')
+    const [roomPass, setRoomPass] = useState('')
     const searchResultsRef = useRef<HTMLDivElement>(null);
 
     
@@ -43,6 +44,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
             formData.append('roomName', roomName);
             formData.append('roomAvatar', roomAvatar);
             formData.append('roomType', roomType)
+            formData.append('roomPass', roomPass)
 
             try {
                 const response = await axios.post(`http://localhost:8000/room`, formData, {
@@ -113,6 +115,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             private
                         </span>
                     </div>
+                    { roomType === 'Private' && <input type="text" className='roomPassword' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
                 </div>
                 <div className="sendButton">
                     <FontAwesomeIcon className='createIconSend' onClick={uploadImage} icon={faPaperPlane} />

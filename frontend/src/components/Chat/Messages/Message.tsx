@@ -22,7 +22,6 @@ export const Message = ({ currentMessage }: any) => {
   useEffect(() => {
     const getSender = async () => {
       try {
-        // console.log('ggg', currentMessage)
         setSender(await (await axios.get(`http://localhost:8000/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
       }
       catch (err) {
@@ -41,7 +40,6 @@ export const Message = ({ currentMessage }: any) => {
     getOwner()
   }, [currentMessage])
 
-  // console.log('CURRCURR', currentMessage)
 
   return (
     <div className={ `message ${currentMessage?.MessageSenId === owner?.id && 'owner'}` } >

@@ -24,11 +24,9 @@ export const RoomFormInvite = ({ chatData }: any) => {
             }
             catch (err) {
                 setSearchResults(null)
-            //   console.log(`Couldn't find any user`, err)
             }
         }
     }
-    // Search for Users to invite
 
 
     return (

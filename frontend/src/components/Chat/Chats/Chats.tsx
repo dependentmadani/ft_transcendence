@@ -1,7 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
-import { Search } from "../Search/Search";
 
 interface User {
   roomId: number,
@@ -28,6 +27,7 @@ interface Room {
   latestMessageDate: string,
   latestMessageContent: string,
   type: string,
+  roomPass: string,
 }
 
 interface roomUsers {
@@ -44,6 +44,7 @@ interface Contact {
   avatar: string,
   type: string,
   latestMessageContent: string,
+  password: string,
 
   // Chat
   chat: Chat,
@@ -151,6 +152,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                   roomType: res.data.roomType,
                   latestMessageDate: latestMessageDate,
                   latestMessageContent: latestMessageContent,
+                  roomPass: res.data.roomPass,
                   type: 'room',
                 };
 
@@ -167,13 +169,31 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     }, [rooms])
 
   
-  useEffect(() => {
-    onValueChange(selectedChat);
-  }, [selectedChat]);
+  // useEffect(() => {
+  //   onValueChange(selectedChat);
+  // }, [selectedChat]);
 
 
-  useEffect(() => {
-      const sortContacts = async () => {
+    useEffect(() => {
+        const sortContacts = async () => {
+          const allChats: any = newChats || [];
+          const allRooms: any = newRooms || [];
+
+          const _contacts = allChats.concat(allRooms);
+          
+          _contacts.sort((a: Chat, b: Chat) => {
+            const dateA: any = new Date(a.latestMessageDate);
+            const dateB: any = new Date(b.latestMessageDate);
+            return dateB - dateA;
+          });
+        
+          setContacts(_contacts);
+        }
+        
+        sortContacts()
+    }, [chatData?._socket, newChats, newRooms]);
+
+    const sorsor = async () => {
         const allChats: any = newChats || [];
         const allRooms: any = newRooms || [];
 
@@ -186,111 +206,57 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         });
       
         setContacts(_contacts);
-      }
-      
-      sortContacts()
-  }, [chatData?._socket, newChats, newRooms]);
+        console.log('SOOOOORTED', contacts)
+    }
 
-  const sorsor = async () => {
-      const allChats: any = newChats || [];
-      const allRooms: any = newRooms || [];
-
-      const _contacts = allChats.concat(allRooms);
-      
-      _contacts.sort((a: Chat, b: Chat) => {
-        const dateA: any = new Date(a.latestMessageDate);
-        const dateB: any = new Date(b.latestMessageDate);
-        return dateB - dateA;
-      });
+    useEffect(() => {
     
-      setContacts(_contacts);
-      console.log('SOOOOORTED', contacts)
-  }
-  // console.log('lllllll', chatData?._socket)
-
-  useEffect(() => {
-    
-    console.log('WEE SORTING HERE')
-    chatData?._socket?.on('sortChats', sorsor);
-      
+      chatData?._socket?.on('sorting', sorsor);
+        
       return () => {
-        chatData?._socket?.off('sortChats');
+        chatData?._socket?.off('sorting');
       };
-    }, []);
+    }, [newChats, newRooms]);
 
 
-  const handleClick = (chat: any, type: string) => {
-    setSelectedChat({chat, type});
-    onValueChange({chat, type})
-  };
-
-  useEffect(() => {
-    
-    chatData?._socket?.on('newRoom', (room: Room) => {
-      const newRoom: Room = {
-        id: room.id,
-        roomName: room.roomName,
-        roomAvatar: room.roomAvatar,
-        roomType: room.roomType,
-        latestMessageDate: 'latestMessageDate',
-        latestMessageContent: 'latestMessageContent',
-        type: 'room',
-      };
-      setNewRooms([...newRooms, newRoom])
-      console.log('NEW ROOOMS', newRooms)
-    });
-
-    chatData?._socket?.on('leaveRoom', (room: Room) => {
-      // const newRoom: Room = {
-      //   id: room.id,
-      //   roomName: room.roomName,
-      //   roomAvatar: room.roomAvatar,
-      //   roomType: room.roomType,
-      //   latestMessageDate: 'latestMessageDate',
-      //   latestMessageContent: 'latestMessageContent',
-      //   type: 'room',
-      // };
-      // setNewRooms([...newRooms, newRoom])
-      // console.log('NEW ROOOMS', newRooms)
-    });
-      
-      return () => {
-        chatData?._socket?.off('newRoom');
-        chatData?._socket?.off('leaveRoom');
-      };
-}, []);
-
-
-  const handleSelectedChat = async (_chat: any) => {
-    let type='chat'
-    
-    const sender = _chat.chatUsers[0] === _MAIN_USER_.id ? _chat.chatUsers[0] : _chat.chatUsers[1];
-    const receiver = _chat.chatUsers[0] === _MAIN_USER_.id ? _chat.chatUsers[1] : _chat.chatUsers[0];
-    const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
-    const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
-    
-    const chat: Chat = {
-      chatId: _chat.chatId,
-      chatUsers: [sender, receiver],
-      sender: senderResponse.data,
-      receiver: receiverResponse.data,
-      latestMessageDate: _chat.latestMessageDate,
-      latestMessageContent: _chat.latestMessageContent,
-      type: _chat.type,
+    const handleClick = (chat: any, type: string) => {
+      setSelectedChat({chat, type});
+      onValueChange({chat, type})
     };
 
-    setSelectedChat({chat, type})
-    onValueChange({chat, type})
-  }
+    useEffect(() => {
+      
+      chatData?._socket?.on('newRoom', (room: Room) => {
+        if (newRooms.find(r => r.id === room.id) === undefined) {
+          const newRoom: Room = {
+            id: room.id,
+            roomName: room.roomName,
+            roomAvatar: room.roomAvatar,
+            roomType: room.roomType,
+            latestMessageDate: 'latestMessageDate',
+            latestMessageContent: 'latestMessageContent',
+            type: 'room',
+            roomPass: room.roomPass,
+          };
+          setNewRooms([...newRooms, newRoom])
+        }
+      });
+        
+      chatData?._socket?.on('leavingRoom', (room: Room) => {
+        if (newRooms.find(r => r.id === room.id) !== undefined)
+            setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
+      });
 
+        return () => {
+          chatData?._socket?.off('newRoom');
+          chatData?._socket?.off('leavingRoom');
+        };
+    }, [newRooms]);
   
-  
 
 
-  return (
-    <>
-      <Search selectedChat={handleSelectedChat} chatData={ chatData } />
-      <div className="chats">
+    return (
+        <div className="chats">
           {
             contacts?.map((contact: Contact, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(contact, contact.type)}>
@@ -306,6 +272,5 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             ))
           }
         </div>
-      </>
-  )
+    )
 }
