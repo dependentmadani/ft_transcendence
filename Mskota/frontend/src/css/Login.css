@@ -18,6 +18,7 @@
     font-size: clamp(14px, 1vw, 20px);
     padding: .7rem 1.5rem;
     border: none;
+    cursor: pointer;
     border-radius: 20px;
 }
 
@@ -137,10 +138,12 @@
 #pong{
     font-family: 'Orbitron', sans-serif;
     color: rgb(27, 183, 183);
+    cursor: pointer;
 }
 
 #comment {
     font-size: 3vw;
+    padding: 2rem;
 }
 
 .col2 {
@@ -169,13 +172,21 @@
         width: 100%;
     }
     #project-name {
-        font-size: clamp(50px, 10vw, 170px);
+        font-size: clamp(40px, 10vw, 170px);
     }
     
     #comment {
-        font-size: clamp(10px, 3vw, 50px);
+        padding: 1rem;
+        font-size: clamp(10px, 4.5vw, 50px);
     }
 }
 
 /* @media (min-width: 870px) {
 } */
+
+@media (max-width: 400px) and (max-height: 700px) {
+    .log-b-42,
+    .log-b-google {
+        padding: .3rem .5rem;
+    }
+}

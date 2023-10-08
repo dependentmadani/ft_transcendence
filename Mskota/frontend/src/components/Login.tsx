@@ -24,7 +24,12 @@ function LoginInfo () {
   return (
     <div className='col1'>
       <h1 id="project-name">Mskota 👋</h1>
-      <h1 id="comment" >Welcome to our <span id='pong'>Pong</span> login Page 🏓</h1>
+      <h1 id="comment" >Welcome to our 
+        <Link to="/">
+          <span id='pong' > Pong </span> 
+        </Link>
+        login Page 🏓
+      </h1>
       <div id="log">
         <button onClick={request42} className="log-b-42">
           <img src="src/imgs/42-white.png" alt="42 Logo" />

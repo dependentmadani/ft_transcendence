@@ -93,9 +93,9 @@ function SetInfo() {
 
   return (
     <div className='main-signup'>
-      <h1 id='signup-header'>
+      <span id='signup-header'>
         <span>Please </span> Enter Your <br /> Information
-      </h1>
+      </span>
       <form className='signup-form' onKeyDown={handleKeyDown}>
         <div className='updateAvatar'>
           <img src={avatar} className='img-avatar' alt='User Avatar' />
