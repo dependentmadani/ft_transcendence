@@ -11,6 +11,8 @@ function Zitona() {
         <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
         <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>,
         <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>,
+        <li key="logout" id="logout" > <Link to='/home' > Log In </Link> </li>
+ 
     ])
 
     const [listItems, setListItems] = useState([...defaultList, (    
@@ -27,14 +29,14 @@ function Zitona() {
     };
 
     return (
-        <div className='body'>
-            {/* Bar */}
+
+            <>
                 <nav className='bar'>
-                    <div className='logo'>                    
+                    {/* <div className='logo'>                     */}
                         <Link to='/' >
-                            <img className="logo-img" src='src/imgs/logo.png' alt='Mskota-Logo' /> 
+                            <img className="logo-img" src='src/imgs/logo1.png' alt='Mskota-Logo' /> 
                         </Link>
-                    </div>
+                    {/* </div> */}
                     <ul className="list">
                         {defaultList}
                     </ul>
@@ -44,13 +46,11 @@ function Zitona() {
                     <div className='menu-ico' onClick={toggleMenu}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />
                     </div>
+                    <div className={`drop-menu ${isMenuOpen ? 'open' : ''}`}>
+                        {listItems}
+                    </div>
                 </nav>
-                <div className={`drop-menu ${isMenuOpen ? 'open' : ''}`}>
-                    {listItems}
-                </div>
-            {/* Main */}
-                <div className='main'></div>
-        </div>
+            </>
     )
 }
 

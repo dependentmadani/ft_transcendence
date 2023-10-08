@@ -63,7 +63,7 @@ function NavBarTwo (props:any) {
                 </div>
                 <div className={`drop-menu2 ${isMenuOpen ? 'open-menu2' : ''}`}>
                     {listItems}
-                    </div>
+                </div>
             </div>
         </>
     )
