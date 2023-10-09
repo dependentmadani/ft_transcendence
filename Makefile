@@ -2,10 +2,12 @@ all:
 	@docker compose -f docker-compose.yml up
   
 down:
-	@docker compose -f docker-compose.yml down --volumes
+	@docker compose -f docker-compose.yml down --volumes;\
+	rm -rf /tmp/data/backend /tmp/data/database 
   
 re: down
-	@docker compose -f docker-compose.yml up --build
+	@docker compose -f docker-compose.yml up --build;\
+	mkdir /tmp/data/backend /tmp/data/database 
 
 
 clean:

@@ -25,7 +25,8 @@ volumes:
   #   driver_opts:
   #     type: none
   #     o: bind
-  #     device: $HOME/goinfre/data/frontend
+  #     device: /tmp/data/frontend
+      # device: $HOME/goinfre/data/frontend
 
 networks:
   hadnetwork:

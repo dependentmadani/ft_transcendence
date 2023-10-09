@@ -158,13 +158,14 @@ export class AuthController {
       true,
       'ONLINE'
     );
-    console.log(
-      'vite address 1:',
-      process.env.VITE_ADDRESS,
-    );
-    res.redirect(
-      `http://${process.env.VITE_ADDRESS}:5173/`,
-    );
+    res.send('logged successfully!');
+    // console.log(
+    //   'vite address 1:',
+    //   process.env.VITE_ADDRESS,
+    // );
+    // res.redirect(
+    //   `http://${process.env.VITE_ADDRESS}:5173/`,
+    // );
   }
 
   @Get('logout')
