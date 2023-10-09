@@ -10,6 +10,7 @@ export const Input = ({ chatData }: any) => {
   const currentChat = chatData?._chat?.chat
   
 
+  // Creating new message eather for chats or rooms
   const createNewMessage = async (inputText: string) => {
     try {
       const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
@@ -44,6 +45,8 @@ export const Input = ({ chatData }: any) => {
     }
   }
 
+
+  // Handling message sending Click
   const handleClick = async () => {
     if (inputText.trim() !== '') {
       const msg: any = await createNewMessage(inputText)
@@ -53,6 +56,8 @@ export const Input = ({ chatData }: any) => {
     }
   }
   
+
+  // Handling message sending key
   const handleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       if (inputText.trim() !== '') {

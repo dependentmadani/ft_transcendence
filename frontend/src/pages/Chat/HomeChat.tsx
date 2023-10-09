@@ -13,7 +13,7 @@ export const HomeChat = () => {
   
 
   useEffect(() => {
-    const _socket: any = io(`http://localhost:8000/chat`);
+    const _socket: any = io(`http://${import.meta.env.VITE_FRONT_ADDRESS}/chat`);
     setSocket(_socket)
     
     return () => {
@@ -28,7 +28,7 @@ export const HomeChat = () => {
 
   const chatData = { _chat: selectedChat, _socket: socket }
 
-  console.log('chatdata', chatData, selectedChat)
+  // console.log('address', import.meta.env.VITE_FRONT_ADDRESS)
 
 
   return (

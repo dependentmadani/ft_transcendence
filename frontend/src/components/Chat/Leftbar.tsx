@@ -21,30 +21,32 @@ interface User {
 export  const Leftbar = ({ onValueChange, chatData }: any) => {
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
-  const [mainUser, setMainUser] = useState<User>()
+  // const [mainUser, setMainUser] = useState<User>()
 
   
-  useEffect(() => {
-    const getMainUser = async () => {
-      try {
-        const user = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-        setMainUser(user.data)
-      }
-      catch (err) {
-        console.log(`Coudn't fetch main user: `, err)
-      }
-    }
+  // useEffect(() => {
+  //   const getMainUser = async () => {
+  //     try {
+  //       const user = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
+  //       setMainUser(user.data)
+  //     }
+  //     catch (err) {
+  //       console.log(`Coudn't fetch main user: `, err)
+  //     }
+  //   }
 
-    getMainUser()
-  }, [])
+  //   getMainUser()
+  // }, [])
 
 
+  // Set the selected chat by the user
   const handleSelectedChat = async (chat: Chat) => {
     
+    const mainUser: User = (await (axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true}))).data
     const sender = chat.chatUsers[0] === mainUser?.id ? chat.chatUsers[0] : chat.chatUsers[1];
     const receiver = chat.chatUsers[0] === mainUser?.id ? chat.chatUsers[1] : chat.chatUsers[0];
-    const sen = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
-    const rec = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
+    const sen = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${sender}`, {withCredentials: true});
+    const rec = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${receiver}`, {withCredentials: true});
     
     const _chat: Chat = {
       chatId: chat.chatId,
