@@ -52,7 +52,7 @@ function NavBarTwo (props:any) {
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="src/imgs/logo1.png" alt="Mskota-logo" />
+                    <img className='logo-img1'  src="src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
                     <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />

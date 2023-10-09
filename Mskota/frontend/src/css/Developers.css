@@ -1,6 +1,7 @@
 
 .main-dev {
-    
+    height: 84%;
+    background-color: antiquewhite;
     display: flex;
     justify-items: center;
     justify-content: space-between;
@@ -31,6 +32,7 @@
 
 .badge {
     display: flex;
+
     justify-content: space-around;
     background-color: chartreuse;
     width: 40%;

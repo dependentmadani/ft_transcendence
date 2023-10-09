@@ -1,8 +1,7 @@
 import Home from './Home'
 import About from './About'
 import Developers from './Developers'
-import SignUp from './SignUp' 
-import Login from './Login'
+import Sign from './Sign' 
 import NavBarOne from './navBarOne'
 import Profile from './Profile'
 import { Route, Routes } from 'react-router-dom'
@@ -14,8 +13,13 @@ import MyPieChart from './pieChart'
 import Hlwa  from './pieChart'
 import Draw from './Draw'
 
-function App()  {
 
+import { useAuth } from '../client/authContext'
+
+function App()  {
+  const { auth, updateAuth } = useAuth();
+
+    console.log(auth)
 
     return (
         <Routes>
@@ -31,8 +35,8 @@ function App()  {
               <NavBarOne />
               <Developers /></>} 
             />
-            <Route path='/login' element={<Login tag='login' />} />
-            <Route path='/signup' element={<Login tag='signup' />} />
+            <Route path='/login' element={<Sign tag='login' />} />
+            <Route path='/signup' element={<Sign tag='signup' />} />
             <Route path='/profile' element={<Section section='profile' />} />
             <Route path='/pie' element={<MyPieChart />} />
             <Route path='/hlwa' element={<Hlwa />} />

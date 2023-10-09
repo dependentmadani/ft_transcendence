@@ -1,23 +1,14 @@
 import '../css/Login.css'
-import SignUp from '../components/SignUp'
-import { Link, Route, Routes, useNavigate} from "react-router-dom"
-import { useEffect, useState } from 'react';
-import { faSmile } from '@fortawesome/free-solid-svg-icons';
-import axios from "axios";
-import { useClient } from '../client/clientContext';
-import Client from '../client/client';
-import { iconName } from '@fortawesome/free-brands-svg-icons/faAccessibleIcon';
-import {io, Socket } from 'socket.io-client'
+import {Link} from 'react-router-dom' 
 
-
-
-function LoginInfo () {
+function Login () {
 
   const request42 = () => {
     window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
   };
 
   const requestGoogle = () => {
+    console.log('gmaile')
       window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
   };
 
@@ -45,66 +36,4 @@ function LoginInfo () {
 }
 
 
-function  Login(props:any) {
-  
-  const navigate = useNavigate();
-  const [login, setLogin] = useState<boolean>(true);
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const {client, updateClient} = useClient();
-  
-
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true })
-          setLogin(true)
-          try {
-            const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-            { withCredentials: true, }
-            );
-            const newSocket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}`);
-            setSocket(newSocket);
-            console.log(newSocket)
-            console.log('socket : ')
-            console.log(socket)
-            updateClient({...response.data, socket: socket})
-          } catch (error) {
-            console.log('Error to fetch user data : ', error);
-          }
-          // navigate('/')
-        } catch (error) {
-            setLogin(false)
-          console.log('Did not login yet! :)');
-        }
-      };
-
-      fetchData();
-
-      return () => {
-        if (socket)
-          socket.disconnect();
-      }
-
-    }, []);
-    
-    return (
-      <>
-        { !login && <div className="row">
-          <div className="logo-login">
-            <Link to="/">
-                <img className="logo-login-img" src="src/imgs/logo1.png" alt="Mskota-Logo" />
-            </Link>
-          </div>
-          <div className='body-login'>
-              {(props.tag === 'login') ? <LoginInfo /> : <SignUp />}
-            <div className='col2'>
-              <img src="src/imgs/pingpong.gif" alt="pingpong-gif" />
-            </div>
-          </div>
-        </div>
-        }
-      </>
-    )
-  }
-  
-  export default Login;
+export default Login;

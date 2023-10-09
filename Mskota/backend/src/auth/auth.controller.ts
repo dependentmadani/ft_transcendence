@@ -163,7 +163,7 @@ export class AuthController {
     }
     else {
       res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/login`,
+        `http://${process.env.VITE_ADDRESS}:5173/`,
         // kheliha bhal haka 
       );
     }

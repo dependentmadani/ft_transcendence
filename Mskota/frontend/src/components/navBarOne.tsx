@@ -32,7 +32,7 @@ function Zitona() {
                 <nav className='bar'>
                     {/* <div className='logo'>                     */}
                         <Link to='/' >
-                            <img className="logo-img" src='src/imgs/logo1.png' alt='Mskota-Logo' /> 
+                            <img className="logo-img" src='src/imgs/mskota.png' alt='Mskota-Logo' /> 
                         </Link>
                     {/* </div> */}
                     <ul className="list">

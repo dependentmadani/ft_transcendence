@@ -3,6 +3,7 @@ import '/src/css/SignUp.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { useClient } from '../client/clientContext';
+import { useAuth } from '../client/authContext';
 
 
 function SetInfo() {
@@ -11,6 +12,8 @@ function SetInfo() {
   const [username, setUsername] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
   const {client, updateClient} = useClient();
+  // const [auth, setAuth] = useAuth();
+  const { auth, updateAuth } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -81,13 +84,17 @@ function SetInfo() {
       } catch (error) {
         console.error('Error submitting data:', error);
       }
-      navigate('/login');
+      updateAuth(true);
+      console.log(auth)
+      // setAuth(true);
+      navigate('/');
   };
   console.log('login');
 
-  const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
-      handleSubmit(e);
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // console.log('hlwa')
+      handleSubmit();
     }
   };
 
@@ -96,7 +103,7 @@ function SetInfo() {
       <span id='signup-header'>
         <span>Please </span> Enter Your <br /> Information
       </span>
-      <form className='signup-form' onKeyDown={handleKeyDown}>
+      <form className='signup-form'>
         <div className='updateAvatar'>
           <img src={avatar} className='img-avatar' alt='User Avatar' />
           <input
@@ -114,6 +121,7 @@ function SetInfo() {
           name='username'
           id='name'
           value={username}
+          onKeyDown={handleKeyDown}
           onChange={(e) => handleChangeUsername(e.target.value)}
           required
         />

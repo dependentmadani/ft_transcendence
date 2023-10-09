@@ -3,7 +3,7 @@
 /* Bar */
 .bar {
     height: 15%;
-    background-color: rgb(0, 255, 128);
+    background-color: rgba(53, 50, 76, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -14,7 +14,7 @@
     /* aspect-ratio: 4/4; */
     height: 100%;
     margin-left: 1rem;
-    background-color: chocolate;
+    /* background-color: chocolate; */
 }
 
 
@@ -22,10 +22,10 @@
     width: 40%;
     display: flex;
     justify-content: space-between;
-    background-color: salmon;
+    /* background-color: salmon; */
     /* font-size: clamp(5px, 5vw, 20px); */
     /* font-size: larger; */
-    font-size: clamp(20px, 1vw, 40px);
+    font-size: clamp(20px, 1vw, 50px);
     font-weight: 900;
     margin-left: 2rem;
     margin-right: 2rem;
@@ -127,4 +127,19 @@
         left: .2rem;
         right: .2rem;
     }
+}
+
+.list a {
+    padding-bottom: .5rem;
+}
+
+.list a:hover {
+    border-bottom: .5vh solid #06e8f8; 
+    /* border-bottom: 2rem cadetblue; */
+    /* margin-bottom: 2rem; */
+    /* color: aquamarine; */
+}
+
+.list a:active {
+    color:  #06f8ec; 
 }

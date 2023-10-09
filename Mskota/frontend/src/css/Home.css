@@ -8,7 +8,7 @@
     /* height: 80vh; */
     margin-top: 1%;
     overflow: hidden;
-    background-color: gray;
+    /* background-color: gray; */
 }
 
 .dscp-home {
@@ -22,7 +22,7 @@
     justify-content: space-around;
     /* margin-left: 2rem; */
     /* margin: 0 auto; */
-    background-color: goldenrod;
+    /* background-color: goldenrod; */
 }
 
 .home-img {
@@ -51,14 +51,18 @@
 .title1 {
     font-size: clamp(20px, 10vw, 150px);
     /* font-family: ; */
+    color: aqua;
     font-weight: 700;
     font-family: 'Orbitron', sans-serif;
 }
 
 .title2 {
     
+    color: rgba(49, 241, 241, 0.8);
     font-size: clamp(20px, 4vw, 100px);
     font-weight: 600;
+    /* background-color: aliceblue; */
+    text-shadow: 0px 10px 20px rgba(0, 252, 214, 0.4);
     font-family: 'Orbitron', sans-serif;
     text-align: center;
 }
@@ -135,28 +139,29 @@
 
         @media (max-width: 500px) {
 
-                    .title1 {
-            /* color: red;      */
-            font-size: clamp(10px, 18vw, 200px);
-        }
-        
-        .title2 {
+            .title1 {
+                /* color: red;      */
+                font-size: clamp(10px, 18vw, 200px);
+            }
             
-            font-size: clamp(10px, 10vw, 150px);
-            /* font-size: clamp(14px, 1.5vw, 200px); */
-        }
-        
-        .comment {
+            .title2 {
+                
+                font-size: clamp(10px, 10vw, 150px);
+                /* font-size: clamp(14px, 1.5vw, 200px); */
+            }
             
-            font-size: clamp(10px, 5vw, 50px);
-        }
-
-        .getStart-b {
-
-            padding: 1.5vw 4vw;
-            font-size: clamp(10px, 7vw, 200px);
-            /* font-size: ; */
-        }
+            .comment {
+                
+                font-size: clamp(10px, 5vw, 50px);
+            }
+            
+            .getStart-b {
+                
+                /* background-color: red; */
+                padding: 2vw 8vw;
+                font-size: clamp(10px, 7vw, 200px);
+                /* font-size: ; */
+            }
         }
     /* } */
 }

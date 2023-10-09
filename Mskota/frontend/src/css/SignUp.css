@@ -43,8 +43,8 @@
 .updateAvatar {
     margin: 1.5rem;
     /* background-color: cadetblue; */
-    max-width: 270px;
-    max-height: 270px;
+    width: 270px;
+    height: 270px;
     position: relative;
     /* min-height: ; */
     /* display: flex; */

@@ -28,6 +28,8 @@ export default function Home(props:any) {
         navigate('/login')
     }
     
+
+    
     const handleLogout = async() => {
         try {
             await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
@@ -56,14 +58,11 @@ export default function Home(props:any) {
                         <span className="title1"> MSKOTA </span>
                         <span className="title2"> LET'S PLAY<br /> <span className="tab">PINGPONG</span></span>
                     </div>
-                    {/* <div className='home-2'> */}
-                        <p className="comment">
-                            <span className="tab1" /> Get ready to experience the thrill and excitement of one of the most beloved sports in the world.
-                            Ping Pong! Our game takes this classic table tennis game to a whole new level, right in the comfort of your home.
-                            <br /><br /> <span className="tab1" /> To Stay play with your friends .
-                        </p>
-                        {/* <img  src={my_img} alt='home.png' /> */}
-                    {/* </div> */}
+                    <p className="comment">
+                        <span className="tab1" /> Get ready to experience the thrill and excitement of one of the most beloved sports in the world.
+                        Ping Pong! Our game takes this classic table tennis game to a whole new level, right in the comfort of your home.
+                        <br /><br /> <span className="tab1" /> To Stay play with your friends .
+                    </p>
                     <button className="getStart-b"><Link to='/login' > Get Started </Link></button>
                 </div>
                 <div className='home-img' >
