@@ -502,7 +502,7 @@ img {
 
     
     .profile-info {
-        background-color: #3e4aa0;
+        /* background-color: #3e4aa0; */
         border-radius: 10px;
 
     }
@@ -510,7 +510,7 @@ img {
     .profile-info-right,
     .profile-info-left {
         height: 100%;
-        background-color: transparent;
+        /* background-color: transparent; */
     }
     
     .achivements {

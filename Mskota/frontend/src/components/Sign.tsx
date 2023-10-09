@@ -18,7 +18,7 @@ import { useAuth } from '../client/authContext';
 function  Sign(props:any) {
   
   const navigate = useNavigate();
-  const [login, setLogin] = useState<boolean>(false);
+  // const [login, setLogin] = useState<boolean>(false);
   const {client, updateClient} = useClient();
   const { auth, updateAuth } = useAuth();
   // const [auth, updateAuth] = useAuth();
@@ -31,22 +31,24 @@ function  Sign(props:any) {
         try {
           await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
             { withCredentials: true })
+            updateAuth(false)
           // setH(1)
-            setLogin(true)
+            // setLogin(true)
           // console.log(test)
           // try {
-          const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-            { withCredentials: true, });
-          updateClient({...response.data})
-          console.log('-----------------------------------------------')
-          console.log(client)
-          if (auth)
-            navigate('/')
+          // const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
+          //   { withCredentials: true, });
+          // updateClient({...response.data})
+          // updateAuth(true)
+          // console.log('-----------------------------------------------')
+          // console.log(client)
+          // if (auth)
+          //   navigate('/')
           // } catch (error) {
           //   console.log('Error to fetch user data : ', error);
           // }
         } catch (error) {
-          setLogin(false)
+          // setLogin(false)
           updateAuth(false)
           // if (!)
           console.log('Did not login yet! :)');
@@ -59,7 +61,7 @@ function  Sign(props:any) {
     
     return (
       <>
-        {(!login || !auth) && <div className="row">
+        {!auth && <div className="row">
           <div className="logo-login">
             <Link to="/">
                 <img className="logo-login-img" src="src/imgs/mskota.png" alt="Mskota-Logo" />

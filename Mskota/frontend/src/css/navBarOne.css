@@ -3,6 +3,8 @@
 /* Bar */
 .bar {
     height: 15%;
+    width: 100%;
+    max-height: 170px;
     background-color: rgba(53, 50, 76, 0.2);
     display: flex;
     justify-content: space-between;

@@ -33,7 +33,7 @@
     width: 90%;
     height: 100%;
     overflow: auto;
-    /* background-color: crimson; */
+    background-color: crimson;
 }
 
 .select-section::-webkit-scrollbar {

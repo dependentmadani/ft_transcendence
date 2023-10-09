@@ -3,9 +3,13 @@ import { Link, Route, Routes} from "react-router-dom"
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
+import { useAuth } from '../client/authContext'
+import { handleLogout } from './Logout';
 
 
 function Zitona() {
+
+    const { auth, updateAuth } = useAuth();
 
     const defaultList = ([
         <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
@@ -14,10 +18,23 @@ function Zitona() {
         
     ])
     
-    const [listItems, setListItems] = useState([...defaultList, (    
-        <li key="logout" id="logout" > <Link to='/home' > Get Started </Link> </li>
-        )]
-    );
+    // const [listItems, setListItems] = useState([...defaultList, (    
+    //     <li key="logout" id="logout" > <Link to='/home' > Get Started </Link> </li>
+    //     )]
+    // );
+
+    const listItems = [
+        ...defaultList,
+        !auth ? (
+          <li key="logout" id="logout">
+            <Link to='/login'> Get Started </Link>
+          </li>
+        ) : (
+            <li key="logout" id="logout" onClick={handleLogout}>
+                 Log Out 
+            </li>
+        ), // You can also use an empty string ('') or any other element instead of null
+      ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -39,7 +56,8 @@ function Zitona() {
                         {defaultList}
                     </ul>
                     <div className='login'>
-                        <Link to='/login' > Get Started </Link>
+                        {!auth ? <Link to='/login' > Get Started </Link> 
+                          : <li key="logout" id="logout" onClick={handleLogout}> Log Out </li>}
                     </div>
                     <div className='menu-ico' onClick={toggleMenu}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />
