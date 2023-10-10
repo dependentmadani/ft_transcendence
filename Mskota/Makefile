@@ -1,6 +1,9 @@
 all:
 	@docker compose -f docker-compose.yml up
   
+# db: 
+# 	@mkdir -p /tmp/data /tmp/data/database /tmp/data/b
+
 down:
 	@docker compose -f docker-compose.yml down --volumes
   

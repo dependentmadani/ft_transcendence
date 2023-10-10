@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import '/src/css/SignUp.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
 import { useClient } from '../client/clientContext';
 import { useAuth } from '../client/authContext';
 
@@ -15,7 +15,6 @@ function SetInfo() {
   // const [auth, setAuth] = useAuth();
   const { auth, updateAuth } = useAuth();
   const navigate = useNavigate();
-
 
 
   async function fetchUserData() {

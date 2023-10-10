@@ -29,7 +29,7 @@ function Section (props:any) {
     useEffect(() => {
         const sourceElement = document.querySelector('.NavBarTwo') as HTMLElement;
         console.log(sourceElement.offsetHeight)
-      }, []);
+    }, []);
 
     return (
         <div className='root-section'>

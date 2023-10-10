@@ -4,7 +4,7 @@ import Developers from './Developers'
 import Sign from './Sign' 
 import NavBarOne from './navBarOne'
 import Profile from './Profile'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Navigate } from 'react-router-dom'
 import '../css/App.css'
 import Section from './Section'
 
@@ -13,13 +13,16 @@ import MyPieChart from './pieChart'
 import Hlwa  from './pieChart'
 import Draw from './Draw'
 
-
 import { useAuth } from '../client/authContext'
 
 function App()  {
-  const { auth, updateAuth } = useAuth();
 
-    console.log(auth)
+
+  const { auth, updateAuth } = useAuth();
+  // const history = useHistory();
+
+    console.log('auth : ', auth)
+    // console.log(auth)
 
     return (
         <Routes>
@@ -35,12 +38,9 @@ function App()  {
               <NavBarOne />
               <Developers /></>} 
             />
-            <Route path='/login' element={<Sign tag='login' />} />
-            <Route path='/signup' element={<Sign tag='signup' />} />
-            <Route path='/profile' element={<Section section='profile' />} />
-            <Route path='/pie' element={<MyPieChart />} />
-            <Route path='/hlwa' element={<Hlwa />} />
-            <Route path='/kika' element={<Draw />} />
+            <Route path='/login' element={!auth ? <Sign tag='login' /> : <Navigate to='/' />} />
+            <Route path='/signup' element={!auth ? <Sign tag='signup' /> : <Navigate to='/' />} />
+            <Route path='/profile' element={<Section section='profile' />}  /> 
             
             {/* <Route path='/zitona' element={<Zitona />} /> */} 
         </Routes>

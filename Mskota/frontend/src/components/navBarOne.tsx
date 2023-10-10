@@ -1,21 +1,64 @@
 import '../css/navBarOne.css'
-import { Link, Route, Routes} from "react-router-dom"
+import { Link, Route, Routes, useNavigate } from "react-router-dom"
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 import { useAuth } from '../client/authContext'
-import { handleLogout } from './Logout';
+import { useClient } from '../client/clientContext';
+import axios from 'axios';
+import { useEffect } from 'react'
+// import { handleLogout } from './Logout';
 
 
-function Zitona() {
+function NavBarOne() {
 
     const { auth, updateAuth } = useAuth();
+    const { client, updateClient }  = useClient();
+    const navigate = useNavigate();
+    
+
+    useEffect (() => {
+
+        const fetchData = async () => {
+            console.log(auth)
+            try {
+              await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
+                { withCredentials: true })
+                updateAuth(true) 
+            } catch (error) {
+                updateAuth(false)
+                console.log('Did not login yet! :)');
+            }
+        }
+
+        fetchData();
+    },[])
+
+    
+    const handleLogout = async() => {
+        try {
+            await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
+                {withCredentials: true,}
+            )
+            // let tmp = client;
+            // client.clean();
+            // console.log("tmp : ")
+            // console.log(tmp.clean)
+            // socket.disconnect();
+            // updateClient({...(client.clean)});
+        } catch (error) {
+            console.error('Error logout: ', error);
+        }
+        updateAuth(false);
+        updateClient({...(client.clean)});
+        navigate('/')
+    }
+
 
     const defaultList = ([
         <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
         <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>,
         <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>,
-        
     ])
     
     // const [listItems, setListItems] = useState([...defaultList, (    
@@ -30,8 +73,8 @@ function Zitona() {
             <Link to='/login'> Get Started </Link>
           </li>
         ) : (
-            <li key="logout" id="logout" onClick={handleLogout}>
-                 Log Out 
+            <li key="logout" id="logout" >
+                <Link to='/logout'> Log Out  </Link>
             </li>
         ), // You can also use an empty string ('') or any other element instead of null
       ];
@@ -70,4 +113,4 @@ function Zitona() {
     )
 }
 
-export default Zitona;
+export default NavBarOne;

@@ -31,7 +31,7 @@ function  Sign(props:any) {
         try {
           await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
             { withCredentials: true })
-            updateAuth(false)
+            updateAuth(true)
           // setH(1)
             // setLogin(true)
           // console.log(test)
@@ -61,7 +61,7 @@ function  Sign(props:any) {
     
     return (
       <>
-        {!auth && <div className="row">
+        <div className="row">
           <div className="logo-login">
             <Link to="/">
                 <img className="logo-login-img" src="src/imgs/mskota.png" alt="Mskota-Logo" />
@@ -74,7 +74,6 @@ function  Sign(props:any) {
             </div>
           </div>
         </div>
-      }
       </>
     )
   }
