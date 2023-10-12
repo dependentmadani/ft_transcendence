@@ -298,6 +298,7 @@ export class UsersService {
           data: {
             username: body?.username,
             avatar: body?.avatar,
+            signedUp: true,
           },
         },
       );

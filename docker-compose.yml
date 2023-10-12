@@ -8,8 +8,7 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/database
-      # device: /$HOME/goinfre/data/database
-      # device: /home/mbadaoui/data/database
+
   backend_volume:
     driver: local
     name: backend_volume
@@ -17,8 +16,7 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/backend
-      # device: /$HOME/goinfre/data/backend
-      # device: /home/mbadaoui/data/backend
+
   # frontend_volume:
   #   driver: local
   #   name: frontend_volume

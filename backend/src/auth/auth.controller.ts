@@ -38,6 +38,19 @@ export class AuthController {
     return true;
   }
 
+  @Get('signed_up')
+  async signedUp(@Req() req: Request) {
+    const user = req.user;
+    try {
+      const userInfo = await this.authService.returnUser(user['email']);
+      return userInfo.signedUp;
+
+    } catch(err) {
+      console.log('the user is not available');
+      return false;
+    }
+  }
+
   @Get('me')
   async getMe(
     @Req() req: Request,

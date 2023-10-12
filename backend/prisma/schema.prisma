@@ -22,10 +22,11 @@ model Users {
   hashRt      String?
   twofa       String?
   twofaEmail  String?     @unique
-  twoEnabled  Boolean     @default(false)
   userStatus  userStatus  @default(ONLINE)
   
-  isActive              Boolean         @default(false)
+  twoEnabled  Boolean     @default(false)
+  isActive    Boolean     @default(false)
+  signedUp   Boolean     @default(false)
   
   // Notifications
   pendingFriendReq      Users[]         @relation("PendingFriend")
