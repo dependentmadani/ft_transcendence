@@ -1,0 +1,147 @@
+
+
+/* Bar */
+.bar {
+    height: 15%;
+    width: 100%;
+    max-height: 170px;
+    background-color: rgba(53, 50, 76, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.logo-img {
+    /* aspect-ratio: 4/4; */
+    height: 100%;
+    margin-left: 1rem;
+    /* background-color: chocolate; */
+}
+
+
+.list {
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+    /* background-color: salmon; */
+    /* font-size: clamp(5px, 5vw, 20px); */
+    /* font-size: larger; */
+    font-size: clamp(20px, 1vw, 50px);
+    font-weight: 900;
+    margin-left: 2rem;
+    margin-right: 2rem;
+}
+
+.login {
+    font-size: clamp(20px, 1vw, 40px);
+    font-weight: 900;
+    padding: .7rem 1.5rem;
+    margin-right: 2rem;
+    outline: none;
+    border-radius: 2rem;
+    background-color: rgb(67, 176, 176);
+    transition: scale 0.2 ease;
+
+}
+
+.login:hover {
+    background-color: rgb(17, 122, 161);
+    scale: 1.07;
+}
+
+.login:active {
+    scale: 0.95;
+}
+
+.menu-ico {
+    display: none;
+    font-size: 2rem;
+    margin-right: 2rem;
+}
+
+.drop-menu {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 105%;
+    right: 1rem;
+    height: 0;
+    width: 300px;
+    background-color: rgba(114, 113, 113, 0.7);
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: height .6s cubic-bezier(0.825, 0.115, 0.68, 0.725);
+    z-index: 200;
+}
+
+.drop-menu li {
+    /* background-color: black; */
+    margin: auto;
+}
+
+.drop-menu li > a {
+    font-size: large;
+    font-weight: 600;
+}
+
+
+.drop-menu li > a:hover {
+    /* padding: .5rem; */
+    color: aquamarine;
+}
+
+.open {
+    height: 200px;
+}
+
+
+/* Main */
+.main {
+    height: 70%;
+    background-color: brown;
+    width: 96%;
+    margin-left: 2%;
+    margin-right: 2%;
+}
+
+@media (max-width: 800px) {
+    .login,
+    .list {
+        display: none;
+    }
+
+    .menu-ico {
+        display: block;
+    }
+
+    .drop-menu {
+        display: flex;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .drop-menu {
+        width: unset;
+        left: .2rem;
+        right: .2rem;
+    }
+}
+
+.list a {
+    padding-bottom: .5rem;
+}
+
+.list a:hover {
+    border-bottom: .5vh solid #06e8f8; 
+    /* border-bottom: 2rem cadetblue; */
+    /* margin-bottom: 2rem; */
+    /* color: aquamarine; */
+}
+
+.list a:active {
+    color:  #06f8ec; 
+}
