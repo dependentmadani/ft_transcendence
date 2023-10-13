@@ -78,6 +78,26 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
+      const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
+      if (usernameTaken) {
+        const users =
+        await this.prisma.users.create({
+          data: {
+            email: dto.email,
+            avatar: avatar,
+            userStatus: "ONLINE"
+          },
+        });
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+        return token;
+      }
       const users =
         await this.prisma.users.create({
           data: {
@@ -87,17 +107,18 @@ export class AuthService {
             userStatus: "ONLINE"
           },
         });
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+        return token;
       //the password need to be deleted so it cannot be reached by interder
-      const token = await this.signToken(
-        users.id,
-        users.email,
-      );
-      await this.updateRtHashed(
-        users.id,
-        token.refresh_token,
-      );
+      
 
-      return token;
     } catch (error) {
       if (
         error instanceof
@@ -181,6 +202,32 @@ export class AuthService {
     //need to hash the password for security reasons
 
     try {
+      const usernameAvailable = await this.prisma.users.findUnique({
+        where: {
+          username: dto.username,
+        }
+      });
+      if (usernameAvailable) {
+        const users =
+          await this.prisma.users.create({
+            data: {
+              email: dto.email,
+              avatar: profile.avatar,
+              userStatus: "ONLINE",
+            },
+          });
+        //the password need to be deleted so it cannot be reached by interder
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+
+        return token;
+      }
       const users =
         await this.prisma.users.create({
           data: {
@@ -259,7 +306,7 @@ export class AuthService {
       username: userInfo['users'].username,
       email: userInfo['users'].email,
     };
-    const available = await this.findUser(
+    const available = await this.findUserByEmail(
       userDto.username,
       userDto.email,
     );
@@ -304,7 +351,7 @@ export class AuthService {
       username: profile.username,
       email: profile.email,
     };
-    const available = await this.findUser(
+    const available = await this.findUserByEmail(
       profile.username,
       profile.email,
     );
@@ -488,7 +535,7 @@ export class AuthService {
     };
   }
 
-  async findUser(
+  async findUserByEmail(
     username: string,
     email: string,
   ): Promise<boolean> {
@@ -496,6 +543,23 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: email,
+        },
+      });
+
+    if (!user) {
+      return false;
+    }
+    return true;
+  }
+
+  async findUserByUsername(
+    username: string,
+    email: string,
+  ): Promise<boolean> {
+    const user =
+      await this.prisma.users.findUnique({
+        where: {
+          username: username,
         },
       });
 

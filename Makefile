@@ -1,13 +1,17 @@
 all:
-	@docker compose -f docker-compose.yml up
+	@mkdir /tmp/data;\
+	mkdir /tmp/data/backend /tmp/data/database;\
+	docker compose -f docker-compose.yml up
   
 down:
-	@docker compose -f docker-compose.yml down --volumes;\
-	rm -rf /tmp/data/backend /tmp/data/database 
+	@rm -rf /tmp/data;\
+	docker compose -f docker-compose.yml down --volumes
+	
   
 re: down
-	@docker compose -f docker-compose.yml up --build;\
-	mkdir /tmp/data/backend /tmp/data/database 
+	@mkdir /tmp/data;\
+	mkdir /tmp/data/backend /tmp/data/database;\
+	docker compose -f docker-compose.yml up --build;\
 
 
 clean:

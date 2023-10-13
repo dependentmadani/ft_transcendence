@@ -15,7 +15,7 @@ model Users {
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   id          Int         @id @default(autoincrement())
-  username    String      @unique
+  username    String?     @unique
   email       String      @unique
   password    String?
   avatar      String?
@@ -39,7 +39,7 @@ model Users {
   recNotification       Notifications[] @relation("receiverNotification")
 
   // Chat
-  chat        Chat[] @relation("chats")
+  chat             Chat[] @relation("chats")
 
   // Messages
   MessageSenId     Message[] @relation("Messagesencontact")

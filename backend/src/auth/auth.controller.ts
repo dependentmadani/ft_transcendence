@@ -289,9 +289,10 @@ export class AuthController {
   ): Promise<void> {
     const user = req.user;
     const [tokens, state] =
-      await this.authService.fortyTwo(
-        req.user['users'],
+    await this.authService.fortyTwo(
+      req.user['users'],
       );
+    console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
       expires: new Date(
         new Date().getTime() + 60 * 60 * 24 * 1000,
