@@ -41,7 +41,7 @@ function App()  {
             <Route path='/login' element={!auth ? <Sign tag='login' /> : <Navigate to='/' />} />
             <Route path='/signup' element={!auth ? <Sign tag='signup' /> : <Navigate to='/' />} />
             <Route path='/profile' element={<Section section='profile' />}  /> 
-            
+            <Route path='/profile' element={<Section section='leaderboard' />}  /> 
             {/* <Route path='/zitona' element={<Zitona />} /> */} 
         </Routes>
     )

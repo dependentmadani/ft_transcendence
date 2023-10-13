@@ -3,23 +3,15 @@ import NavBarTree from './navBarTree';
 import '../css/Section.css'
 import Profile from './Profile';
 import React, {useState, useEffect} from 'react';
+import Leaderboard from './Leaderboard';
 
 
 function selectSection(section: string): JSX.Element {
 
+    console.log(section);
     if (section === 'profile')
         return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
+    else if (section === 'leaderboard')
         return ( <Profile />)
     return <></>
 }
@@ -40,6 +32,7 @@ function Section (props:any) {
                     <NavBarTree/>
                 </div>
                 <div className='select-section'>
+                <Leaderboard />
                     {selectSection(props.section)}
                 </div>
             </div>
