@@ -1,3 +1,4 @@
+import { useClient } from '../client/clientContext';
 import '../css/Profile.css'
 import MyPieChart from './pieChart'
 import Myhlwa from './Test'
@@ -44,7 +45,7 @@ function History () {
     return (
         <div className='history'>
             <div id='title' >
-                <img src="src/imgs/bg-title.png" alt="title" />
+                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                 <span>History </span>
             </div>
             <div className='my-history'>
@@ -70,28 +71,24 @@ function History () {
 
 function ProfileInfo () {
 
+    const {client} = useClient();
+
     return (
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <img id='settings'  src="src/imgs/setting.png" alt="setting" />
                 <div className='profile-img'>
-                    <img src="src/imgs/example.jpg" alt="user-img" />
+                    <img src={client.avatar} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}
-                    <div className='profile-name'>
-                        <img src="src/imgs/name-title.png" alt="name" />
-                        <span id='rank' > Hamid </span> 
-                    </div>
-                    <div className='profile-rank'>
-                        <img src="src/imgs/sircl.png" alt="rank" />
-                        <span id='rank' > 5 </span> 
-                    </div>
+                    <div className='profile-name'> {client.username} </div>
+                    <div className='profile-rank'> 5 </div>
                 </div>
             </div>
             <div className='profile-info-right'>
-                <div id='title-achive' >
-                    <img src="src/imgs/bg-title.png" alt="title" />
+                <div id='title' >
+                    {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                     <span>Achivements</span>
                 </div>
                 <div className='achivements'>
@@ -125,13 +122,14 @@ function Frindes () {
         // console.log ('hlwa')
         if (!searchOpen) {
             setIconSearch('/src/imgs/cancel-red.png');
-            my_search.style.width = '48%';
+            my_search.style.width = '100%';
             search_icon.style.borderRadius = '0px 20px 20px 0';
             
         }
         else if (searchOpen) { 
             setIconSearch('/src/imgs/search.png');
-            my_search.style.width = '36px' 
+            my_search.style.width = '0px'
+            my_search.style.border = 'none' 
             search_icon.style.borderRadius = '20px'
         }
         setSearchOpen(!searchOpen);
@@ -139,10 +137,14 @@ function Frindes () {
 
     return (
         <div className='user-friends'>
-            <input type="search" className="search-input" placeholder="Search..." />
-            <img id='search' src={iconSearch} alt="search" onClick={search_open} />
+            <div className='search-bar'>
+                <input type="search" className="search-input" placeholder="Search..." />
+                <img id='search' src={iconSearch} alt="search" onClick={search_open} />
+            </div>
+            {/* <div className='search-bar'>
+            </div> */}
             <div id='title' >
-                <img src="src/imgs/bg-title.png" alt="title" />
+                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                 <span>Friends </span>
             </div>
             <div className='friends-list'>
@@ -168,7 +170,7 @@ function Statistic() {
     return (
         <div className='statistic'>
             <div id='title' >
-                <img src="src/imgs/bg-title.png" alt="title" />
+                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                 <span>Statistic </span>
             </div>
             <div id='chart'>
@@ -181,6 +183,8 @@ function Statistic() {
 
 
 function Profile () {
+
+  console.log('profile')
 
 
     return (

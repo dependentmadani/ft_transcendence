@@ -7,6 +7,7 @@ import { useAuth } from '../client/authContext'
 import { useClient } from '../client/clientContext';
 import axios from 'axios';
 import { useEffect } from 'react'
+import Client from '../client/client';
 // import { handleLogout } from './Logout';
 
 
@@ -16,6 +17,7 @@ function NavBarOne() {
     const { client, updateClient }  = useClient();
     const navigate = useNavigate();
     
+    console.log('onebar')
 
     // useEffect (() => {
 
@@ -68,8 +70,9 @@ function NavBarOne() {
         } catch (error) {
             console.error('Error logout: ', error);
         }
+        // client.clean;
         // await updateClient({...client, signedIn: false})
-        await updateClient({...(client.clean)});
+        updateClient(new Client);
         navigate('/')
     }
 

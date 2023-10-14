@@ -1,44 +1,34 @@
-import { useEffect, useState } from "react";
-import { useClient } from "../client/clientContext"
+import React, { useEffect, useState } from 'react';
+
+const OrientationCheck = () => {
+  const [orientation, setOrientation] = useState(null);
+
+  useEffect(() => {
+    const handleOrientationChange = () => {
+      if (window.matchMedia("(orientation: portrait)").matches) {
+        setOrientation('Portrait');
+      } else {
+        setOrientation('Landscape');
+      }
+    };
+
+    handleOrientationChange(); // Initial check
+
+    window.addEventListener('resize', handleOrientationChange);
+
+    return () => {
+      window.removeEventListener('resize', handleOrientationChange);
+    };
+  }, []);
+
+  return (
+    <div>
+      <p>Device Orientation: {orientation}</p>
+    </div>
+  );
+};
+
+export default OrientationCheck;
 
 
-
-
-const Test = () => {
-
-  const [kfta, setKfta] = useState(false);
-  const {client, updateClient} =  useClient();
-
-  console.log('--- holla ---');
-  useEffect (() => {
-    console.log('hlwa')
-    updateClient({...client, id: client.id + 10})
-    console.log(client)
-  }, [kfta]) 
-
-  // useEffect(() => {
-
-  //   console.log(client)
-  // }, [client])
-
-  const handlePlus = () => {
-    updateClient({...client, id: client.id + 1})
-  }
-  
-  const handleMinus = () => {
-    
-    updateClient({...client, id: client.id - 1})
-  }
-
-  const handleHlwa = () => {
-    setKfta(!kfta)
-  }
-
-return <>
-    {/* <button onClick={handlePlus}>+</button>
-    <button onClick={handleMinus}>-</button> */}
-    <button onClick={handleHlwa}>hlwa</button>
-  </>
-}
-
-export default Test
+// export default Test

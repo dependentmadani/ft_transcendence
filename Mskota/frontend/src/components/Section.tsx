@@ -19,6 +19,8 @@ function selectSection(section: string): JSX.Element {
 
 function Section (props:any) {
 
+  console.log('section')
+
     useEffect(() => {
         const sourceElement = document.querySelector('.NavBarTwo') as HTMLElement;
         console.log(sourceElement.offsetHeight)
