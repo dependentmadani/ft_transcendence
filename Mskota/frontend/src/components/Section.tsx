@@ -2,6 +2,7 @@ import NavBarTwo  from './navBarTwo'
 import NavBarTree from './navBarTree';
 import '../css/Section.css'
 import Profile from './Profile';
+import { Navigate } from 'react-router-dom';
 import React, {useState, useEffect} from 'react';
 
 
@@ -9,18 +10,10 @@ function selectSection(section: string): JSX.Element {
 
     if (section === 'profile')
         return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
-    else if (section === 'profile')
-        return ( <Profile />)
+    // else if (section === 'leaderboard')
+    //     return ( <Leaderboard />)
+    else 
+        <Navigate to='/' />
     return <></>
 }
 

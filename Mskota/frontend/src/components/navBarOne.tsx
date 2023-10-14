@@ -12,27 +12,52 @@ import { useEffect } from 'react'
 
 function NavBarOne() {
 
-    const { auth, updateAuth } = useAuth();
+    // const { auth, updateAuth } = useAuth();
     const { client, updateClient }  = useClient();
     const navigate = useNavigate();
     
 
-    useEffect (() => {
+    // useEffect (() => {
 
-        const fetchData = async () => {
-            console.log(auth)
-            try {
-              await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
-                { withCredentials: true })
-                updateAuth(true) 
-            } catch (error) {
-                updateAuth(false)
-                console.log('Did not login yet! :)');
-            }
-        }
+    //     const fetchData = async () => {
+    //         // console.log(auth)
+    //         try {
+    //           await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
+    //             { withCredentials: true })
+    //             console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+    //             // updateAuth(true) 
+    //         } catch (error) {
+    //             // updateAuth(false)
+    //             console.log('Did not login yet! :)');
+    //         }
+    //     }
 
-        fetchData();
-    },[])
+    //     fetchData();
+    // },[])
+
+
+    // useEffect(() => {
+
+    //     async function fetchUserData() {
+    //       try {
+    //         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
+    //           { withCredentials: true, }
+    //         );
+    //         const data = response.data;
+    //         updateClient({...client, ...data});
+    //         console.log('data : ')
+    //         console.log(data)
+    //         console.log('client data : ')
+    //         console.log(client);
+            
+    //       } catch (error) {
+    //         console.error('Error fetching data: ', error);
+    //       }
+    //     }
+        
+    //     if (client.signedIn)
+    //         fetchUserData();
+    //   }, []);
 
     
     const handleLogout = async() => {
@@ -40,17 +65,11 @@ function NavBarOne() {
             await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
                 {withCredentials: true,}
             )
-            // let tmp = client;
-            // client.clean();
-            // console.log("tmp : ")
-            // console.log(tmp.clean)
-            // socket.disconnect();
-            // updateClient({...(client.clean)});
         } catch (error) {
             console.error('Error logout: ', error);
         }
-        updateAuth(false);
-        updateClient({...(client.clean)});
+        // await updateClient({...client, signedIn: false})
+        await updateClient({...(client.clean)});
         navigate('/')
     }
 
@@ -68,7 +87,7 @@ function NavBarOne() {
 
     const listItems = [
         ...defaultList,
-        !auth ? (
+        !client.signedIn ? (
           <li key="logout" id="logout">
             <Link to='/login'> Get Started </Link>
           </li>
@@ -99,8 +118,8 @@ function NavBarOne() {
                         {defaultList}
                     </ul>
                     <div className='login'>
-                        {!auth ? <Link to='/login' > Get Started </Link> 
-                          : <li key="logout" id="logout" onClick={handleLogout}> Log Out </li>}
+                        {!client.signedIn ? <Link to='/login' > Get Started </Link> 
+                          : <li key="logout"  onClick={handleLogout}> Log Out </li>}
                     </div>
                     <div className='menu-ico' onClick={toggleMenu}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />

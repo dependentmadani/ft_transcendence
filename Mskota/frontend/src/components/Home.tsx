@@ -10,11 +10,11 @@ import {io, Socket } from 'socket.io-client'
 
 export default function Home(props:any) {
 
-    const my_img:string = 'src/imgs/home.png'
+    // const my_img:string = 'src/imgs/home.png'
     const { client, updateClient }  = useClient();
-    const [socket, setSocket] = useState<Socket>(client.socket);
-    const { auth, updateAuth } = useAuth();
-    const navigate = useNavigate();
+    // const [socket, setSocket] = useState<Socket>(client.socket);
+    // const { auth, updateAuth } = useAuth();
+    // const navigate = useNavigate();
 
 
     // useEffect ( () => {
@@ -38,25 +38,26 @@ export default function Home(props:any) {
     //       fetchUserData();
     // }, [])
 
-
+    // console.log('home')
+    // console.log(client)
     
-    const handleLogout = async() => {
-        try {
-            await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
-                {withCredentials: true,}
-            )
-            // let tmp = client;
-            // client.clean();
-            // console.log("tmp : ")
-            // console.log(tmp.clean)
-            // socket.disconnect();
-            // updateClient({...(client.clean)});
-        } catch (error) {
-            console.error('Error logout: ', error);
-        }
-        updateClient({...(client.clean)});
-        // navigate('/login')
-    }
+    // const handleLogout = async() => {
+    //     try {
+    //         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
+    //             {withCredentials: true,}
+    //         )
+    //         // let tmp = client;
+    //         // client.clean();
+    //         // console.log("tmp : ")
+    //         // console.log(tmp.clean)
+    //         // socket.disconnect();
+    //         // updateClient({...(client.clean)});
+    //     } catch (error) {
+    //         console.error('Error logout: ', error);
+    //     }
+    //     await updateClient({...(client.clean)});
+    //     // navigate('/login')
+    // }
 
     return (
             <main className='main-home' >
@@ -74,14 +75,14 @@ export default function Home(props:any) {
                         <br /><br /> <span className="tab1" /> To Stay play with your friends .
                     </p>
                     <button className="getStart-b">
-                        { !auth ?
+                        { !client.signin ?
                             <Link to='/login' > Get Started </Link> :
                             <Link to='/game' > Get Started </Link> 
                         }
                     </button>
                 </div>
                 <div className='home-img' >
-                    <img  src={my_img} alt='home.png' />
+                    <img  src='src/imgs/home.png' alt='home.png' />
                 </div>
             </main>
     )

@@ -183,7 +183,6 @@ export class UsersController {
       await this.authService.returnUser(
         req.user['email'],
       );
-
     return await this.userService.updateUser(
       req.user['sub'],
       user,

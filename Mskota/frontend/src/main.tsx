@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 // import Head from './components/Head'
 import App from './components/App.tsx'
 import  { ClientProvider } from './client/clientContext.tsx'
-import { AuthProvider } from './client/authContext.tsx'
+// import { AuthProvider } from './client/authContext.tsx'
 
 // ReactDOM.createRoot(document.getElementById('myhead')!).render (
 //   <Head />
@@ -14,9 +14,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <BrowserRouter>
       <ClientProvider>
-        <AuthProvider >
+        {/* <AuthProvider > */}
           <App />
-        </AuthProvider >
+        {/* </AuthProvider > */}
       </ClientProvider>
     </BrowserRouter>
   </React.StrictMode>,

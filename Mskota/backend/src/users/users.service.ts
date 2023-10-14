@@ -297,9 +297,11 @@ export class UsersService {
           },
           data: {
             username: username.username,
+            signedUp: true,
           },
         },
         );
+      console.log('user information: ', user)
         
       return user;
     } catch {

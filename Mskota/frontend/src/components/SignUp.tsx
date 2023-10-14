@@ -12,34 +12,39 @@ function SetInfo() {
   const [username, setUsername] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
   const {client, updateClient} = useClient();
-  // const [auth, setAuth] = useAuth();
-  const { auth, updateAuth } = useAuth();
   const navigate = useNavigate();
+  console.log('signup')
 
-
-  async function fetchUserData() {
-    try {
-      const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-        { withCredentials: true, }
-      );
-      const data = response.data;
-      setUserId(data.id);
-      setAvatar(data.avatar);
-      setUsername(data.username);
-      updateClient(data);
-      console.log('data : ')
-      console.log(data)
-      console.log('client data : ')
-      console.log(client);
-
-    } catch (error) {
-      console.error('Error fetching data: ', error);
-    }
-  }
-
+  
   useEffect(() => {
+
+    async function fetchUserData() {
+      
+      try {
+        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
+          { withCredentials: true, }
+        );
+        const data = response.data;
+        updateClient({...client, ...data, signedIn: true});
+        if (data.signedUp) 
+          navigate('/')
+        setUserId(data.id);
+        setAvatar(data.avatar);
+        setUsername(data.username);
+        console.log('data : ')
+        console.log(data)
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
+    }
+    
     fetchUserData();
   }, []);
+  
+  useEffect(() => {
+    console.log('client data : ')
+    console.log(client);
+  }, [client]);
 
   const handleChangeAvatar = (file: FileList | null) => {
     if (file && file.length > 0) {
@@ -85,13 +90,10 @@ function SetInfo() {
       } catch (error) {
         console.error('Error submitting data:', error);
       }
-      updateAuth(true);
-      console.log(auth)
-      await fetchUserData();
-      // setAuth(true);
+      updateClient({...client, signedUp: true, signedIn: true})
       navigate('/');
   };
-  console.log('login');
+  // console.log('login');
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

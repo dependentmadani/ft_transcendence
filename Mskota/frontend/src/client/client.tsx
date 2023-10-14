@@ -17,7 +17,8 @@ class Client {
     twofaEmail: string | null;
     twoEnabled: boolean;
     updatedAt: Date | null;
-    login: boolean;
+    signedIn: boolean;
+    signedUp: boolean;
   
     constructor() {
       this.socket = null;
@@ -34,29 +35,11 @@ class Client {
       this.twofaEmail = null;
       this.updatedAt = null;
       this.userStatus = 'OFLINE';
-      this.login = false;
+      this.signedIn = false;
+      this.signedUp = false
     }
 
 
-    toString() {
-        return `
-            Client Data:
-            Login: ${this.login}
-            ID: ${this.id}
-            Username: ${this.username}
-            Avatar: ${this.avatar}
-            Created At: ${this.createdAt}
-            Email: ${this.email}
-            HashRt: ${this.hashRt}
-            IsActive: ${this.isActive}
-            Password: ${this.password}
-            Two Enabled: ${this.twoEnabled}
-            TwoFA: ${this.twofa}
-            TwoFA Email: ${this.twofaEmail}
-            Updated At: ${this.updatedAt}
-            User Status: ${this.userStatus}
-        `;
-    }
 
     clean() {
         this.socket = null;
@@ -73,7 +56,8 @@ class Client {
         this.twofaEmail = null;
         this.updatedAt = null;
         this.userStatus = 'OFLINE';
-        this.login = false;
+        this.signedIn = false;
+        this.signedUp = false;
     }
 }
   

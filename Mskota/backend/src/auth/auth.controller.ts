@@ -38,6 +38,19 @@ export class AuthController {
     return true;
   }
 
+  @Get('signed_up')
+  async signedUp(@Req() req: Request) {
+    const user = req.user;
+    try {
+      const userInfo = await this.authService.returnUser(user['email']);
+      return userInfo.signedUp;
+
+    } catch(err) {
+      console.log('the user is not available');
+      return false;
+    }
+  }
+
   @Get('me')
   async getMe(
     @Req() req: Request,
@@ -50,6 +63,7 @@ export class AuthController {
       );
     return res.send(userInfo);
   }
+
 
   @Public()
   @Post('signup')
@@ -158,15 +172,15 @@ export class AuthController {
       true,
       'ONLINE',
     );
-    if (userAuth.state) {
+    // if (userAuth.state) {
       res.redirect(`http://${process.env.VITE_ADDRESS}:5173/signup`);
-    }
-    else {
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/`,
-        // kheliha bhal haka 
-      );
-    }
+    // }
+    // else {
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/`,
+    //     // kheliha bhal haka 
+    //   );
+    // }
   }
 
   @Get('logout')
@@ -310,13 +324,13 @@ export class AuthController {
       true,
       'ONLINE'
     );
-    if (state)
+    // if (state)
       res.redirect(
         `http://${process.env.VITE_ADDRESS}:5173/signup`,
       );
-    else
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/`,
-      );
+    // else
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/`,
+    //   );
   }
 }
