@@ -13,38 +13,29 @@ function SetInfo() {
   const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
   const {client, updateClient} = useClient();
   const navigate = useNavigate();
-  console.log('signup')
+  // console.log('signup')
 
   
+  
   useEffect(() => {
-
     async function fetchUserData() {
-      
       try {
-        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-          { withCredentials: true, }
+        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, 
+          { withCredentials: true }
         );
-        const data = response.data;
-        updateClient({...client, ...data, signedIn: true});
-        if (data.signedUp) 
-          navigate('/')
-        setUserId(data.id);
-        setAvatar(data.avatar);
-        setUsername(data.username);
-        console.log('data : ')
-        console.log(data)
+        setUserId(response.data.id);
+        setAvatar(response.data.avatar);
+        setUsername(response.data.username);
+        console.log('response.data : ', response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     }
-    
+  
     fetchUserData();
   }, []);
   
-  useEffect(() => {
-    console.log('client data : ')
-    console.log(client);
-  }, [client]);
+
 
   const handleChangeAvatar = (file: FileList | null) => {
     if (file && file.length > 0) {
@@ -90,8 +81,7 @@ function SetInfo() {
       } catch (error) {
         console.error('Error submitting data:', error);
       }
-      updateClient({...client, signedUp: true, signedIn: true})
-      navigate('/');
+      navigate('/login');
   };
   // console.log('login');
 

@@ -38,8 +38,8 @@ export default function Home(props:any) {
     //       fetchUserData();
     // }, [])
 
-    // console.log('home')
-    // console.log(client)
+    console.log('home')
+    console.log(client)
     
     // const handleLogout = async() => {
     //     try {
