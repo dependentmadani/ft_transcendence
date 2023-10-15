@@ -1,31 +1,16 @@
 
-.popup {
-    position: absolute;
-    top: 42%;
-    left: 33%;
-    width: 500px;
-    height: 300px;
-    background-color: coral;
-}
-
-.blur {
-    /* display: ; */
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    backdrop-filter: blur(20px);
-    background-color: rgba(59, 95, 148, .5);
-
-}
-
-
 
 /* 
 img {
     border-radius: 10px;
 } */
+
+.profile {
+    width: 100%;
+    height: 100%;
+    position: relative
+    /* display: flex; */
+}
 
 .friend-title {
     height: 14%;
@@ -56,7 +41,8 @@ img {
     height: 90%;
     padding: 0;
     margin: auto;
-    max-height: 44px;
+    max-height: 40px;
+    /* min-height: 28px; */
     border-radius: 44px;
     z-index: 110;
     outline: none;
@@ -78,8 +64,8 @@ img {
     transform: translate(0%, -50%); 
     margin: auto;
     height: 80%;
-    padding: .5%;
-    max-height: 40px;
+    padding: .4vh;
+    max-height: 32px;
     background-color: #4c7dc1;
     border-radius: 50%;
     cursor: pointer;
@@ -262,9 +248,10 @@ img {
         #settings {
             position: absolute;
             top: 8px;
-            right: 8px;
+            right: 15px;
             cursor: pointer;
             width: 30px;
+            z-index: 220;
         }
         /* HISTORY */
         .badge-history {
@@ -332,9 +319,9 @@ img {
             justify-content: space-around;
         }
     
-        .friend {
+        /* .friend {
             width: 92%;
-        }
+        } */
 
 
 
@@ -350,6 +337,8 @@ img {
 .friend {
     height: 54px;
     margin: .6rem;
+    width: 95%;
+    min-width: 200px;
     border-radius: 10px;
     display: flex;
     position: relative;
@@ -489,6 +478,10 @@ img {
 
 @media (orientation: landscape) {
     
+    .profile {
+        display: flex;
+    }
+
     .profile-col-1 {
         display: flex;
         flex-direction: column;
@@ -514,16 +507,21 @@ img {
 
     }
 
-    .profile-info-right,
-    .profile-info-left {
+    .profile-info-right {
         height: 100%;
-        /* background-color: transparent; */
+    }
+
+    .profile-info-left {
+        /* background-color: brown; */
+        display: flex;
+        align-self: end;
+        height: 86%;
+        margin: 0;
     }
     
     .achivements {
         background-color: #384080;
         border-radius: 10px;
-        /* margin: 1rem; */
     }
 
     .friend {
@@ -540,13 +538,12 @@ img {
             height: 90px;
         }
 
+        .friend {
+            width: 85%;
+        }
     }
 
-        .profile {
-            width: 100%;
-            height: 100%;
-            display: flex;
-        }
+
 
         .profile-col-2,
         .profile-col-1 {

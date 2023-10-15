@@ -1,21 +1,20 @@
 import '../css/navBarTwo.css'
-import { Link, Route, Routes} from "react-router-dom"
-import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom"
+import  { useEffect, useState } from 'react';
 import { useClient } from '../client/clientContext';
-
+import Client from '../client/client';
+import axios from 'axios';
 
 
 function NavBarTwo (props:any) {
 
-    const { client } = useClient();
+    // const { client } = useClient();
+    const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const [isMenuOpen1, setIsMenuOpen1] = useState(false);
     const [orientation, setOrientation] = useState<number>(window.orientation);
     const [isNotificOpen, setIsNotificOpen] = useState(false);
     const [listItems, setListItems] = useState<JSX.Element>();
-
-
-  console.log('twobar')
+    const navigate = useNavigate();
 
 
     const listNotific = ([
@@ -41,8 +40,6 @@ function NavBarTwo (props:any) {
     const handleOrientationChange = () => { setOrientation(window.orientation);};
     const toggleNotific = () => setIsNotificOpen(!isNotificOpen);
 
-
-
     window.addEventListener('click', function(event) {
         const nameClass = event.target.className as string;
         if (nameClass !== 'notification' && nameClass !== 'user-img') {
@@ -51,6 +48,18 @@ function NavBarTwo (props:any) {
             setIsNotificOpen(false);
         }
     });
+
+    const handleLogout = async() => {
+        try {
+            await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
+                {withCredentials: true,}
+            )
+        } catch (error) {
+            console.error('Error logout: ', error);
+        }
+        updateClient(new Client);
+        navigate('/')
+    }
 
     useEffect(() => {
         const handleOrientationChange = () => {
@@ -62,10 +71,10 @@ function NavBarTwo (props:any) {
                     <li key="chat"> <Link to='/chat'> Chat </Link> </li>
                     <li key="play"> <Link to='/play' > Play </Link> </li>
                     <li key="settings"> <Link to='/settings' > Settings </Link> </li>
-                    <li key="logout" id="logout" > <Link to='/home' > LogOut </Link> </li>
+                    <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                 </>)
         } else 
-            setListItems(<li key="logout" id="logout" > <Link to='/home' > LogOut </Link> </li>)
+            setListItems(<li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>)
         };
     
         handleOrientationChange(); // Initial check
@@ -89,14 +98,11 @@ function NavBarTwo (props:any) {
                     <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
                         {listNotific}
                     </div>
-                    <img className='user-img' src={client.avatar} alt="user-img" onClick={toggleMenu} />
+                    <img className='user-img2' src={client.avatar} alt="user-img" onClick={toggleMenu} />
                 </div>
                 <div className={`drop-menu2 ${isMenuOpen ? 'open-menu2' : ''}`}>
                     {listItems}
                 </div>
-                {/* <div className={`drop-menu3 ${isMenuOpen1 ? 'open-menu3' : ''}`}>
-                    {listItems}
-                </div> */}
             </div>
         </>
     )

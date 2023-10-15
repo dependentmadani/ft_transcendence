@@ -56,8 +56,6 @@
 }
 
 .title1 {
-    font-size: clamp(20px, 10vw, 300px);
-    /* font-family: ; */
     color: aqua;
     font-weight: 700;
     font-family: 'Orbitron', sans-serif;
@@ -66,9 +64,7 @@
 .title2 {
     
     color: rgba(49, 241, 241, 0.8);
-    font-size: clamp(20px, 4vw, 200px);
     font-weight: 600;
-    /* background-color: aliceblue; */
     text-shadow: 0px 10px 20px rgba(0, 252, 214, 0.4);
     font-family: 'Orbitron', sans-serif;
     text-align: center;
@@ -77,12 +73,10 @@
 
 .comment {
     width: 70%;
-    font-size: clamp(14px, 1.5vw, 200px);
 }
 
 
 .getStart-b {
-    font-size: clamp(14px, 1.5vw, 200px);
     font-weight: 700;
     margin: 1rem;
     padding: .7vw 2.5vw;
@@ -91,7 +85,6 @@
     background-color: rgb(64, 142, 224);
     box-shadow: 0px 6px 10px 4px rgba(0, 255, 255, 0.2);
     cursor: pointer;
-    /* font-size: ; */
 }
 
 .getStart-b:hover {
@@ -115,115 +108,75 @@
 
 /* @media (max-hei) */
 
+@media (orientation: landscape) {
 
-@media (orientation: portrait) {
-    
+    .title1 {
+        /* color: red;      */
+        font-size: clamp(70px, 11vw, 15vh);
+        /* background-color: aliceblue; */
+    }
+
+    .title2 {
+        
+        font-size: clamp(50px, 7vw, 8vh);
+        /* font-size: clamp(14px, 1.5vw, 200px); */
+    }
+
+    .comment {
+        
+        font-size: clamp(10px, 2vw, 3vh);
+    }
+
     .getStart-b {
 
         padding: 1.5vh 4vh;
-        border-radius: 10px;
-        font-size: clamp(10px, 2vw, 200px);
+        font-size: clamp(10px, 3.5vw, 3.5vh);
         /* font-size: ; */
     }
+}
+
+@media (orientation: portrait) {
     
     .title1 {
         /* color: red;      */
+        font-size: clamp(70px, 11vh, 11vw);
         /* background-color: aliceblue; */
-        font-size: clamp(10px, 11.5vw, 200px);
     }
     
     .title2 {
         
-        font-size: clamp(10px, 7vw, 150px);
+        font-size: clamp(50px, 7vh, 7vw);
         /* font-size: clamp(14px, 1.5vw, 200px); */
     }
-
-    @media (max-height: 1100px)  {
-
-        .title1 {
-            /* color: red;      */
-            /* background-color: aliceblue; */
-            font-size: clamp(10px, 10vh, 200px);
-        }
+    
+    .comment {
         
-        .title2 {
-            
-            font-size: clamp(10px, 6vh, 150px);
-            /* font-size: clamp(14px, 1.5vw, 200px); */
-        }
-        
-        .comment {
-            
-            font-size: clamp(10px, 2vh, 50px);
-        }
-
-
-        @media (max-width: 500px) {
-
-            .title1 {
-                /* color: red;      */
-                font-size: clamp(10px, 18vw, 200px);
-            }
-            
-            .title2 {
-                
-                font-size: clamp(10px, 10vw, 150px);
-                /* font-size: clamp(14px, 1.5vw, 200px); */
-            }
-            
-            .comment {
-                
-                font-size: clamp(10px, 5vw, 50px);
-            }
-            
-            .getStart-b {
-                
-                /* background-color: red; */
-                padding: 2vw 8vw;
-                font-size: clamp(10px, 7vw, 200px);
-                /* font-size: ; */
-            }
-        }
+        font-size: clamp(10px, 2.5vh, 3vw);
     }
+
+    .getStart-b {
+
+        padding: 1.5vh 4vh;
+        font-size: clamp(10px, 3.5vh, 3vw);
+        /* font-size: ; */
+    }
+
 }
 
 
 
 
+/* 
+@media (orientation: landscape) { */
 
-@media (orientation: landscape) {
 
 
-    @media (max-height: 840px) {
-        .title1 {
-            /* color: red;      */
-            font-size: clamp(90px, 14vh, 200px);
-            /* background-color: aliceblue; */
-        }
-        
-        .title2 {
-            
-            font-size: clamp(50px, 9vh, 150px);
-            /* font-size: clamp(14px, 1.5vw, 200px); */
-        }
-        
-        .comment {
-            
-            font-size: clamp(10px, 3vh, 50px);
-        }
 
-        .getStart-b {
-
-            padding: 1.5vh 4vh;
-            font-size: clamp(10px, 3.5vh, 200px);
-            /* font-size: ; */
-        }
-    }
     /* .home-img > img {
         width: auto;
         height: 90%;
     } */
-}
+/* } */
 
 /* @media (max-width: 800px) {
     .home-img {

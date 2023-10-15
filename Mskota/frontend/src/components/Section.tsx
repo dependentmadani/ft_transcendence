@@ -19,16 +19,15 @@ function selectSection(section: string): JSX.Element {
 
 function Section (props:any) {
 
-  console.log('section')
+//   console.log('section')
 
-    useEffect(() => {
-        const sourceElement = document.querySelector('.NavBarTwo') as HTMLElement;
-        console.log(sourceElement.offsetHeight)
-    }, []);
+//     useEffect(() => {
+//         const sourceElement = document.querySelector('.NavBarTwo') as HTMLElement;
+//         console.log(sourceElement.offsetHeight)
+//     }, []);
 
     return (
         <div className='root-section'>
-                {/* hlwa */}
                 <NavBarTwo/>
             <div className='main-section'>
                 <div className='NavBarTree'>

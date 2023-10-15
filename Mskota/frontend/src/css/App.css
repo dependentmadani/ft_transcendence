@@ -26,6 +26,13 @@
 
 }
 
+li {
+  list-style: none;
+}
+
+a {    text-decoration: none;
+}
+
 @media (min-width: 3000px) {
   #root {
     align-items: center;

@@ -76,7 +76,6 @@ function ProfileInfo () {
     return (
         <div className='profile-info'>
             <div className='profile-info-left'>
-                <img id='settings'  src="src/imgs/setting.png" alt="setting" />
                 <div className='profile-img'>
                     <img src={client.avatar} alt="user-img" />
                 </div>
@@ -189,6 +188,7 @@ function Profile () {
 
     return (
         <div className='profile'>
+            <img id='settings'  src="src/imgs/setting.png" alt="setting" />
             <div className='profile-col-1'>
                 <ProfileInfo />
                 <Frindes />

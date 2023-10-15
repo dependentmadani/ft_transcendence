@@ -1,67 +1,19 @@
 import '../css/navBarOne.css'
-import { Link, Route, Routes, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
-import { useAuth } from '../client/authContext'
 import { useClient } from '../client/clientContext';
 import axios from 'axios';
-import { useEffect } from 'react'
 import Client from '../client/client';
-// import { handleLogout } from './Logout';
 
 
 function NavBarOne() {
 
-    // const { auth, updateAuth } = useAuth();
     const { client, updateClient }  = useClient();
     const navigate = useNavigate();
-    
-    console.log('onebar')
-
-    // useEffect (() => {
-
-    //     const fetchData = async () => {
-    //         // console.log(auth)
-    //         try {
-    //           await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, 
-    //             { withCredentials: true })
-    //             console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhh')
-    //             // updateAuth(true) 
-    //         } catch (error) {
-    //             // updateAuth(false)
-    //             console.log('Did not login yet! :)');
-    //         }
-    //     }
-
-    //     fetchData();
-    // },[])
-
-
-    // useEffect(() => {
-
-    //     async function fetchUserData() {
-    //       try {
-    //         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-    //           { withCredentials: true, }
-    //         );
-    //         const data = response.data;
-    //         updateClient({...client, ...data});
-    //         console.log('data : ')
-    //         console.log(data)
-    //         console.log('client data : ')
-    //         console.log(client);
-            
-    //       } catch (error) {
-    //         console.error('Error fetching data: ', error);
-    //       }
-    //     }
-        
-    //     if (client.signedIn)
-    //         fetchUserData();
-    //   }, []);
+    // const location = useLocation();
 
     
+
     const handleLogout = async() => {
         try {
             await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
@@ -70,36 +22,34 @@ function NavBarOne() {
         } catch (error) {
             console.error('Error logout: ', error);
         }
-        // client.clean;
-        // await updateClient({...client, signedIn: false})
         updateClient(new Client);
         navigate('/')
     }
 
-
-    const defaultList = ([
+    const defaultList: JSX.Element[] = ([
         <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
         <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>,
         <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>,
     ])
-    
-    // const [listItems, setListItems] = useState([...defaultList, (    
-    //     <li key="logout" id="logout" > <Link to='/home' > Get Started </Link> </li>
-    //     )]
-    // );
 
-    const listItems = [
-        ...defaultList,
+    const listItems: JSX.Element[] = [
         !client.signedIn ? (
-          <li key="logout" id="logout">
-            <Link to='/login'> Get Started </Link>
-          </li>
-        ) : (
-            <li key="logout" id="logout" >
-                <Link to='/logout'> Log Out  </Link>
+        <React.Fragment>
+            {defaultList}
+            <li key="getStarted">
+                <Link to="/login">Get Started</Link>
             </li>
-        ), // You can also use an empty string ('') or any other element instead of null
-      ];
+        </React.Fragment>
+        ) : (
+        <React.Fragment>
+            <li key="profile">
+                <Link to="/profile" className="link-b">  Profile </Link>
+            </li>
+            {defaultList}
+            <li key="logout" id="logout"> Log Out </li>
+        </React.Fragment>
+        ),
+    ];
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -112,21 +62,21 @@ function NavBarOne() {
 
             <>
                 <nav className='bar'>
-                    {/* <div className='logo'>                     */}
-                        <Link to='/' >
-                            <img className="logo-img" src='src/imgs/mskota.png' alt='Mskota-Logo' /> 
-                        </Link>
-                    {/* </div> */}
+                    <Link to='/' >
+                        <img className="logo-img" src='src/imgs/mskota.png' alt='Mskota-Logo' /> 
+                    </Link>
                     <ul className="list">
                         {defaultList}
                     </ul>
+                    {!client.signedIn ?
                     <div className='login'>
-                        {!client.signedIn ? <Link to='/login' > Get Started </Link> 
-                          : <li key="logout"  onClick={handleLogout}> Log Out </li>}
-                    </div>
-                    <div className='menu-ico' onClick={toggleMenu}>
+                        <Link to='/login' > Get Started </Link> 
+                    </div> :
+                    <img className='user-img' src={client.avatar} alt="user-img" onClick={toggleMenu} />
+                    }
+                    {/* <div className='menu-ico' onClick={toggleMenu}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />
-                    </div>
+                    </div> */}
                     <div className={`drop-menu ${isMenuOpen ? 'open' : ''}`}>
                         {listItems}
                     </div>
