@@ -29,7 +29,6 @@ function  Sign(props:any) {
 
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
 
-        // Update the client data and navigate only after data is fetched
         await updateClient({ ...client, ...response.data, signedIn: true });
         
         if (response.data.signedUp) {
@@ -41,8 +40,9 @@ function  Sign(props:any) {
     }
 
     // Call the fetchData function within the useEffect
-    fetchData();
-  }, [client, updateClient, navigate]);
+    // if (props.tag === 'login')
+      fetchData();
+  }, []);
     
     return (
       <>
