@@ -8,7 +8,6 @@ import axios from 'axios';
 
 function NavBarTwo (props:any) {
 
-    // const { client } = useClient();
     const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [orientation, setOrientation] = useState<number>(window.orientation);
@@ -16,38 +15,32 @@ function NavBarTwo (props:any) {
     const [listItems, setListItems] = useState<JSX.Element>();
     const navigate = useNavigate();
 
+    const open =  document.querySelector('.drop-menu2') as HTMLElement;
 
-    const listNotific = ([
+    const listNotific:JSX.Element = (
+    <>
         <div className='notifics' >
             <img src="src/imgs/example.jpg" alt="hlwa" />
             <span id='notific-user' >hamid</span>
             <span id='notific-title'>Friend</span>
             <button id='accept'> </button>
             <button id='refuse'></button>
-            </div>,
-        <div className='notifics' ></div>,
-        <div className='notifics' ></div>,
-        <div className='notifics' ></div>,
-        <div className='notifics' ></div>,
-        <div className='notifics' ></div>,
-        <div className='notifics' ></div>,
-        <div id='notifics' ></div>,
+            </div>
         <div className='notifics' ></div>
-    ])
+        <div className='notifics' ></div>
+        <div className='notifics' ></div>
+        <div className='notifics' ></div>
+        <div className='notifics' ></div>
+        <div className='notifics' ></div>
+        <div id='notifics' ></div>
+        <div className='notifics' ></div>
+    </>
+    )
 
 
-    const toggleMenu = () => { setIsMenuOpen(!isMenuOpen) };
-    const handleOrientationChange = () => { setOrientation(window.orientation);};
     const toggleNotific = () => setIsNotificOpen(!isNotificOpen);
 
-    window.addEventListener('click', function(event) {
-        const nameClass = event.target.className as string;
-        if (nameClass !== 'notification' && nameClass !== 'user-img') {
-            // setIsMenuOpen0(false)
-            setIsMenuOpen(false)
-            setIsNotificOpen(false);
-        }
-    });
+
 
     const handleLogout = async() => {
         try {
@@ -61,31 +54,62 @@ function NavBarTwo (props:any) {
         navigate('/')
     }
 
+    const toggleMenu = () => {
+        // console.log('----------');
+        if (!open)
+            return ;
+        if (!isMenuOpen){
+            open.style.height = '0px';
+            // console.log('!!!!!!!!!');
+        }
+        else {
+            // console.log('&&&&&&&&&&&');
+            if (window.innerWidth <= 900) {
+                setListItems(
+                    <>
+                        <li key="home"> <Link to='/' > Home </Link> </li>
+                        <li key="profile1"> <Link to='/profile' > Profile </Link> </li>
+                        <li key="chat"> <Link to='/chat'> Chat </Link> </li>
+                        <li key="play"> <Link to='/play' > Play </Link> </li>
+                        <li key="leaderboard"> <Link to='/leaderboard' > Leaderboard </Link> </li>
+                        <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
+                    </>)
+                open.style.height = '250px'
+            } else {
+                setListItems(
+                    <>
+                        <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>
+                    </>
+                )
+                open.style.height = '50px'
+            }
+        }
+        // console.log('############ height : ',open.style.height);
+    };
+
+    const handleOrientationChange = () => { 
+        toggleMenu();
+        setOrientation(window.orientation);
+    };
+
     useEffect(() => {
-        const handleOrientationChange = () => {
-          if (window.matchMedia("(orientation: portrait)").matches) {
-            setListItems(
-                <>
-                    <li key="home"> <Link to='/' > Home </Link> </li>
-                    <li key="profile"> <Link to='/profile' > Profile </Link> </li>
-                    <li key="chat"> <Link to='/chat'> Chat </Link> </li>
-                    <li key="play"> <Link to='/play' > Play </Link> </li>
-                    <li key="settings"> <Link to='/settings' > Settings </Link> </li>
-                    <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
-                </>)
-        } else 
-            setListItems(<li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>)
-        };
-    
-        handleOrientationChange(); // Initial check
-    
+
+            console.log('kike')
+        toggleMenu();
         window.addEventListener('resize', handleOrientationChange);
-    
         return () => {
           window.removeEventListener('resize', handleOrientationChange);
         };
-      }, []);
-    
+    }, [isMenuOpen]);
+
+    // window.addEventListener('click', function(event) {
+    //     console.log('qwwqwqwqwqwqwqqwqwqwqwqwq')
+    //     const nameClass = event.target.className as string;
+    //     if (nameClass !== 'notification' && nameClass !== 'user-img2') {
+    //         setIsMenuOpen(false)
+    //         setIsNotificOpen(false);
+    //     }
+    // });
 
     return ( 
         <>
@@ -98,9 +122,9 @@ function NavBarTwo (props:any) {
                     <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
                         {listNotific}
                     </div>
-                    <img className='user-img2' src={client.avatar} alt="user-img" onClick={toggleMenu} />
+                    <img className='user-img2' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
                 </div>
-                <div className={`drop-menu2 ${isMenuOpen ? 'open-menu2' : ''}`}>
+                <div className="drop-menu2" >
                     {listItems}
                 </div>
             </div>

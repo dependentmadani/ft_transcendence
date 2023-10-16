@@ -77,253 +77,224 @@ img {
     background-color: rgb(58, 97, 131);
 }
 
-    .profile-info-left,
-    .profile-info-right,
-    .user-friends,
-    .history,
-    .statistic {
-        position: relative;
-        display: flex;
-        overflow-y: auto;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        margin: 1.5rem 1rem;
-        /* backdrop-filter: blur(30px); */
-    }
-    
-    .user-friends {
-        overflow: none;
-        /* background-color: slategray; */
-    }
-    
-    .friends-list,
-    .my-history,
-    .achivements,
-    #chart {
-        height: 86%;
-        width: 100%;
-        position: relative;
-        display: flex;
-        overflow-y: auto;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        border-radius: 10px ;
-        background-color: #3e4aa0;
+.profile-info-left,
+.user-friends,
+.history,
+.statistic {
+    position: relative;
+    display: flex;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    /* margin: 1.5rem 1rem; */
+    /* backdrop-filter: blur(30px); */
+}
 
-    }
-    
-    #chart {
-        overflow: hidden;
-    }
-    
-    .profile-info-left {
-        flex-wrap: nowrap;
-        border-radius: 10px;
-        background-color: #3e4aa0;
-        margin-top: 0;
-        flex-direction: column;
-    }
+.user-friends {
+    overflow: none;
+    /* background-color: slategray; */
+}
 
-    .statistic {
-        margin-top: 0;
-        overflow: hidden;
-        flex-direction: column;
-    }
-    
-    .statistic > text {
-        font-size: 50px;
-    }
-    
-    #title,
-    #title-achive {
-        height: 14%;
-        width: 100%;
-        padding: 0;
-        position: relative;
-        display: flex;
-        align-items: center;
-    }
+.friends-list,
+.my-history,
+.achivements,
+#chart {
+    height: 86%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    overflow-y: auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px ;
+    background-color: #3e4aa0;
+}
 
-    #title > img {
-        height: 100%;
-        width: 40%;
-        min-width: 130px;
-        max-width: 230px;
-    } 
+#chart {
+    overflow: hidden;
+}
 
-    #title-achive > img {
-        height: 100%;
-        width: 65%;
-        min-width: 170px;
-        max-width: 230px;
-    }
-    
-    #title > span {
-        font-size: larger;
-        font-weight: 700;
-        position: absolute;
-        left: 10%;
-        padding-left: .5rem;
-        padding-right: .5rem;
-        padding-bottom: .2rem;
-        border-bottom: 3px solid cornflowerblue;
-    }
-    
-    
+.profile-info-left {
+    flex-wrap: nowrap;
+    border-radius: 10px;
+    background-color: rgba(113, 113, 146, 0.55);
+    margin-top: 0;
+    flex-direction: column;
+}
+.statistic {
+    margin-top: 0;
+    overflow: hidden;
+    flex-direction: column;
+}
 
-    
-        /* PROFILE-INFO */
-        .profile-info-1 {
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-    
-        .profile-img {
-            height: 70%;
-            /* aspect-ratio: 4/4; */
-        }
-    
-        .profile-img > img {
-            height: 100%;
-            aspect-ratio: 10/9.5;
-            object-fit: cover;
-            outline: 1px solid ;
-            border-radius: 10px;
-        }
-    
-        .profile-name-rank {
-            width: 90%;
-            height: 20%;
-            max-width: 230px;
-            margin-top: 1rem;
-            font-size: large;
-            font-weight: bolder;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-    
-        .profile-name {
-            width: 70%;
-            text-align: center;
-            padding: .4rem .4rem;
-            border-radius: 5px;
-            position: relative;
-            background-color: #384080;
+.statistic > text {
+    font-size: 50px;
+}
 
-            /* background-color: rgb(0, 255, 255); */
-        }
-
-        .profile-name > img {
-            width: 100%;
-            height: 50px;
-        }
-    
-        .profile-rank {
-            position: relative;
-            text-align: center;
-            padding: .3rem .3rem;
-            border-radius: 5px;
-            width: 30px;
-            font-size: larger;
-            font-weight: bolder;
-            background-color: rgba(44, 35, 35, 0.7);
-        }
-
-        .profile-rank > img {
-            width: 100%;
-        }
-
-        #rank {
-            position: absolute;
-            left: 50%;
-            top: 46%;
-            z-index: 5;
-            transform: translate(-50%, -50%); 
-        }
-    
-        #settings {
-            position: absolute;
-            top: 8px;
-            right: 15px;
-            cursor: pointer;
-            width: 30px;
-            z-index: 220;
-        }
-        /* HISTORY */
-        .badge-history {
-            position: relative;
-            width: 160px;
-            height: 110px;
-            margin: .5rem auto;
-            background-color:  #c5cae9;
-            border-radius: 10px;
-        }
-        
-        .players {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60%;
-        }
-        
-        #vs-img {
-            position: absolute;
-            top: 40%;
-            left: 50%; 
-            transform: translate(-50%, -50%); 
-            width: 22px;
-            object-fit: cover;
-        }
-        
-        #comma {
-            position: absolute;
-            top: 85%;
-            left: 50%;
-            transform: translate(-50%, -50%); 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #comma > img {
-        
-            width: 45%;
-        }
-        
-        #player {
-            border-radius: 7px;
-            height: 76%;
-            object-fit: cover;
-            margin-left: 5%;
-            margin-right: 5%;
-        }
-        
-        .score-match {
-            display: flex;
-            height: 50%;
-            align-items: center;
-            color: black;
-        }
-        
-        .score {
-            display: flex;
-            width: 100%;
-            font-size: larger;
-            font-weight: bolder;
-            align-items: center;
-            justify-content: space-around;
-        }
-    
-        /* .friend {
-            width: 92%;
-        } */
+#title {
+    height: 14%;
+    width: 100%;
+    padding: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+#title > img {
+    height: 100%;
+    width: 40%;
+    min-width: 130px;
+    max-width: 230px;
+} 
+#title > span {
+    font-size: larger;
+    font-weight: 700;
+    position: absolute;
+    left: 5%;
+    padding-left: .5rem;
+    padding-right: .5rem;
+    padding-bottom: .2rem;
+    border-bottom: 3px solid cornflowerblue;
+}
 
 
+
+/* PROFILE-INFO */
+.profile-info-1 {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.profile-img {
+    height: 70%;
+    /* aspect-ratio: 4/4; */
+}
+.profile-img > img {
+    height: 100%;
+    aspect-ratio: 10/9.5;
+    object-fit: cover;
+    outline: 1px solid ;
+    border-radius: 10px;
+}
+.profile-name-rank {
+    width: 90%;
+    height: 20%;
+    max-width: 230px;
+    margin-top: 1rem;
+    font-size: large;
+    font-weight: bolder;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.profile-name {
+    width: 70%;
+    text-align: center;
+    padding: .4rem .1rem;
+    border-radius: 5px;
+    position: relative;
+    background-color: #384080;
+    /* background-color: rgb(0, 255, 255); */
+}
+.profile-name > img {
+    width: 100%;
+    height: 50px;
+}
+.profile-rank {
+    position: relative;
+    text-align: center;
+    padding: .3rem .3rem;
+    border-radius: 5px;
+    width: 30px;
+    font-size: larger;
+    font-weight: bolder;
+    background-color: rgba(62, 202, 253, 0.8);
+}
+.profile-rank > img {
+    width: 100%;
+}
+#rank {
+    position: absolute;
+    left: 50%;
+    top: 46%;
+    z-index: 5;
+    transform: translate(-50%, -50%); 
+}
+#settings {
+    position: absolute;
+    top: 8px;
+    right: 15px;
+    cursor: pointer;
+    width: 30px;
+    z-index: 220;
+}
+/* HISTORY */
+.badge-history {
+    position: relative;
+    width: 160px;
+    height: 110px;
+    margin: .5rem auto;
+    background-color:  #c5cae9;
+    border-radius: 10px;
+}
+
+.players {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60%;
+}
+
+#vs-img {
+    position: absolute;
+    top: 40%;
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    width: 22px;
+    object-fit: cover;
+}
+
+#comma {
+    position: absolute;
+    top: 85%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#comma > img {
+
+    width: 45%;
+}
+
+#player {
+    border-radius: 7px;
+    height: 76%;
+    object-fit: cover;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.score-match {
+    display: flex;
+    height: 50%;
+    align-items: center;
+    color: black;
+}
+
+.score {
+    display: flex;
+    width: 100%;
+    font-size: larger;
+    font-weight: bolder;
+    align-items: center;
+    justify-content: space-around;
+}
+    
 
 .achive {
     width: 100px;
@@ -402,21 +373,36 @@ img {
     
     @media (max-width: 600px) {
 
+        .profile-info-left {
+            width: 70%;
+            margin: auto;
+        }
 
-        .profile-info-right,
-        .profile-info-left,
-        .history {
-            height: 300px;
+
+        .profile-info-right {
+            height: 200px;
+        }
+
+        .profile-info-right > #title {
+            height: 30%;
+        }
+
+        .achivements {
+            height: 70%;
         }
 
         .profile-img {
             height: 70%;
         }
 
-        .user-friends,
-        .statistic {
-            height: 350px;
-        }
+    }
+
+    .profile-info-left,
+    .history,
+    .user-friends,
+    .statistic {
+        height: 350px;
+        margin-top: 1rem;
     }
     
     @media (max-width: 300px) {
@@ -463,7 +449,7 @@ img {
     .profile-info-left {
         height: 350px;
         width: 50%;
-        margin: .5rem;
+        margin: 0 .5rem;
     }
 
     .profile-img {
@@ -501,21 +487,15 @@ img {
     }
 
     
-    .profile-info {
-        /* background-color: #3e4aa0; */
-        border-radius: 10px;
-
-    }
 
     .profile-info-right {
         height: 100%;
     }
 
     .profile-info-left {
-        /* background-color: brown; */
         display: flex;
         align-self: end;
-        height: 86%;
+        height: 100%;
         margin: 0;
     }
     
@@ -543,30 +523,38 @@ img {
         }
     }
 
+    .profile-col-2,
+    .profile-col-1 {
+        width: 50%;
+        height: 100%;
+    }
+
+    .profile-col-1 {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
 
 
-        .profile-col-2,
-        .profile-col-1 {
-            width: 50%;
+    .profile-col-2 {
+        flex-direction: column;
+    }
+
+    .history, 
+    .statistic {
+        width: 90%;
+        margin: auto;
+    }
+
+    @media (max-width: 940px) {
+        .profile-info-right {
+            display: none;
+        }
+        .profile-info-left {
+            width: 100%;
             height: 100%;
         }
-
-        .profile-col-1 {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-
-        .profile-col-2 {
-            flex-direction: column;
-        }
-
-        .history, 
-        .statistic {
-            width: 90%;
-            margin: auto;
-        }
+    }
 
 }
 

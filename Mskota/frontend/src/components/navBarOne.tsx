@@ -52,12 +52,11 @@ function NavBarOne() {
                         <>
                             <li key="profile"> <Link to='/profile' > Profile </Link> </li>
                             <li key="home"> <Link to='/' > Home </Link> </li>
-                            <li key="chat"> <Link to='/chat'> Chat </Link> </li>
-                            <li key="play"> <Link to='/play' > Play </Link> </li>
-                            <li key="settings"> <Link to='/settings' > Settings </Link> </li>
+                            <li key="chat"> <Link to='/about'> About </Link> </li>
+                            <li key="play"> <Link to='/developers' > Developers </Link> </li>
                             <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                         </>)
-                    open.style.height = '250px'
+                    open.style.height = '220px'
                 }
                 else {
                     setListItems(
