@@ -4,17 +4,16 @@ import React, { useState, useEffect } from 'react';
 import { useClient } from '../client/clientContext';
 import axios from 'axios';
 import Client from '../client/client';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faAnglesLeft } from '@fortawesome/free-solid-svg-icons'
 
 function NavBarOne() {
     
     const { client, updateClient }  = useClient();
     const [listItems, setListItems] = useState<JSX.Element>();
-    // const [windowWidth, setWindowWidth] = useState(window.innerWidth);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const navigate = useNavigate();
     const [orientation, setOrientation] = useState<number>(window.orientation);
-    // const location = useLocation();
+    const navigate = useNavigate();
 
     
     const open =  document.querySelector('.drop-menu') as HTMLElement;
@@ -31,34 +30,59 @@ function NavBarOne() {
         navigate('/')
     }
 
-    const defaultList: JSX.Element[] = ([
-        <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>,
-        <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>,
-        <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>,
-    ])
+    const defaultList: JSX.Element = (
+        <>
+            <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>
+            <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>
+            <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>
+        </>
+    )
 
 
     const toggleMenu = () => {
-        console.log('hlwa')
         if (!open)
             return ;
         if (!isMenuOpen)
             open.style.height = '0px';
         else {
+            open.style.display = 'flex'
             if (window.innerWidth <= 800) {
-                setListItems(
+                if (client.signedIn) {
+                    setListItems(
+                        <>
+                            <li key="profile"> <Link to='/profile' > Profile </Link> </li>
+                            <li key="home"> <Link to='/' > Home </Link> </li>
+                            <li key="chat"> <Link to='/chat'> Chat </Link> </li>
+                            <li key="play"> <Link to='/play' > Play </Link> </li>
+                            <li key="settings"> <Link to='/settings' > Settings </Link> </li>
+                            <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
+                        </>)
+                    open.style.height = '250px'
+                }
+                else {
+                    setListItems(
                     <>
-                        <li key="home"> <Link to='/' > Home </Link> </li>
-                        <li key="profile"> <Link to='/profile' > Profile </Link> </li>
-                        <li key="chat"> <Link to='/chat'> Chat </Link> </li>
-                        <li key="play"> <Link to='/play' > Play </Link> </li>
-                        <li key="settings"> <Link to='/settings' > Settings </Link> </li>
-                        <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
-                    </>)
-                open.style.height = '250px'
+                        {defaultList}
+                        <li key="getStarted" id="logout">
+                            <Link to='/login'> Get Started </Link>
+                        </li>
+                    </>
+                    )
+                    open.style.height = '200px'
+                }
             } else {
-                    setListItems(<li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>)
-                    open.style.height = '50px'
+ 
+                if (client.signedIn) {
+                    open.style.height = '120px'
+                    setListItems(
+                        <>
+                            <li key="profile"> <Link to='/profile' > Profile </Link> </li>
+                            <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>
+                        </>
+                    )
+                }
+                else 
+                    open.style.display = 'none'
             }
         }
     };
@@ -70,17 +94,14 @@ function NavBarOne() {
 
     useEffect(() => {
 
+            console.log('hhamie')
         toggleMenu();
         window.addEventListener('resize', handleOrientationChange);
         return () => {
           window.removeEventListener('resize', handleOrientationChange);
         };
-    //     };
-      }, [isMenuOpen, orientation]);
+      }, [isMenuOpen, orientation, client.signedIn]);
 
-    // useEffect(() => {
-    //     toggleMenu();
-    // }, [isMenuOpen])
 
     return (
 
@@ -98,9 +119,9 @@ function NavBarOne() {
                     </div> :
                     <img className='user-img' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
                     }
-                    {/* <div className='menu-ico' onClick={toggleMenu}>
+                    {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />
-                    </div> */}
+                    </div>}
                     <div className={`drop-menu`}>
                         {listItems}
                     </div>
