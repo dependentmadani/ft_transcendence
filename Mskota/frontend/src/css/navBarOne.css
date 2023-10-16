@@ -75,7 +75,7 @@
 
 
 .drop-menu {
-    display: none;
+    /* display: none; */
     flex-direction: column;
     align-items: center;
     position: absolute;
@@ -106,11 +106,6 @@
     /* padding: .5rem; */
     color: aquamarine;
 }
-
-.open {
-    height: 240px;
-}
-
 
 /* Main */
 .main {
