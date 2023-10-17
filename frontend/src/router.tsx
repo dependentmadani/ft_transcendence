@@ -1,27 +1,27 @@
 import { createBrowserRouter } from "react-router-dom";
+import DefaultSection from "./components/Sections/defaultSection";
+import Sign from "./components/Sections/Sign";
+import Section from "./components/Sections/Section/Section";
 // import { AuthLayout } from "./pages/layouts/AuthLayout";
-import { Login } from "./pages/Login/login";
-import { Signup } from "./pages/SignUp/signup";
-import { HomeChat } from "./pages/Chat/HomeChat";
-import { Home } from "./pages/Home";
-import { Game } from "./pages/Game/ComponentReact/game";
-import Akinator from "./pages/Game/ComponentReact/akinator";
-import ClassicGame from "./pages/Game/ComponentReact/classic_game";
-import MatchGame from "./pages/Game/ComponentReact/match";
+
 // import { Chattest } from "./pages/Chattest";
 
 export const router = createBrowserRouter([
     {
         // element: <AuthLayout />,
         children: [
-            { path: 'login', element: <Login /> },
-            { path: 'signup', element: <Signup /> },
-            { path: '/', element: <Home /> },
-            { path: '/chat', element: <HomeChat /> },
-            { path: '/game', element: <Game /> },
-            { path: '/game/akinator', element: <Akinator /> },
-            { path: '/game/ClassicGame', element: <ClassicGame /> },
-            { path: '/game/matchgame', element: <MatchGame /> },
+            { path: '/', element: <DefaultSection section='home' />},
+            { path: '/home', element: <DefaultSection section='home' />},
+            { path: '/about', element: <DefaultSection section='about' />},
+            { path: '/team', element: <DefaultSection section='team' />},
+            { path: '/login', element: <Sign tag='login' /> },
+            { path: '/signup', element: <Sign tag='signup' /> },
+            { path: '/profile', element: <Section section='profile' /> },
+            { path: '/chat', element: <Section section='chat' /> },
+            { path: '/game', element: <Section section='game' /> },
+            // { path: '/game/akinator', element: <Akinator /> },
+            // { path: '/game/ClassicGame', element: <ClassicGame /> },
+            // { path: '/game/matchgame', element: <MatchGame /> },
             // { path: '/', element: <Lista /> },
         ]
     }

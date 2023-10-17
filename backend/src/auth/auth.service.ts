@@ -13,7 +13,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { Tokens } from './types';
+import { Tokens, CheckUser } from './types';
 import { Users, userStatus } from '@prisma/client';
 import * as speakeasy from 'speakeasy';
 import * as qrcode from 'qrcode';
@@ -75,7 +75,7 @@ export class AuthService {
   async signupGoogle(
     dto: AuthDto,
     avatar?: string,
-  ): Promise<Tokens> {
+  ): Promise<CheckUser> {
     //need to hash the password for security reasons
     try {
       const users =
@@ -96,8 +96,12 @@ export class AuthService {
         users.id,
         token.refresh_token,
       );
+      const checkUser = {
+        token: token,
+        state: true,
+      };
 
-      return token;
+      return checkUser;
     } catch (error) {
       if (
         error instanceof
@@ -174,7 +178,6 @@ export class AuthService {
         hashRt: null,
       },
     });
-    console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
@@ -251,6 +254,7 @@ export class AuthService {
 
   async signinGoogle(req: Request) {
     const userInfo = req.user;
+    console.log('user info', req.user);
     if (!userInfo)
       throw new ForbiddenException(
         'user info not found',
@@ -273,7 +277,6 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: userDto.email,
-          username: userDto?.username
         },
       });
 
@@ -290,12 +293,16 @@ export class AuthService {
       user.id,
       user.email,
     );
+
     await this.updateRtHashed(
       user.id,
       token.refresh_token,
     );
-
-    return token;
+    const checkUser = {
+      token: token,
+      state: false,
+    };
+    return checkUser;
   }
 
   async fortyTwo(profile: any) {

@@ -19,9 +19,9 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@material/switch": "^14.0.0",
     "@mui/material": "^5.14.11",
-    "@types/axios": "^0.14.0",
     "axios": "^1.5.0",
     "babel-plugin-macros": "^3.1.0",
+    "crypto-js": "^4.1.1",
     "material": "^0.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -30,6 +30,7 @@
     "react-router-dom": "^6.14.2",
     "sass": "^1.64.2",
     "scss": "^0.2.4",
+    "recharts": "^2.8.0",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2"
   },
