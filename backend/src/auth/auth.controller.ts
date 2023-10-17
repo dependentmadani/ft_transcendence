@@ -22,6 +22,7 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleGuard, RtGuard } from 'src/guards';
 import { GetUser, Public } from 'src/decorator';
 import { Users } from '@prisma/client';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
@@ -172,13 +173,6 @@ export class AuthController {
       'ONLINE'
     );
     res.send('logged successfully!');
-    // console.log(
-    //   'vite address 1:',
-    //   process.env.VITE_ADDRESS,
-    // );
-    // res.redirect(
-    //   `http://${process.env.VITE_ADDRESS}:5173/`,
-    // );
   }
 
   @Get('logout')
@@ -228,6 +222,13 @@ export class AuthController {
   }
 
   @Post('2fa/setup')
+  @ApiBody({
+    description: 'An email in the body is required'
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The qrcode is returned and should be scanned to be verified in 2fa/verify request.'
+  })
   @HttpCode(HttpStatus.CREATED)
   async enable2fa(
     @Body() body: TwoFaAuthDto,
@@ -235,13 +236,20 @@ export class AuthController {
   ) {
     const user: Users =
       await this.authService.returnUser(
-        req.user['email'],
-      );
+        req.user['email']
+    );
     return this.authService.enable2fa(body, user);
   }
 
   @Post('2fa/verify')
-  @HttpCode(HttpStatus.FOUND)
+  @ApiBody({
+    description: 'A code as a string type is required in the body'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The 2fa is enabled, the qrcode is returned and should be scanned to be verified.'
+  })
+  @HttpCode(HttpStatus.OK)
   async verify2fa(
     @Body() body: TwoFaCodeDto,
     @Req() req: Request,

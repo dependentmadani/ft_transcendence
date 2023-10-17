@@ -71,16 +71,6 @@ export class UsersController {
         return user;
   }
 
-  @Post('add-friend/:id')
-  @HttpCode(HttpStatus.CREATED)
-  async addFriend(@Param('id', ParseIntPipe) friendId: number,
-    @Req() req: Request,
-    @Res() res: Response)  {
-      const user = await this.userService.findUserById(req.user['sub']);
-      const friend = await this.userService.addFriend(user.id, friendId);
-      return res.send(friend);
-    }
-
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
@@ -115,6 +105,15 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   async searchUser(@Param('username') username: string, @Req() req: Request) {
     return this.userService.searchUser(username, req.user);
+  }
+
+  @Get('search/:friendName/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchFriendUsers(@Param('friendName') friendName: string,
+        @Param('username') username: string, 
+        @Req() req: Request) {
+    const friendUser = await this.userService.findUserByUsername(friendName);
+    return this.userService.searchUser(username, friendUser);
   }
 
   @Get('/:id')

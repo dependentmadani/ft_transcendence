@@ -448,7 +448,8 @@ export class AuthService {
       encoding: 'base32',
       token: body.code,
     });
-    if (verified) return true;
+    if (verified)
+      return true;
     //     throw new UnauthorizedException('code entered is wrong, please retry again!');
 
     return false;
