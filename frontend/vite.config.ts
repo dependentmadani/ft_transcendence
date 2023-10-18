@@ -9,14 +9,14 @@ export default defineConfig({
   resolve: {
     alias: [{find: '@', replacement: path.resolve(__dirname, 'src')}]
   }
-  server: {
-    host: true,
-    port: 5173,
-    proxy: {
-      'auth': {
-        target: 'http://localhost:8000',
-        changeOrigin:true
-      },
-    }
-  }
+  // server: {
+  //   host: true,
+  //   port: 5173,
+  //   proxy: {
+  //     'auth': {
+  //       target: 'http://localhost:8000',
+  //       changeOrigin:true
+  //     },
+  //   }
+  // }
 })

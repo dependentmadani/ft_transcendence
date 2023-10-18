@@ -8,12 +8,11 @@ function SetInfo() {
   const [fileUploaded, setFileUploaded] = useState<File | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [username, setUsername] = useState<string>('');
-  const [avatar, setAvatar] = useState<string>('@/imgs/user-img.png');
+  const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
   const {client, updateClient} = useClient();
+  const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
   // console.log('signup')
-
-  
   
   useEffect(() => {
     async function fetchUserData() {
@@ -24,14 +23,17 @@ function SetInfo() {
         setUserId(response.data.id);
         setAvatar(response.data.avatar);
         setUsername(response.data.username);
-        console.log('response.data : ', response.data);
+        await updateClient({ ...client, ...response.data, signedIn: true });
+        if (response.data.signedUp)
+          navigate('/')
+        // console.log('response.data : ', response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     }
   
     fetchUserData();
-  }, []);
+  }, [fetchData]);
   
 
 
@@ -53,8 +55,9 @@ function SetInfo() {
   };
 
   const handleSubmit = async () => {
+    console.log('uuuuuuuuuuuuuuuuu')
     try {
-      axios.patch(
+      await axios.patch(
         `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`,
         {
           username: username,
@@ -64,22 +67,22 @@ function SetInfo() {
           headers: { 'Content-Type': 'application/json' },
         }  
         )
-      if (fileUploaded) {
-        axios.post(
-          `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
-          {
-            avatar: fileUploaded,
-          },
-          {
-            withCredentials: true,
-            headers: { 'Content-Type': 'multipart/form-data' },
+        if (fileUploaded) {
+          await axios.post(
+            `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
+            {
+              avatar: fileUploaded,
+            },
+            {
+              withCredentials: true,
+              headers: { 'Content-Type': 'multipart/form-data' },
+            }
+            );
           }
-          );
+        } catch (error) {
+          console.error('Error submitting data:', error);
         }
-      } catch (error) {
-        console.error('Error submitting data:', error);
-      }
-      navigate('/login');
+        setFetchData(true);
   };
   // console.log('login');
 
@@ -105,7 +108,7 @@ function SetInfo() {
             onChange={(e) => handleChangeAvatar(e.target.files)}
           />
           <label htmlFor='file' className='choose-img'>
-            <img src='@/imgs/change-img.png' alt='Upload' />
+            <img src='src/imgs/change-img.png' alt='Upload' />
           </label>
         </div>
         <input

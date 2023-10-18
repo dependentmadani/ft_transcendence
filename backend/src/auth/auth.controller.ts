@@ -172,15 +172,15 @@ export class AuthController {
       true,
       'ONLINE',
     );
-    if (userAuth.state) {
+    // if (userAuth.state) {
       res.redirect(`http://${process.env.VITE_ADDRESS}:5173/signup`);
-    }
-    else {
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/login`,
-        // kheliha bhal haka 
-      );
-    }
+    // }
+    // else {
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/login`,
+    //     // kheliha bhal haka 
+    //   );
+    // }
   }
 
   @Get('logout')
@@ -324,13 +324,13 @@ export class AuthController {
       true,
       'ONLINE'
     );
-    if (state)
+    // if (state)
       res.redirect(
         `http://${process.env.VITE_ADDRESS}:5173/signup`,
       );
-    else
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/login`,
-      );
+    // else
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/login`,
+    //   );
   }
 }

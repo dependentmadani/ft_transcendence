@@ -168,10 +168,13 @@ img {
 }
 .profile-img {
     height: 70%;
+    /* width: 90%; */
+    /* object-fit: cover; */
     /* aspect-ratio: 4/4; */
 }
 .profile-img > img {
-    height: 100%;
+    height:100%;
+    /* width: 100%; */
     aspect-ratio: 10/9.5;
     object-fit: cover;
     outline: 1px solid ;
@@ -466,6 +469,7 @@ img {
     
     .profile {
         display: flex;
+        /* background-color: salmon; */
     }
 
     .profile-col-1 {
@@ -477,16 +481,25 @@ img {
         display: flex;
     }
 
-    .history,
     .user-friends,
-    .profile-info, 
     .statistic {
         width: 100%;
         margin: auto;
         height: 48%;
+        max-height: 600px;
     }
 
-    
+    .history,
+    .profile-info {
+        width: 100%;
+        margin: auto;
+        height: 48%;
+        max-height: 550px;
+    }
+
+    .profile-img {
+        height: 60%;
+    }
 
     .profile-info-right {
         height: 100%;

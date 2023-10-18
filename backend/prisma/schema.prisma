@@ -25,6 +25,8 @@ model Users {
   userStatus  userStatus  @default(ONLINE)
   
   isActive              Boolean         @default(false)
+  signedUp    Boolean     @default(false)
+
   
   // Notifications
   pendingFriendReq      Users[]         @relation("PendingFriend")

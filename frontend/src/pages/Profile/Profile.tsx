@@ -1,5 +1,5 @@
+import './Profile.css'
 import { useClient } from '@/context/clientContext';
-import '../css/Profile.css'
 import MyPieChart from '@/components/Profile/PieChart/pieChart'
 import React, { useState, useEffect } from 'react';
 
@@ -10,12 +10,12 @@ function Badges() {
   return (
     <div className="badge-history">
       <div className="players">
-        <img id="player" src="@/imgs/example.jpg" alt="user" />
-        <img id="vs-img" src="@/imgs/vs-.png" alt="VS" />
-        <img id="player" src="@/imgs/example.jpg" alt="user-vs" />
+        <img id="player" src="src/imgs/example.jpg" alt="user" />
+        <img id="vs-img" src="src/imgs/vs-.png" alt="VS" />
+        <img id="player" src="src/imgs/example.jpg" alt="user-vs" />
         <div id="comma">
-          <img src="@/imgs/comma.png" alt="comma" />
-          <img src="@/imgs/comma.png" alt="comma" />
+          <img src="src/imgs/comma.png" alt="comma" />
+          <img src="src/imgs/comma.png" alt="comma" />
         </div>
       </div>
       <div className="score-match">
@@ -31,11 +31,11 @@ function Badges() {
 function Friend() {
     return (
         <div className='friend'>
-            <img className='user-friend' src="@/imgs/example.jpg" alt="friend-img" />
+            <img className='user-friend' src="src/imgs/example.jpg" alt="friend-img" />
             <span className='status-friend'><span id='circle'></span> status</span>
             <span className='name-friend'> Name</span>
             {/* <span className='icon-chat'></span> */}
-            <img className='icon-chat' src="@/imgs/chat-room.png" alt="chat-img" />
+            <img className='icon-chat' src="src/imgs/chat-room.png" alt="chat-img" />
         </div>
     )
 }
@@ -76,7 +76,7 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={`@/${client.avatar}`} alt="user-img" />
+                    <img src={client.avatar} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}
@@ -109,7 +109,7 @@ function Frindes () {
 
 
     const [searchOpen, setSearchOpen] = useState(false);
-    const [iconSearch, setIconSearch] = useState('@/imgs/search.png');
+    const [iconSearch, setIconSearch] = useState('src/imgs/search.png');
     
 
     // var icon_search:string = ;
@@ -119,13 +119,13 @@ function Frindes () {
         const search_icon = document.getElementById('search') as HTMLElement
         // console.log ('hlwa')
         if (!searchOpen) {
-            setIconSearch('@/imgs/cancel-red.png');
+            setIconSearch('src/imgs/cancel-red.png');
             my_search.style.width = '100%';
             search_icon.style.borderRadius = '0px 20px 20px 0';
             
         }
         else if (searchOpen) { 
-            setIconSearch('@/imgs/search.png');
+            setIconSearch('src/imgs/search.png');
             my_search.style.width = '0px'
             my_search.style.border = 'none' 
             search_icon.style.borderRadius = '20px'
@@ -137,7 +137,7 @@ function Frindes () {
         <div className='user-friends'>
             <div className='search-bar'>
                 <input type="search" className="search-input" placeholder="Search..." />
-                <img id='search' src={`@/${iconSearch}`} alt="search" onClick={search_open} />
+                <img id='search' src={iconSearch} alt="search" onClick={search_open} />
             </div>
             {/* <div className='search-bar'>
             </div> */}
@@ -187,7 +187,7 @@ function Profile () {
 
     return (
         <div className='profile'>
-            <img id='settings'  src="@/imgs/setting.png" alt="setting" />
+            <img id='settings'  src="src/imgs/setting.png" alt="setting" />
             <div className='profile-col-1'>
                 <ProfileInfo />
                 <Frindes />

@@ -34,7 +34,7 @@ function NavBarOne() {
         <>
             <li key="home"> <Link to='/' className='link-b'> Home </Link> </li>
             <li key="about"> <Link to='/about' className='link-b'> About </Link> </li>
-            <li key="developers"> <Link to='/developers' className='link-b'> Developers </Link> </li>
+            <li key="developers"> <Link to='/team' className='link-b'> Team </Link> </li>
         </>
     )
 
@@ -53,7 +53,7 @@ function NavBarOne() {
                             <li key="profile"> <Link to='/profile' > Profile </Link> </li>
                             <li key="home"> <Link to='/' > Home </Link> </li>
                             <li key="chat"> <Link to='/about'> About </Link> </li>
-                            <li key="play"> <Link to='/developers' > Developers </Link> </li>
+                            <li key="play"> <Link to='/team' > Team </Link> </li>
                             <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                         </>)
                     open.style.height = '220px'

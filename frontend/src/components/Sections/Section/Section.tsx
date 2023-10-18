@@ -8,11 +8,11 @@ import { Navigate } from 'react-router-dom';
 
 function selectSection(section: string): JSX.Element {
 
-    if (section === 'profile')
+    if (section === '/profile')
         return ( <Profile />)
     // else if (section === 'test')
     //     return ( <ProfileFriend />)
-    else if (section === 'chat')
+    else if (section === '/chat')
         return ( <HomeChat />)
     // else if (section === 'chat')
     //     return ( <HomeChat />)

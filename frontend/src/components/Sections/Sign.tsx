@@ -1,4 +1,4 @@
-import '../css/Login.css'
+// import '/Login.css'
 import SignUp from '@/pages/SignUp/SignUp';
 import Login from '@/pages/Login/Login';
 import { Link, useNavigate} from "react-router-dom"
@@ -19,11 +19,13 @@ function  Sign(props:any) {
 
   useEffect(() => {
     async function fetchData() {
+      console.log('fetch ')
       try {
         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true });
 
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
 
+        console.log(response.data)
         await updateClient({ ...client, ...response.data, signedIn: true });
         
         if (response.data.signedUp) {
@@ -44,13 +46,13 @@ function  Sign(props:any) {
         <div className="row">
           <div className="logo-login">
             <Link to="/">
-                <img className="logo-login-img" src="@/imgs/mskota.png" alt="Mskota-Logo" />
+                <img className="logo-login-img" src="src/imgs/mskota.png" alt="Mskota-Logo" />
             </Link>
           </div>
           <div className='body-login'>
               {(props.tag === 'login') ? <Login /> : <SignUp />}
             <div className='col2'>
-              <img src="@/imgs/pingpong.gif" alt="pingpong-gif" />
+              <img src="src/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>
           </div>
         </div>

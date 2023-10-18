@@ -2,7 +2,7 @@ import './About.css'
 
 
 export default function About() {
-    const my_img:string = '@/imgs/about.png'
+    const my_img:string = '/src/imgs/about.png'
 
     return (
         <>
@@ -15,7 +15,7 @@ export default function About() {
                     </p>
                 </div>
                 <div className='home-img' >
-                    <img  src={my_img} alt='home.png' />
+                    <img  src={my_img} alt='about.png' />
                 </div>
             </main>
         </>

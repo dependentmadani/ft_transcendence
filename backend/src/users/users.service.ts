@@ -287,7 +287,7 @@ export class UsersService {
   async updateUser(
     userId: number,
     userInfo: Users,
-    body: UserModify,
+    username: UserModify,
   ) {
     try {
       const user = await this.prisma.users.update(
@@ -296,12 +296,13 @@ export class UsersService {
             id: userId,
           },
           data: {
-            username: body?.username,
-            avatar: body?.avatar,
+            username: username.username,
+            signedUp: true,
           },
         },
-      );
-
+        );
+      console.log('user information: ', user)
+        
       return user;
     } catch {
       throw new UnauthorizedException(

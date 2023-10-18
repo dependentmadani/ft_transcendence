@@ -1,4 +1,4 @@
-import '../Developers.css'
+import './Team.css'
 
 
 const badgeData = [
@@ -86,9 +86,9 @@ function Badges() {
 }
 
 
-function Developers() {
+function Team() {
 
-    const my_img:string = '@/imgs/developers.png'
+    const my_img:string = 'src/imgs/developers.png'
 
     return (
         <main className="main-dev" >    
@@ -102,4 +102,4 @@ function Developers() {
     )
 }
 
-export default Developers;
+export default Team;

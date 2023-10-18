@@ -60,11 +60,10 @@ function NavBarTwo (props:any) {
             return ;
         if (!isMenuOpen){
             open.style.height = '0px';
-            // console.log('!!!!!!!!!');
         }
         else {
-            // console.log('&&&&&&&&&&&');
-            if (window.innerWidth <= 900) {
+            console.log('container : ', orientation);
+            if (!window.matchMedia('(orientation: landscape)').matches) {
                 setListItems(
                     <>
                         <li key="home"> <Link to='/' > Home </Link> </li>

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
-import { Chat } from "../../components/Section/Chat/Chats/Chat"
-import { Rightbar } from "../../components/Section/Chat/Rightbar"
-import { Leftbar } from "../../components/Section/Chat/Leftbar"
+import { Chat } from "@/components/Chat/Chats/Chat"
+import { Rightbar } from "@/components/Chat/Rightbar"
+import { Leftbar } from "@/components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
 import './style.scss'
 

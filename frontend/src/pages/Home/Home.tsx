@@ -78,7 +78,7 @@ export default function Home(props:any) {
                     </button>
                 </div>
                 <div className='home-img' >
-                    <img  src='@/imgs/home.png' alt='home.png' />
+                    <img  src='/src/imgs/home.png' alt='home.png' />
                 </div>
             </main>
     )
