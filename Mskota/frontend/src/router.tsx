@@ -2,7 +2,9 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import DefaultSection from "@/components/Sections/defaultSection";
 import Sign from "@/components/Sections/Sign";
 import Section from "@/components/Sections/Section/Section";
-import { useClient } from "./context/clientContext";
+import { useClient } from "@/context/clientContext";
+import NotFriendProfile from  "@/components/Profile/NotFriend/NotFriendProfile"
+import FriendProfile from "@/components/Profile/Friend/FriendProfile"
 // import { AuthLayout } from "./pages/layouts/AuthLayout";
 
 // import { Chattest } from "./pages/Chattest";
@@ -44,6 +46,8 @@ export const router = createBrowserRouter([
             { path: '/profile', element: < GetRouteElement tag='/profile' /> },
             { path: '/chat', element: < GetRouteElement tag='/chat' /> },
             { path: '/game', element: < GetRouteElement tag='/game' /> },
+            { path: '/friend', element: <FriendProfile /> },
+            { path: '/kika', element: <NotFriendProfile /> },
         ],
     },
 ]);

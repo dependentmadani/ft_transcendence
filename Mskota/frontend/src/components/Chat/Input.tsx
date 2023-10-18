@@ -72,7 +72,7 @@ export const Input = ({ chatData }: any) => {
   
   return (
     <div className="input">
-      {chatData?._chat?.chat && <div className="inputContainer">
+      {/*chatData?._chat?.chat &&*/ <div className="inputContainer">
         <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
           {<span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>}

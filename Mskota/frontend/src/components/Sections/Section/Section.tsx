@@ -1,7 +1,7 @@
 import './Section.css'
 import NavBarTwo  from '@/components/NavBars/NavBarTwo/navBarTwo'
 import NavBarTree from '@/components/NavBars/NavBarTree/navBarTree';
-import Profile from '@/pages/Profile/Profile';
+import Profile from '@/components/Profile/Me/MyProfile';
 import { HomeChat } from "@/pages/Chat/HomeChat";
 // import ProfileFriend  from './profileFriend';
 import { Navigate } from 'react-router-dom';

@@ -345,11 +345,14 @@
   }
   
   .home {
-    background-color: #0f1237;// #a7bcff;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: gold;
+    // background-color: #0f1237;// #a7bcff;
+    height: 90%;
+    width: 100%;
+    // display: flex;
+    // margin: auto;
+    // align-items: center;
+    // justify-content: center;
   
     .container {
       // border: 1px solid white;
@@ -421,6 +424,7 @@
           border-bottom: 1px solid #828ccb7d;
 
           .searchContainer {
+            align-items: center;
             display: flex;
             flex-direction: row;
             background-color: #838ec8;
@@ -433,6 +437,7 @@
             }
 
             input {
+              text-align: start;
               background-color: #828ccb;
               border: none;
               outline: none;
@@ -1037,6 +1042,9 @@
             outline: none;
             color: #2f2d52;
             font-size: 18px;
+            margin: 0;
+            padding: 0 10px;
+            text-align: start;
   
             &::placeholder {
               color: lightgray;
