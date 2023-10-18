@@ -1,23 +1,15 @@
 import React from 'react'
-import { BrowserRouter  } from "react-router-dom"
 import ReactDOM from 'react-dom/client'
-// import Head from './components/Head'
-import App from './components/App.tsx'
-import  { ClientProvider } from './client/clientContext.tsx'
-// import { AuthProvider } from './client/authContext.tsx'
+import { RouterProvider } from 'react-router-dom'
+import { router } from './router'
+import { ClientProvider } from './context/clientContext'
+import '@/app.css'
 
-// ReactDOM.createRoot(document.getElementById('myhead')!).render (
-//   <Head />
-// )
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <ClientProvider>
-        {/* <AuthProvider > */}
-          <App />
-        {/* </AuthProvider > */}
-      </ClientProvider>
-    </BrowserRouter>
+    <ClientProvider>
+      <RouterProvider router={router}/>
+    </ClientProvider>
   </React.StrictMode>,
 )

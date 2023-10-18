@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -28,6 +27,7 @@ model Users {
   isActive              Boolean         @default(false)
   signedUp    Boolean     @default(false)
 
+  
   // Notifications
   pendingFriendReq      Users[]         @relation("PendingFriend")
   pendingFriendReqOf    Users[]         @relation("PendingFriend")
@@ -96,6 +96,7 @@ model Room {
   roomUsers   RoomUsers[]
   invitations Invitations[] @relation("room")
   roomType  String
+  roomPass  String?
   msgRoomId     Message[]
 }
 
