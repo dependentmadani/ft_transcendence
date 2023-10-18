@@ -101,10 +101,16 @@ export class UsersController {
     return res.send(mutual);
   }
 
+  @Get('globalSearch/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchAnyUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchUser(username, req.user);
+  }
+
   @Get('search/:username')
   @HttpCode(HttpStatus.OK)
   async searchUser(@Param('username') username: string, @Req() req: Request) {
-    return this.userService.searchUser(username, req.user);
+    return this.userService.searchFriendUser(username, req.user);
   }
 
   @Get('search/:friendName/:username')
@@ -113,7 +119,7 @@ export class UsersController {
         @Param('username') username: string, 
         @Req() req: Request) {
     const friendUser = await this.userService.findUserByUsername(friendName);
-    return this.userService.searchUser(username, friendUser);
+    return this.userService.searchFriendUser(username, friendUser);
   }
 
   @Get('/:id')
