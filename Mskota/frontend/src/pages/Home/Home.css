@@ -139,13 +139,13 @@
     
     .title1 {
         /* color: red;      */
-        font-size: clamp(70px, 11vh, 11vw);
+        font-size: clamp(20px, 11vh, 15vw);
         /* background-color: aliceblue; */
     }
     
     .title2 {
         
-        font-size: clamp(50px, 7vh, 7vw);
+        font-size: clamp(20px, 7vh, 10vw);
         /* font-size: clamp(14px, 1.5vw, 200px); */
     }
     

@@ -1,17 +1,25 @@
 import './Section.css'
 import NavBarTwo  from '@/components/NavBars/NavBarTwo/navBarTwo'
 import NavBarTree from '@/components/NavBars/NavBarTree/navBarTree';
-import Profile from '@/components/Profile/Me/MyProfile';
+import MyProfile from '@/components/Profile/Me/MyProfile';
 import { HomeChat } from "@/pages/Chat/HomeChat";
 // import ProfileFriend  from './profileFriend';
 import { Navigate } from 'react-router-dom';
+import NotFriendProfile from  "@/components/Profile/NotFriend/NotFriendProfile"
+import FriendProfile from "@/components/Profile/Friend/FriendProfile"
+
+
 
 function selectSection(section: string): JSX.Element {
 
+    console.log(section)
+
     if (section === '/profile')
-        return ( <Profile />)
-    // else if (section === 'test')
-    //     return ( <ProfileFriend />)
+        return ( <MyProfile />)
+    else if (section === 'test1')
+        return ( <FriendProfile />)
+    else if (section === 'test2')
+        return ( <NotFriendProfile />)
     else if (section === '/chat')
         return ( <HomeChat />)
     // else if (section === 'chat')

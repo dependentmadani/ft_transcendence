@@ -7,33 +7,6 @@ import axios from 'axios';
 
 
 
-function Badges() {
-
-    const handleclick = () => {
-        console.log('profile_user')
-    }
-
-  return (
-    <div className="badge-history">
-      <div className="players">
-        <img id="player" src="src/imgs/example.jpg" alt="user" />
-        <img id="vs-img" src="src/imgs/vs-.png" alt="VS" />
-        <img id="player" src="src/imgs/example.jpg" alt="user-vs" onClick={handleclick} />
-        <div id="comma">
-          <img src="src/imgs/comma.png" alt="comma" />
-          <img src="src/imgs/comma.png" alt="comma" />
-        </div>
-      </div>
-      <div className="score-match">
-        <div className="score">
-          <span>5</span>
-          <span>3</span>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function Friend() {
     return (
         <div className='friend'>
@@ -48,7 +21,7 @@ function Friend() {
 
 function Achivement () {
     return (
-    <div className='achivemet'>
+    <div className='achivement'>
         <div id='title' >
             {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
             <span>Achivements</span>
@@ -77,11 +50,12 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={client.avatar} alt="user-img" />
+                <div id='status'></div>
+                <img src={client.avatar ? client.avatar : 'src/imgs/user-img.png'} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}
-                    <div className='profile-name'> {client.username} </div>
+                    <div className='profile-name'> {client.username ? client.username : 'hamid'} </div>
                     <div className='profile-rank'> 5 </div>
                 </div>
             </div>

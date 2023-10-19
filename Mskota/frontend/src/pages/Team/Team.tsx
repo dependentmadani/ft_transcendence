@@ -57,7 +57,7 @@ function Badges() {
 
         return (
             <div className={nameclass}>
-                <img src={badge.img} alt="person-img" /> 
+                {/* <img src={badge.img} alt="person-img" /> 
                 <div className='portfolio'>
                     <p>{badge.name}</p>
                     <div className='follow'>
@@ -71,7 +71,7 @@ function Badges() {
                             <img src="@/imgs/42.png" alt="42-logo" />
                         </a>
                     </div>
-                </div>
+                </div> */}
             </div>
         )
     })
@@ -95,8 +95,8 @@ function Team() {
             <div className="dscp-dev">
                 <Badges />
             </div>
-            <div className='dev-img' >
-                 <img  src={my_img} alt='home.png' />
+            <div className='project-tools'>
+
             </div>
         </main>
     )

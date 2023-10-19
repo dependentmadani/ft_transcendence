@@ -168,13 +168,9 @@ img {
 }
 .profile-img {
     height: 70%;
-    /* width: 90%; */
-    /* object-fit: cover; */
-    /* aspect-ratio: 4/4; */
 }
 .profile-img > img {
     height:100%;
-    /* width: 100%; */
     aspect-ratio: 10/9.5;
     object-fit: cover;
     outline: 1px solid ;
@@ -197,8 +193,8 @@ img {
     padding: .4rem .1rem;
     border-radius: 5px;
     position: relative;
+    font-size: larger;
     background-color: #384080;
-    /* background-color: rgb(0, 255, 255); */
 }
 .profile-name > img {
     width: 100%;
@@ -300,7 +296,7 @@ img {
     
 
 .achive {
-    width: 100px;
+    width: 200px;
     height: 110px;
     margin: .5rem;
     background-color: bisque;
@@ -409,9 +405,6 @@ img {
     }
     
     @media (max-width: 300px) {
-        .profile-img {
-            height: 60%;
-        }
     
         #settings {
             width: 25px;
@@ -421,13 +414,32 @@ img {
     
     
     @media (max-width: 400px) {
+        .profile-info-left {
+            width: 100%;
+            height: auto;
+            padding-top: 10%;
+            padding-bottom: 10%;
+            background-color: skyblue;
+        }
+
+        .profile-img {
+            width: 70%;
+        }
+
+        .profile-img > img {
+            width: 100%;
+            height: auto;
+            aspect-ratio: 4/4;
+            object-fit: cover;
+        }
+
         .badge-history {
             width: 140px;
             height: 100px;
         }
         
         .achive {
-            width: 90px;
+            width: 80%;
             height: 98px;
         }
     }
@@ -469,7 +481,6 @@ img {
     
     .profile {
         display: flex;
-        /* background-color: salmon; */
     }
 
     .profile-col-1 {
@@ -524,11 +535,6 @@ img {
     @media (max-width: 1220px) {
         .profile-info-left {
             min-width: 260px;
-        }
-
-        .achive {
-            width: 70px;
-            height: 90px;
         }
 
         .friend {

@@ -8,7 +8,7 @@
     width: 100%;
     height: 100vh;
     min-height: 600px;
-    background-color: burlywood;
+    /* background-color: burlywood; */
     /* min-height: 700px;
     max-height: 1400px;
     max-width: 2500px; */
@@ -32,8 +32,9 @@
 .select-section {
     width: 90%;
     height: 100%;
+    margin-bottom: 2%;
     overflow: auto;
-    background-color: crimson;
+    /* background-color: crimson; */
 }
 
 .select-section::-webkit-scrollbar {
@@ -42,8 +43,13 @@
 
 @media (orientation: portrait) {
 
+    .root-section {
+        gap: .5%;
+    }
+
     .main-section {
-       height: 85%;
+       height: 88%;
+       /* background-color: aqua; */
        /* width: ; */
        /* margin-bottom: .5rem; */
         /* overflow: auto; */
@@ -51,6 +57,10 @@
 
     .select-section {
         width: 100%;
+        margin-bottom: 0;
+        /* margin-top: .5rem; */
+        margin-left: .5rem;
+        margin-right: .5rem;
         /* overflow: auto; */
     }
 }

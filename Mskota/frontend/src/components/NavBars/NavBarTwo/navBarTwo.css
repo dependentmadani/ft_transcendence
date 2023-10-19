@@ -9,8 +9,6 @@
     backdrop-filter: blur(20px);
     background-color: rgba(53, 50, 76, 0.2);
 
-    /* background-color: #28273a; */
-    height: 100%;
     width: 100%;
     display: flex;
     align-items: center;
