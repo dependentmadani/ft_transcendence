@@ -2,7 +2,7 @@
 .main-dev {
     height: 84%;
     width: 100%;
-    background-color: antiquewhite;
+    /* background-color: antiquewhite; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -19,14 +19,14 @@
     flex-wrap: wrap; 
     width: 100%;
     height: 45%;
-    background-color: aqua;
+    /* background-color: aqua; */
     overflow-x: auto;
 }
 
 .project-tools {
     width: 100%;
     height: 45%;
-    background-color: salmon;
+    /* background-color: salmon; */
 }
 
 /* .dev-img {
@@ -40,16 +40,29 @@
 
 .badge {
     display: flex;
+    /* align-items: ; */
     /* justify-content: space-around; */
-    background-color: chartreuse;
+    /* background-color: chartreuse; */
     /* margin: ; */
     width: 18%;
-    height: 60%;
+    height: 70%;
     margin: auto;
-    border: 1px solid black;
+    /* border: 1px solid black; */
     /* border-radius: 20px; */
     /* width: ; */
     /* margin: 1.5rem; */
 
 }
+
+
+.team-img {
+    height: 80%;
+    aspect-ratio: 4/4;
+    margin: auto;
+    border-radius: 50%;
+    outline: 2px solid skyblue;
+}
+
+
+
 

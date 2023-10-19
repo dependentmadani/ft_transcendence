@@ -57,8 +57,8 @@ function Badges() {
 
         return (
             <div className={nameclass}>
-                {/* <img src={badge.img} alt="person-img" /> 
-                <div className='portfolio'>
+                <img src={badge.img} alt="person-img"  className='team-img'/> 
+                {/* <div className='portfolio'>
                     <p>{badge.name}</p>
                     <div className='follow'>
                         <a href={badge.github}> 
