@@ -2,13 +2,9 @@
 .main-dev {
     height: 84%;
     width: 100%;
-    /* background-color: antiquewhite; */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    /* justify-items: center;
-    justify-content: space-between; */
-    /* align-items: center; */
     margin: auto;
 }
 
@@ -29,40 +25,42 @@
     /* background-color: salmon; */
 }
 
-/* .dev-img {
-    width: 40%;
-    background-color: darkgoldenrod;
-}
-
-.dev-img > img {
-    width: 100%;
-} */
 
 .badge {
     display: flex;
-    /* align-items: ; */
-    /* justify-content: space-around; */
-    /* background-color: chartreuse; */
-    /* margin: ; */
-    width: 18%;
+    flex-direction: column;
+    width: 15%;
+    max-width: 300px;
     height: 70%;
     margin: auto;
-    /* border: 1px solid black; */
-    /* border-radius: 20px; */
-    /* width: ; */
-    /* margin: 1.5rem; */
-
+    background-color: darkorange;
 }
 
 
 .team-img {
-    height: 80%;
+    /* height: 80%; */
+    width: 80%;
+    object-fit: contain;
     aspect-ratio: 4/4;
     margin: auto;
     border-radius: 50%;
     outline: 2px solid skyblue;
 }
 
+.portfolio {
 
+    background-color: aqua;
+    margin: auto;
+}
 
+.follow {
+    display: flex;
+    /* flex-direction: column;  */
+    justify-content: center; 
+    align-content: center;
+    background-color: salmon;
+}
 
+.follow > a > img {
+    height: 20%;
+}

@@ -120,11 +120,47 @@ img {
     left: 2%;
     width: 8%;
     height: 8%;
+    z-index: 10;
+    /* display: flex; */
+}
+
+#status > div{
+    position: relative;
+    width: 100%;
+    height: 100%;
     outline: 1px black solid;
     border-radius: 50%;
     background-color: springgreen;
-    z-index: 10;
+    z-index: 20;
 }
+
+
+#status > span {
+    display: none;
+}
+
+#status:hover > span {
+    position: absolute;
+    left: 30%;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: grey;
+    width: 80px;
+    height: 100%;
+    border-radius: 20px;
+    z-index: 1;
+    padding-left: 10px;
+    transition: width .6s cubic-bezier(0.075, 0.82, 0.165, 1);
+
+}
+
+/* #status:hover > span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+} */
 
 .profile-name-rank1 {
     width: 80%;

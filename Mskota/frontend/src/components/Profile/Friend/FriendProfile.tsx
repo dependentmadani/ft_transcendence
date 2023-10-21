@@ -50,8 +50,12 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                <div id='status'></div>
-                <img src={client.avatar ? client.avatar : 'src/imgs/user-img.png'} alt="user-img" />
+                {/* <div id='status'></div> */}
+                    <div id='status'>
+                        <span>online</span>
+                        <div></div>
+                    </div>
+                    <img src={client.avatar ? client.avatar : 'src/imgs/user-img.png'} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}

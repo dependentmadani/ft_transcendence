@@ -53,25 +53,24 @@ function Badges() {
 
     const badges = badgeData.map(badge => {
 
-        let nameclass:string = 'badge' 
 
         return (
-            <div className={nameclass}>
+            <div className='badge' >
                 <img src={badge.img} alt="person-img"  className='team-img'/> 
-                {/* <div className='portfolio'>
+                <div className='portfolio'>
                     <p>{badge.name}</p>
                     <div className='follow'>
                         <a href={badge.github}> 
-                            <img src="@/imgs/github.png" alt="github-logo" /> 
+                            <img src="src/imgs/github.png" alt="github-logo" /> 
                         </a>
                         <a href={badge.linkedin}>
-                            <img src="@/imgs/linkedin.png" alt="linkedin-logo" />
+                            <img src="src/imgs/linkedin.png" alt="linkedin-logo" />
                         </a>
                         <a href={badge.intra42}>
-                            <img src="@/imgs/42.png" alt="42-logo" />
+                            <img src="src/imgs/42.png" alt="42-logo" />
                         </a>
                     </div>
-                </div> */}
+                </div>
             </div>
         )
     })

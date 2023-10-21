@@ -45,23 +45,21 @@ function ProfileInfo () {
         <div className='profile-info1'>
             <div className='profile-info1-left'>
                 <div className='profile-img1'>
-                    <div id='status'></div>
+                    <div id='status'>
+                      <span>online</span>
+                      <div></div>
+                    </div>
                     <img src={client.avatar ? client.avatar : 'src/imgs/user-img.png'} alt="user-img" />
                 </div>
             </div>
             <div className='profile-info1-right'>
                 <div className='profile-name-rank1'>
-                    {/* <span className='profile-name'> Name </span> */}
                     <div className='profile-name1'> {client.username ? client.username : 'hamid'} </div>
                     <div className='profile-rank1'> 5 </div>
                 </div>
                 <div className='profile-buttons'>
                     <ReactSVG src='src/imgs/add-user.svg' beforeInjection={(svg) => { svg.classList.add("add-friend"); }} />
                     <ReactSVG src='src/imgs/play-game.svg' beforeInjection={(svg) => { svg.classList.add("play-game"); }} />
-                    {/* <FontAwesomeIcon icon={faUserPlus} beatFade /> */}
-
-                    {/* <button id='add-friend' >Add Friend</button>
-                    <button id='play' >Play</button> */}
                 </div>
             </div>
         </div>
