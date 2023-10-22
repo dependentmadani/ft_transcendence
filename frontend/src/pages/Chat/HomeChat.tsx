@@ -3,7 +3,7 @@ import { Chat } from "@/components/Chat/Chats/Chat"
 import { Rightbar } from "@/components/Chat/Rightbar"
 import { Leftbar } from "@/components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
-import './style.scss'
+import './style.css'
 
 
 export const HomeChat = () => {
@@ -13,7 +13,8 @@ export const HomeChat = () => {
   
 
   useEffect(() => {
-    const _socket: any = io(`http://${import.meta.env.VITE_FRONT_ADDRESS}/chat`);
+    const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`);
+    // console.log('Yooooo', _socket);
     setSocket(_socket)
     
     return () => {
@@ -23,12 +24,13 @@ export const HomeChat = () => {
   
   const handleSelectedChat = (chat: any) => {
     setSelectedChat(chat)
-    chatData._chat = selectedChat
+    console.log('ffff', chat)
+    chatData._chat = chat
   }
 
   const chatData = { _chat: selectedChat, _socket: socket }
 
-  // console.log('address', import.meta.env.VITE_FRONT_ADDRESS)
+  console.log('chatdata', chatData)
 
 
   return (

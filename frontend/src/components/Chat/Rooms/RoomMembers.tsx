@@ -166,7 +166,7 @@ export const RoomMembers = ({ chatData }: any) => {
                         <span key={index} className='roomMember' >{ user.username }</span>
                             <span className='admin'>{ user.role === 'OWNER' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
                             {
-                                user.id !== mainUser?.id && user.role !== 'OWNER' && <div className="memberActions">
+                                user.id !== mainUser?.id && user.role !== 'OWNER' && user.role !== 'ADMIN' && <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
                                     { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
                                     { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'OWNER')} /> }

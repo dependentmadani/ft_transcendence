@@ -30,6 +30,7 @@ export const Messages = ({ chatData, messages }: any) => {
   }, [chatData?._chat?.chat])
 
 
+  console.log('MESSAGES', chatData?._chat)
   return (
     <div className="messages">
       { 

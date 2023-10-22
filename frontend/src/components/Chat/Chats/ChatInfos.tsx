@@ -46,12 +46,13 @@ export const ChatInfos = ({ currentUser }: any) => {
         console.log(currentUser?.receiver?.id, 'unblocked')
     }
 
+    console.log('chat info', currentUser)
 
     return (
         <div className="contactInfo">
                 <div className="contactInfos">
                     <div className="contactAvatar">
-                        <img src={ currentUser?.receiver?.avatar } alt="user_avatar" />
+                        <img className="contact-avatar" src={ currentUser?.receiver?.avatar } alt="user_avatar" />
                     </div>
                     <span>{ currentUser?.receiver?.username }</span>
                     <div className="contactPlay1">

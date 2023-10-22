@@ -6,7 +6,7 @@
   "proxy": "http://localhost:8000",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc -w && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -28,9 +28,9 @@
     "react-dropzone": "^14.2.3",
     "react-icons": "^4.10.1",
     "react-router-dom": "^6.14.2",
-    "sass": "^1.64.2",
-    "scss": "^0.2.4",
     "recharts": "^2.8.0",
+    "sass": "^1.69.4",
+    "scss": "^0.2.4",
     "socket.io": "^4.7.2",
     "socket.io-client": "^4.7.2"
   },
@@ -47,6 +47,6 @@
     "postcss": "^8.4.27",
     "tailwindcss": "^3.3.3",
     "typescript": "^5.0.2",
-    "vite": "^4.4.5"
+    "vite": "^4.5.0"
   }
 }

@@ -20,7 +20,7 @@ export const Input = ({ chatData }: any) => {
         
         return await axios.post(`http://localhost:8000/message/${chatData._chat.type}`, {
           'msgChatId': currentChat?.chatId,
-          'MessageSenId': sender,
+          'MessageSenId': _MAIN_USER_.id,
           'textContent': inputText,
           'type': chatData._chat.type,
         }, {
@@ -69,11 +69,11 @@ export const Input = ({ chatData }: any) => {
     }
   };
 
-  
+  // console.log('WHYY', chatData?._chat?.chat)
   return (
     <div className="input">
-      {chatData?._chat?.chat && <div className="inputContainer">
-        <input type="text" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
+      {/*chatData?._chat?.chat &&*/ <div className="inputContainer">
+        <input type="text" className="input-input" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
           {<span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>}
         </div>

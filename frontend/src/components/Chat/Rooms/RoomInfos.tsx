@@ -59,7 +59,7 @@ export const RoomInfos = ({ chatData }: any) => {
                 <div className="contactInfos">
                     
                     <div className="contactAvatar">
-                        <img src={ roomAvatar } alt="room_avatar" />
+                        <img className='contact-avatar' src={ roomAvatar } alt="room_avatar" />
                     </div>
                     <span>{ currentRoom.roomName }</span>
                 </div>

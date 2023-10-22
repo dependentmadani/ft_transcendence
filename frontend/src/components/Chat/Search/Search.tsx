@@ -7,7 +7,7 @@ import { SearchResult } from "./SearchResult";
 
 interface User {}
 
-export const Search = ({ selectedChat, chatData }: any) => {
+export const Search = ({ onValueChange, chatData }: any) => {
   const [username, setUsername] = useState('')
   const [searchResults, setSearchResults] = useState<User | null>([])
   const [showForm, setShowForm] = useState(false);
@@ -45,7 +45,7 @@ export const Search = ({ selectedChat, chatData }: any) => {
     <div className="search">
       <div className="searchContainer">
         <div className="serchChatInput">
-          <input type="text" placeholder="Find a user" value={username} onChange={e => setUsername(e.target.value)} />
+          <input type="text" className="search-chat-input" placeholder="Find a user" value={username} onChange={e => setUsername(e.target.value)} />
         </div>
         <div className="searchChatIcon">
           <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={openForm} />
@@ -54,7 +54,7 @@ export const Search = ({ selectedChat, chatData }: any) => {
           <CreateRoom chatData={ chatData } />
         </div>
       </div>
-      { showForm && searchResults && <SearchResult onClose={closeForm} selectedChat={selectedChat} searchResults={searchResults} />}
+      { showForm && searchResults && <SearchResult onClose={closeForm} onValueChange={onValueChange} chatData={chatData} searchResults={searchResults} />}
     </div>
   )
 }

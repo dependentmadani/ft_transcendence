@@ -104,8 +104,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                 const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
                 const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
                 const _latestMessage = (await axios.get(`http://localhost:8000/message/chat/${chat?.chatId}`, {withCredentials: true}))?.data;
-                const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt;
-                const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent;
+                const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt || null;
+                const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent || null;
                 
                 const newChat: Chat = {
                   chatId: chat.chatId,
@@ -116,6 +116,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                   latestMessageContent: latestMessageContent,
                   type: 'chat',
                 };
+                console.log('new chat', newChat)
             
                 const chatMessages = await axios.get(`http://localhost:8000/message/chat/${chat.chatId}`, {withCredentials: true})
                 if (chatMessages.data.length !== 0)
@@ -189,7 +190,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             const dateB: any = new Date(b.latestMessageDate);
             return dateB - dateA;
           });
-          console.log('srrsrrr', _contacts)
+          console.log('srrsrrr', newChats)
         
           setContacts(_contacts);
         }
@@ -228,6 +229,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     const handleClick = (chat: any, type: string) => {
       setSelectedChat({chat, type});
       onValueChange({chat, type})
+      console.log('chats chat', chat)
     };
 
     useEffect(() => {
@@ -260,6 +262,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     }, [newRooms]);
   
 
+    console.log('Contacts ', chats)
+
 
     return (
         <div className="chats">
@@ -267,11 +271,11 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             contacts?.map((contact: Contact, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(contact, contact.type)}>
                 <div className="chatAvatar">
-                  <img src={ contact?.receiver ? contact?.receiver?.avatar : `http://localhost:8000/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
+                  <img className="avatar-img" src={ contact?.receiver ? contact?.receiver?.avatar : `http://localhost:8000/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
                 </div>
                 <div className="chatData">
-                  <span>{ contact?.roomName ? ((contact.roomName)?.length <= 8 ? contact.roomName : (contact.roomName)?.substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>
-                  <p>{ contact?.latestMessageContent ? (contact?.latestMessageContent)?.length <= 8 ? contact?.latestMessageContent : (contact.latestMessageContent)?.substring(0,8)+'...' : 'No messages' }</p>
+                  <span className="contact-name">{ contact?.roomName ? ((contact.roomName)?.length <= 8 ? contact.roomName : (contact.roomName)?.substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>
+                  <p className="latest-message">{ contact?.latestMessageContent ? (contact?.latestMessageContent)?.length <= 8 ? contact?.latestMessageContent : (contact.latestMessageContent)?.substring(0,8)+'...' : 'No messages' }</p>
                 </div>
                 {/* { 0 && <span className="notifSpan">n</span>} */}
               </div>
