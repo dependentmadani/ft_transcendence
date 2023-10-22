@@ -60,14 +60,14 @@ function Badges() {
                 <div className='portfolio'>
                     <p>{badge.name}</p>
                     <div className='follow'>
+                        <a href={badge.intra42}>
+                            <img src="src/imgs/42.png" alt="42-logo" />
+                        </a>
                         <a href={badge.github}> 
-                            <img src="src/imgs/github.png" alt="github-logo" /> 
+                            <img src="src/imgs/github.svg" alt="github-logo" /> 
                         </a>
                         <a href={badge.linkedin}>
                             <img src="src/imgs/linkedin.png" alt="linkedin-logo" />
-                        </a>
-                        <a href={badge.intra42}>
-                            <img src="src/imgs/42.png" alt="42-logo" />
                         </a>
                     </div>
                 </div>
@@ -78,9 +78,9 @@ function Badges() {
 
 
     return (
-        <>
+        <div className='badges'>
             {badges}
-        </>
+        </div>
     )
 }
 
@@ -93,6 +93,7 @@ function Team() {
         <main className="main-dev" >    
             <div className="dscp-dev">
                 <Badges />
+                {/* <Badges /> */}
             </div>
             <div className='project-tools'>
 
