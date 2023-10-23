@@ -50,7 +50,7 @@ model Users {
   roomInvitationReceiver  Invitations[]   @relation("receiver")
 
   // Game relation
-  games                   Game[]          @relation("game")
+  games                   Game?
 
   //Game History relation
   myHistoryGames          History[]       @relation("myHistory")
@@ -62,8 +62,8 @@ model Game {
   createdAt               DateTime        @default(now())
   updatedAt               DateTime        @updatedAt
   id                      Int             @id @default(autoincrement())
-  user                    Users           @relation("game", fields: [userId], references: [id])
-  userId                  Int
+  user                    Users           @relation(fields: [userId], references: [id])
+  userId                  Int             @unique
   gamesPlayed             Int             @default(0)
   wins                    Int             @default(0)
   loses                   Int             @default(0)

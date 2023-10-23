@@ -88,6 +88,11 @@ export class AuthService {
             userStatus: "ONLINE"
           },
         });
+        await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
+        });
         const token = await this.signToken(
           users.id,
           users.email,
@@ -106,6 +111,11 @@ export class AuthService {
             avatar: avatar,
             userStatus: "ONLINE"
           },
+        });
+      await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
         });
         const token = await this.signToken(
           users.id,
@@ -216,6 +226,11 @@ export class AuthService {
               userStatus: "ONLINE",
             },
           });
+        await this.prisma.game.create({
+            data: {
+              userId: users.id,
+            }
+          });
         //the password need to be deleted so it cannot be reached by interder
         const token = await this.signToken(
           users.id,
@@ -236,6 +251,11 @@ export class AuthService {
             avatar: profile.avatar,
             userStatus: "ONLINE",
           },
+        });
+      await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
         });
       //the password need to be deleted so it cannot be reached by interder
       const token = await this.signToken(

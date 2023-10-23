@@ -36,6 +36,9 @@ export class UsersService {
         },
         include: {
           friends: true,
+          games: true,
+          myHistoryGames: true,
+          oppHistoryGames: true
         }
       });
     return user;
