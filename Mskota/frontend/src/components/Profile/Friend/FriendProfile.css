@@ -34,50 +34,9 @@ img {
     /* background-color: aquamarine; */
 }
 
-.search-input {
-    position: relative;
-    /* right: 0; */
-    width: 0;
-    height: 90%;
-    padding: 0;
-    margin: auto;
-    max-height: 40px;
-    /* min-height: 28px; */
-    border-radius: 44px;
-    z-index: 110;
-    outline: none;
-    
-    /* border: 1px solid #4c7dc1; */
-    transition: width .6s cubic-bezier(0.075, 0.82, 0.165, 1);
-}
 
-.search-input::placeholder {
-    font-size: 75%;
-    text-align: left;
-    padding-left: 10%;
-}
 
-#search  {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translate(0%, -50%); 
-    margin: auto;
-    height: 80%;
-    padding: .4vh;
-    max-height: 32px;
-    background-color: #4c7dc1;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 110;
-
-}
-
-#search:hover {
-    background-color: rgb(58, 97, 131);
-}
-
-.profile-info-left,
+.profile-info-left1,
 .user-friends,
 .achivement,
 .statistic {
@@ -115,7 +74,7 @@ img {
     overflow: hidden;
 }
 
-.profile-info-left {
+.profile-info-left1 {
     flex-wrap: nowrap;
     border-radius: 10px;
     background-color: rgba(113, 113, 146, 0.55);
@@ -166,12 +125,12 @@ img {
     align-items: center;
     justify-content: center;
 }
-.profile-img {
+.profile-img1 {
     height: 70%;
     position: relative;
 }
 
-.profile-img > img {
+.profile-img1 > img {
     height:100%;
     /* width: 100%; */
     aspect-ratio: 10/9.5;
@@ -204,6 +163,7 @@ img {
 
 #status > span {
     display: none;
+    color: black;
 }
 
 #status:hover > span {
@@ -211,14 +171,16 @@ img {
     left: 30%;
     top: 0;
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     background-color: grey;
     width: 80px;
     height: 100%;
     border-radius: 20px;
     z-index: 1;
-    padding-left: 10px;
+    padding-top: 15%;
+    font-size: 70%;
+    font-weight: 600;
     transition: width .6s cubic-bezier(0.075, 0.82, 0.165, 1);
 
 }*/
@@ -349,7 +311,7 @@ img {
 
     @media (max-width: 600px) {
 
-        .profile-info-left {
+        .profile-info-left1 {
             width: 100%;
             margin: auto;
             /* background-color: greenyellow; */
@@ -368,7 +330,7 @@ img {
             height: 70%;
         }
 
-        .profile-img {
+        .profile-img1 {
             height: 70%;
         }
 
@@ -378,7 +340,7 @@ img {
         top: 4%;
     }
 
-    .profile-info-left,
+    .profile-info-left1,
     .achivement,
     .user-friends,
     .statistic {
@@ -397,7 +359,7 @@ img {
     @media (max-width: 400px) {
         
 
-        .profile-info-left {
+        .profile-info-left1 {
             width: 100%;
             height: auto;
             padding-top: 10%;
@@ -405,7 +367,7 @@ img {
             background-color: skyblue;
         }
 
-        .profile-img {
+        .profile-img1 {
             width: 70%;
             /* object-fit: cover;
             overflow: hidden; */
@@ -413,7 +375,7 @@ img {
             /* aspect-ratio: 4/4; */
         }
 
-        .profile-img > img {
+        .profile-img1 > img {
             width: 100%;
             height: auto;
             aspect-ratio: 4/4;
@@ -443,13 +405,13 @@ img {
     }
 
     .profile-info-right,
-    .profile-info-left {
+    .profile-info-left1 {
         height: 350px;
         width: 50%;
         margin: 0 .5rem;
     }
 
-    .profile-img {
+    .profile-img1 {
         height: 60%;
     }
 
@@ -487,7 +449,7 @@ img {
         max-height: 550px;
     }
 
-    .profile-img {
+    .profile-img1 {
         height: 60%;
     }
 
@@ -495,7 +457,7 @@ img {
         height: 100%;
     }
 
-    .profile-info-left {
+    .profile-info-left1 {
         display: flex;
         align-self: end;
         height: 100%;
@@ -514,7 +476,7 @@ img {
     }
     
     @media (max-width: 1220px) {
-        .profile-info-left {
+        .profile-info-left1 {
             min-width: 260px;
         }
 
@@ -555,7 +517,7 @@ img {
         .profile-info-right {
             display: none;
         }
-        .profile-info-left {
+        .profile-info-left1 {
             width: 100%;
             height: 100%;
         }

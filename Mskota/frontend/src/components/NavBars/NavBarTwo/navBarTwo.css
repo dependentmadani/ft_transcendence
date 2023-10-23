@@ -117,7 +117,7 @@
     top: 55%;
     border-radius: 4px;
     /* border: none; */
-    background-color: rgb(253, 22, 22);
+    /* background-color: rgb(253, 22, 22); */
 }
 
 .user-img2 {
@@ -239,7 +239,8 @@
         }
 
         .user-img {
-            height: 75%;
+            margin-right: 4%;
+            /* height: 75%; */
         }
 
         .right-bar {

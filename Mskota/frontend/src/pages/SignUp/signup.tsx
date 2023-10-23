@@ -8,7 +8,7 @@ function SetInfo() {
   const [fileUploaded, setFileUploaded] = useState<File | null>(null);
   const [userId, setUserId] = useState<number | null>(null);
   const [username, setUsername] = useState<string>('');
-  const [avatar, setAvatar] = useState<string>('src/imgs/user-img.png');
+  const [avatar, setAvatar] = useState<string>('/src/imgs/user-img.png');
   const {client, updateClient} = useClient();
   const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -108,7 +108,7 @@ function SetInfo() {
             onChange={(e) => handleChangeAvatar(e.target.files)}
           />
           <label htmlFor='file' className='choose-img'>
-            <img src='src/imgs/change-img.png' alt='Upload' />
+            <img src='/src/imgs/change-img.png' alt='Upload' />
           </label>
         </div>
         <input

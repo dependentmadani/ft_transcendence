@@ -1,4 +1,5 @@
 import './Team.css'
+import { ReactSVG } from "react-svg";
 
 
 const badgeData = [
@@ -61,13 +62,13 @@ function Badges() {
                     <p>{badge.name}</p>
                     <div className='follow'>
                         <a href={badge.intra42}>
-                            <img src="src/imgs/42.png" alt="42-logo" />
+                            <ReactSVG src="/src/imgs/svg/42_Logo.svg" className='contact'  />
                         </a>
                         <a href={badge.github}> 
-                            <img src="src/imgs/github.svg" alt="github-logo" /> 
+                            <ReactSVG src="/src/imgs/svg/github.svg"  className='contact' />
                         </a>
                         <a href={badge.linkedin}>
-                            <img src="src/imgs/linkedin.png" alt="linkedin-logo" />
+                            <ReactSVG src='/src/imgs/svg/linkedin.svg' className='contact' />
                         </a>
                     </div>
                 </div>
@@ -84,6 +85,22 @@ function Badges() {
     )
 }
 
+const Tools = () => {
+    return (
+        <div  className='tools'>
+            <ReactSVG src='/src/imgs/svg/nodejs.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/npm.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/vite.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/typescript.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/css.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/react.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/nestjs.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/prisma.svg' className='tool' />
+            <ReactSVG src='/src/imgs/svg/docker.svg' className='tool' />
+        </div> 
+    )
+}
+
 
 function Team() {
 
@@ -93,10 +110,14 @@ function Team() {
         <main className="main-dev" >    
             <div className="dscp-dev">
                 <Badges />
-                {/* <Badges /> */}
+                <Badges />
             </div>
-            <div className='project-tools'>
-
+            <div className='main-project-tools'>
+                <p> Languages & Technologies </p>
+                <div className='project-tools'>
+                    <Tools />
+                    <Tools />
+                </div>
             </div>
         </main>
     )

@@ -107,7 +107,7 @@ function NavBarOne() {
             <>
                 <nav className='bar'>
                     <Link to='/' >
-                        <img className="logo-img" src='src/imgs/mskota.png' alt='Mskota-Logo' /> 
+                        <img className="logo-img" src='/src/imgs/mskota.png' alt='Mskota-Logo' /> 
                     </Link>
                     <ul className="list">
                         {defaultList}

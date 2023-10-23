@@ -16,12 +16,12 @@ function Badges() {
   return (
     <div className="badge-history">
       <div className="players">
-        <img id="player" src="src/imgs/example.jpg" alt="user" />
-        <img id="vs-img" src="src/imgs/vs-.png" alt="VS" />
-        <img id="player" src="src/imgs/example.jpg" alt="user-vs" onClick={handleclick} />
+        <img id="player" src="/src/imgs/example.jpg" alt="user" />
+        <img id="vs-img" src="/src/imgs/vs-.png" alt="VS" />
+        <img id="player" src="/src/imgs/example.jpg" alt="user-vs" onClick={handleclick} />
         <div id="comma">
-          <img src="src/imgs/comma.png" alt="comma" />
-          <img src="src/imgs/comma.png" alt="comma" />
+          <img src="/src/imgs/comma.png" alt="comma" />
+          <img src="/src/imgs/comma.png" alt="comma" />
         </div>
       </div>
       <div className="score-match">
@@ -37,11 +37,11 @@ function Badges() {
 function Friend() {
     return (
         <div className='friend'>
-            <img className='user-friend' src="src/imgs/example.jpg" alt="friend-img" />
+            <img className='user-friend' src="/src/imgs/example.jpg" alt="friend-img" />
             <span className='status-friend'><span id='circle'></span> status</span>
             <span className='name-friend'> Name</span>
             {/* <span className='icon-chat'></span> */}
-            <img className='icon-chat' src="src/imgs/chat-room.png" alt="chat-img" />
+            <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
         </div>
     )
 }
@@ -115,7 +115,7 @@ function Frindes () {
 
 
     const [searchOpen, setSearchOpen] = useState(false);
-    const [iconSearch, setIconSearch] = useState('src/imgs/search.png');
+    const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
     
 
     // var icon_search:string = ;
@@ -125,15 +125,16 @@ function Frindes () {
         const search_icon = document.getElementById('search') as HTMLElement
         // console.log ('hlwa')
         if (!searchOpen) {
-            setIconSearch('src/imgs/cancel-red.png');
+            setIconSearch('/src/imgs/cancel-red.png');
             my_search.style.width = '100%';
-            search_icon.style.borderRadius = '0px 20px 20px 0';
+            search_icon.style.background = 'transparent';
             
         }
         else if (searchOpen) { 
-            setIconSearch('src/imgs/search.png');
+            setIconSearch('/src/imgs/search.png');
             my_search.style.width = '0px'
             my_search.style.border = 'none' 
+            search_icon.style.background = '#4c7dc1';
             search_icon.style.borderRadius = '20px'
         }
         setSearchOpen(!searchOpen);
@@ -154,7 +155,7 @@ function Frindes () {
     return (
         <div className='user-friends'>
             <div className='search-bar'>
-                <input type="search" className="search-input" placeholder="Search..." />
+                <input type="search" className="search-input" placeholder="Search..."  />
                 <img id='search' src={iconSearch} alt="search" onClick={search_open} onKeyDown={handleKey} />
             </div>
             {/* <div className='search-bar'>
@@ -205,7 +206,7 @@ function MyProfile () {
 
     return (
         <div className='profile'>
-            <img id='settings'  src="src/imgs/setting.png" alt="setting" />
+            <img id='settings'  src="/src/imgs/setting.png" alt="setting" />
             <div className='profile-col-1'>
                 <ProfileInfo />
                 <Frindes />

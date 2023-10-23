@@ -46,13 +46,13 @@ function  Sign(props:any) {
         <div className="row">
           <div className="logo-login">
             <Link to="/">
-                <img className="logo-login-img" src="src/imgs/mskota.png" alt="Mskota-Logo" />
+                <img className="logo-login-img" src="/src/imgs/mskota.png" alt="Mskota-Logo" />
             </Link>
           </div>
           <div className='body-login'>
               {(props.tag === 'login') ? <Login /> : <SignUp />}
             <div className='col2'>
-              <img src="src/imgs/pingpong.gif" alt="pingpong-gif" />
+              <img src="/src/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>
           </div>
         </div>

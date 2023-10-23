@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { createBrowserRouter, Navigate, useParams } from "react-router-dom";
 import DefaultSection from "@/components/Sections/defaultSection";
 import Sign from "@/components/Sections/Sign";
 import Section from "@/components/Sections/Section/Section";
@@ -15,8 +15,9 @@ import FriendProfile from "@/components/Profile/Friend/FriendProfile"
 function GetRouteElement(props:any) {
     
     const { client } = useClient();
+
     const defaultList = ['/', '/home', '/about', '/team'];
-    const list = ['/login', '/signup' , '/profile', '/chat', '/game', '/leaderboard']
+    const list = ['/login', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard']
     console.log(props.tag)
     console.log(client.signedIn)
     console.log(defaultList.includes(props.tag), list.includes(props.tag))
@@ -34,6 +35,7 @@ function GetRouteElement(props:any) {
     return <Navigate to='/' />
 }
 
+
 export const router = createBrowserRouter([
     {
         children: [
@@ -44,6 +46,7 @@ export const router = createBrowserRouter([
             { path: '/login', element: < GetRouteElement tag='/login' /> },
             { path: '/signup', element: < GetRouteElement tag='/signup' /> },
             { path: '/profile', element: < GetRouteElement tag='/profile' /> },
+            { path: '/profile/:username', element: < GetRouteElement tag='/profile/:username' /> },
             { path: '/chat', element: < GetRouteElement tag='/chat' /> },
             { path: '/game', element: < GetRouteElement tag='/game' /> },
             { path: '/friend', element: <Section section='test1' /> },

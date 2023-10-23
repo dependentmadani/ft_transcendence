@@ -73,10 +73,6 @@ img {
 
 }
 
-#search:hover {
-    background-color: rgb(58, 97, 131);
-}
-
 .profile-info-left,
 .user-friends,
 .history,
@@ -509,7 +505,18 @@ img {
     }
 
     .profile-img {
+        /* width: 80%; */
         height: 60%;
+        display: flex;
+    }
+
+    .profile-img > img{
+        margin: auto;
+        width: 90%;
+        min-height: 90%;
+        max-height: 100%;
+        height: auto;
+        aspect-ratio: 4/4;
     }
 
     .profile-info-right {

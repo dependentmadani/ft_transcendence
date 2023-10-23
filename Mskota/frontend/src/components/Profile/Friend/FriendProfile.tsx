@@ -10,11 +10,11 @@ import axios from 'axios';
 function Friend() {
     return (
         <div className='friend'>
-            <img className='user-friend' src="src/imgs/example.jpg" alt="friend-img" />
+            <img className='user-friend' src="/src/imgs/example.jpg" alt="friend-img" />
             <span className='status-friend'><span id='circle'></span> status</span>
             <span className='name-friend'> Name</span>
             {/* <span className='icon-chat'></span> */}
-            <img className='icon-chat' src="src/imgs/chat-room.png" alt="chat-img" />
+            <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
         </div>
     )
 }
@@ -42,24 +42,23 @@ function Achivement () {
 }
 
 
-function ProfileInfo () {
+function ProfileInfo (props: any) {
 
-    const {client} = useClient();
 
     return (
         <div className='profile-info'>
-            <div className='profile-info-left'>
-                <div className='profile-img'>
+            <div className='profile-info-left1'>
+                <div className='profile-img1'>
                 {/* <div id='status'></div> */}
                     <div id='status'>
-                        <span>online</span>
+                        <span>{props.userData.userStatus}</span>
                         <div></div>
                     </div>
-                    <img src={client.avatar ? client.avatar : 'src/imgs/user-img.png'} alt="user-img" />
+                    <img src={props.userData.avatar ? props.userData.avatar : '/src/imgs/user-img.png'} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}
-                    <div className='profile-name'> {client.username ? client.username : 'hamid'} </div>
+                    <div className='profile-name'> {props.userData.username ? props.userData.username : 'hamid'} </div>
                     <div className='profile-rank'> 5 </div>
                 </div>
             </div>
@@ -71,7 +70,7 @@ function Frindes () {
 
 
     const [searchOpen, setSearchOpen] = useState(false);
-    const [iconSearch, setIconSearch] = useState('src/imgs/search.png');
+    const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
     
 
     // var icon_search:string = ;
@@ -81,15 +80,16 @@ function Frindes () {
         const search_icon = document.getElementById('search') as HTMLElement
         // console.log ('hlwa')
         if (!searchOpen) {
-            setIconSearch('src/imgs/cancel-red.png');
+            setIconSearch('/src/imgs/cancel-red.png');
             my_search.style.width = '100%';
             search_icon.style.borderRadius = '0px 20px 20px 0';
-            
+            search_icon.style.background = 'transparent';
         }
         else if (searchOpen) { 
-            setIconSearch('src/imgs/search.png');
+            setIconSearch('/src/imgs/search.png');
             my_search.style.width = '0px'
-            my_search.style.border = 'none' 
+            my_search.style.border = 'none'
+            search_icon.style.background = '#4c7dc1';
             search_icon.style.borderRadius = '20px'
         }
         setSearchOpen(!searchOpen);
@@ -154,16 +154,16 @@ function Statistic() {
 
 
 
-function FriendProfile () {
+function FriendProfile (props: any) {
 
-  console.log('profile')
+  console.log('profileFriend', props.userData)
 
 
     return (
         <div className='profile'>
-            <img id='settings'  src="src/imgs/setting.png" alt="setting" />
+            <img id='settings'  src="/src/imgs/setting.png" alt="setting" />
             <div className='profile-col-1'>
-                <ProfileInfo />
+                <ProfileInfo userData={props.userData[0]} />
                 <Frindes />
             </div>
             <div className='profile-col-2'>

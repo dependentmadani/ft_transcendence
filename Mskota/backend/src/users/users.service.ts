@@ -42,6 +42,7 @@ export class UsersService {
   }
 
   async searchUser(username: string, users: Users) {
+    console.log(username)
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
     }
@@ -57,6 +58,29 @@ export class UsersService {
       }
     });
     return user;
+  }
+  
+  async searchFriendUser(username: string, users: Users) {
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
+      where: {
+        email: users.email,
+      },
+      select: {
+        friends: {
+          where: {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          }
+        }
+      }
+    });
+
+    return user[0].friends;
   }
 
   async addFriend(userId: number, friendId: number) {
@@ -287,7 +311,7 @@ export class UsersService {
   async updateUser(
     userId: number,
     userInfo: Users,
-    username: UserModify,
+    body: UserModify,
   ) {
     try {
       const user = await this.prisma.users.update(
@@ -296,13 +320,13 @@ export class UsersService {
             id: userId,
           },
           data: {
-            username: username.username,
+            username: body?.username,
+            avatar: body?.avatar,
             signedUp: true,
           },
         },
-        );
-      console.log('user information: ', user)
-        
+      );
+
       return user;
     } catch {
       throw new UnauthorizedException(

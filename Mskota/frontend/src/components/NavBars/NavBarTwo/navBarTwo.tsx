@@ -20,7 +20,7 @@ function NavBarTwo (props:any) {
     const listNotific:JSX.Element = (
     <>
         <div className='notifics' >
-            <img src="src/imgs/example.jpg" alt="hlwa" />
+            <img src="/src/imgs/example.jpg" alt="hlwa" />
             <span id='notific-user' >hamid</span>
             <span id='notific-title'>Friend</span>
             <button id='accept'> </button>
@@ -114,10 +114,10 @@ function NavBarTwo (props:any) {
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="src/imgs/mskota.png" alt="Mskota-logo" />
+                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
-                    <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
+                    <img className='notification' src="/src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
                     <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
                         {listNotific}
                     </div>
