@@ -1,15 +1,17 @@
 import axios from "axios";
 import { useState } from "react";
+import { useAllow } from '@/context/AllowContext';
 
-export const PromptPassword = ({ setAllowing, openForm, chatData }: any) => {
+export const PromptPassword = ({ openForm, chatData }: any) => {
 
     const [pass, setPass] = useState('')
+    const [contextAllow, updateAllow] = useAllow();
 
     const checPassword = async () => {
         if (pass.trim() !== '') {
             const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-            const allwd = await axios.get(`http://localhost:8000/roomUsers/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
-            if (al) {
+            const allwd = await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
+            if (allwd.data[0].allowed !== true) {
                 const res = await axios.post(`http://localhost:8000/room/pass/${chatData?._chat?.chat?.id}`, {
                 'roomPass': pass,
                 }, { withCredentials: true })
@@ -18,7 +20,8 @@ export const PromptPassword = ({ setAllowing, openForm, chatData }: any) => {
                     await axios.put(`http://localhost:8000/roomUsers/allow/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, {
                     'allowed': true,
                     }, { withCredentials: true })
-                    setAllowing()
+                    // setAllowing()
+                    updateAllow(true);
                 }
             }
         }

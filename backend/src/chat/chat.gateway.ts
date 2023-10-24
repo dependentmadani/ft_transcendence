@@ -1,6 +1,7 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Message, Users, Room } from '@prisma/client';
+import { number } from 'joi';
 
 @WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
 export class ChatGateway {
@@ -9,16 +10,18 @@ export class ChatGateway {
 
   // private readonly onlineUsers: Map<number, Socket> = new Map<number, Socket>();
 
+  private readonly connectedUsers: Map<number, Socket> = new Map<number, Socket>();
+
   @SubscribeMessage('connect')
   handleSetup(client: Socket, userData: Users): void {
-    // const userId = userData.id;
+    const userId: number = userData.id;
 
-    // if (!this.onlineUsers.has(userId)) {
-    //   this.onlineUsers.set(userId, client);
-    //   console.log(`User ${userId} connected`);
-    // }
-
-    client.emit('connect', userData.id);
+    if (!this.connectedUsers.has(userId)) {
+      this.connectedUsers.set(userId, client);
+      console.log(`User ${userId} connected`);
+    }
+    console.log('alo?')
+    client.emit('connect', userId);
   }
 
   @SubscribeMessage('message')
@@ -41,9 +44,20 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('createRoom')
-  handleRoomCreation(client: Socket, room: Room): void {
-    console.log('creati ', room);
-    this.server.emit('newRoom', room);
+  handleRoomCreation(client: Socket, room: Room, userId: number): void {
+    console.log('creati ', room, userId);
+
+    // Get the specific user's socket connection using their userId
+    const userSocket = this.connectedUsers.get(userId);
+
+    if (userSocket) {
+      // Emit the 'newRoom' event to the specific user
+      userSocket.emit('newRoom', room);
+    } else {
+      console.log(`User with ID ${userId} is not connected.`);
+      // Handle the case where the user is not connected
+      // You can emit an error event or handle it in your application logic
+    }
   }
 
   @SubscribeMessage('leaveRoom')

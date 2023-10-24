@@ -5,15 +5,39 @@ import { Leftbar } from "@/components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
 import './style.css'
 import { RoomProvider } from "@/context/RoomsContext";
+import { AllowProvider } from "@/context/AllowContext";
+import axios from "axios";
+
+interface User {
+  id: number,
+}
 
 export const HomeChat = () => {
 
   const [selectedChat, setSelectedChat] = useState<any>();
   const [socket, setSocket] = useState<Socket>()
+  const [mainUser, setMainUesr] = useState<User>()
   
 
   useEffect(() => {
+
+    const getMainUser = async () => {
+        const res = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+        setMainUesr(res.data)
+    }
+
+    getMainUser()
+  }, [])
+
+  console.log('MAIN____________USER', mainUser)
+  
+  useEffect(() => {
+    
     const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`);
+    _socket.emit('connect', mainUser?.id)
+    _socket.on('connect', () => {
+      console.log('connected')
+    })
     // console.log('Yooooo', _socket);
     setSocket(_socket)
     
@@ -37,9 +61,11 @@ export const HomeChat = () => {
     <div className='home'>
         <div className='container'>
           <RoomProvider>
-            <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
-            <Chat chatData={ chatData } />
-            <Rightbar chatData={ chatData } />
+            <AllowProvider > 
+              <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
+              <Chat chatData={ chatData } />
+              <Rightbar chatData={ chatData } />
+            </AllowProvider > 
           </RoomProvider>
         </div>
     </div>

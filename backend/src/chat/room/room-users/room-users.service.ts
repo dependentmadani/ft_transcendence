@@ -100,6 +100,7 @@ export class RoomUsersService {
             })
             // It works but at what cost
             if (roomUser.length === 0) {
+                console.log('yoooo')
                 return await this.prisma.roomUsers.create({
                     data: {
                         roomId: roomId,

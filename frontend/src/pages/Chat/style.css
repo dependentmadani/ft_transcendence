@@ -312,7 +312,7 @@ form {
 }
 
 .roomCreationInput {
-        background-color: #5f659d !important;
+  background-color: #5f659d !important;
 
 
       span {
@@ -405,9 +405,9 @@ form {
   
 }
 
-.userChats {
+/* .userChats {
   height: 7%;
-}
+} */
 
 .logo {
           font-weight: bold;
@@ -518,6 +518,7 @@ form {
   margin: 0 10px;
   color: lightgray;
   font-size: 0.9em;
+  width: 100%;
 
   &::placeholder {
     color: lightgray;
@@ -714,7 +715,13 @@ form {
 }
 
 .change-room-name {
-
+  text-align: start;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #12142e99;
+  font-style: italic;
+  margin: 10px 0;
+  font-weight: 500;
 }
 
 .roomFormInvite {
@@ -1110,6 +1117,45 @@ form {
   cursor: pointer;
   margin: 0 5px;
   color: aliceblue;
+}
+
+
+.room-creation-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  color: #2f2d52;
+  margin: auto;
+  padding: 10px;
+  text-align: start;
+  color:#41456a;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 100;
+    
+  &::placeholder {
+    color: lightgray;
+    font-style: italic;
+  }
+}
+
+.room-creation-pass-input {
+  width: 35%;
+  border: none;
+  outline: none;
+  color: #2f2d52;
+  margin: 10px auto;
+  padding: 10px;
+  text-align: start;
+  color: #41456a;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 100;
+    
+  &::placeholder {
+    color: lightgray;
+    font-style: italic;
+  }
 }
 
 .chatInfo {

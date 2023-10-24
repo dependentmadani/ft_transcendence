@@ -3,6 +3,7 @@ import { Input } from '../Input'
 import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
+import { useAllow } from '@/context/AllowContext';
 
 interface Chat {}
 
@@ -17,34 +18,48 @@ interface Message {
 export const Chat = ({ chatData }: any) => {
 
   const [isPrivate, setIsPrivate] = useState(true)
-  const [showForm, setShowForm] = useState(true);
-  const [isAllowed, setIsAllowed] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [isAllowed, updateAllow] = useState(false);
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [roomMessages, setRoomMessages] = useState<Message[]>([])
+  const [contextAllow] = useAllow();
 
   
-
+  const currentChat = chatData?._chat?.chat
+  
   useEffect(() => {
-    if (chatData?._chat?.chat?.roomType === 'Private')
-    {
-      setIsPrivate(true)
-      setShowForm(true);
+    const checkAllow = async () => {
+
+      if (chatData?._chat?.type === 'room') {
+        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        const allwd = await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
+        if (allwd.data[0].allowed !== true)
+        {
+          setIsPrivate(true)
+          setShowForm(true);
+        }
+        else {
+          setShowForm(false)
+          setIsPrivate(false);
+        }
+        // console.log('-------', allwd.data[0].allowed, 'AYOOOOooo', showForm)
+      }
     }
-    else
-      setIsPrivate(false)
+
+    checkAllow()
 
     console.log('selceted Chat', isPrivate)
   }, [chatData?._chat?.chat?.id])
   
   
 
-  useEffect(() => {
-    if (chatData?._chat?.chat?.roomType === 'Private') {
-      setIsPrivate(true);
-    } else {
-      setIsPrivate(false);
-    }
-  }, [chatData?._chat?.chat?.id]);
+  // useEffect(() => {
+  //   if (chatData?._chat?.chat?.roomType === 'Private') {
+  //     setIsPrivate(true);
+  //   } else {
+  //     setIsPrivate(false);
+  //   }
+  // }, [chatData?._chat?.chat?.id]);
 
   const openForm = () => {
     if (showForm === false)
@@ -53,10 +68,10 @@ export const Chat = ({ chatData }: any) => {
       setShowForm(false)
   };
 
-  const setAllowing = () => {
-    setIsAllowed(true)
-    setIsPrivate(false);
-  }
+  // const setAllowing = () => {
+  //   setIsAllowed(true)
+  //   setIsPrivate(false);
+  // }
 
 
   const messageListener = (message: Message) => {
@@ -80,7 +95,7 @@ export const Chat = ({ chatData }: any) => {
 
   
 
-  const currentChat = chatData?._chat?.chat
+  
   useEffect(() => {
     const fetchChatMessages = async () => {
       try {
@@ -112,13 +127,14 @@ export const Chat = ({ chatData }: any) => {
     fetchRoomMessages()
   }, [chatData?._chat?.chat?.id])
 
-  console.log('show from', showForm, 'is allowed', isAllowed) 
+  console.log('show from', showForm, 'is allowed', isPrivate) 
 
 
   return (
-    <div id='Conversation' className='chat'>
+    <div id='Conversation' className={`chat`}>
+      { showForm && <PromptPassword onClick={openForm} openForm={openForm} chatData={chatData} /> }
       <Messages chatData={chatData} messages={ chatData?._chat?.type === 'chat' ? chatMessages : roomMessages } />
-      { isPrivate ? ( showForm && <PromptPassword onClick={openForm} setAllowing={setAllowing} openForm={openForm} chatData={chatData} />) : <Input chatData={ chatData } /> }
+      <Input chatData={ chatData } />
     </div>
   )
 }

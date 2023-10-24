@@ -89,10 +89,10 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
     return (
         <div className="overlay">
             <div className="form-container" ref={searchResultsRef}>
-                <h2>Create New Room</h2>
+                <h2 className='change-room-name'>Create New Room</h2>
                 <div className="roomFomrs">
                     <div className="roomFormInfos">
-                        <input type="text" className='roomCreationInput' placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
+                        <input type="text" className='room-creation-input' placeholder="Room name" value={roomName} onChange={(e) => setRoomName(e.target.value)} />
                         <span>
                             <label htmlFor="image-upload" className="upload-label">
                                 <input type="file" id="image-upload" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
@@ -116,11 +116,12 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             private
                         </span>
                     </div>
-                    { roomType === 'Private' && <input type="text" className='roomPassword' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
+                    { roomType === 'Private' && <input type="text" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
+                    <span className='saveChanges' onClick={ uploadImage }>save</span>
                 </div>
-                <div className="sendButton">
+                {/* <div className="sendButton">
                     <FontAwesomeIcon className='createIconSend' onClick={uploadImage} icon={faPaperPlane} />
-                </div>
+                </div> */}
             </div>
         </div>
     );
