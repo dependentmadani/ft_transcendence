@@ -1,6 +1,9 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
+// import RoomCon
+import { useRoom } from '@/context/RoomsContext';
+
 
 interface User {
   roomId: number,
@@ -59,10 +62,13 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [newChats, setNewChats] = useState<Chat[]>()
+  const [contextRoom, updateRoom] = useRoom();
   const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<roomUsers[]>([])
   const [contacts, setContacts] = useState<Contact[]>()
+  const [inRoom , setInRoom ] = useState<boolean> (true)
+// 
 
 
   useEffect(() => {
@@ -193,6 +199,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
           console.log('srrsrrr', newChats)
         
           setContacts(_contacts);
+
         }
         
         sortContacts()
@@ -232,37 +239,83 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
       console.log('chats chat', chat)
     };
 
+    // useEffect(() => {
+      
+    //   console.log('room : ', contextRoom)
+    //   // chatData?._socket?.on('newRoom', (room: Room) => {
+    //   //   if (newRooms.find(r => r.id === room.id) === undefined) {
+    //   //     const newRoom: Room = {
+    //   //       id: room.id,
+    //   //       roomName: room.roomName,
+    //   //       roomAvatar: room.roomAvatar,
+    //   //       roomType: room.roomType,
+    //   //       latestMessageDate: 'latestMessageDate',
+    //   //       latestMessageContent: 'latestMessageContent',
+    //   //       type: 'room',
+    //   //       roomPass: room.roomPass,
+    //   //     };
+    //   //     setNewRooms([...newRooms, newRoom])
+    //   //   }
+    //   // });
+    
+    //   chatData?._socket?.on('leavingRoom', (room: Room) => {
+    //     console.log('WAACHA DKHOLTII?????????')
+    //     if (newRooms.find(r => r.id === room.id) !== undefined)
+    //       setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
+    //   });
+
+    //   return () => {
+    //     chatData?._socket?.off('newRoom');
+    //     chatData?._socket?.off('leavingRoom');
+    //   };
+
+    // }, [chatData?._socket]);
+
+
+    const roomListener = (room: Room) => {
+      if (newRooms.find(r => r.id === room.id) === undefined) {
+        const newRoom: Room = {
+          id: room.id,
+          roomName: room.roomName,
+          roomAvatar: room.roomAvatar,
+          roomType: room.roomType,
+          latestMessageDate: 'latestMessageDate',
+          latestMessageContent: 'latestMessageContent',
+          type: 'room',
+          roomPass: room.roomPass,
+        };
+        setNewRooms([...newRooms, newRoom])
+      }
+    }
+
+    const leaveRoomListener = (room: Room) => {
+      console.log('WAACHA DKHOLTII?????????', room) 
+      if (newRooms.find(r => r.id === room.id) !== undefined) {
+        setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
+      }
+    }
+  
+  
     useEffect(() => {
       
-      chatData?._socket?.on('newRoom', (room: Room) => {
-        if (newRooms.find(r => r.id === room.id) === undefined) {
-          const newRoom: Room = {
-            id: room.id,
-            roomName: room.roomName,
-            roomAvatar: room.roomAvatar,
-            roomType: room.roomType,
-            latestMessageDate: 'latestMessageDate',
-            latestMessageContent: 'latestMessageContent',
-            type: 'room',
-            roomPass: room.roomPass,
-          };
-          setNewRooms([...newRooms, newRoom])
-        }
-      });
-        
-      chatData?._socket?.on('leavingRoom', (room: Room) => {
-        if (newRooms.find(r => r.id === room.id) !== undefined)
-            setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
-      });
-
+      chatData?._socket?.on('newRoom', roomListener);
+  
         return () => {
           chatData?._socket?.off('newRoom');
+        };
+    }, [roomListener]);
+
+    useEffect(() => {
+      
+      chatData?._socket?.on('leavingRoom', leaveRoomListener);
+  
+        return () => {
           chatData?._socket?.off('leavingRoom');
         };
-    }, [newRooms]);
+    }, [leaveRoomListener]);
   
 
-    console.log('Contacts ', chats)
+    // console.log('Contacts ', chats)
 
 
     return (

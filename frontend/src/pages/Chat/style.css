@@ -68,7 +68,7 @@ body {
 .contact-name {
   font-size: 1.4em;
   font-weight: 500;
-  color: aliceblue;
+  color: #cedbe6f5;
 }
 
 p {
@@ -241,9 +241,16 @@ form {
 }
 
 .saveChanges {
-        font-size: 1.2em;
-        color: aliceblue;
-        cursor: pointer;
+  font-size: 1.2em;
+  color: aliceblue;
+  cursor: pointer;
+  background-color: #6f75a0;
+  padding: 10px;
+  font-weight: 700;
+}
+
+.saveChanges:hover {
+  background-color: #0f1237;
 }
 
 .saveChangesIcon {
@@ -489,9 +496,6 @@ form {
 
 }
 
-.searchIcon {
-            cursor: pointer;
-}
 
 .searchChatCreatRoomIcon {
             width: 10%;
@@ -542,12 +546,11 @@ form {
             align-items: center;
           }
 
-.searchIcon {
+/* .searchIcon {
             font-size: 1.2em;
             color: #dddef6;
-            /* // margin: 0 10px; */
             cursor: pointer;
-}
+} */
 
           /* // search chat results */
         /* } */
@@ -689,52 +692,108 @@ form {
 }
 
 .searchIcon {
-              color: aliceblue;
+  cursor: pointer;
+  font-size: 1.1em;
+  color: aliceblue;
+  cursor: pointer;
+}
+
+.form-invite-icon {
+  cursor: pointer;
+  font-size: 1.1em;
+  color: aliceblue;
+  background-color: #6d74a3;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.form-invite-icon:hover {
+  background-color: #2327607b;
+}
+
+.change-room-name {
+
 }
 
 .roomFormInvite {
-              padding: 10px;
-              border: 1px solid gray;
-              display: flex;
-              flex-direction: column;
+  padding: 10px;
+  border: 1px solid gray;
+  display: flex;
+  flex-direction: column;
+}
+
+.change-settings {
+  text-align: start;
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #12142e99;
+  font-style: italic;
+  margin: 10px 0;
 }
 
 .searchInvite {
   display: flex;
   align-items: center;
-  width: 50%;
   margin: 10px auto;
 
 }
               
 .searchInviteResults {
   background-color: #e7f0fac9;
-  width: 45%;
+  width: 35%;
   margin: auto;
   padding: 0;
   border-radius: 5px;
 }
 
-.searchInviteResults .inviteResults {
+.inviteResults {
   display: flex;
   flex-direction: row;
-  background-color: #3f4777;
+  background-color: #5a639a;
   padding: 10px 5px;
-  width: 85%;
+  width: 75%;
   margin: 10px auto;
   border-radius: 30px;
 }
 
+.form-invite-input {
+  width: 100%;
+  border: none;
+  outline: none;
+  color: #2f2d52;
+  margin: auto;
+  padding: 10px;
+  text-align: start;
+  color:#41456a;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: 100;
+    
+  &::placeholder {
+    color: lightgray;
+    font-style: italic;
+  }
+}
+
 .resultName {
-                    width: 50%;
-                    text-align: center;
-                    color: aliceblue;
+  width: 75%;
+  text-align: center;
+  color: aliceblue;
+  margin-left: 15px;
+  font-size: 1em;
 }
 
 .resultIcon {
-                    width: 50%;
-                    text-align: center;
+  width: 20%;
+  text-align: center;
+  font-size: 1em;
+}
 
+.inviteIcon:hover {
+  background-color: aliceblue;
+  color: #5a639a;
 }
 
 .inviteIcon {
@@ -753,11 +812,11 @@ form {
                 margin: 0 10px;
               }
 
-.searchIcon {
+/* .searchIcon {
   font-size: 1.9em;
   cursor: pointer;
   margin: 0 10px;
-}
+} */
             /* } */
 
 .roomMembers {
@@ -872,51 +931,68 @@ form {
               font-size: 1rem;
               color: #555;
 }
-            
-            /* Styling for buttons */
+
+
+.not-allowed {
+  filter: blur(4px);
+}
+
+
+/* Styling for buttons */
+
 .contactPlay1 {
-              display: flex;
-              flex-direction: row;
-              height: 25%;
-              /* // border-top: 1px solid darkgray; */
-              padding: 30px 0;
+  display: flex;
+  flex-direction: row;
+  height: 25%;
+   padding: 30px 0;
 }
 
 .contactPlay2 {
-              display: flex;
-              flex-direction: row;
-              height: 25%;
-              border-top: 1px solid #dddef6b8;
-              padding: 30px 0;
-
+  display: flex;
+  flex-direction: row;
+  height: 25%;
+  border-top: 1px solid #dddef6b8;
+  padding: 30px 0;
 }
 
 .section2 {
   display: flex;
   margin: 25px auto;
 }
-            
-.contactPlay1 span {
-              /* // background-color: #007bff; */
-                color: aliceblue;
-                border: none;
-                border-radius: 4px;
-                padding: 5px 5px;
-                font-size: 1.2em;
-                cursor: pointer;
-                margin: 10px;
+
+.info-icon {
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 10px;
 }
 
-.contactPlay2 span {
-              /* // background-color: #007bff; */
-                color: #fff;
-                border: none;
-                border-radius: 4px;
-                padding: 5px 5px;
-                font-size: 1.2em;
-                cursor: pointer;
-                margin: 10px;
+.info-icon:hover {
+  color: #9aa0d3;
 }
+
+.contactPlay1 a {
+  color: aliceblue;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 10px;
+}
+
+/* .contactPlay2 span {
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 5px;
+  font-size: 1.2em;
+  cursor: pointer;
+  margin: 10px;
+} */
      
           
 .serchChatInput input {
@@ -977,14 +1053,10 @@ form {
 }
       /* } */
 .chat {
-        /* // flex: 2; */
-        width: 55%;
+  width: 55%;
 }
 
-.passwordForm {
-          h2 {
-            text-align: center;
-          }
+/* .passwordForm {
 
           input {
             margin: 10px;
@@ -1001,8 +1073,45 @@ form {
             border-radius: 5px;
             cursor: pointer;
           }
+} */
+
+.room-pass-name {
+  text-align: start;
+  font-size: 1em;
+  font-weight: 500;
+  color: #12142e99;
+  font-style: italic;
 }
-  
+
+.room-pass-form {
+  display: flex;
+  border: 1px solid darkgray;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 7px;
+}
+
+.room-pass-input {
+  margin: 0 10px;
+  padding: 5px;
+  text-align: start;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  font-weight: 500;
+  font-size: 1em;
+}
+
+.room-form-span {
+  font-size: 1em;
+  background-color: #2f3475c4;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  margin: 0 5px;
+  color: aliceblue;
+}
+
 .chatInfo {
           height: 50px;
           background-color: #5d5b8d;
@@ -1047,26 +1156,21 @@ form {
 }
 
 .msg-date {
-  font-size: 1.2em;
+  font-size: 1em;
 }
 
 .msg-img {
-              width: 40px;
-              height: 40px;
-              border-radius: 50%;
-              object-fit: cover;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .messageContent {
-              max-width: 80%;
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-  
-              
-              /* img {
-                width: 50%;
-              } */
+  max-width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .msg-p {
@@ -1077,8 +1181,13 @@ form {
 }
   
 .owner {
-              flex-direction: row-reverse;
+  flex-direction: row-reverse;
   
+  .msg-p {
+    background-color: #8da4f1;
+    color: white;
+    border-radius: 10px 0px 10px 10px;
+  }
 }
 
 .messageContent {
@@ -1086,21 +1195,21 @@ form {
 }
 
 .msg-p {
-              background-color: #8da4f1;
-              color: white;
-              border-radius: 10px 0px 10px 10px;
+  font-size: 1em;
+  background-color: aliceblue;
+  color: #41456a;
+  border-radius: 10px 10px 10px 0px;
 }
   
 .input {
-          height: 50px;
-          background-color: #dddef6;
-          /* // padding: 10px; */
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          margin: 0;
-          padding: 0 10px;
-          text-align: start;
+  height: 50px;
+  background-color: #dddef6;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0;
+  padding: 0 10px;
+  text-align: start;
 }        
 
 .inputContainer {
@@ -1135,6 +1244,7 @@ form {
   margin: auto;
   padding: 10px;
   text-align: start;
+  color:#41456a;
     
   &::placeholder {
     color: lightgray;
@@ -1162,6 +1272,10 @@ form {
             }
 }
 
+.send-msg-icon {
+  color: #747cb9;
+  cursor: pointer;
+}
 
 .ChatNavbar {
   display: flex;

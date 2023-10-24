@@ -102,7 +102,8 @@ export const RoomMembers = ({ chatData }: any) => {
             const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
                 withCredentials: true,
             });
-            chatData?._socket?.emit('removeRoomMembers', user)
+            // chatData?._socket?.emit('removeRoomMembers', user)
+            chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
             console.log(user.username , 'Kicked', response)
                 
         } catch (error) {

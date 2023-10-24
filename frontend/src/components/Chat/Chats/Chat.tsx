@@ -26,7 +26,8 @@ export const Chat = ({ chatData }: any) => {
 
   useEffect(() => {
     if (chatData?._chat?.chat?.roomType === 'Private')
-    {  setIsPrivate(true)
+    {
+      setIsPrivate(true)
       setShowForm(true);
     }
     else

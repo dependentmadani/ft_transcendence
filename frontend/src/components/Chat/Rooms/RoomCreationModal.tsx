@@ -63,6 +63,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             roomId: roomId,
                             userId: _MAIN_USER_.id,
                             role: 'OWNER',
+                            allowed: roomType === 'Private' ? false : true,
                         }, {
                             withCredentials: true
                         });

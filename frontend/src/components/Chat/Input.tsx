@@ -75,7 +75,7 @@ export const Input = ({ chatData }: any) => {
       {/*chatData?._chat?.chat &&*/ <div className="inputContainer">
         <input type="text" className="input-input" placeholder="Type something..." value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
         <div className="send">
-          {<span><FontAwesomeIcon icon={faPaperPlane} onClick={handleClick} /></span>}
+          {<span><FontAwesomeIcon className="send-msg-icon" icon={faPaperPlane} onClick={handleClick} /></span>}
         </div>
       </div>}
     </div>

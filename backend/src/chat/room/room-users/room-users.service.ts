@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { RoomUsers } from '@prisma/client'
+import { allow } from 'joi';
 
 @Injectable()
 export class RoomUsersService {
@@ -86,7 +87,7 @@ export class RoomUsersService {
         }
     }
 
-    async createRoomUsers(roomId: number, userId: number, role: string) {
+    async createRoomUsers(roomId: number, userId: number, role: string, allowed: boolean) {
         // console.log('Too')
         try {
             const roomUser = await this.prisma.roomUsers.findMany({
@@ -104,6 +105,7 @@ export class RoomUsersService {
                         roomId: roomId,
                         userId: userId,
                         role: role,
+                        allowed: allowed,
                     }
                 })
             }
@@ -132,6 +134,34 @@ export class RoomUsersService {
                     },
                     data: { 
                         role: role,
+                    }
+                });
+            }
+        }
+        catch (err) {
+            console.error(`Couldn't create room users table: ${err}`)
+        }
+    }
+
+    async allowMember(roomId: number, userId: number, allowed: boolean) {
+        try {
+            const roomUser = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                    ]
+                }
+            })
+            // It works but at what cost
+            console.log('YOOOOOOOO')
+            if (roomUser.length === 1) {
+                return await this.prisma.roomUsers.update({
+                    where: {
+                        id: roomUser[0].id,
+                    },
+                    data: { 
+                        allowed: allowed,
                     }
                 });
             }

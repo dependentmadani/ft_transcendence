@@ -3,6 +3,7 @@ import { faBell, faBellSlash, faRightFromBracket, faGear } from '@fortawesome/fr
 import { useEffect, useState } from 'react';
 import { RoomSettings } from './RoomSettings';
 import axios from 'axios';
+import { useRoom } from '@/context/RoomsContext';
 
 interface Room {
     id: number,
@@ -10,7 +11,7 @@ interface Room {
 }
 
 export const RoomInfos = ({ chatData }: any) => {
-    
+    const [contextRoom, updateRoom] = useRoom();
     const [showSettings, setShowSettings] = useState(false);
     const [roomAvatar, setRoomAvatar] = useState('');
     const currentRoom: Room = chatData?._chat?.chat
@@ -39,7 +40,7 @@ export const RoomInfos = ({ chatData }: any) => {
         fetchRoomAvatar();
     }, [currentRoom.id]);
 
-    const kickMember = async () => {
+    const leaveRoom = async () => {
         try {
             const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
             const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {
@@ -47,7 +48,9 @@ export const RoomInfos = ({ chatData }: any) => {
             });
             console.log(_MAIN_USER_?.data?.username , 'Kicked', response)
             chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
-                
+            console.log('------ : ', contextRoom)
+            updateRoom(!contextRoom);
+            console.log('+++++++ : ', contextRoom)
         } catch (error) {
             console.log(error);
         }
@@ -66,9 +69,9 @@ export const RoomInfos = ({ chatData }: any) => {
 
                 <div className="contactPlay2">
                     <div className="section2">
-                        <span><FontAwesomeIcon className="searchIcon" icon={faGear} onClick={openSettings} /></span>
-                        <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} /></span>
-                        <span><FontAwesomeIcon icon={faRightFromBracket} onClick={kickMember} /></span>
+                        <FontAwesomeIcon className="info-icon" icon={faGear} onClick={openSettings} />
+                        <FontAwesomeIcon className="info-icon" icon={0 ? faBell : faBellSlash} />
+                        <FontAwesomeIcon className="info-icon" icon={faRightFromBracket} onClick={leaveRoom} />
                     </div>
                 </div>
                 { showSettings && <RoomSettings onClose={closeSettings} chatData={ chatData } /> }

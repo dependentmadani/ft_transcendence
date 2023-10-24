@@ -46,7 +46,7 @@ export const ChatInfos = ({ currentUser }: any) => {
         console.log(currentUser?.receiver?.id, 'unblocked')
     }
 
-    console.log('chat info', currentUser)
+    // console.log('chat info', currentUser)
 
     return (
         <div className="contactInfo">
@@ -56,13 +56,14 @@ export const ChatInfos = ({ currentUser }: any) => {
                     </div>
                     <span>{ currentUser?.receiver?.username }</span>
                     <div className="contactPlay1">
-                        <span><FontAwesomeIcon icon={faTableTennisPaddleBall} /></span>
-                        <span><FontAwesomeIcon icon={faUser} /></span>
+                        <a href='/play' ><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} /></a>
+                        <a href='/play' ><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} /></a>
+                        <a href='/profile' ><FontAwesomeIcon className="info-icon" icon={faUser} /></a>
                     </div>
                 </div>
                 <div className="contactPlay2">
                     <div className="section2">
-                        <span><FontAwesomeIcon icon={0 ? faBell : faBellSlash} onClick={isFriend ? unmuteFriend : muteFriend} /></span>
+                        <FontAwesomeIcon className="info-icon" icon={0 ? faBell : faBellSlash} onClick={isFriend ? unmuteFriend : muteFriend} />
                     </div>
                 </div>
         </div>

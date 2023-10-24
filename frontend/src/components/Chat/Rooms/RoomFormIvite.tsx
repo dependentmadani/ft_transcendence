@@ -33,8 +33,8 @@ export const RoomFormInvite = ({ chatData }: any) => {
     return (
         <div className="roomFormInvite">
             <div className="searchInvite">
-                <input type="text" placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
-                <FontAwesomeIcon className="searchIcon" icon={faMagnifyingGlass} onClick={ getResults } />
+                <input type="text" className='form-invite-input' placeholder="Invite a user" onChange={e => setUsername(e.target.value)} />
+                <FontAwesomeIcon className="form-invite-icon" icon={faMagnifyingGlass} onClick={ getResults } />
             </div>
             { searchResults && <SearchInviteResults chatData={chatData} searchResults={searchResults} /> }
         </div>

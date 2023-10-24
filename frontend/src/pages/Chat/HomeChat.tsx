@@ -4,7 +4,7 @@ import { Rightbar } from "@/components/Chat/Rightbar"
 import { Leftbar } from "@/components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
 import './style.css'
-
+import { RoomProvider } from "@/context/RoomsContext";
 
 export const HomeChat = () => {
 
@@ -36,9 +36,11 @@ export const HomeChat = () => {
   return (
     <div className='home'>
         <div className='container'>
+          <RoomProvider>
             <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
             <Chat chatData={ chatData } />
             <Rightbar chatData={ chatData } />
+          </RoomProvider>
         </div>
     </div>
   )

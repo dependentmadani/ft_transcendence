@@ -32,7 +32,7 @@ export const Messages = ({ chatData, messages }: any) => {
 
   console.log('MESSAGES', chatData?._chat)
   return (
-    <div className="messages">
+    <div className={ `messages ${chatData?._chat?.chat?.roomType === 'Private' && 'not-allowed'}` }>
       { 
         isAllowed && messages?.map((message: Message, index:number) => (
           <Message key={ index } currentMessage={ message } />

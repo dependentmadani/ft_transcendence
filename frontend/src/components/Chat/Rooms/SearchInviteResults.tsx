@@ -38,6 +38,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                 withCredentials: true,
             });
             chatData?._socket?.emit('roomMembers', invitedUser)
+            chatData?._socket?.emit('createRoom', chatData?._chat?.chat)
             console.log('rah mzyaaan', invitedUser)
         }
         catch (error) {
@@ -52,7 +53,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                 searchResults.map((user: any, index: number) => (
                     <div className='inviteResults' key={index}>
                         <span className='resultName'>{ user.username }</span>
-                        <span className='resultIcon'><FontAwesomeIcon className="inviteIcon" icon={faUserPlus} onClick={() => sendInvite(user)} /></span>
+                        <FontAwesomeIcon className="inviteIcon" icon={faUserPlus} onClick={() => sendInvite(user)} />
                     </div>
                 ))
             }

@@ -22,7 +22,7 @@ export  const CreateRoom = ({ chatData }: any) => {
             roomName: 'Ghorfa',
             roomAvatar: 'https://moodoffdp.com/wp-content/uploads/2023/06/Best-Meme-PFP-1-1024x1024.jpg',
             roomUsers: [1],
-            role: 'ADMIN'
+            role: 'ADMIN',
           })
         }
         catch (err)

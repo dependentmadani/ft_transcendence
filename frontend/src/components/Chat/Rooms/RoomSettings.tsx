@@ -100,12 +100,12 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     return (
         <div className="overlay">
             <div className="form-container" ref={searchResultsRef}>
-                <h2>Change room settings</h2>
+                <h2 className='change-settings'>Change room settings</h2>
                 { currentUserIsAdmin && <RoomFormInvite chatData={ chatData } /> }
                 <div className="changeRoomSettings">
                     <div className="changes">
                         <div className="mainInfos">
-                            <input type="text" placeholder={ currentRoom.roomName } onChange={e => setNewRoomName(e.target.value)} />
+                            <input type="text" className='form-invite-input' placeholder={ currentRoom.roomName } onChange={e => setNewRoomName(e.target.value)} />
                             <span>
                                 <label htmlFor="image-upload" className="upload-label">
                                     <input type="file" id="image-upload" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
@@ -131,10 +131,10 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                                 Private
                             </label>
                         </div>
-                        { newRoomType === 'Private' && <input type="text" className='roomPassword' placeholder="Room password" value={newRoomPass} onChange={(e) => setNewRoomPass(e.target.value)} />}
+                        { newRoomType === 'Private' && <input type="text" className='form-invite-input' placeholder="Room password" value={newRoomPass} onChange={(e) => setNewRoomPass(e.target.value)} />}
                     </div>
                     <div className="saveIcon">
-                        <span className='saveChanges'><FontAwesomeIcon className="saveChangesIcon" icon={faFloppyDisk} onClick={ saveChanges } /></span>
+                        <span className='saveChanges' onClick={ saveChanges }>save</span>
                     </div>
                 </div>
                 <div className="FormRoomMember">

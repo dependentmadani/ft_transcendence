@@ -49,7 +49,7 @@ export class ChatGateway {
   @SubscribeMessage('leaveRoom')
   handleRoomLeft(client: Socket, room: Room): void {
     console.log('leavi ', room);
-    this.server.emit('leaveRoom', room);
+    this.server.emit('leavingRoom', room);
   }
 
 
