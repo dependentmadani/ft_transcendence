@@ -62,12 +62,10 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
   const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [newChats, setNewChats] = useState<Chat[]>()
-  const [contextRoom, updateRoom] = useRoom();
   const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<roomUsers[]>([])
   const [contacts, setContacts] = useState<Contact[]>()
-  const [inRoom , setInRoom ] = useState<boolean> (true)
 // 
 
 
@@ -205,32 +203,18 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         sortContacts()
     }, [newChats, newRooms]);
 
-    const sortChats = async () => {
-        const allChats: any = newChats || [];
-        const allRooms: any = newRooms || [];
-
-        const _contacts = allChats.concat(allRooms);
-        
-        _contacts.sort((a: Chat, b: Chat) => {
-          const dateA: any = new Date(a.latestMessageDate);
-          const dateB: any = new Date(b.latestMessageDate);
-          return dateB - dateA;
-        });
-       
-        setContacts(_contacts);
-        console.log('SOOOOORTED', _contacts)
-    }
-
-    useEffect(() => {
     
-      chatData?._socket?.on('sorting', () => {
-        console.log('wewewewewewewewewewewe')
-        sortChats()
-      });
-      return () => {
-        chatData?._socket?.off('sorting');
-      };
-    }, [sortChats]);
+
+    // useEffect(() => {
+    
+    //   chatData?._socket?.on('sorting', () => {
+    //     console.log('wewewewewewewewewewewe')
+    //     sortChats()
+    //   });
+    //   return () => {
+    //     chatData?._socket?.off('sorting');
+    //   };
+    // }, [sortChats]);
 
 
     const handleClick = (chat: any, type: string) => {
@@ -272,8 +256,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     // }, [chatData?._socket]);
 
 
-    const roomListener = (room: Room) => {
-      if (newRooms.find(r => r.id === room.id) === undefined) {
+    const roomListener = (room: Room, owner: number) => {
+      if (newRooms.find(r => r.id === room.id) === undefined && _MAIN_USER_.id == owner) {
         const newRoom: Room = {
           id: room.id,
           roomName: room.roomName,
@@ -288,31 +272,50 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
       }
     }
 
-    const leaveRoomListener = (room: Room) => {
-      console.log('WAACHA DKHOLTII?????????', room) 
-      if (newRooms.find(r => r.id === room.id) !== undefined) {
-        setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
+    const leaveRoomListener = (roomId: number, owner: number) => {
+      console.log('WAACHA DKHOLTII?????????', roomId, owner)
+      if (newRooms.find(r => r.id === roomId) !== undefined && _MAIN_USER_.id === owner) {
+        console.log('Maalna', roomId, newRooms)
+        setNewRooms(prevMembers => prevMembers.filter(r => r.id !== roomId))
       }
     }
   
   
+    const contactsSorting = async () => {
+      const allChats: any = newChats || [];
+      const allRooms: any = newRooms || [];
+
+      const _contacts = allChats.concat(allRooms);
+      
+      _contacts.sort((a: Chat, b: Chat) => {
+        const dateA: any = new Date(a.latestMessageDate);
+        const dateB: any = new Date(b.latestMessageDate);
+        return dateB - dateA;
+      });
+      console.log('SRSRSRSRSRSRSRSRS', newChats)
+    
+      setContacts(_contacts);
+
+    }
+  
     useEffect(() => {
       
       chatData?._socket?.on('newRoom', roomListener);
+      chatData?._socket?.on('leavingRoom', leaveRoomListener);
+      chatData?._socket?.on('sortChats', contactsSorting);
   
         return () => {
           chatData?._socket?.off('newRoom');
-        };
-    }, [roomListener]);
-
-    useEffect(() => {
-      
-      chatData?._socket?.on('leavingRoom', leaveRoomListener);
-  
-        return () => {
           chatData?._socket?.off('leavingRoom');
         };
-    }, [leaveRoomListener]);
+    }, [roomListener, leaveRoomListener, contactsSorting]);
+
+    // useEffect(() => {
+      
+  
+    //     return () => {
+    //     };
+    // }, []);
   
 
     // console.log('Contacts ', chats)

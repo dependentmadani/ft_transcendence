@@ -103,7 +103,8 @@ export const RoomMembers = ({ chatData }: any) => {
                 withCredentials: true,
             });
             // chatData?._socket?.emit('removeRoomMembers', user)
-            chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
+            // chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
+            chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: user.id})
             console.log(user.username , 'Kicked', response)
                 
         } catch (error) {

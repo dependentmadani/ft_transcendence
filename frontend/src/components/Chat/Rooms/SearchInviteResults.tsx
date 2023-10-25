@@ -41,8 +41,9 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                 withCredentials: true,
             });
             console.log('malja', _MAIN_USER_)
-            chatData?._socket?.emit('roomMembers', invitedUser)
-            chatData?._socket?.emit('createRoom', chatData?._chat?.chat, _MAIN_USER_.id)
+            // chatData?._socket?.emit('roomMembers', invitedUser)
+            // chatData?._socket?.emit('createRoom', chatData?._chat?.chat, _MAIN_USER_.id)
+            chatData?._socket?.emit('createRoom', {room: currentRoom, owner: invitedUser.id})
             console.log('rah mzyaaan', res)
         }
         catch (error) {

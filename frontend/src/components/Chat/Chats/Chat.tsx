@@ -74,23 +74,33 @@ export const Chat = ({ chatData }: any) => {
   // }
 
 
-  const messageListener = (message: Message) => {
-    if (message.type === 'chat' && chatMessages.find(m => m.messageId === message.messageId) === undefined){
-      setChatMessages([...chatMessages, message])}
-    else  if (message.type === 'room' && roomMessages.find(m => m.messageId === message.messageId) === undefined) {
-      setRoomMessages([...roomMessages, message])}
+  const chatMessageListener = (message: any, rec: number) => {
+    // const message = data.message
+    // const rec = data.rec
+    console.log('DATAAAA', message, rec)
+    console.log(chatData?._chat?.chat?.chatId, 'vs' ,message.msgChatId)
+    if (message.type === 'chat' && (chatData?._chat?.chat?.chatId === message.msgChatId) && chatMessages.find(m => m.messageId === message.messageId) === undefined)
+      setChatMessages([...chatMessages, message])
+    chatData?._socket?.emit('sortChats')
+  }
+
+  const roomMessageListener = (message: any) => {
+    if (message.type === 'room' && roomMessages.find(m => m.messageId === message.messageId) === undefined)
+      setRoomMessages([...roomMessages, message])
     chatData?._socket?.emit('sortChats')
   }
 
 
   useEffect(() => {
     
-    chatData?._socket?.on('sendMessage', messageListener);
+    // chatData?._socket?.on('sendMessage', messageListener);
+    chatData?._socket?.on('sendMessage', chatMessageListener);
+    chatData?._socket?.on('sendRoomMessage', roomMessageListener);
 
       return () => {
         chatData?._socket?.off('sendMessage');
       };
-  }, [messageListener]);
+  }, [chatData?._socket, chatMessages, roomMessages, chatMessageListener, roomMessageListener]);
 
 
   
@@ -127,7 +137,7 @@ export const Chat = ({ chatData }: any) => {
     fetchRoomMessages()
   }, [chatData?._chat?.chat?.id])
 
-  console.log('show from', showForm, 'is allowed', isPrivate) 
+  // console.log('show from', showForm, 'is allowed', isPrivate) 
 
 
   return (

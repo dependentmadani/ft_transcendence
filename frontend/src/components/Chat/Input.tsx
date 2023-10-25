@@ -63,8 +63,14 @@ export const Input = ({ chatData }: any) => {
     if (event.key === 'Enter') {
       if (inputText.trim() !== '') {
         const msg: any = await createNewMessage(inputText)
-        chatData?._socket?.emit("message", msg.data);
-        chatData?._socket?.emit("contactSorting");
+        // chatData?._socket?.emit("message", msg.data);
+        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        // const recipient = 1; // Replace with the recipient's user ID
+        // const d = msg.data
+        const rec = chatData?._chat?.chat?.receiver.id
+        const actionEmit = chatData?._chat?.type === 'chat' ? 'message' : 'roomMessage'
+        chatData?._socket.emit(actionEmit, { sender: _MAIN_USER_.id, rec: rec || null, message: msg.data });
+        
         setInputText('')
       }
     }
@@ -94,7 +100,7 @@ export const Input = ({ chatData }: any) => {
   }, [chatData?._chat?.chat?.id])
 
 
-  console.log('WHYY', chatData?._chat?.chat)
+  // console.log('WHYY', chatData?._chat?.chat)
   return (
     <div className={`input`}>
       {/*chatData?._chat?.chat &&*/ <div className="inputContainer">

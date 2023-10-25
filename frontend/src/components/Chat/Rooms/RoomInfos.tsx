@@ -43,14 +43,15 @@ export const RoomInfos = ({ chatData }: any) => {
     const leaveRoom = async () => {
         try {
             const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {
+            await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {
                 withCredentials: true,
             });
-            console.log(_MAIN_USER_?.data?.username , 'Kicked', response)
-            chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
-            console.log('------ : ', contextRoom)
-            updateRoom(!contextRoom);
-            console.log('+++++++ : ', contextRoom)
+            console.log(_MAIN_USER_?.data?.username , 'Kicked', currentRoom.id)
+            // chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
+            chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: _MAIN_USER_.data.id})
+            // console.log('------ : ', contextRoom)
+            // updateRoom(!contextRoom);
+            // console.log('+++++++ : ', contextRoom)
         } catch (error) {
             console.log(error);
         }

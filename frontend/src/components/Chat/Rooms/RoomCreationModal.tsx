@@ -51,7 +51,11 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     withCredentials: true,
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
-                chatData?._socket?.emit('createRoom', response.data)
+                
+                const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+                
+                console.log('main user', _MAIN_USER_.id)
+                chatData?._socket?.emit('createRoom', {room: response.data, owner: _MAIN_USER_.id})
                 console.log('CREATED ROOM ', response)
 
                 if (response.data) {

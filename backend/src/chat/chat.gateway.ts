@@ -1,34 +1,138 @@
-import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { Message, Users, Room } from '@prisma/client';
 import { number } from 'joi';
+import * as cookie from 'cookie';
+import * as jwt from 'jsonwebtoken';
+import { UnauthorizedException } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
 export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
+  socketMap: Map<number, Socket[]>;
+
+  constructor( private prismaService: PrismaService, private jwtService: JwtService ) {}
+
+  // async handleConnection(client: Socket) {
+  //   try {
+  //     // const token: any = client.handshake.query.token;
+  //     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWVsLWFzcmlAc3R1ZGVudC4xMzM3Lm1hIiwiaWF0IjoxNjk4MjUxMDMxLCJleHAiOjE2OTgyNTE5MzF9._sNaE3xMRVTCn-Xls9E4dj07f8CtncUUcpqsvHAYhzo';
+  //     if (!token) {
+  //       console.log('Aloooo', token)
+  //       client.disconnect(true);
+  //       console.log('Unauthorized connection: Missing token');
+  //       return ;
+  //     }
+      
+  //     const payload = await this.jwtService.verify(token);
+  //     if (!payload) {
+  //       client.disconnect(true);
+  //       return ;
+  //     }
+  //     const user = await this.prismaService.users.findFirst({
+  //       where: {
+  //         id: payload.id,
+  //       },
+  //     });
+  //     if (!this.socketMap.has(user.id)) {
+  //       this.socketMap.set(user.id, [client]);
+  //     }
+  //     else {
+  //       this.socketMap.get(user.id).push(client);
+  //     }
+  //     await this.prismaService.users.update({
+  //       where: {
+  //         id: user.id,
+  //       },
+  //       data: {
+  //         userStatus: "ONLINE",
+  //       },
+  //     });
+  //   }
+  //   catch ( e ) {
+  //     throw new UnauthorizedException('Something wrong in handling connection!');
+  //   }
+  // }
+
   // private readonly onlineUsers: Map<number, Socket> = new Map<number, Socket>();
 
-  private readonly connectedUsers: Map<number, Socket> = new Map<number, Socket>();
+  private userSocketMap = new Map<number, string>();
 
-  @SubscribeMessage('connect')
-  handleSetup(client: Socket, userData: Users): void {
-    const userId: number = userData.id;
+  // private readonly connectedUsers: Map<number, Socket> = new Map<number, Socket>();
 
-    if (!this.connectedUsers.has(userId)) {
-      this.connectedUsers.set(userId, client);
-      console.log(`User ${userId} connected`);
-    }
-    console.log('alo?')
-    client.emit('connect', userId);
+  // private getUserIdSomehow(client: Socket): string | null {
+  //   const token: any = client.handshake.query.token;
+  //   if (!token) {
+  //     return null;
+  //   }
+  
+  //   try {
+  //     const decodedToken: any = jwt.verify(token, 'tzadina b wahed l9owa');
+  //     return decodedToken.userId;
+  //   } catch (error) {
+  //     console.error('Error verifying token:', error);
+  //     return null;
+  //   }
+  // }
+
+  handleConnection(client: Socket): void {
+
+    client.on('someEvent', (userId: number) => {
+      console.log('Received data from client:', userId);
+
+      // Send a message back to the client
+      // client.emit('messageFromServer', 'Hello from the server!');
+      this.userSocketMap[userId] = client.id;
+      console.log('map of users', this.userSocketMap);
+    });
+    // const userId = this.getUserIdSomehow(client);
   }
 
+  // @SubscribeMessage('connect')
+  // handleSetup(client: Socket, userData: Users): void {
+  //   const userId: number = userData.id;
+
+  //   if (!this.connectedUsers.has(userId)) {
+  //     this.connectedUsers.set(userId, client);
+  //     console.log(`User ${userId} connected`);
+  //   }
+  //   console.log('alo?')
+  //   client.emit('connect', userId);
+  // }
+
+  // @SubscribeMessage('message')
+  // handleClickMessage(client: Socket, message: Message): void {
+  //   console.log('sent message', message);
+  //   this.server.emit('sendMessage', message);
+  //   // this.server.emit('sortChats')
+  // }
+
   @SubscribeMessage('message')
-  handleClickMessage(client: Socket, message: Message): void {
-    console.log('sent message', message);
-    this.server.emit('sendMessage', message);
-    // this.server.emit('sortChats')
+  handleMessage(@MessageBody() data: any): void {
+    const { sender, rec, message } = data;
+    // Send the message to the recipient's socket
+    console.log('Yooo', rec)
+    this.server.to(this.userSocketMap[sender]).emit('sendMessage', message, data.rec);
+    this.server.to(this.userSocketMap[rec]).emit('sendMessage', message, data.rec);
+  }
+
+  @SubscribeMessage('sortContacts')
+  handleSortContacts(@MessageBody() data: any): void {
+    const { sender, rec, contact } = data;
+    // Send the message to the recipient's socket
+    console.log('Sort', contact , ' for ', sender , ' and ', rec)
+    this.server.to(this.userSocketMap[sender]).emit('sortChats', contact);
+    this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
+  }
+
+  @SubscribeMessage('roomMessage')
+  handleRoomMessage(@MessageBody() data: any): void {
+    const { sender, rec, message } = data;
+    this.server.emit('sendRoomMessage', rec, message);
   }
 
   @SubscribeMessage('roomMembers')
@@ -44,27 +148,25 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('createRoom')
-  handleRoomCreation(client: Socket, room: Room, userId: number): void {
-    console.log('creati ', room, userId);
-
-    // Get the specific user's socket connection using their userId
-    const userSocket = this.connectedUsers.get(userId);
-
-    if (userSocket) {
-      // Emit the 'newRoom' event to the specific user
-      userSocket.emit('newRoom', room);
-    } else {
-      console.log(`User with ID ${userId} is not connected.`);
-      // Handle the case where the user is not connected
-      // You can emit an error event or handle it in your application logic
-    }
+  handleRoomCreation(client: Socket, data: any): void {
+    const { room, owner } = data
+    console.log(owner, 'WANTS TO CREATE ROOM', room)
+    this.server.to(this.userSocketMap[owner]).emit('newRoom', room, owner);
   }
 
   @SubscribeMessage('leaveRoom')
-  handleRoomLeft(client: Socket, room: Room): void {
-    console.log('leavi ', room);
-    this.server.emit('leavingRoom', room);
+  handleRoomLeft(client: Socket, data: any): void {
+    const { roomId, owner } = data
+    console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
+    this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
   }
+
+  // @SubscribeMessage('sortChats')
+  // handleRoomLeft(client: Socket, data: any): void {
+  //   const { roomId, owner } = data
+  //   console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
+  //   this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
+  // }
 
 
   // handleDisconnect(client: Socket): void {

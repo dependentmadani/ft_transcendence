@@ -64,7 +64,7 @@ export const Messages = ({ chatData, messages }: any) => {
   }, [chatData?._chat?.chat?.id])
 
 
-  console.log('MESSAGES', chatData?._chat)
+  // console.log('MESSAGES', chatData?._chat)
   return (
     <div className={ `messages  ${isAllowed === false && 'not-allowed'}` }>
       { 
