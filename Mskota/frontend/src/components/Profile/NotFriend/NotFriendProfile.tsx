@@ -16,7 +16,7 @@ function ProfileInfo (props: any) {
     return (
         <div className='profile-info1'>
             <div className='profile-info1-left'>
-                <div className='profile-img1'>
+                <div className='profile-img2'>
                     <div id='status'>
                       <span>{props.userData.userStatus}</span>
                       <div></div>

@@ -10,6 +10,7 @@ import FriendProfile from "@/components/Profile/Friend/FriendProfile"
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useClient } from '@/context/clientContext';
+import Profile from '@/pages/Profile/Profile';
 
 const checkProfile = () => {
 
@@ -53,8 +54,8 @@ const checkProfile = () => {
         <>
             {data && <FriendProfile userData={data} />}
             
-            {/* {(data && profile === 'Friend') && <FriendProfile userData={data} />}
-            {(data && profile === 'NotFriend') && <NotFriendProfile userData={data} />} */}
+            {(data && profile === 'Friend') && <FriendProfile userData={data} />}
+            {(data && profile === 'NotFriend') && <NotFriendProfile userData={data} />}
         </>
     )
 }
@@ -80,18 +81,18 @@ function selectSection(section: string): JSX.Element {
 
     console.log(section)
 
-    if (section === '/profile')
-        return ( <MyProfile />)
-    else if (section === '/profile/:username')
-        return checkProfile();
+    // if (section === '/profile')
+    //     return ( <MyProfile />)
+    if (section === '/profile/:username' || section === '/profile')
+        return <Profile  />;
     else if (section === '/chat')
         return ( <HomeChat />)
-    else if (section === 'test')
-        return (<Test />)
-    else if (section === 'test1')
-        return (<FriendProfile />)
-    else if (section === 'test2')
-        return (<NotFriendProfile />)
+    // else if (section === 'test')
+    //     return (<Test />)
+    // else if (section === 'test1')
+    //     return (<FriendProfile />)
+    // else if (section === 'test2')
+    //     return (<NotFriendProfile />)
     else 
         <Navigate to='/' />
     return <></>
