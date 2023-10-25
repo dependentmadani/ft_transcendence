@@ -258,10 +258,14 @@ export class AuthController {
       await this.authService.returnUser(
         req.user['email'],
       );
-    if (
-      await this.authService.verify2fa(body, user)
-    )
-      return this.authService.isEnable2fa(user);
+    const state = await this.authService.verify2fa(body, user);
+    if ( state ) {
+      await this.authService.isEnable2fa(user);
+      return true;
+    }
+    else {
+      return false;
+    }
     throw new UnauthorizedException(
       'code is wrong, try again',
     );
