@@ -66,25 +66,25 @@ function SetInfo() {
           withCredentials: true,
           headers: { 'Content-Type': 'application/json' },
         }  
-        )
-        if (fileUploaded) {
-          await axios.post(
-            `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
-            {
-              avatar: fileUploaded,
-            },
-            {
-              withCredentials: true,
-              headers: { 'Content-Type': 'multipart/form-data' },
-            }
-            );
+      )
+      if (fileUploaded) {
+        const gg = await axios.post(
+          `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
+          {
+            avatar: fileUploaded,
+          },
+          {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' },
           }
-        } catch (error) {
-          console.error('Error submitting data:', error);
-        }
-        setFetchData(true);
+        );
+        console.log('dataupdate : ' , gg.data)
+      }
+    } catch (error) {
+      console.error('Error submitting data:', error);
+    }
+    setFetchData(true);
   };
-  // console.log('login');
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {

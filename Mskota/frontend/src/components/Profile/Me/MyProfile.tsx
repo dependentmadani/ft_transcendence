@@ -39,8 +39,7 @@ function Friend() {
         <div className='friend'>
             <img className='user-friend' src="/src/imgs/example.jpg" alt="friend-img" />
             <span className='status-friend'><span id='circle'></span> status</span>
-            <span className='name-friend'> Name</span>
-            {/* <span className='icon-chat'></span> */}
+            <span className='name-friend'> Namefrfgrfgertgertsgstgrtgrsgwswrfs</span>
             <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
         </div>
     )
@@ -50,7 +49,6 @@ function History () {
     return (
         <div className='history'>
             <div id='title' >
-                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                 <span>History </span>
             </div>
             <div className='my-history'>
@@ -58,16 +56,16 @@ function History () {
                 <Badges />
                 <Badges />
                 <Badges />
+                {/* <Badges />
+                <Badges />
+                <Badges /> */}
+                {/* <Badges />
                 <Badges />
                 <Badges />
                 <Badges />
                 <Badges />
                 <Badges />
-                <Badges />
-                <Badges />
-                <Badges />
-                <Badges />
-                <Badges />
+                <Badges /> */}
             </div>        
         </div>
     )
@@ -83,16 +81,16 @@ function ProfileInfo () {
             <div className='profile-info-left'>
                 <div className='profile-img'>
                     <img src={client.avatar} alt="user-img" />
+                    {/* <img src='/public/uploadAvatar/169720598979410e1162c-e9dc-46e3-b017-0ff49f3b62bd.jpeg' alt="user-img" /> */}
+                    
                 </div>
                 <div className='profile-name-rank'>
-                    {/* <span className='profile-name'> Name </span> */}
                     <div className='profile-name'> {client.username} </div>
                     <div className='profile-rank'> 5 </div>
                 </div>
             </div>
             <div className='profile-info-right'>
                 <div id='title' >
-                    {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                     <span>Achivements</span>
                 </div>
                 <div className='achivements'>
@@ -116,9 +114,8 @@ function Frindes () {
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
-    
+    // const [orientation, setOrientation] = useState<number>(window.orientation);
 
-    // var icon_search:string = ;
     
     const search_open = () => {
         const my_search = document.querySelector('.search-input') as HTMLElement
@@ -140,15 +137,11 @@ function Frindes () {
         setSearchOpen(!searchOpen);
     }
 
+    
+
     const handleKey = (event: KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            ///search in list friends 
-            // try {
-            //     await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/`, {withCredentials: true })
-
-            // } catch (err) {
-            //     console.log("Error : ", err)
-            // }
+            
         }
     }
 
@@ -158,10 +151,7 @@ function Frindes () {
                 <input type="search" className="search-input" placeholder="Search..."  />
                 <img id='search' src={iconSearch} alt="search" onClick={search_open} onKeyDown={handleKey} />
             </div>
-            {/* <div className='search-bar'>
-            </div> */}
             <div id='title' >
-                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
                 <span>Friends </span>
             </div>
             <div className='friends-list'>
@@ -176,6 +166,8 @@ function Frindes () {
                 <Friend />
                 <Friend />
                 <Friend />
+                <Friend />
+
             </div>
         </div>
     )

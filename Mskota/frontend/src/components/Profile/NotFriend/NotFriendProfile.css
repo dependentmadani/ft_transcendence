@@ -82,7 +82,6 @@ img {
 .profile-name-rank1 {
     width: 90%;
     height: 20%;
-    /* max-width: 230px; */
     margin-top: 1rem;
     font-size: large;
     font-weight: bolder;
@@ -97,6 +96,8 @@ img {
     border-radius: 5px;
     position: relative;
     background-color: #384080;
+    text-overflow: ellipsis;
+
     font-size: larger;
     /* background-color: rgb(0, 255, 255); */
 }
@@ -126,14 +127,7 @@ img {
     z-index: 5;
     transform: translate(-50%, -50%); 
 }
-#settings {
-    position: absolute;
-    top: 8px;
-    right: 15px;
-    cursor: pointer;
-    width: 30px;
-    z-index: 220;
-}
+
 
 
 .profile-buttons {
@@ -210,10 +204,6 @@ img {
         min-height: 400px;
         /* object-fit: cover; */
         padding: .5vh 5vw;
-    }
-
-    #settings {
-        top: 1px;
     }
 
     .profile-name1,

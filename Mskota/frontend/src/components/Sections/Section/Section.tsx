@@ -61,6 +61,21 @@ const checkProfile = () => {
 
 
 
+const Test = () => {
+    return (
+        <div className='pppp'>
+            <div id='pp'></div>
+            <div id='pp'></div>
+            <div id='pp'></div>
+            <div id='pp'></div>
+            {/* <div></div>
+            <div></div>
+            <div></div> */}
+        </div>
+    )
+}
+
+
 function selectSection(section: string): JSX.Element {
 
     console.log(section)
@@ -71,6 +86,12 @@ function selectSection(section: string): JSX.Element {
         return checkProfile();
     else if (section === '/chat')
         return ( <HomeChat />)
+    else if (section === 'test')
+        return (<Test />)
+    else if (section === 'test1')
+        return (<FriendProfile />)
+    else if (section === 'test2')
+        return (<NotFriendProfile />)
     else 
         <Navigate to='/' />
     return <></>

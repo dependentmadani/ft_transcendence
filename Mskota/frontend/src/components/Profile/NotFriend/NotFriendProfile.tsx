@@ -11,6 +11,8 @@ import { ReactSVG } from "react-svg";
 
 function ProfileInfo (props: any) {
 
+    const [baseImg, setBaseImg] = useState(props.userData.avatar);
+
     return (
         <div className='profile-info1'>
             <div className='profile-info1-left'>
@@ -19,7 +21,7 @@ function ProfileInfo (props: any) {
                       <span>{props.userData.userStatus}</span>
                       <div></div>
                     </div>
-                    <img src={props.userData.avatar ? props.userData.avatar : '/src/imgs/user-img.png'} alt="user-img" />
+                    <img src={baseImg} onError={() => {setBaseImg('/src/imgs/user-img.png')}}  alt="user-img" />
                 </div>
             </div>
             <div className='profile-info1-right'>

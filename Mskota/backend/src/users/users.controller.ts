@@ -9,6 +9,7 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  Put,
   Post,
   Req,
   Res,
@@ -31,7 +32,7 @@ import { join } from 'path';
 export const storage = {
   storage: diskStorage({
     destination:
-      `${process.cwd}}/frontend/public/uploadAvatar/`,
+      `${process.cwd()}/../frontEnd/public/uploadAvatar/`,
     filename: (req, file, cb) => {
       if (!path) return;
       const filename: string =
@@ -71,6 +72,16 @@ export class UsersController {
         return user;
   }
 
+  @Post('add-friend/:id')
+  @HttpCode(HttpStatus.CREATED)
+  async addFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request,
+    @Res() res: Response)  {
+      const user = await this.userService.findUserById(req.user['sub']);
+      const friend = await this.userService.addFriend(user.id, friendId);
+      return res.send(friend);
+    }
+
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
@@ -104,7 +115,6 @@ export class UsersController {
   @Get('globalSearch/:username')
   @HttpCode(HttpStatus.OK)
   async searchAnyUser(@Param('username') username: string, @Req() req: Request) {
-    console.log('khona fl9rona : ', username)
     return this.userService.searchUser(username, req.user);
   }
 
@@ -158,32 +168,40 @@ export class UsersController {
     @Param('id', ParseIntPipe) userId: number,
     @UploadedFile() file,
   ) {
+    console.log(req.user);
+    // await this.userService.updateUser(
+    //   req.user['sub'],
+    //   req.user,
+    //   userInfo,
+    // );
     if (!file) {
+      console.log(process.cwd());
       throw new UnauthorizedException(
         'Did not upload successfully',
-      );
-    }
+        );
+      }
+    
     return await this.userService.uploadAvatar(
       userId,
       file.filename,
     );
+  
   }
 
   @Patch('/:id')
   async updateUser(
-    @Param('id', ParseIntPipe) userId: number,
     @Req() req: Request,
-    @Body() body: UserModify,
+    @Body() username: UserModify,
   ) {
+    console.log('daz mn hna');
     const user: Users =
       await this.authService.returnUser(
         req.user['email'],
       );
-
     return await this.userService.updateUser(
-      userId,
+      req.user['sub'],
       user,
-      body,
+      username,
     );
   }
 

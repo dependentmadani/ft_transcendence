@@ -124,7 +124,7 @@
     display: none;
     align-items: center;
     justify-content: space-around;
-    background-color: slateblue;
+    /* background-color: slateblue; */
     transition: height .5s ease;
 
 }
@@ -132,7 +132,7 @@
 .follow > a {
     width: 25%;
     height: 100%;
-    background-color: firebrick;
+    /* background-color: firebrick; */
     display: flex;
 }
 
@@ -142,10 +142,11 @@
     margin: auto;
     max-width: 45px;
     object-fit: contain;
+    fill: azure;
 }
 
 .contact:hover {
-    fill: rgb(127, 206, 255);
+    fill: skyblue;
     scale: .95;
 }
 

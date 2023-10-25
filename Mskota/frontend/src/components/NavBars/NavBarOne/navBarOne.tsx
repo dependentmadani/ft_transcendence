@@ -113,10 +113,8 @@ function NavBarOne() {
                         {defaultList}
                     </ul>
                     {!client.signedIn ?
-                    <div className='login'>
-                        <Link to='/login' > Get Started </Link> 
-                    </div> :
-                    <img className='user-img' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
+                        <div className='login' onClick={()=> {navigate('/login')}} > Get Started </div> :
+                        <img className='user-img' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
                     }
                     {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />

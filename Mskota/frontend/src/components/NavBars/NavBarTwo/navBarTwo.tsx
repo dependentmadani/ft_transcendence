@@ -10,13 +10,13 @@ function NavBarTwo (props:any) {
 
     const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [orientation, setOrientation] = useState<number>(window.orientation);
+    // const [orientation, setOrientation] = useState<number>(window.orientation);
     const [isNotificOpen, setIsNotificOpen] = useState(false);
     const [listItems, setListItems] = useState<JSX.Element>();
     const navigate = useNavigate();
 
     const open =  document.querySelector('.drop-menu2') as HTMLElement;
-
+    
     const listNotific:JSX.Element = (
     <>
         <div className='notifics' >
@@ -54,15 +54,15 @@ function NavBarTwo (props:any) {
         navigate('/')
     }
 
-    const toggleMenu = () => {
-        // console.log('----------');
-        if (!open)
+    const handleOrientationChange = () => {
+
+        if (!open) 
             return ;
         if (!isMenuOpen){
             open.style.height = '0px';
         }
         else {
-            console.log('container : ', orientation);
+            // console.log('container : ', orientation);
             if (!window.matchMedia('(orientation: landscape)').matches) {
                 setListItems(
                     <>
@@ -83,18 +83,13 @@ function NavBarTwo (props:any) {
                 open.style.height = '50px'
             }
         }
-        // console.log('############ height : ',open.style.height);
+
+        console.log('############ height : ',open.style.height);
     };
 
-    const handleOrientationChange = () => { 
-        toggleMenu();
-        setOrientation(window.orientation);
-    };
 
     useEffect(() => {
-
-            console.log('kike')
-        toggleMenu();
+        handleOrientationChange();
         window.addEventListener('resize', handleOrientationChange);
         return () => {
           window.removeEventListener('resize', handleOrientationChange);

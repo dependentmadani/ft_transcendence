@@ -50,8 +50,8 @@ export const router = createBrowserRouter([
             { path: '/chat', element: < GetRouteElement tag='/chat' /> },
             { path: '/game', element: < GetRouteElement tag='/game' /> },
             { path: '/friend', element: <Section section='test1' /> },
-            { path: '/kika', element: <Section section='test2' /> },
-            { path: '/kkk', element: <Section section='/profile' /> },
+            { path: '/kika', element: <Section section='test' /> },
+            { path: '/kkk', element: <Section section='test2' /> },
         ],
     },
 ]);

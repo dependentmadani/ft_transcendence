@@ -42,7 +42,6 @@ export class UsersService {
   }
 
   async searchUser(username: string, users: Users) {
-    console.log(username)
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
     }
@@ -59,7 +58,7 @@ export class UsersService {
     });
     return user;
   }
-  
+
   async searchFriendUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
@@ -311,7 +310,7 @@ export class UsersService {
   async updateUser(
     userId: number,
     userInfo: Users,
-    body: UserModify,
+    username: UserModify,
   ) {
     try {
       const user = await this.prisma.users.update(
@@ -320,13 +319,13 @@ export class UsersService {
             id: userId,
           },
           data: {
-            username: body?.username,
-            avatar: body?.avatar,
+            username: username.username,
             signedUp: true,
           },
         },
-      );
-
+        );
+      console.log('user information: ', user)
+        
       return user;
     } catch {
       throw new UnauthorizedException(
@@ -364,7 +363,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './public/uploadAvatar/' + filePath,
+              './uploadAvatar/' + filePath,
           },
         },
       );

@@ -64,3 +64,24 @@
         /* overflow: auto; */
     }
 }
+
+
+.pppp {
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: flex-start; */
+    align-content: flex-start;
+    width: 50%;
+    height: 100%;
+    background-color: bisque;
+}
+
+#pp {
+    width: 48%;
+    min-width: 200px;
+    margin: 1%;
+    height: 50px;
+    background-color: gray;
+}
+
+/* @media (.pppp) */

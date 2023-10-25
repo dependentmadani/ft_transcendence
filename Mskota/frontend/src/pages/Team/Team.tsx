@@ -56,7 +56,7 @@ function Badges() {
 
 
         return (
-            <div className='badge' >
+            <div key={badge.id} className='badge' >
                 <img src={badge.img} alt="person-img"  className='team-img'/> 
                 <div className='portfolio'>
                     <p>{badge.name}</p>

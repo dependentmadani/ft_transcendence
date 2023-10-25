@@ -55,7 +55,6 @@ img {
     /* background-color: slategray; */
 }
 
-.friends-list,
 .achivements,
 #chart {
     height: 86%;
@@ -183,122 +182,6 @@ img {
     font-weight: 600;
     transition: width .6s cubic-bezier(0.075, 0.82, 0.165, 1);
 
-}*/
-
-.profile-name-rank {
-    width: 90%;
-    height: 20%;
-    max-width: 230px;
-    margin-top: 1rem;
-    font-size: large;
-    font-weight: bolder;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.profile-name {
-    width: 70%;
-    text-align: center;
-    padding: .4rem .1rem;
-    border-radius: 5px;
-    position: relative;
-    background-color: #384080;
-    /* background-color: rgb(0, 255, 255); */
-}
-.profile-name > img {
-    width: 100%;
-    height: 50px;
-}
-.profile-rank {
-    position: relative;
-    text-align: center;
-    padding: .3rem .3rem;
-    border-radius: 5px;
-    width: 30px;
-    font-size: larger;
-    font-weight: bolder;
-    background-color: rgba(62, 202, 253, 0.8);
-}
-.profile-rank > img {
-    width: 100%;
-}
-#rank {
-    position: absolute;
-    left: 50%;
-    top: 46%;
-    z-index: 5;
-    transform: translate(-50%, -50%); 
-}
-#settings {
-    position: absolute;
-    top: 8px;
-    right: 15px;
-    cursor: pointer;
-    width: 30px;
-    z-index: 220;
-}
-
-/* FRIENDS */
-.friend {
-    height: 54px;
-    margin: .6rem;
-    width: 95%;
-    min-width: 200px;
-    border-radius: 10px;
-    display: flex;
-    position: relative;
-    align-items: center;
-    justify-content: space-between;
-    background-color: cadetblue;
-}
-
-.user-friend {
-    height: 100%;
-    border-radius: 10px;
-    border: 1px solid ;
-}
-
-.icon-chat {
-    height: 57%;
-    margin: 1rem;
-}
-
-.name-friend {
-    position: absolute;
-    top: 6px;
-    left: 3.5rem;
-    font-weight: 600;
-    color: black;
-    background-color: #c5cae9;
-    padding: .04rem 1rem;
-    width: 70px;
-    text-align: center;
-    overflow: auto;
-    border-radius: 0px 10px 10px 0px;
-}
-
-.status-friend {
-    position: absolute;
-    font-size: 10px;
-    font-weight: 600;
-    top: 60%;
-    left: 3.8rem;
-    padding: 0px .4rem;
-    width: 38px;
-    text-align: end;
-    color: black;
-    border-radius: 10px;
-    background-color: aliceblue;
-}
-
-#circle {
-    position: absolute;
-    height: 90%;
-    aspect-ratio: 4/4;
-    left: 0;
-    border: 1px solid rgb(255, 255, 255);
-    border-radius: 10px;
-    background-color: cornflowerblue;
 }
 
 
@@ -317,27 +200,10 @@ img {
             /* background-color: greenyellow; */
         }
 
-
-        .profile-info-right {
-            height: 200px;
-        }
-
-        .profile-info-right > #title {
-            height: 30%;
-        }
-
-        .achivements {
-            height: 70%;
-        }
-
         .profile-img1 {
             height: 70%;
         }
 
-    }
-
-    #settings {
-        top: 4%;
     }
 
     .profile-info-left1,
@@ -346,13 +212,6 @@ img {
     .statistic {
         height: 350px;
         margin-top: 1rem;
-    }
-    
-    @media (max-width: 300px) {
-        #settings {
-            width: 25px;
-            right: 1;
-        }
     }
     
     
@@ -470,23 +329,14 @@ img {
         background-color: #384080;
         border-radius: 10px;
     }
-
-    .friend {
-        width: 45%;
-    }
     
     @media (max-width: 1220px) {
         .profile-info-left1 {
             min-width: 260px;
         }
 
-        /* .achive {
-            width: 200px;
-            height: 100px;
-        } */
-
         .friend {
-            width: 85%;
+            width:  85%;
         }
     }
 
@@ -524,5 +374,4 @@ img {
     }
 
 }
-
 
