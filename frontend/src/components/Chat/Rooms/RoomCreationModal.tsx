@@ -40,13 +40,15 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
     // Creating the new Room
     const uploadImage = async () => {
         if (roomName && roomAvatar) {
-            let formData = new FormData();
-            formData.append('roomName', roomName);
-            formData.append('roomAvatar', roomAvatar);
-            formData.append('roomType', roomType)
-            formData.append('roomPass', roomPass)
-
+            
             try {
+                let formData = new FormData();
+
+                formData.append('roomName', roomName);
+                formData.append('roomAvatar', roomAvatar);
+                formData.append('roomType', roomType)
+                formData.append('roomPass', roomPass)
+                
                 const response = await axios.post(`http://localhost:8000/room`, formData, {
                     withCredentials: true,
                     headers: { 'Content-Type': 'multipart/form-data' },
@@ -71,6 +73,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                         }, {
                             withCredentials: true
                         });
+                        // console.log('Yooo', res.data, _MAIN_USER_)
                     }
                     catch (error) {
                         console.log(error);

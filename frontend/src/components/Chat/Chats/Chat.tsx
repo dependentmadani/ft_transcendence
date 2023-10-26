@@ -3,7 +3,7 @@ import { Input } from '../Input'
 import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
-import { useAllow } from '@/context/AllowContext';
+// import { useAllow } from '@/context/AllowContext';
 
 interface Chat {}
 
@@ -22,7 +22,7 @@ export const Chat = ({ chatData }: any) => {
   const [isAllowed, updateAllow] = useState(false);
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [roomMessages, setRoomMessages] = useState<Message[]>([])
-  const [contextAllow] = useAllow();
+  // const [contextAllow] = useAllow();
 
   
   const currentChat = chatData?._chat?.chat

@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
-import { useAllow } from '@/context/AllowContext';
+// import { useAllow } from '@/context/AllowContext';
 
 export const Input = ({ chatData }: any) => {
 
   const [inputText, setInputText] = useState('')
-  const [contextAllow] = useAllow();
+  // const [contextAllow] = useAllow();
   const currentChat = chatData?._chat?.chat
   
 

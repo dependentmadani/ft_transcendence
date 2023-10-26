@@ -99,13 +99,25 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const kickMember = async (user: User) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
-                withCredentials: true,
-            });
+            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, { withCredentials: true, });
             // chatData?._socket?.emit('removeRoomMembers', user)
             // chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
             chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: user.id})
             console.log(user.username , 'Kicked', response)
+
+
+            // const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+            const res = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
+            console.log('uuuuuserrrrr', res.data[0].role)
+            if (res.data.length === 1 && res.data[0].role !== 'OWNER' && res.data[0].role !== 'ADMIN') {
+                console.log('YOOOOOOOOO', user.role, res.data.length)
+                const resp = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${res?.data[0]?.userId}`, {
+                    'role': 'ADMIN',
+                }, {
+                    withCredentials: true,
+                });
+                console.log(resp)
+            }
                 
         } catch (error) {
             console.log(error);
@@ -141,23 +153,25 @@ export const RoomMembers = ({ chatData }: any) => {
     }
 
 
-    useEffect(() => {
-        const oneUserRoomCase = async () => {
-            const response = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
-            if (response.data.role !== 'OWNER' && response.data.length === 1) {
-                const res = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${response?.data[0]?.userId}`, {
-                    'role': 'ADMIN',
-                }, {
-                    withCredentials: true,
-                });
-                console.log(res)
-            }
-        }
+    // useEffect(() => {
+    //     const oneUserRoomCase = async () => {
+    //         const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+    //         const response = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {withCredentials: true})
+    //         if (response.data.role !== 'OWNER' && response.data.length === 1) {
+    //             console.log('YOOOOOOOOO', response.data, _MAIN_USER_)
+    //             const res = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${response?.data[0]?.userId}`, {
+    //                 'role': 'ADMIN',
+    //             }, {
+    //                 withCredentials: true,
+    //             });
+    //             console.log(res)
+    //         }
+    //     }
 
-        oneUserRoomCase()
-    }, [currentRoom])
+    //     oneUserRoomCase()
+    // }, [currentRoom])
 
-    
+    // console.log('ALL USERS', roomMembers)
 
     return (
         <div className='roomMembers'>
@@ -167,11 +181,12 @@ export const RoomMembers = ({ chatData }: any) => {
                     <div key={index} className="roomMemberItem">
                         <span key={index} className='roomMember' >{ user.username }</span>
                             <span className='admin'>{ user.role === 'OWNER' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
+                            <span className='admin'>{ user.role === 'ADMIN' && <FontAwesomeIcon className='roleIcon' style={{'color': 'gold'}} icon={faUserTie} /> }</span>
                             {
                                 user.id !== mainUser?.id && user.role !== 'OWNER' && user.role !== 'ADMIN' && <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
                                     { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
-                                    { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'OWNER')} /> }
+                                    { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'ADMIN')} /> }
                                     <FontAwesomeIcon icon={faBan} className='kickMemberIcon' onClick={() => kickMember(user)} />
                                 </div>
                             }

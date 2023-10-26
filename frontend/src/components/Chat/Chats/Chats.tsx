@@ -125,6 +125,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                 const chatMessages = await axios.get(`http://localhost:8000/message/chat/${chat.chatId}`, {withCredentials: true})
                 if (chatMessages.data.length !== 0)
                   return newChat
+                // We must check for blocked Users and let'em pass
                 return null
               })
             );
@@ -158,10 +159,16 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                   type: 'room',
                 };
   
+                // Check if the user is permissible to access the channel
+                const resp = (await axios.get(`http://localhost:8000/roomUsers/role/${newRoom.id}/${_MAIN_USER_.id}`, {withCredentials: true})).data[0];
+                console.log('WALLA A SMYITEK', resp.role)
+                if (resp.role === 'BANNED' || resp.role === 'MUTED')
+                  return null
                 return newRoom
               })
             );
-            setNewRooms(newRoomsData);
+            const filteredRoomsData: any = newRoomsData.filter((room) => room !== null);
+            setNewRooms(filteredRoomsData);
           }
           catch (err) {
             console.log('Error fetching users for rooms: ', err);

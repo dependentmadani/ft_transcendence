@@ -4,10 +4,12 @@ import { Rightbar } from "@/components/Chat/Rightbar"
 import { Leftbar } from "@/components/Chat/Leftbar"
 import io, { Socket } from 'socket.io-client';
 import './style.css'
-import { RoomProvider } from "@/context/RoomsContext";
-import { AllowProvider } from "@/context/AllowContext";
+// import { RoomProvider } from "@/context/RoomsContext";
+// import { AllowProvider } from "@/context/AllowContext";
 import axios from "axios";
-
+import SetInfo from "../SignUp/SignUp";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faArrowLeft, faChevronLeft, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 interface User {
   id: number,
 }
@@ -77,19 +79,76 @@ export const HomeChat = () => {
 
   const chatData = { _chat: selectedChat, _socket: socket }
 
-  // console.log('chatdata', chatData)
+  console.log('selected chat', selectedChat)
+  
+  // const [openIfos, setOpenInfos] = useState();
 
+  // useEffect(() => {
+  //   if ()
+  //   setOpenInfos(1)
+  // })
+  let openIfos=false
+  let openChat = true
+  const setInfos = () => {
+    openIfos = true
+    openChat = false
+    console.log('Infos state', openIfos, openChat)
+  }
+
+  const [showChat, setShowChat] = useState(true);
+  const [showInfos, setShowInfos] = useState(false);
+
+  const handleDotsClick = () => {
+    setShowChat(false);
+    setShowInfos(true);
+  };
+
+  const handleReturnClick = () => {
+    setShowChat(true);
+    setShowInfos(false);
+  };
+
+
+  console.log(chatData?._chat?.chat?.roomAvatar)
 
   return (
     <div className='home'>
         <div className='container'>
-          <RoomProvider>
-            <AllowProvider > 
-              <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
-              <Chat chatData={ chatData } />
-              <Rightbar chatData={ chatData } />
-            </AllowProvider > 
-          </RoomProvider>
+        <div className="chat-nav-container">
+          {selectedChat === undefined && <div className='chat-nav-item'><Leftbar onValueChange={handleSelectedChat} chatData={chatData} /></div>}
+          
+          {selectedChat && showChat && (
+            <div className='chat-nav-item'>
+              <div className="chat-nav-header">
+                <div className="chat-nav-header-leftSide">
+                  <a className="chat-nav-header-items" href="/chat" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
+                  <img className="chat-nav-header-avatar" src={chatData?._chat?.chat.type === 'chat' ? chatData?._chat?.chat.receiver.avatar : chatData?._chat?.chat?.roomAvatar } alt="user_avatar" />
+                </div>
+                <div className="chat-nav-header-rightSide">
+                  <a className="chat-nav-header-items" onClick={handleDotsClick}><FontAwesomeIcon icon={faEllipsisV} /></a>
+                </div>
+              </div>
+              <Chat chatData={chatData} />
+            </div>
+          )}
+
+          {showInfos &&
+            <div className='chat-nav-item'>
+              <div className="chat-nav-header">
+                <a className="chat-nav-header-items" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
+              </div>
+              <Rightbar chatData={chatData} />
+            </div>}
+        </div>
+        <div className="normal-mode">
+          <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
+          <Chat chatData={ chatData } />
+          <Rightbar chatData={ chatData } />
+        </div>
+          {/* <RoomProvider>
+            <AllowProvider > */}
+            {/* </AllowProvider > 
+          </RoomProvider> */}
         </div>
     </div>
   )

@@ -189,7 +189,7 @@ form {
 .form-container {
     background-color: #8490c5;
     padding: 20px;
-    width: 40%;
+    width: 50%;
     max-height: 100%;
     border-radius: 8px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
@@ -387,11 +387,12 @@ form {
 }
 
 .leftSidebar {
-        display: flex;
-        flex-direction: column;
-        width: 25%;
-        background-color: #232760;
-        position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 25%;
+  background-color: #232760;
+  position: relative;
+  height: 100%;
 }
 
 .navbar {
@@ -749,7 +750,7 @@ form {
               
 .searchInviteResults {
   background-color: #e7f0fac9;
-  width: 35%;
+  width: 65%;
   margin: auto;
   padding: 0;
   border-radius: 5px;
@@ -760,7 +761,7 @@ form {
   flex-direction: row;
   background-color: #5a639a;
   padding: 10px 5px;
-  width: 75%;
+  width: 85%;
   margin: 10px auto;
   border-radius: 30px;
 }
@@ -841,7 +842,7 @@ form {
 }
 
 .roomMemberItem {
-  width: 60%;
+  width: 98%;
   padding: 5px;
   margin: 5px auto;
   background: aliceblue;
@@ -1337,20 +1338,208 @@ form {
     }
 }
 
+.normal-mode {
+  visibility: visible;
+  display: flex;
+  width: 100%;
+}
+
+.chat-nav-container {
+  /* display: none; */
+  visibility: hidden;
+  display: none;
+}
+
+
+@media screen and (max-width: 900px) {
+ 
+  .normal-mode {
+    visibility: hidden;
+    display: none;
+  }
+  .chat-nav-container {
+    visibility: visible;
+  }
+
+  .chat-nav-container {
+    display: flex;
+    /* background-color: aquamarine; */
+      width: 100%;
+  }
+  
+  .chat-nav {
+    background-color: blueviolet;
+    width: 90%;
+    height: 95%;
+    margin: 10px auto;
+    border-radius: 15px;
+    text-align: center;
+  }
+  
+  .chat-nav-header {
+    background-color: #232760;
+    display: flex;
+    padding: 10px;
+    /* height: 8%; */
+    border-radius: 15px 15px 0 0;
+    align-items: center;
+  }
+  
+  .chat-nav-header-items {
+    margin: 10px;
+  }
+  
+  .chat-nav-item {
+    /* background-color: yellow; */
+      /* margin: 10px; */
+      /* padding: 10px; */
+      height: 95%;
+      margin: auto;
+      width: 95%;
+  }
+  
+  .chat-nav-header-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .chat-nav-header-leftSide {
+    width: 90%;
+    display: flex;
+  }
+  
+  .chat-nav-header-rightSide {
+    width: 10%;
+  }
+  
+  .leftSidebar {
+    /* background-color: tomato; */
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+  }
+
+  .chat {
+    width: 100%;
+    height: 91%;
+  }
+  
+  .input {
+    border-radius: 0 0 15px 15px;
+  }
+
+  .inputContainer {
+    width: 98%;
+  }
+
+  .send {
+    font-size: 1.2em;
+  }
+
+  .rightSidebar {
+    /* background-color: tomato; */
+    width: 100%;
+    height: 92%;
+    border-radius: 0 0 15px 15px;
+  }
+
+  .userChats {
+    padding: 5px;
+  }
+
+  .chatData {
+    font-size: 0.9em;
+  }
+  
+  .chatAvatar {
+    padding: 0px;
+  }
+
+  .searchContainer {
+    height: 100%;
+    padding: 0;
+    font-size: 0.5em;
+    width: 95%;
+    margin: auto;
+  }
+
+  .serchChatInput {
+    padding: 0;
+  }
+
+  .search-chat-input {
+    font-size: 1.5em;
+  }
+
+  .searchChatIcon {
+    font-size: 1.7em;
+    margin: 0;
+  }
+
+  .searchChatCreatRoomIcon {
+    font-size: 1.7em;
+    margin: 0;
+  }
+
+  .msg-img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .msg-date {
+    font-size: 1em;
+  }
+
+  .msg-p {
+    font-size: 1.5em;
+  }
+
+  .contactInfos span {
+    font-size: 1.5em;
+  }
+
+  .form-container {
+    width: 65%;
+  }
+  .roomType {
+    flex-direction: column;
+  }
+
+  .roomMembers {
+    width: 90%;
+  }
+
+  .roomMemberItem {
+    width: 95%;
+  }
+
+  .searchInviteResults {
+    width: 95%;
+  }
+
+  .inviteResults {
+    width: 90%;
+  }
+}
+
 @media screen and (max-width: 600px) {
 
-  .search {
+  /* .search {
     padding: 10px !important;
     
-    .searchContainer {
+    /* .searchContainer {
       height: 70%;
       padding: 0px !important;
       font-size: 0.5em !important;
       width: 90%;
       margin: auto;
-    }
+    } */
 
-    .searchChatIcon {
+    /* .searchChatIcon {
       width: 50px !important;
       margin: auto !important;
     }
@@ -1358,49 +1547,48 @@ form {
     .searchChatCreatRoomIcon {
       width: 50px !important;
       margin: auto !important;
-    }
+    } */
 
-    .serchChatInput {
+    /* .serchChatInput {
       padding: 10%;
-    }
+    } */
 
     
-  }
+  /* }
   .input {
     font-size: 0.5em;
 
     input {
       font-size: 0.9em !important;
     }
-  }
+  }  */
 
-  .contactInfos span {
+  /* .contactInfos span {
     font-size: 0.5em !important;
-  }
+  } */
 
-  .userChats {
+  /* .userChats {
     height: 5%;
 
-  }
+  } */
 
-  .chatAvatar {
-    padding: 0px;
-  }
+  
 
-  .chatData {
+  /* .chatData {
     font-size: 0.1em;
-  }
+  } */
 
 
   .searchChatResults {
-    margin: 0;
+    width: 90%;
+    margin: 10px auto;
 
     .searchResInfo {
-      padding: 0;
+      margin: auto;
+      width: 90%;
+      padding: 5px;
       background-color: #666fca87;
       border-radius: 65px;
-      margin: 0;
-      width: 75%;
       display: flex;
       flex-direction: row;
       cursor: pointer;
