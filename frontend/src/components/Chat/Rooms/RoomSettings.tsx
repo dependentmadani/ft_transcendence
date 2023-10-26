@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFloppyDisk, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import { RoomMembers } from './RoomMembers';
@@ -34,8 +34,9 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                 setCurrentUserIsAdmin(true)
             else if (currentRoom.roomType === 'Private')
             {
-                const currentUserId: number = 1 // for now
-                const roomAdmins = await axios.get(`http://localhost:8000/roomUsers/admins/${currentRoom.id}`, {withCredentials: true})
+                const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+                const currentUserId: number = _MAIN_USER_.id
+                const roomAdmins = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/admins/${currentRoom.id}`, {withCredentials: true})
                 let t: number[] = []
                     
                 roomAdmins.data.map((roomUser: RoomUsers) => (
@@ -70,11 +71,10 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
             formData.append('roomPass', newRoomPass)
 
             try {
-                const response = await axios.patch(`http://localhost:8000/room/${currentRoom.id}`, formData, {
+                await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/room/${currentRoom.id}`, formData, {
                     withCredentials: true,
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
-                console.log('Updated ROOM ', response.data)
                 
             }
             catch (error) {

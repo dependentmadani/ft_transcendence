@@ -8,6 +8,8 @@ export default function Home(props:any) {
 
     // const my_img:string = 'src/imgs/home.png'
     const { client, updateClient }  = useClient();
+    const  navigate = useNavigate();
+
     // const [socket, setSocket] = useState<Socket>(client.socket);
     // const { auth, updateAuth } = useAuth();
     // const navigate = useNavigate();
@@ -55,6 +57,15 @@ export default function Home(props:any) {
     //     // navigate('/login')
     // }
 
+    const handelStart = () => {
+
+        console.log('################')
+        if (!client.signedIn)
+            navigate('/login');
+        else
+            navigate('/game');
+    }
+
     return (
             <main className='main-home' >
                 <div className="dscp-home">
@@ -70,12 +81,7 @@ export default function Home(props:any) {
                         Ping Pong! Our game takes this classic table tennis game to a whole new level, right in the comfort of your home.
                         <br /><br /> <span className="tab1" /> To Stay play with your friends .
                     </p>
-                    <button className="getStart-b">
-                        { !client.signin ?
-                            <Link to='/login' > Get Started </Link> :
-                            <Link to='/game' > Get Started </Link> 
-                        }
-                    </button>
+                    <button className="getStart-b" onClick={handelStart}> Get Started </button>
                 </div>
                 <div className='home-img' >
                     <img  src='/src/imgs/home.png' alt='home.png' />

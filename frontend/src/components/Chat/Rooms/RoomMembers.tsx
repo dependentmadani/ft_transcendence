@@ -52,7 +52,7 @@ export const RoomMembers = ({ chatData }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
+                const result = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
                 if (result.data) {
                     let membersIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -62,8 +62,8 @@ export const RoomMembers = ({ chatData }: any) => {
                     let members: any = []
                     for (let i=0; i<membersIds.length; i++) {
                         try {
-                            const user = await axios.get(`http://localhost:8000/users/${membersIds[i]}`, {withCredentials: true})
-                            const res = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${membersIds[i]}`, { withCredentials: true })
+                            const user = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${membersIds[i]}`, {withCredentials: true})
+                            const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${currentRoom.id}/${membersIds[i]}`, { withCredentials: true })
                             members.push({'id': user?.data?.id, 'username': user?.data?.username, 'role': res?.data[0]?.role})
                         }
                         catch (err) {
@@ -86,7 +86,7 @@ export const RoomMembers = ({ chatData }: any) => {
     useEffect(() => {
         const getMainUser = async () => {
             try {
-                const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+                const _MAIN_USER_ = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
                 setMainUser(_MAIN_USER_.data)
             }
             catch (err) {
@@ -99,24 +99,17 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const kickMember = async (user: User) => {
         try {
-            const response = await axios.delete(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, { withCredentials: true, });
-            // chatData?._socket?.emit('removeRoomMembers', user)
-            // chatData?._socket?.emit('leaveRoom', chatData?._chat?.chat)
+            await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, { withCredentials: true, });
             chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: user.id})
-            console.log(user.username , 'Kicked', response)
 
 
-            // const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-            const res = await axios.get(`http://localhost:8000/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
-            console.log('uuuuuserrrrr', res.data[0].role)
+            const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
             if (res.data.length === 1 && res.data[0].role !== 'OWNER' && res.data[0].role !== 'ADMIN') {
-                console.log('YOOOOOOOOO', user.role, res.data.length)
-                const resp = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${res?.data[0]?.userId}`, {
+                await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${res?.data[0]?.userId}`, {
                     'role': 'ADMIN',
                 }, {
                     withCredentials: true,
                 });
-                console.log(resp)
             }
                 
         } catch (error) {
@@ -126,12 +119,11 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const muteBanMember = async (user: User, role: string) => {
         try {
-            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
+            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, {
                 'role': role,
             }, {
                 withCredentials: true,
             });
-            console.log(role, response)
                 
         } catch (error) {
             console.log(error);
@@ -140,12 +132,11 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const unMuteBanMember = async (user: User, role: string) => {
         try {
-            const response = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${user.id}`, {
+            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, {
                 'role': role,
             }, {
                 withCredentials: true,
             });
-            console.log(role, response)
                 
         } catch (error) {
             console.log(error);
@@ -153,25 +144,6 @@ export const RoomMembers = ({ chatData }: any) => {
     }
 
 
-    // useEffect(() => {
-    //     const oneUserRoomCase = async () => {
-    //         const _MAIN_USER_ = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
-    //         const response = await axios.get(`http://localhost:8000/roomUsers/role/${currentRoom.id}/${_MAIN_USER_?.data?.id}`, {withCredentials: true})
-    //         if (response.data.role !== 'OWNER' && response.data.length === 1) {
-    //             console.log('YOOOOOOOOO', response.data, _MAIN_USER_)
-    //             const res = await axios.patch(`http://localhost:8000/roomUsers/${currentRoom.id}/${response?.data[0]?.userId}`, {
-    //                 'role': 'ADMIN',
-    //             }, {
-    //                 withCredentials: true,
-    //             });
-    //             console.log(res)
-    //         }
-    //     }
-
-    //     oneUserRoomCase()
-    // }, [currentRoom])
-
-    // console.log('ALL USERS', roomMembers)
 
     return (
         <div className='roomMembers'>

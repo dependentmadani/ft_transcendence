@@ -17,10 +17,10 @@ import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
 
 ///
-import "./SocketGame/SocketClassic1"
-import "./SocketGame/SocketClassic2"
-import "./SocketGame/SocketMatch1"
-import "./SocketGame/SocketMatch2"
+// import "./SocketGame/SocketClassic1"
+// import "./SocketGame/SocketClassic2"
+// import "./SocketGame/SocketMatch1"
+// import "./SocketGame/SocketMatch2"
 ///
 
 @Module({

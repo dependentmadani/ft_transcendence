@@ -1,8 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
-// import RoomCon
-import { useRoom } from '@/context/RoomsContext';
 
 
 interface User {
@@ -60,7 +58,7 @@ var _MAIN_USER_: User
 
 export  const Chats = ({ onValueChange, chatData }: any) => {
 
-  const [selectedChat, setSelectedChat] = useState<{}>([]);
+  // const [selectedChat, setSelectedChat] = useState<{}>([]);
   const [newChats, setNewChats] = useState<Chat[]>()
   const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
@@ -71,9 +69,9 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
   useEffect(() => {
     const fetchChats = async () => {
-      _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+      _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
       try {
-        let response = await axios.get(`http://localhost:8000/chat/${_MAIN_USER_?.id}`, {withCredentials: true})
+        let response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/${_MAIN_USER_?.id}`, {withCredentials: true})
         setChats(response.data)
       }
       catch (err) {
@@ -86,8 +84,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   useEffect(() => {
     const fetchRooms = async () => {
         try {
-          _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-          let response = await axios.get(`http://localhost:8000/roomUsers/user/${_MAIN_USER_.id}`, {withCredentials: true})
+          _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+          let response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/user/${_MAIN_USER_.id}`, {withCredentials: true})
           setRooms(response.data)
         }
         catch (err) {
@@ -100,14 +98,14 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   useEffect(() => {
       const fetchChatUsers = async () => {
           try {
-            _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+            _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
             const newChatsData = await Promise.all(
               chats.map(async (chat) => {
                 const sender = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[0] : chat.chatUsers[1];
                 const receiver = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[1] : chat.chatUsers[0];
-                const senderResponse = await axios.get(`http://localhost:8000/users/${sender}`, {withCredentials: true});
-                const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
-                const _latestMessage = (await axios.get(`http://localhost:8000/message/chat/${chat?.chatId}`, {withCredentials: true}))?.data;
+                const senderResponse = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${sender}`, {withCredentials: true});
+                const receiverResponse = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${receiver}`, {withCredentials: true});
+                const _latestMessage = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/chat/${chat?.chatId}`, {withCredentials: true}))?.data;
                 const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt || null;
                 const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent || null;
                 
@@ -120,9 +118,8 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                   latestMessageContent: latestMessageContent,
                   type: 'chat',
                 };
-                console.log('new chat', newChat)
             
-                const chatMessages = await axios.get(`http://localhost:8000/message/chat/${chat.chatId}`, {withCredentials: true})
+                const chatMessages = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/chat/${chat.chatId}`, {withCredentials: true})
                 if (chatMessages.data.length !== 0)
                   return newChat
                 // We must check for blocked Users and let'em pass
@@ -139,12 +136,12 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         
         const fetchRoomUsers = async () => {
           try {
-            _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+            _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
             const newRoomsData = await Promise.all(
               rooms?.map(async (room: roomUsers) => {
-                let res = await axios.get(`http://localhost:8000/room/${room?.roomId}`, {withCredentials: true})
+                let res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/room/${room?.roomId}`, {withCredentials: true})
               
-                const _latestMessage = (await axios.get(`http://localhost:8000/message/room/${room?.roomId}`, {withCredentials: true}))?.data;
+                const _latestMessage = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/room/${room?.roomId}`, {withCredentials: true}))?.data;
                 const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt;
                 const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent;
   
@@ -160,8 +157,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                 };
   
                 // Check if the user is permissible to access the channel
-                const resp = (await axios.get(`http://localhost:8000/roomUsers/role/${newRoom.id}/${_MAIN_USER_.id}`, {withCredentials: true})).data[0];
-                console.log('WALLA A SMYITEK', resp.role)
+                const resp = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${newRoom.id}/${_MAIN_USER_.id}`, {withCredentials: true})).data[0];
                 if (resp.role === 'BANNED' || resp.role === 'MUTED')
                   return null
                 return newRoom
@@ -180,13 +176,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         fetchChatUsers()
     }, [chats, rooms])
 
-    // useEffect(() => {
-    // }, [rooms])
 
-  
-  // useEffect(() => {
-  //   onValueChange(selectedChat);
-  // }, [selectedChat]);
 
 
     useEffect(() => {
@@ -201,7 +191,6 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             const dateB: any = new Date(b.latestMessageDate);
             return dateB - dateA;
           });
-          console.log('srrsrrr', newChats)
         
           setContacts(_contacts);
 
@@ -210,57 +199,14 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         sortContacts()
     }, [newChats, newRooms]);
 
-    
 
-    // useEffect(() => {
-    
-    //   chatData?._socket?.on('sorting', () => {
-    //     console.log('wewewewewewewewewewewe')
-    //     sortChats()
-    //   });
-    //   return () => {
-    //     chatData?._socket?.off('sorting');
-    //   };
-    // }, [sortChats]);
 
 
     const handleClick = (chat: any, type: string) => {
-      setSelectedChat({chat, type});
+      // setSelectedChat({chat, type});
       onValueChange({chat, type})
-      console.log('chats chat', chat)
     };
 
-    // useEffect(() => {
-      
-    //   console.log('room : ', contextRoom)
-    //   // chatData?._socket?.on('newRoom', (room: Room) => {
-    //   //   if (newRooms.find(r => r.id === room.id) === undefined) {
-    //   //     const newRoom: Room = {
-    //   //       id: room.id,
-    //   //       roomName: room.roomName,
-    //   //       roomAvatar: room.roomAvatar,
-    //   //       roomType: room.roomType,
-    //   //       latestMessageDate: 'latestMessageDate',
-    //   //       latestMessageContent: 'latestMessageContent',
-    //   //       type: 'room',
-    //   //       roomPass: room.roomPass,
-    //   //     };
-    //   //     setNewRooms([...newRooms, newRoom])
-    //   //   }
-    //   // });
-    
-    //   chatData?._socket?.on('leavingRoom', (room: Room) => {
-    //     console.log('WAACHA DKHOLTII?????????')
-    //     if (newRooms.find(r => r.id === room.id) !== undefined)
-    //       setNewRooms(prevMembers => prevMembers.filter(r => r.id !== room.id))
-    //   });
-
-    //   return () => {
-    //     chatData?._socket?.off('newRoom');
-    //     chatData?._socket?.off('leavingRoom');
-    //   };
-
-    // }, [chatData?._socket]);
 
 
     const roomListener = (room: Room, owner: number) => {
@@ -280,9 +226,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     }
 
     const leaveRoomListener = (roomId: number, owner: number) => {
-      console.log('WAACHA DKHOLTII?????????', roomId, owner)
       if (newRooms.find(r => r.id === roomId) !== undefined && _MAIN_USER_.id === owner) {
-        console.log('Maalna', roomId, newRooms)
         setNewRooms(prevMembers => prevMembers.filter(r => r.id !== roomId))
       }
     }
@@ -299,7 +243,6 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         const dateB: any = new Date(b.latestMessageDate);
         return dateB - dateA;
       });
-      console.log('SRSRSRSRSRSRSRSRS', newChats)
     
       setContacts(_contacts);
 
@@ -317,15 +260,6 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
         };
     }, [roomListener, leaveRoomListener, contactsSorting]);
 
-    // useEffect(() => {
-      
-  
-    //     return () => {
-    //     };
-    // }, []);
-  
-
-    // console.log('Contacts ', chats)
 
 
     return (
@@ -334,7 +268,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
             contacts?.map((contact: Contact, index: number) => (
               <div className="userChats" key={index} onClick={() => handleClick(contact, contact.type)}>
                 <div className="chatAvatar">
-                  <img className="avatar-img" src={ contact?.receiver ? contact?.receiver?.avatar : `http://localhost:8000/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
+                  <img className="avatar-img" src={ contact?.receiver ? contact?.receiver?.avatar : `http://${import.meta.env.VITE_BACK_ADDRESS}/room/roomAvatar/${contact.id}`  } alt="user_avatar" />
                 </div>
                 <div className="chatData">
                   <span className="contact-name">{ contact?.roomName ? ((contact.roomName)?.length <= 8 ? contact.roomName : (contact.roomName)?.substring(0,8)+'...') : ((contact?.receiver?.username).length <= 8 ? contact?.receiver?.username : (contact?.receiver?.username).substring(0,8)+'...') }</span>

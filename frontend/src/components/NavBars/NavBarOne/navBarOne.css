@@ -48,29 +48,36 @@
 .login:hover {
     background-color: rgb(17, 122, 161);
     scale: 1.07;
+    cursor: pointer;
 }
 
 .login:active {
     scale: 0.95;
 }
 
-
-.user-img {
+#drop1 {
     height: 44%;
     min-height: 40px;
+    aspect-ratio: 4/4;
+    margin-right: 2%;
+    border: none;
+    background-color: transparent;
+}
+
+.user-img {
+    height: 100%;
     aspect-ratio: 4/4;
     object-fit: cover;
     background-color: black;
     border-radius: 50%;
     border: 3px solid lightskyblue ;
     cursor: pointer;
-    margin-right: 2rem;
     /* margin-left: 2rem; */
 }
 
-.user-img:hover {
+#drop1:hover {
     scale: 1.05;
-    border: 3px solid lightskyblue ;
+    /* border: 3px solid lightskyblue ; */
 }
 
 
@@ -109,6 +116,8 @@
 
 
 .menu-ico {
+    /* fill: #06e8f8; */
+    /* color: #06e8f8; */
     display: none;
     font-size: 2rem;
     margin-right: 2rem;

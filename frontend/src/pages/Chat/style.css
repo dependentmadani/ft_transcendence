@@ -230,9 +230,10 @@ form {
 }
 
 .importNewAvatarIcon {
-          font-size: 1.7em;
-          color: aliceblue;
-          cursor: pointer;
+  font-size: 2em;
+  color: aliceblue;
+  cursor: pointer;
+  margin: 10px;
 }
 
 
@@ -247,6 +248,7 @@ form {
   background-color: #6f75a0;
   padding: 10px;
   font-weight: 700;
+  border-radius: 20px;
 }
 
 .saveChanges:hover {
@@ -322,9 +324,10 @@ form {
 }
 
 .importAvatarIcon {
-        color: #5e639f;
-        font-size: 1.6em;
-        cursor: pointer;
+  color: #5e639f;
+  font-size: 2em;
+  cursor: pointer;
+  margin: 10px;
 }
 
 
@@ -466,7 +469,7 @@ form {
               padding: 0;
             }
 
-            input {
+            /* input {
               background-color: #828ccb;
               border: none;
               outline: none;
@@ -475,7 +478,7 @@ form {
               &::placeholder {
                 color: lightgray;
               }
-            }
+            } */
 }
 
 .createIconSend {
@@ -520,6 +523,7 @@ form {
   color: lightgray;
   font-size: 0.9em;
   width: 100%;
+  padding: 0 5px;
 
   &::placeholder {
     color: lightgray;
@@ -539,14 +543,13 @@ form {
           //     color: lightgray;
           //   }
           // } */
-          span {
+          /* span {
             display: flex;
             border-radius: 20px;
             padding: 5px;
-            /* // width: 90%; */
             background-color: #838ec8;
             align-items: center;
-          }
+          } */
 
 /* .searchIcon {
             font-size: 1.2em;
@@ -588,10 +591,10 @@ form {
           margin-right: 10px;
 }
 
-        span {
+        /* span {
           font-size: 1.4em;
           background-color: transparent;
-        }
+        } */
 
 .chats {
           overflow-y: scroll;
@@ -812,13 +815,13 @@ form {
                 /* } */
               /* } */
 
-              .search-chat-input {
+              /* .search-chat-input {
                 text-align: start;
                 background-color: #828ccb;
                 border: none;
                 outline: none;
                 margin: 0 10px;
-              }
+              } */
 
 /* .searchIcon {
   font-size: 1.9em;
@@ -1003,7 +1006,7 @@ form {
 } */
      
           
-.serchChatInput input {
+.serchChatInput > input {
   text-align: start;
 }
           /* // .search {
@@ -1350,6 +1353,17 @@ form {
   display: none;
 }
 
+.modes {
+  display: flex;
+  margin: 50px;
+}
+
+.modes a {
+  display: flex;
+  flex-direction: column;
+  margin: 0 25px;
+}
+
 
 @media screen and (max-width: 900px) {
  
@@ -1462,7 +1476,7 @@ form {
   .searchContainer {
     height: 100%;
     padding: 0;
-    font-size: 0.5em;
+    font-size: 0.6em;
     width: 95%;
     margin: auto;
   }
@@ -1524,6 +1538,17 @@ form {
   .inviteResults {
     width: 90%;
   }
+}
+
+.send-game {
+  font-size: 1.2em;
+  color: aliceblue;
+  cursor: pointer;
+  background-color: #6f75a0;
+  padding: 10px;
+  font-weight: 700;
+  border: none;
+  border-radius: 25px;
 }
 
 @media screen and (max-width: 600px) {

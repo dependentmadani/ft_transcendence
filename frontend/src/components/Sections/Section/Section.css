@@ -18,6 +18,7 @@
 
 
 .main-section {
+    position: relative;
     height: 84%;
     width: 100%;
     display: flex;
@@ -25,14 +26,17 @@
     justify-content: space-around;
     /* background-color: aqua; */
     margin: auto auto;
+    /* overflow: hidden; */
 }
 
 
 
 .select-section {
+    position: relative;
     width: 90%;
     height: 100%;
-    overflow: auto;
+    margin-bottom: 2%;
+    overflow: hidden;
     /* background-color: crimson; */
 }
 
@@ -42,8 +46,13 @@
 
 @media (orientation: portrait) {
 
+    .root-section {
+        gap: .5%;
+    }
+
     .main-section {
-       height: 85%;
+       height: 88%;
+       /* background-color: aqua; */
        /* width: ; */
        /* margin-bottom: .5rem; */
         /* overflow: auto; */
@@ -51,6 +60,46 @@
 
     .select-section {
         width: 100%;
+        margin-bottom: 0;
+        /* margin-top: .5rem; */
+        margin-left: .5rem;
+        margin-right: .5rem;
         /* overflow: auto; */
     }
+}
+
+
+.pppp {
+    display: flex;
+    flex-wrap: wrap;
+    /* align-items: flex-start; */
+    align-content: flex-start;
+    width: 50%;
+    height: 100%;
+    background-color: bisque;
+}
+
+#pp {
+    width: 48%;
+    min-width: 200px;
+    margin: 1%;
+    height: 50px;
+    background-color: gray;
+}
+
+/* @media (.pppp) */
+
+.kika {
+    position: absolute;
+    /* display: flex; */
+    /* align-items: center; */
+
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -30%); 
+    width: 500px;
+    height: 250px;
+    background-color: salmon;
+    /* padding: auto; */
+    outline: 100px solid khaki;
 }

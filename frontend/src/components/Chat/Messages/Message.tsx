@@ -22,7 +22,7 @@ export const Message = ({ currentMessage }: any) => {
   useEffect(() => {
     const getSender = async () => {
       try {
-        setSender(await (await axios.get(`http://localhost:8000/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
+        setSender(await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
       }
       catch (err) {
         console.log('No messages', err)
@@ -35,7 +35,7 @@ export const Message = ({ currentMessage }: any) => {
 
   useEffect(() => {
     const getOwner = async () => {
-      setOwner(await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data)
+      setOwner(await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data)
     }
     getOwner()
   }, [currentMessage])

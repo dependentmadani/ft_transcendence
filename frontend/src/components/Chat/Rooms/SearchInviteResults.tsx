@@ -14,7 +14,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
         // console.log('joinina assi ', invitedUser.id, currentRoom.id)
 
         // try {
-            //     const response = await axios.post(`http://localhost:8000/invitations`, {
+            //     const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/invitations`, {
                 //         sender: _MAIN_USER_.id,
                 //         receiver: invitedUser.id,
                 //         roomId: currentRoom.id,
@@ -28,10 +28,10 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                         //     console.log(error);
                         // }
                         // console.log('data to room', currentRoom, invitedUser)
+                        
         const allow = (currentRoom.roomType === 'Private') ? false : true
         try {
-            const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-            const res = await axios.post(`http://localhost:8000/roomUsers`, {
+            await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                 roomId: currentRoom.id,
                 userId: invitedUser.id,
                 role: 'MEMBER',
@@ -40,11 +40,8 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
             {
                 withCredentials: true,
             });
-            console.log('malja', _MAIN_USER_)
             chatData?._socket?.emit('roomMembers', invitedUser)
-            // chatData?._socket?.emit('createRoom', chatData?._chat?.chat, _MAIN_USER_.id)
             chatData?._socket?.emit('createRoom', {room: currentRoom, owner: invitedUser.id})
-            console.log('rah mzyaaan', res)
         }
         catch (error) {
             console.log(error);

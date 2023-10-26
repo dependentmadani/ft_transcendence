@@ -131,8 +131,8 @@ export class ChatGateway {
 
   @SubscribeMessage('roomMessage')
   handleRoomMessage(@MessageBody() data: any): void {
-    const { sender, rec, message } = data;
-    this.server.emit('sendRoomMessage', rec, message);
+    const { message } = data;
+    this.server.emit('sendRoomMessage', message);
   }
 
   @SubscribeMessage('roomMembers')

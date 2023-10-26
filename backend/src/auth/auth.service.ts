@@ -459,7 +459,7 @@ export class AuthService {
           isActive: state,
         },
       });
-    console.log(user);
+    console.log('hlwa : ', user);
   }
 
   async signToken(

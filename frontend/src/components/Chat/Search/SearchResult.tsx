@@ -17,7 +17,7 @@ interface Chat {
     type: string,
 }
 
-export const SearchResult = ({ onClose, searchResults, chatData, onValueChange }: any) => {
+export const SearchResult = ({ onClose, searchResults, onValueChange }: any) => {
 
     const searchResultsRef = useRef<HTMLDivElement>(null);
 
@@ -25,20 +25,18 @@ export const SearchResult = ({ onClose, searchResults, chatData, onValueChange }
     const createChat = async (user: User) => {
         
         // check if we find a commun chatId between the current user and this user
-        const sender = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        const sender = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         const receiver = user.id
         if (sender.id !== receiver) {
-            const communChats = await (await axios.get(`http://localhost:8000/chat/${sender.id}/${receiver}`, {withCredentials: true})).data
+            const communChats = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/${sender.id}/${receiver}`, {withCredentials: true})).data
             if (communChats.length === 0) {
                 try {
-                    const chat = await axios.post(`http://localhost:8000/chat`, {
+                    const chat = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`, {
                         senId: sender.id,
                         recId: receiver,
                     }, {
                         withCredentials: true
                     })
-                    console.log('chat created ', chat)
-                    // selectedChat(chat);
                     const type='chat'
                     onValueChange({chat, type})
                 }
@@ -47,16 +45,12 @@ export const SearchResult = ({ onClose, searchResults, chatData, onValueChange }
                 }
             }
             else {
-                // const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-                const chatRelation = await axios.get(`http://localhost:8000/chat/${sender.id}/${receiver}`, {withCredentials: true})
-                const _chat = (await axios.get(`http://localhost:8000/chat/id/${chatRelation?.data[0]?.chatId}`, {withCredentials: true})).data
-                // selectedChat(chat.data)
+                const chatRelation = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/${sender.id}/${receiver}`, {withCredentials: true})
+                const _chat = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/id/${chatRelation?.data[0]?.chatId}`, {withCredentials: true})).data
 
-                // const sender = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[0] : chat.chatUsers[1];
-                // const receiver = chat.chatUsers[0] === _MAIN_USER_.id ? chat.chatUsers[1] : chat.chatUsers[0];
-                const senderResponse = await axios.get(`http://localhost:8000/users/${sender.id}`, {withCredentials: true});
-                const receiverResponse = await axios.get(`http://localhost:8000/users/${receiver}`, {withCredentials: true});
-                const _latestMessage = (await axios.get(`http://localhost:8000/message/chat/${_chat?.chatId}`, {withCredentials: true}))?.data;
+                const senderResponse = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${sender.id}`, {withCredentials: true});
+                const receiverResponse = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${receiver}`, {withCredentials: true});
+                const _latestMessage = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/chat/${_chat?.chatId}`, {withCredentials: true}))?.data;
                 const latestMessageDate = _latestMessage[_latestMessage.length - 1]?.createdAt || null;
                 const latestMessageContent = _latestMessage[_latestMessage.length - 1]?.textContent || null;
                 
@@ -72,7 +66,6 @@ export const SearchResult = ({ onClose, searchResults, chatData, onValueChange }
                 };
                 const type='chat'
                 onValueChange({chat, type})
-                console.log('search chat', chat)
             }
         }
     }

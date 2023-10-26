@@ -6,39 +6,63 @@ import Client from '@/components/ClientClass/client';
 import axios from 'axios';
 
 
+const ListNotification = () => {
+
+    return (
+        <>
+            <div className='add-friend-notific' >
+                <img src="/src/imgs/example.jpg" alt="hlwa" />
+                <span id='notific-user' >hamid</span>
+                <span id='notific-title'>Friend</span>
+                <button id='accept'> </button>
+                <button id='refuse'></button>
+            </div>
+            <div className='play-notific' /*onClick={handelPlay}</>*/ >
+                <img src="/src/imgs/example.jpg" alt="hlwa" />
+                <span id='notific-user' >hamid</span>
+                <span id='notific-title'>Let's Play</span>
+            </div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+        </>
+    )
+}
+
+
 function NavBarTwo (props:any) {
 
     const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [orientation, setOrientation] = useState<number>(window.orientation);
+    // const [orientation, setOrientation] = useState<number>(window.orientation);
     const [isNotificOpen, setIsNotificOpen] = useState(false);
     const [listItems, setListItems] = useState<JSX.Element>();
     const navigate = useNavigate();
 
-    const open =  document.querySelector('.drop-menu2') as HTMLElement;
+    const openDrop =  document.querySelector('.drop-menu2') as HTMLElement;
+    const openNotification =  document.querySelector('.drop-notification') as HTMLElement;
+    const newNotification =  document.getElementById('newNotificaion') as HTMLElement;
+    
+    // const listNotific:JSX.Element = (
+    // <>
+    //     <div className='notifics' >
+    //         <img src="/src/imgs/example.jpg" alt="hlwa" />
+    //         <span id='notific-user' >hamid</span>
+    //         <span id='notific-title'>Friend</span>
+    //         <button id='accept'> </button>
+    //         <button id='refuse'></button>
+    //     </div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    // </>
+    // )
 
-    const listNotific:JSX.Element = (
-    <>
-        <div className='notifics' >
-            <img src="src/imgs/example.jpg" alt="hlwa" />
-            <span id='notific-user' >hamid</span>
-            <span id='notific-title'>Friend</span>
-            <button id='accept'> </button>
-            <button id='refuse'></button>
-            </div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div id='notifics' ></div>
-        <div className='notifics' ></div>
-    </>
-    )
-
-
-    const toggleNotific = () => setIsNotificOpen(!isNotificOpen);
 
 
 
@@ -54,15 +78,13 @@ function NavBarTwo (props:any) {
         navigate('/')
     }
 
-    const toggleMenu = () => {
-        // console.log('----------');
-        if (!open)
+    const handleMenuOpen = () => {
+
+        if (!openDrop) 
             return ;
-        if (!isMenuOpen){
-            open.style.height = '0px';
-        }
+        if (!isMenuOpen)
+            openDrop.style.height = '0px';
         else {
-            console.log('container : ', orientation);
             if (!window.matchMedia('(orientation: landscape)').matches) {
                 setListItems(
                     <>
@@ -73,59 +95,59 @@ function NavBarTwo (props:any) {
                         <li key="leaderboard"> <Link to='/leaderboard' > Leaderboard </Link> </li>
                         <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                     </>)
-                open.style.height = '250px'
+                openDrop.style.height = '250px'
             } else {
-                setListItems(
-                    <>
-                        <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>
-                    </>
-                )
-                open.style.height = '50px'
+                setListItems( <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li> )
+                openDrop.style.height = '50px'
             }
         }
-        // console.log('############ height : ',open.style.height);
     };
 
-    const handleOrientationChange = () => { 
-        toggleMenu();
-        setOrientation(window.orientation);
-    };
+
+    const handleNotificOpen = () => {
+        
+        if (!openNotification)
+            return ;
+        if (!isNotificOpen)
+            openNotification.style.height = '0px';
+        else {
+            newNotification.style.display = 'none'
+            if (window.innerWidth >= 900)
+                openNotification.style.height = '200px';
+            else
+                openNotification.style.height = '100px'
+        }
+    }
 
     useEffect(() => {
-
-            console.log('kike')
-        toggleMenu();
-        window.addEventListener('resize', handleOrientationChange);
-        return () => {
-          window.removeEventListener('resize', handleOrientationChange);
-        };
+        handleMenuOpen();
     }, [isMenuOpen]);
 
-    // window.addEventListener('click', function(event) {
-    //     console.log('qwwqwqwqwqwqwqqwqwqwqwqwq')
-    //     const nameClass = event.target.className as string;
-    //     if (nameClass !== 'notification' && nameClass !== 'user-img2') {
-    //         setIsMenuOpen(false)
-    //         setIsNotificOpen(false);
-    //     }
-    // });
+    useEffect(() => {
+        handleNotificOpen();
+    }, [isNotificOpen]);
 
     return ( 
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="src/imgs/mskota.png" alt="Mskota-logo" />
+                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
-                    <img className='notification' src="src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
-                    <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
-                        {listNotific}
+                    <button  id='notificDrop' onClick={() => {setIsNotificOpen(!isNotificOpen)}}  onBlur={() => {setIsNotificOpen(false)}} >
+                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" />
+                        <div id='newNotificaion'></div>
+                    </button>
+                    <div className='drop-notification'>
+                        <ListNotification />
                     </div>
-                    <img className='user-img2' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
+                    <button id='drop2' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
+                        <img className='user-img2' src={client.avatar} alt="user-img"/>
+                    </button>
                 </div>
-                <div className="drop-menu2" >
+                <ul className="drop-menu2" >
                     {listItems}
-                </div>
+                </ul>
             </div>
         </>
     )

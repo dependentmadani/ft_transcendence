@@ -1,6 +1,6 @@
 import  { useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaperPlane, faImage } from '@fortawesome/free-solid-svg-icons';
+import { faImage } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
 // interface User {}
@@ -49,23 +49,19 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                 formData.append('roomType', roomType)
                 formData.append('roomPass', roomPass)
                 
-                const response = await axios.post(`http://localhost:8000/room`, formData, {
+                const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room`, formData, {
                     withCredentials: true,
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 
-                const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-                
-                console.log('main user', _MAIN_USER_.id)
+                const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
                 chatData?._socket?.emit('createRoom', {room: response.data, owner: _MAIN_USER_.id})
-                console.log('CREATED ROOM ', response)
 
                 if (response.data) {
-                    console.log('rah mzyaaan')
                     const roomId: number = response.data.id
                     try {
-                        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-                        await axios.post(`http://localhost:8000/roomUsers`, {
+                        const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+                        await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                             roomId: roomId,
                             userId: _MAIN_USER_.id,
                             role: 'OWNER',
@@ -73,7 +69,6 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                         }, {
                             withCredentials: true
                         });
-                        // console.log('Yooo', res.data, _MAIN_USER_)
                     }
                     catch (error) {
                         console.log(error);
@@ -126,9 +121,6 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     { roomType === 'Private' && <input type="text" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
                     <span className='saveChanges' onClick={ uploadImage }>save</span>
                 </div>
-                {/* <div className="sendButton">
-                    <FontAwesomeIcon className='createIconSend' onClick={uploadImage} icon={faPaperPlane} />
-                </div> */}
             </div>
         </div>
     );
