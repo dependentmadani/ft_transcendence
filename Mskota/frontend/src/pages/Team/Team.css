@@ -112,10 +112,11 @@
     height: 30%;
     padding: 5% 5%;
     margin: 5% 0;
-    font-size: clamp(0px, 1.2vw, 50px);
+    font-size: clamp(0px, 1.5vh, 25px);
     font-weight: 700;
     background-color: rgb(58, 84, 69);
     border-radius: 20px;
+    overflow: hidden;
 }
 
 .follow {
@@ -207,7 +208,6 @@
     width: 7%;
     max-width: 100px;
     margin: auto;
-    transition: transform 0.5s ease;
 }
 
 

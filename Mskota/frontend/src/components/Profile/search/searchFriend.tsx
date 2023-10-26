@@ -7,13 +7,12 @@ function Friends_list(props:any) {
 
     let friends;
     const navigate = useNavigate();
-        console.log('hna : ', props.friendData)
-        console.log('target : ', props.target)
+
 	if (!props.friendData)
 		return (<span id='no_friend' >No Friends ...</span>)
-
+        
     if (!props.target) {
-        console.log('natija 1: ')
+    
         friends =	props.friendData.map(friend => {
 
             let statusColor = '';
@@ -35,7 +34,7 @@ function Friends_list(props:any) {
         })
     }
     else {
-        console.log('natija 2: ')
+
         friends =	props.friendData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
         .map(friend => {
 
@@ -48,7 +47,7 @@ function Friends_list(props:any) {
                 statusColor = '#15a3e9';
 
             return (
-                <div key={friend.id} className='friend'>
+                <div key={friend.id} className='friend' >
                     <img className='user-friend' src={friend.avatar} alt="friend-img" onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
@@ -57,6 +56,9 @@ function Friends_list(props:any) {
             )
         })
     }
+
+    // if ()
+    // const list =
 
     return (friends)
 }
