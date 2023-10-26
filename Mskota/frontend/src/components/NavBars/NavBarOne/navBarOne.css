@@ -55,23 +55,29 @@
     scale: 0.95;
 }
 
-
-.user-img {
+#drop1 {
     height: 44%;
     min-height: 40px;
+    aspect-ratio: 4/4;
+    margin-right: 2rem;
+    border: none;
+    background-color: transparent;
+}
+
+.user-img {
+    height: 100%;
     aspect-ratio: 4/4;
     object-fit: cover;
     background-color: black;
     border-radius: 50%;
     border: 3px solid lightskyblue ;
     cursor: pointer;
-    margin-right: 2rem;
     /* margin-left: 2rem; */
 }
 
-.user-img:hover {
+#drop1:hover {
     scale: 1.05;
-    border: 3px solid lightskyblue ;
+    /* border: 3px solid lightskyblue ; */
 }
 
 

@@ -28,9 +28,10 @@ function Friends (props: any) {
     const [target, setTarget] = useState('');
     const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
     
-    const my_search = document.querySelector('.search-input') as HTMLElement
+    const my_search = document.querySelector('.search-input') as HTMLInputElement
     const input = document.getElementById('search');
 
+    console.log(my_search)
     const search_open = () => {
         console.log('searchOpen : ', searchOpen)
         if (!searchOpen) {
@@ -40,6 +41,7 @@ function Friends (props: any) {
         else if (searchOpen) { 
             setIconSearch('/src/imgs/search.png');
             my_search.blur();
+            my_search.value = '';
         }
         setSearchOpen(!searchOpen);
     }
@@ -52,9 +54,11 @@ function Friends (props: any) {
         }
     }
 
-    const handleKey: KeyboardEventHandler<HTMLImageElement> = (event) => {
+    const handleKey: KeyboardEventHandler<HTMLInputElement> = (event) => {
         if (event.key === 'Enter') {
-			getFriends(target);
+            const _input = document.querySelector('.search-input') as HTMLInputElement
+            console.log(_input.value)
+			// getFriends(target);
         }
     }
 
@@ -63,11 +67,13 @@ function Friends (props: any) {
             <div className='search-bar'>
                 <input type="text" className="search-input" 
                     placeholder="Search..." 
-                    value={target}
+                    // value={target}
+                    // onKeyDown={handleKey}
+                    onKeyDown={handleKey}
                     onFocus={() => {setIconSearch('/src/imgs/cancel-red.png')}}
-                    onBlur={() => {setIconSearch('/src/imgs/search.png')}}
+                    onBlur={() => { my_search.value = ''; setIconSearch('/src/imgs/search.png')}}
                 />
-                <img id='search' src={iconSearch} alt="search"  onKeyDown={handleKey} onClick={search_open}/>
+                <img id='search' src={iconSearch} alt="search"  onClick={search_open}/>
             </div>
             <div id='title' >
                 <span>Friends </span>

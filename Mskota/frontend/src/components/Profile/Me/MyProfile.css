@@ -48,7 +48,7 @@ img {
     position: relative;
     width: 100px;
     height: 70%;
-    min-height: 40px;
+    min-height: 35px;
     padding: 0;
     margin: auto 0;
     border-radius: 4px;
@@ -57,13 +57,10 @@ img {
     transform-origin: right;
     transition: width .6s ease;
     background-color: rgb(192, 188, 188);
-    /* background-image: url('/src/imgs/search.png');
-    background-repeat: no-repeat;
-    background-position: right;
-    background-size: 30px; */
+
     text-align: left;
     padding-left: 2%;
-    font-weight: 400;
+    font-weight: lighter;
     border:  solid 1px aqua;
 }
 
@@ -72,10 +69,14 @@ img {
     /* background-image: url('/src/imgs/cancel-red.png'); */
 }
 
+.search-input2{
+    width: 100%;
+}
+
 .search-input::placeholder {
     font-size: 75%;
     text-align: left;
-    padding-left: 2%;
+    padding-left: 5%;
 }
 
 #search  {
@@ -84,12 +85,13 @@ img {
     top: 50%;
     transform: translate(0%, -50%); 
     margin: auto;
-    height: 80%;
+    height: 100%;
     padding: .4vh;
     max-height: 32px;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     cursor: pointer;
     z-index: 110;
+    /* background-color: brown; */
 }
 
 /* #search:focus .search-input {

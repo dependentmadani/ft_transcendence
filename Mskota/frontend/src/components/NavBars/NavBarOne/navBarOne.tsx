@@ -12,7 +12,7 @@ function NavBarOne() {
     const { client, updateClient }  = useClient();
     const [listItems, setListItems] = useState<JSX.Element>();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [orientation, setOrientation] = useState<number>(window.orientation);
+    // const [orientation, setOrientation] = useState<number>(window.orientation);
     const navigate = useNavigate();
 
     
@@ -70,7 +70,6 @@ function NavBarOne() {
                     open.style.height = '200px'
                 }
             } else {
- 
                 if (client.signedIn) {
                     open.style.height = '120px'
                     setListItems(
@@ -86,20 +85,16 @@ function NavBarOne() {
         }
     };
 
-    const handleOrientationChange = () => { 
-        toggleMenu();
-        setOrientation(window.orientation);
-    };
+    // const handleOrientationChange = () => { 
+    //     toggleMenu();
+    //     setOrientation(window.orientation);
+    // };
 
     useEffect(() => {
 
             console.log('hhamie')
         toggleMenu();
-        window.addEventListener('resize', handleOrientationChange);
-        return () => {
-          window.removeEventListener('resize', handleOrientationChange);
-        };
-      }, [isMenuOpen, orientation, client.signedIn]);
+      }, [isMenuOpen, client.signedIn]);
 
 
     return (
@@ -114,7 +109,9 @@ function NavBarOne() {
                     </ul>
                     {!client.signedIn ?
                         <div className='login' onClick={()=> {navigate('/login')}} > Get Started </div> :
-                        <img className='user-img' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
+                        <button id='drop1' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
+                            <img className='user-img' src={client.avatar} alt="user-img"  />
+                        </button>
                     }
                     {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>
                         <FontAwesomeIcon icon={!isMenuOpen ? faBars : faAnglesLeft} />

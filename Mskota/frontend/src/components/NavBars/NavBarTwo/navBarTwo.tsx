@@ -60,9 +60,9 @@ function NavBarTwo (props:any) {
             return ;
         if (!isMenuOpen){
             open.style.height = '0px';
+            // open.blur();
         }
         else {
-            // console.log('container : ', orientation);
             if (!window.matchMedia('(orientation: landscape)').matches) {
                 setListItems(
                     <>
@@ -74,13 +74,17 @@ function NavBarTwo (props:any) {
                         <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                     </>)
                 open.style.height = '250px'
+                console.log('container 0');
+                // open.focus()
             } else {
                 setListItems(
                     <>
                         <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>
                     </>
                 )
+                console.log('container 1');
                 open.style.height = '50px'
+                // open.focus()
             }
         }
 
@@ -90,10 +94,6 @@ function NavBarTwo (props:any) {
 
     useEffect(() => {
         handleOrientationChange();
-        window.addEventListener('resize', handleOrientationChange);
-        return () => {
-          window.removeEventListener('resize', handleOrientationChange);
-        };
     }, [isMenuOpen]);
 
     // window.addEventListener('click', function(event) {
@@ -116,11 +116,13 @@ function NavBarTwo (props:any) {
                     <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
                         {listNotific}
                     </div>
-                    <img className='user-img2' src={client.avatar} alt="user-img" onClick={() => {setIsMenuOpen(!isMenuOpen)}} />
+                    <button id='drop2' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
+                        <img className='user-img2' src={client.avatar} alt="user-img"/>
+                    </button>
                 </div>
-                <div className="drop-menu2" >
+                <ul className="drop-menu2" >
                     {listItems}
-                </div>
+                </ul>
             </div>
         </>
     )
