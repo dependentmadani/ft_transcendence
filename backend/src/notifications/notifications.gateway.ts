@@ -31,12 +31,13 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
 
   async handleConnection(client: Socket) {
     try {
+
       const token = client.handshake.headers.authorization?.split(' ')[1];
       if (!token) {
         client.disconnect(true);
         return ;
       }
-
+      
       const payload = await this.jwtService.verify(token);
       if (!payload) {
         client.disconnect(true);

@@ -125,22 +125,6 @@ export class UsersService {
         friends: true,
       }
     });
-    // await this.prisma.users.update({
-    //   where: {
-    //     id: friendId,
-    //   },
-    //   data: {
-    //     pendingFriendReq: {
-    //       connect: {
-    //         id: userId
-    //       }
-    //     }
-    //   },
-    //   include: {
-    //     friends: false,
-    //     _count: false,
-    //   }
-    // });
     return user;
   }
 
@@ -217,6 +201,23 @@ export class UsersService {
     return blockUser;
   }
 
+  async checkBlockedFriend(userId: number, friendId: number) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        blocked: {
+          some: {
+            id: friendId,
+          }
+        }
+      }
+    });
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
   async mutualFriends(userId: number, friendId: number) {
     if (userId === friendId) {
       throw new UnauthorizedException("the same user is not allowed!");
@@ -289,6 +290,34 @@ export class UsersService {
     });
 
     return unblockFriend;
+  }
+
+  async friendFriends(userId:number, friendId: number) {
+    const friend = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: friendId
+          }
+        }
+      },
+    });
+
+    if (!friend) {
+      throw new UnauthorizedException("not your friend");
+    }
+
+    const friendsList = await this.prisma.users.findUnique({
+      where: {
+        id: friendId,
+      }, 
+      include: {
+        friends: true
+      }
+    })
+
+    return friendsList.friends;
   }
 
   async mutualFriendsFinder(userFriends: any, friendFriends: any) {
@@ -366,7 +395,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './public/uploadAvatar/' + filePath,
+              './uploadAvatar/' + filePath,
           },
         },
       );

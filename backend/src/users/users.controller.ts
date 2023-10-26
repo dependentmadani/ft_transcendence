@@ -71,6 +71,14 @@ export class UsersController {
         return user;
   }
 
+  @Get('blocked-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async checkBlockedFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.checkBlockedFriend(req.user['sub'], friendId);
+  }
+
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
@@ -89,6 +97,13 @@ export class UsersController {
     const user = await this.userService.findUserById(req.user['sub']);
     const unblock = await this.userService.unblockFriend(user.id, friendId);
     return res.send(unblock);
+  }
+
+  @Get('friend-friends/:id')
+  async myFriendFriends(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.friendFriends(user.id, friendId);
   }
 
   @Get('mutual-friends/:id')
