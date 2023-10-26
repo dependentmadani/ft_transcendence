@@ -6,6 +6,32 @@ import Client from '@/components/ClientClass/client';
 import axios from 'axios';
 
 
+const ListNotification = () => {
+
+    return (
+        <>
+            <div className='add-friend-notific' >
+                <img src="/src/imgs/example.jpg" alt="hlwa" />
+                <span id='notific-user' >hamid</span>
+                <span id='notific-title'>Friend</span>
+                <button id='accept'> </button>
+                <button id='refuse'></button>
+            </div>
+            <div className='play-notific' /*onClick={handelPlay}</>*/ >
+                <img src="/src/imgs/example.jpg" alt="hlwa" />
+                <span id='notific-user' >hamid</span>
+                <span id='notific-title'>Let's Play</span>
+            </div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+            <div className='add-friend-notific' ></div>
+        </>
+    )
+}
+
+
 function NavBarTwo (props:any) {
 
     const { client, updateClient }  = useClient();
@@ -15,30 +41,28 @@ function NavBarTwo (props:any) {
     const [listItems, setListItems] = useState<JSX.Element>();
     const navigate = useNavigate();
 
-    const open =  document.querySelector('.drop-menu2') as HTMLElement;
+    const openDrop =  document.querySelector('.drop-menu2') as HTMLElement;
+    const openNotification =  document.querySelector('.drop-notification') as HTMLElement;
+    const newNotification =  document.getElementById('newNotificaion') as HTMLElement;
     
-    const listNotific:JSX.Element = (
-    <>
-        <div className='notifics' >
-            <img src="/src/imgs/example.jpg" alt="hlwa" />
-            <span id='notific-user' >hamid</span>
-            <span id='notific-title'>Friend</span>
-            <button id='accept'> </button>
-            <button id='refuse'></button>
-            </div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div className='notifics' ></div>
-        <div id='notifics' ></div>
-        <div className='notifics' ></div>
-    </>
-    )
+    // const listNotific:JSX.Element = (
+    // <>
+    //     <div className='notifics' >
+    //         <img src="/src/imgs/example.jpg" alt="hlwa" />
+    //         <span id='notific-user' >hamid</span>
+    //         <span id='notific-title'>Friend</span>
+    //         <button id='accept'> </button>
+    //         <button id='refuse'></button>
+    //     </div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    //     <div className='notifics' ></div>
+    // </>
+    // )
 
-
-    const toggleNotific = () => setIsNotificOpen(!isNotificOpen);
 
 
 
@@ -54,14 +78,12 @@ function NavBarTwo (props:any) {
         navigate('/')
     }
 
-    const handleOrientationChange = () => {
+    const handleMenuOpen = () => {
 
-        if (!open) 
+        if (!openDrop) 
             return ;
-        if (!isMenuOpen){
-            open.style.height = '0px';
-            // open.blur();
-        }
+        if (!isMenuOpen)
+            openDrop.style.height = '0px';
         else {
             if (!window.matchMedia('(orientation: landscape)').matches) {
                 setListItems(
@@ -73,37 +95,37 @@ function NavBarTwo (props:any) {
                         <li key="leaderboard"> <Link to='/leaderboard' > Leaderboard </Link> </li>
                         <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                     </>)
-                open.style.height = '250px'
-                console.log('container 0');
-                // open.focus()
+                openDrop.style.height = '250px'
             } else {
-                setListItems(
-                    <>
-                        <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li>
-                    </>
-                )
-                console.log('container 1');
-                open.style.height = '50px'
-                // open.focus()
+                setListItems( <li key="logout" id="logout"  onClick={handleLogout} >  LogOut  </li> )
+                openDrop.style.height = '50px'
             }
         }
-
-        console.log('############ height : ',open.style.height);
     };
 
 
+    const handleNotificOpen = () => {
+        
+        if (!openNotification)
+            return ;
+        if (!isNotificOpen)
+            openNotification.style.height = '0px';
+        else {
+            newNotification.style.display = 'none'
+            if (window.innerWidth >= 900)
+                openNotification.style.height = '200px';
+            else
+                openNotification.style.height = '100px'
+        }
+    }
+
     useEffect(() => {
-        handleOrientationChange();
+        handleMenuOpen();
     }, [isMenuOpen]);
 
-    // window.addEventListener('click', function(event) {
-    //     console.log('qwwqwqwqwqwqwqqwqwqwqwqwq')
-    //     const nameClass = event.target.className as string;
-    //     if (nameClass !== 'notification' && nameClass !== 'user-img2') {
-    //         setIsMenuOpen(false)
-    //         setIsNotificOpen(false);
-    //     }
-    // });
+    useEffect(() => {
+        handleNotificOpen();
+    }, [isNotificOpen]);
 
     return ( 
         <>
@@ -112,9 +134,12 @@ function NavBarTwo (props:any) {
                     <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
-                    <img className='notification' src="/src/imgs/notification.png" alt="Notification" onClick={toggleNotific} />
-                    <div className={`drop-notification ${isNotificOpen ? 'open-notific' : ''}`}>
-                        {listNotific}
+                    <button  id='notificDrop' onClick={() => {setIsNotificOpen(!isNotificOpen)}}  onBlur={() => {setIsNotificOpen(false)}} >
+                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" />
+                        <div id='newNotificaion'></div>
+                    </button>
+                    <div className='drop-notification'>
+                        <ListNotification />
                     </div>
                     <button id='drop2' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
                         <img className='user-img2' src={client.avatar} alt="user-img"/>

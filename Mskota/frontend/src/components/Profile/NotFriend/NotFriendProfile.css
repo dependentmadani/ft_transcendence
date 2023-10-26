@@ -42,6 +42,7 @@ img {
     background-color: rgba(113, 113, 146, 0.55);
     border-radius: 20px;
     margin: auto;
+    max-width: 650px;
 
 }
 

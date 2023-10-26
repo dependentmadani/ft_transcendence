@@ -17,7 +17,7 @@ img {
 .profile {
     width: 100%;
     height: 100%;
-    position: relative
+    position: relative;
     /* display: flex; */
 }
 
@@ -52,7 +52,7 @@ img {
     padding: 0;
     margin: auto 0;
     border-radius: 4px;
-    z-index: 110;
+    z-index: 10;
     outline: none;
     transform-origin: right;
     transition: width .6s ease;
@@ -112,6 +112,7 @@ img {
 
 .user-friends {
     overflow: none;
+    cursor: pointer;
     /* background-color: slategray; */
 }
 
@@ -347,18 +348,21 @@ img {
     width: 44%;
     min-width: 240px;
     border-radius: 10px;
+    border: 1px solid ;
     display: flex;
     position: relative;
     align-items: center;
     justify-content: space-between;
-    background-color: cadetblue;
+    background-color: rgb(115, 183, 167);
 }
 
 .user-friend {
     /* position: relative; */
     height: 100%;
-    border-radius: 10px;
-    border: 1px solid ;
+    aspect-ratio: 4/4;
+    object-fit: cover;
+    border-radius: 10px 0 0 10px;
+    border: 1px solid black;
     z-index: 1;
 }
 
@@ -413,8 +417,9 @@ img {
     height: 100%;
     aspect-ratio: 4/4;
     left: 0;
-    border: .5px solid salmon;
-    border-radius: 10px;
+    margin: 0;
+    border: 1px solid black;
+    border-radius: 50%;
     background-color: cornflowerblue;
 }
 
@@ -647,3 +652,11 @@ img {
 }
 
 
+.blur {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
+    background-color: rgba(113, 113, 146, 0.7); 
+}

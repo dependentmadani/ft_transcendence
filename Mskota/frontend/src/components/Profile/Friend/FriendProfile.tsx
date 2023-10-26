@@ -37,11 +37,22 @@ function ProfileInfo (props: any) {
 
     const [baseImg, setBaseImg] = useState(props.userData.avatar);
 
+    useEffect(() => {
+
+        const statu = document.getElementById('status')?.querySelector('div') as HTMLElement;
+        if (props.userData.userStatus === 'ONLINE')
+            statu.style.background = 'springgreen';
+        else if (props.userData.userStatus === 'OFLINE')
+            statu.style.background = 'red';
+        else
+            statu.style.background = '#15a3e9'
+
+    }, [])
+
     return (
         <div className='profile-info'>
             <div className='profile-info-left1'>
                 <div className='profile-img1'>
-                {/* <div id='status'></div> */}
                     <div id='status'>
                         <span>{props.userData.userStatus}</span>
                         <div></div>

@@ -18,6 +18,7 @@
 
 
 .main-section {
+    position: relative;
     height: 84%;
     width: 100%;
     display: flex;
@@ -25,15 +26,17 @@
     justify-content: space-around;
     /* background-color: aqua; */
     margin: auto auto;
+    /* overflow: hidden; */
 }
 
 
 
 .select-section {
+    position: relative;
     width: 90%;
     height: 100%;
     margin-bottom: 2%;
-    overflow: auto;
+    overflow: hidden;
     /* background-color: crimson; */
 }
 
@@ -85,3 +88,18 @@
 }
 
 /* @media (.pppp) */
+
+.kika {
+    position: absolute;
+    /* display: flex; */
+    /* align-items: center; */
+
+    top: 50%;
+	left: 50%;
+	transform: translate(-50%, -30%); 
+    width: 500px;
+    height: 250px;
+    background-color: salmon;
+    /* padding: auto; */
+    outline: 100px solid khaki;
+}

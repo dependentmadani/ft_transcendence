@@ -363,7 +363,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './uploadAvatar/' + filePath,
+              '/uploadAvatar/' + filePath,
           },
         },
       );

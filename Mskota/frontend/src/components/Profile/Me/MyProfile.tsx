@@ -4,7 +4,7 @@ import MyPieChart from '@/components/Profile/PieChart/pieChart'
 import Friends from '../search/searchFriend';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import SettingsComponent from './settings'
 
 
 
@@ -63,9 +63,7 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={client.avatar} alt="user-img" />
-                    {/* <img src='/public/uploadAvatar/169720598979410e1162c-e9dc-46e3-b017-0ff49f3b62bd.jpeg' alt="user-img" /> */}
-                    
+                    <img src={client.avatar} alt="user-img" />                    
                 </div>
                 <div className='profile-name-rank'>
                     <div className='profile-name'> {client.username} </div>
@@ -111,16 +109,16 @@ function Statistic() {
 
 function MyProfile () {
 
-    console.log('profile')
+    console.log('MyProfile ')
     const [listFriend, setListFriend] = useState();
+    const [popSettings, setPopSettings] = useState(false);
 
     useEffect(() => {
     	async function fetchData () {
 			try {
-				const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true });
-				console.log('fetchDAta : ', res.data)
+				const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/ko`, { withCredentials: true });
+				setListFriend(res.data);
 				console.log('fetchDAta : ', res.data.friends)
-				setListFriend(res.data.friends);
 			} catch (error) {
 				console.error('Error fetching data: ', error);
 			}
@@ -129,20 +127,36 @@ function MyProfile () {
     }, [])
 
 
+    useEffect(() => {
+        console.log('befor : ', popSettings)
+        const settings_card = document.querySelector('.settings-card') as HTMLElement
+        if (!popSettings)
+            settings_card.style.display = 'none';
+        else
+            settings_card.style.display = 'flex'
+
+        console.log('after : ', popSettings)
+    }, [popSettings]);
+
+
+    console.log('-----------------------------------------')
     return (
-        <div className='profile'>
-            <img id='settings'  src="/src/imgs/setting.png" alt="setting" />
-            <div className='profile-col-1'>
-                <ProfileInfo />
-                <Friends friendData={listFriend} />
+        <>
+            <div className='profile'>
+                <img id='settings'  src="/src/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
+                <div className='profile-col-1'>
+                    <ProfileInfo />
+                    <Friends friendData={listFriend} />
+                </div>
+                <div className='profile-col-2'>
+                    <History />
+                    <Statistic />
+                </div>
+                <SettingsComponent />
+                {/* <div className='popup'></div> */}
             </div>
-            <div className='profile-col-2'>
-                <History />
-                <Statistic />
-            </div>
-            {/* <div className='blur' ></div>
-            <div className='popup'></div> */}
-        </div>
+            <div className='blur'  style={!popSettings ? { display: 'none' } : { display: 'block' }} ></div>
+        </>
     )
 }
 
