@@ -12,7 +12,7 @@ function selectSection(section: string): JSX.Element {
     if (section === 'profile')
         return ( <Profile />)
     else if (section === 'leaderboard')
-        return ( <Profile />)
+        return ( <Leaderboard />)
     return <></>
 }
 
@@ -32,7 +32,7 @@ function Section (props:any) {
                     <NavBarTree/>
                 </div>
                 <div className='select-section'>
-                <Leaderboard />
+                {/* <Leaderboard /> */}
                     {selectSection(props.section)}
                 </div>
             </div>
