@@ -24,8 +24,9 @@
     display: flex;
     height: 75px;
     /* background-color: rgb(85, 70, 147); */
-    background-color: #3e4aa0;
+    background-color: #27338f;
     border-radius: 10px;
+    border: 2px solid #108393;
     /* border-radius: 5px; */
     justify-content: space-around;
     align-items: center;
@@ -34,7 +35,7 @@
     box-shadow: 1px 5px 60px 0px #100a886b;
 }
 
-.player-stats span {
+.player-stats > span {
     color: rgb(237, 241, 219);
     font-weight: 600;
     font-size: 1rem;
@@ -50,12 +51,12 @@
 
 .img-frame {
     position: relative;
-    height: 72px;
-    width: 72px;
+    height: 69px;
+    width: 69px;
     background: #6b64f3;
     border-radius: 10px;
     overflow: hidden;
-    outline: 1px solid rgb(226, 216, 216);
+    outline: 1px solid #108393;
 }
   
 .img-frame img {

@@ -43,34 +43,34 @@ const SettingsComponent: React.FC = () => {
     return (
     <div className="settings-card">
         <div className="image-section">
-        <div className="image-frame">
-            <img src={client.avatar} alt="User Image" />
-            <div className="change-image-container" onClick={handleImageChange}>
-            	<img src="/src/imgs/change-img.png" alt="Image Icon" />
+            <div className="image-frame">
+                <img src={client.avatar} alt="User Image" />
+                <div className="change-image-container" onClick={handleImageChange}>
+                    <img src="/src/imgs/change_img1.png" alt="Image Icon" />
+                </div>
+            </div>
+            <div className="username-frame">
+                <input type="text" id="new-username" placeholder="New username (optional)" autoComplete='off' />
             </div>
         </div>
-        <div className="username-frame">
-            <input type="text" id="new-username" placeholder="New username (optional)" />
-        </div>
-        </div>
         <div className="two-fact-section">
-        <div className="container">
-            <input type="checkbox" id="check" />
-            <label htmlFor="check" className="switch"></label>
-            <span>2FA</span>
-        </div>
+            <div className="container">
+                <input type="checkbox" id="check"  autoComplete='off' />
+                <label htmlFor="check" className="switch"></label>
+                <span>2FA</span>
+            </div>
         <div className="container-mail">
-            <input type="text" id="mail-for-qr" placeholder="Enter mail for QR code" />
+            <input type="text" id="mail-for-qr" placeholder="Enter mail for QR code"  autoComplete='off' />
         </div>
         <div className="container-qrcode">
             <div className="sms-input">
-            <input type="text" id="sms-code" placeholder="Enter code" />
+                <input type="text" id="sms-code" placeholder="Enter code"  autoComplete='off' />
             </div>
             <div className="qr-space"></div>
         </div>
-        <button className="submit-data">
-            <p className="submit">Submit</p>
-        </button>
+            <button className="submit-data">
+                <p className="submit">Submit</p>
+            </button>
         </div>
     </div>
     );

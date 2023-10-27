@@ -18,7 +18,17 @@ function Achivement () {
             <span>Achivements</span>
         </div>
         <div className='achivements'>
-            <div className='achive'></div>
+            <div className="card-client">
+                <div className="achieve-icon">
+                    <img src="achievement-icons/aicrusher.png" alt="" />
+                </div>
+                <div className="achieve-data">
+                    <p className="description">Conqueror!
+                        <span>Win 3 games in a row</span>
+                    </p>
+                </div>
+            </div>
+
             <div className='achive'></div>
             <div className='achive'></div>
             <div className='achive'></div>

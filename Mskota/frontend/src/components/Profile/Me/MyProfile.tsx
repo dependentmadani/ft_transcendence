@@ -75,10 +75,72 @@ function ProfileInfo () {
                     <span>Achivements</span>
                 </div>
                 <div className='achivements'>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/firstserv.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">First Serve!
+                                <span> Win your first game
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/Conqueror.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">Conqueror!
+                                <span>Win 3 games in a row
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/aicrusher.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">AI Crusher!
+                                <span>Beat AI bot
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/Practice.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">Disciplined!
+                                <span>Play 5 practice games
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/social.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">Introuvert!
+                                <span>Invite 2 friend to play
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div className="achieve-card">
+                        <div className="achieve-icon">
+                            <img src="./src/achievement-icons/challenger.png" alt="" />
+                        </div>
+                        <div className="achieve-data">
+                            <p className="description">Challenger!
+                                <span>Play against 3 opponents
+                                </span>
+                            </p>
+                        </div>
+                    </div>
                     <div className='achive'></div>
                     <div className='achive'></div>
                     <div className='achive'></div>
