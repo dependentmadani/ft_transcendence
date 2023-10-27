@@ -1,44 +1,46 @@
 
 .NavBarTwo {
     position: relative;
-    /* top: 0; */
     height: 12%;
     width: 100%;
     max-height: 140px;
     min-height: 70px;
     backdrop-filter: blur(20px);
     background-color: rgba(53, 50, 76, 0.2);
-
-    width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /* background-color: brown; */
     z-index: 500;
 }
 
 
 
 .logo-img1 {
-    max-height: 100%;
-    /* aspect-ratio: 4/4; */
-    margin-left: 1.5rem;
-    margin-right: 4rem;
-    /* padding-top: .5rem; */
-    /* background-color: blueviolet; */
+    height: 100%;
+    object-fit: cover;
+    /* background-color: seagreen; */
+    overflow: hidden;
+    margin-left: 2%;
+}
+
+.logo-img1 > img {
+    height: 100%;
+    aspect-ratio: 4/4;
+    object-fit: cover;
 }
 
 .right-bar {
     width: 20%;
     height: 60%;
     /* min-width: 220px; */
+    overflow: hidden;
     max-width: 300px;
     display: flex;
     position: relative;
     justify-content: space-between;
     align-items: center;
     /* background-color: blue; */
-    margin-right: 2rem;
+    margin-right: 2%;
 }
 
 .notification {
@@ -177,7 +179,7 @@
 #notificDrop {
     position: relative;
     height: 100%;
-    min-height: 40px;
+    /* min-height: 40px; */
     aspect-ratio: 4/4;
     border: none;
     background-color: transparent;
@@ -258,35 +260,49 @@
         width: 250px;
         left: -35%;
     }
-
-    /* .open-notific {
-        height: 200px;
-    } */
 }
 
 
 
 @media (orientation: portrait) {
     
-    
+
+    #drop2, 
+    #notificDrop {
+        height: auto;
+        min-height: none;
+        width: 45%;
+        max-height: 100%;
+        /* background-color: aqua; */
+        margin: auto;
+        overflow: hidden;
+    }
+
     .logo-img1 {
-        margin-left: .5rem;
+        /* width: 60%; */
+        height: 100%;
+        /* max-height: 100%; */
+    }
+    
+    .logo-img1 > img {
+        height: 100%;
+        /* object-fit: cover; */
+        /* background-color: saddlebrown; */
+        /* width: 80%; */
+        /* max-height: 100%; */
     }
     
     .right-bar {
-        min-width: 114px;
-        margin-right: .5rem;
+        width: 45%;
+        /* min-width: 114px; */
+        margin-right: .5%;
+        /* background-color: salmon; */
     }
     
 
     .drop-menu2 {
         width: 300px;
     }
-
-    /* .user-img2:focus {
-        border-color: brown;
-    } */
-
 
     @media (max-width: 500px) {
         .notification {

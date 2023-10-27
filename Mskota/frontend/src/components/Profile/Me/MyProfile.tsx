@@ -72,9 +72,9 @@ function ProfileInfo () {
             </div>
             <div className='profile-info-right'>
                 <div id='title' >
-                    <span>Achivements</span>
+                    <span>achievements</span>
                 </div>
-                <div className='achivements'>
+                <div className='achievements'>
                     <div className="achieve-card">
                         <div className="achieve-icon">
                             <img src="./src/achievement-icons/firstserv.png" alt="" />
@@ -141,11 +141,6 @@ function ProfileInfo () {
                             </p>
                         </div>
                     </div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
-                    <div className='achive'></div>
                 </div>
             </div>
         </div>

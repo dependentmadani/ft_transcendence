@@ -51,6 +51,7 @@ export const router = createBrowserRouter([
             { path: '/game', element: < GetRouteElement tag='/game' /> },
             { path: '/leaderboard', element: < GetRouteElement tag='/leaderboard' /> },
             { path: '/kika', element: <Section section='test' /> },
+            // { path: '/kika', element: <Section section='test' /> },
             // { path: '/kkk', element: <Section section='test2' /> },
         ],
     },

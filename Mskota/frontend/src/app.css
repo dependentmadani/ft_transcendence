@@ -14,6 +14,7 @@
     /* justify-content: center; */
     width: 100vw;
     height: 100vh;
+    min-width: 230px;
     /* max-width: 3000px; */
     /* color: lightseagreen; */
     min-height: 600px;

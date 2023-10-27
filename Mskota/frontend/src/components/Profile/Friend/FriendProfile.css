@@ -27,8 +27,7 @@ img {
 
 
 
-.profile-info-left1,
-.achivement {
+.profile-info-left1 {
     position: relative;
     display: flex;
     overflow-y: auto;
@@ -40,7 +39,6 @@ img {
 }
 
 
-.achivements,
 #chart {
     height: 86%;
     width: 100%;
@@ -94,12 +92,6 @@ img {
 
 
 
-/* PROFILE-INFO */
-.profile-info {
-    /* flex-direction: column; */
-    align-items: center;
-    justify-content: center;
-}
 .profile-img1 {
     height: 70%;
     position: relative;
@@ -182,8 +174,8 @@ img {
 
     }
 
-    .profile-info-left1,
-    .achivement {
+    .profile-info-left1
+    {
         height: 350px;
         margin-top: 1rem;
     }
@@ -224,16 +216,7 @@ img {
 }
 
 @media (min-width: 600px) {
-    .achivement {
-        height: 450px;
-    }
 
-    .profile-info {
-        display: flex;
-        width: 100%;
-        align-items: center;
-        
-    }
 
     .profile-info-right,
     .profile-info-left1 {
@@ -264,13 +247,6 @@ img {
         display: flex;
     }
 
-    .achivement,
-    .profile-info {
-        width: 100%;
-        margin: auto;
-        height: 48%;
-        max-height: 550px;
-    }
 
     .profile-img1 {
         height: 60%;
@@ -288,20 +264,16 @@ img {
         max-width: 450px;
         margin: 0;
     }
-    
-    .achivements {
-        background-color: #384080;
-        border-radius: 10px;
-    }
+
     
     @media (max-width: 1220px) {
         .profile-info-left1 {
             min-width: 260px;
         }
 
-        .friend {
+        /* .friend {
             width:  85%;
-        }
+        } */
     }
 
     .profile-col-2,
@@ -321,10 +293,6 @@ img {
         flex-direction: column;
     }
 
-    .achivement {
-        width: 90%;
-        margin: auto;
-    }
 
     @media (max-width: 940px) {
         .profile-info-right {

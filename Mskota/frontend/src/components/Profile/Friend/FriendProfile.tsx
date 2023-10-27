@@ -10,14 +10,14 @@ import axios from 'axios';
 
 
 
-function Achivement () {
+function achievement () {
     return (
-    <div className='achivement'>
+    <div className='achievement'>
         <div id='title' >
             {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
-            <span>Achivements</span>
+            <span>achievements</span>
         </div>
-        <div className='achivements'>
+        <div className='achievements'>
             <div className="card-client">
                 <div className="achieve-icon">
                     <img src="achievement-icons/aicrusher.png" alt="" />
@@ -123,7 +123,7 @@ function FriendProfile (props: any) {
                 <Friends friendData={listFriend} />
             </div>
             <div className='profile-col-2'>
-                <Achivement />
+                <achievement />
                 <Statistic />
             </div>
             {/* <div className='blur' ></div>

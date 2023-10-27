@@ -130,9 +130,9 @@ function NavBarTwo (props:any) {
     return ( 
         <>
             <div className='NavBarTwo'>
-                <Link to='/' >
-                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
-                </Link>
+                <div className='logo-img1' >
+                    <img  src="/src/imgs/mskota.png" alt="Mskota-logo" onClick={() => {navigate()}} />
+                </div>
                 <div className='right-bar'>
                     <button  id='notificDrop' onClick={() => {setIsNotificOpen(!isNotificOpen)}}  onBlur={() => {setIsNotificOpen(false)}} >
                         <img className='notification' src="/src/imgs/notification.png" alt="Notification" />
