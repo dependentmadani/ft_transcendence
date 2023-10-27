@@ -10,7 +10,7 @@ function NavBarTree () {
 
     const goToProfile = () => { navigate('/profile') }
 
-    const goToPlay = () => { navigate('/play') }
+    const goToPlay = () => { navigate('/game') }
 
     const goToChat = () => { navigate('/chat') }
 
@@ -21,7 +21,7 @@ function NavBarTree () {
             <img src="/src/imgs/home-icon.png" alt="home" onClick={goToHome}/>
             <img src="/src/imgs/account-icon.png" alt="profile" onClick={goToProfile}/>
             <img src="/src/imgs/chat-icon.png" alt="chat" onClick={goToChat}/>
-            <img src="/src/imgs/racket-icon.png" alt="play" onClick={goToPlay}/>
+            <img src="/src/imgs/racket-icon.png" alt="game" onClick={goToPlay}/>
             <img src="/src/imgs/leaderboard.png" alt="leaderboard" onClick={goToLeader}/>
         </>
     )

@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -49,6 +50,37 @@ model Users {
   rooms       RoomUsers[]
   roomInvitationSender Invitations[] @relation("sender")
   roomInvitationReceiver Invitations[] @relation("receiver")
+
+
+  // Game relation
+  games                   Game?
+
+  //Game History relation
+  myHistoryGames          History[]       @relation("myHistory")
+  oppHistoryGames         History[]       @relation("oppHistory")
+}
+
+model Game {
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  user                    Users           @relation(fields: [userId], references: [id])
+  userId                  Int             @unique
+  gamesPlayed             Int             @default(0)
+  wins                    Int             @default(0)
+  loses                   Int             @default(0)
+}
+
+model History {
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  myUser                  Users           @relation("myHistory", fields: [myUserId], references: [id])
+  myUserId                Int
+  oppUser                 Users           @relation("oppHistory", fields: [oppUserId], references: [id])
+  oppUserId               Int
+  myScore                 Int
+  oppScore                Int
 }
 
 model Notifications {

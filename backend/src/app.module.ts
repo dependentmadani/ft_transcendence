@@ -15,6 +15,8 @@ import { RoomModule } from './chat/room/room.module';
 import { InvitationsModule } from './chat/room/invitations/invitations.module';
 import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { HistoryModule } from './Game/history/history.module'
+import { GameModule } from './Game/game.module'
 
 ///
 // import "./SocketGame/SocketClassic1"
@@ -37,6 +39,8 @@ import { NotificationsModule } from './notifications/notifications.module';
     RoomUsersModule,
     PrismaModule,
     NotificationsModule,
+    GameModule,
+    HistoryModule,
   ],
   providers: [{
     provide: APP_GUARD,

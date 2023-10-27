@@ -5,7 +5,7 @@ import { HomeChat } from "@/pages/Chat/HomeChat";
 import { Navigate, useParams } from 'react-router-dom';
 import Profile from '@/pages/Profile/Profile';
 import Leaderboard from '@/pages/Leadeboard/Leaderboard';
-
+import HomeGame from '@/pages/Game/ComponentReact/HomeGame' 
 
 const Test = () => {
     return (<>
@@ -24,6 +24,8 @@ function selectSection(section: string): JSX.Element {
         return ( <HomeChat />)
     else if (section === '/leaderboard')
         return ( <Leaderboard /> )
+    else if (section === '/game')
+        return ( <HomeGame /> )
     else if (section === 'test')
         return ( <Test /> )
     else 
