@@ -51,7 +51,7 @@ export const Input = ({ chatData }: any) => {
     if (inputText.trim() !== '') {
       const msg: any = await createNewMessage(inputText)
       const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-      const rec = chatData?._chat?.chat?.receiver.id
+      const rec = chatData?._chat?.chat?.receiver?.id
       const actionEmit = chatData?._chat?.type === 'chat' ? 'message' : 'roomMessage'
       chatData?._socket.emit(actionEmit, { sender: _MAIN_USER_.id, rec: rec || null, message: msg.data });
       // chatData?._socket?.emit("contactSorting");
@@ -68,7 +68,7 @@ export const Input = ({ chatData }: any) => {
         const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         // if (chatData?._chat?.type === 'chat') {
         //   const rec = 
-          const actionEmit = chatData?._chat?.type === 'chat' ? 'message' : 'roomMessage'
+        const actionEmit = chatData?._chat?.type === 'chat' ? 'message' : 'roomMessage'
         // }
         // else if (chatData?._chat?.type === 'room')
         chatData?._socket.emit(actionEmit, { sender: _MAIN_USER_.id, rec: chatData?._chat?.chat?.receiver?.id || null, message: msg.data });

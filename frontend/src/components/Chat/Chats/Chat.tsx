@@ -3,6 +3,7 @@ import { Input } from '../Input'
 import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
+// import { useAllow } from '@/context/AllowContext';
 
 interface Chat {}
 
@@ -18,8 +19,10 @@ export const Chat = ({ chatData }: any) => {
 
   const [isPrivate, setIsPrivate] = useState(true)
   const [showForm, setShowForm] = useState(false);
+  const [isAllowed, updateAllow] = useState(false);
   const [chatMessages, setChatMessages] = useState<Message[]>([])
   const [roomMessages, setRoomMessages] = useState<Message[]>([])
+  // const [contextAllow] = useAllow();
 
   
   const currentChat = chatData?._chat?.chat
@@ -28,8 +31,8 @@ export const Chat = ({ chatData }: any) => {
     const checkAllow = async () => {
 
       if (chatData?._chat?.type === 'room') {
-        const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-        const allwd = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
+        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        const allwd = await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
         if (allwd.data[0].allowed !== true)
         {
           setIsPrivate(true)
@@ -39,6 +42,7 @@ export const Chat = ({ chatData }: any) => {
           setShowForm(false)
           setIsPrivate(false);
         }
+        // console.log('-------', allwd.data[0].allowed, 'AYOOOOooo', showForm)
       }
     }
 
@@ -47,7 +51,15 @@ export const Chat = ({ chatData }: any) => {
     console.log('selceted Chat', isPrivate)
   }, [chatData?._chat?.chat?.id])
   
+  
 
+  // useEffect(() => {
+  //   if (chatData?._chat?.chat?.roomType === 'Private') {
+  //     setIsPrivate(true);
+  //   } else {
+  //     setIsPrivate(false);
+  //   }
+  // }, [chatData?._chat?.chat?.id]);
 
   const openForm = () => {
     if (showForm === false)
@@ -56,11 +68,20 @@ export const Chat = ({ chatData }: any) => {
       setShowForm(false)
   };
 
+  // const setAllowing = () => {
+  //   setIsAllowed(true)
+  //   setIsPrivate(false);
+  // }
 
-  const chatMessageListener = (message: any) => {
-    
-    if (message.type === 'chat' && (chatData?._chat?.chat?.chatId === message.msgChatId) && chatMessages.find(m => m.messageId === message.messageId) === undefined)
+
+  const chatMessageListener = (message: any, rec: number) => {
+    // const message = data.message
+    // const rec = data.rec
+    console.log(chatData?._chat?.chat?.chatId, 'vs' ,message.msgChatId)
+    if (message.type === 'chat' && (chatData?._chat?.chat?.chatId === message.msgChatId) && chatMessages.find(m => m.messageId === message.messageId) === undefined) {
+      console.log('DATAAAA', message, rec)
       setChatMessages([...chatMessages, message])
+    }
     chatData?._socket?.emit('sortChats')
   }
 
@@ -72,7 +93,8 @@ export const Chat = ({ chatData }: any) => {
 
 
   useEffect(() => {
-
+    
+    // chatData?._socket?.on('sendMessage', messageListener);
     chatData?._socket?.on('sendMessage', chatMessageListener);
     chatData?._socket?.on('sendRoomMessage', roomMessageListener);
 
@@ -89,7 +111,7 @@ export const Chat = ({ chatData }: any) => {
     const fetchChatMessages = async () => {
       try {
         if (currentChat.chatId !== undefined)
-          setChatMessages((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}/${currentChat?.chatId}`, {withCredentials: true}))?.data)
+          setChatMessages((await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.chatId}`, {withCredentials: true}))?.data)
       }
       catch (err) {
           console.log(`No message`)
@@ -103,7 +125,7 @@ export const Chat = ({ chatData }: any) => {
     const fetchRoomMessages = async () => {
       try {
           if (currentChat.id !== undefined) {
-            let roomMessages: Message[] = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}/${currentChat?.id}`, { withCredentials: true }))?.data
+            let roomMessages: Message[] = (await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.id}`, { withCredentials: true }))?.data
             if (roomMessages !== undefined)
               setRoomMessages(roomMessages)
           }

@@ -115,7 +115,7 @@ export class ChatGateway {
   handleMessage(@MessageBody() data: any): void {
     const { sender, rec, message } = data;
     // Send the message to the recipient's socket
-    console.log('Yooo', rec)
+    console.log('Yooo', sender, rec, message)
     this.server.to(this.userSocketMap[sender]).emit('sendMessage', message, data.rec);
     this.server.to(this.userSocketMap[rec]).emit('sendMessage', message, data.rec);
   }

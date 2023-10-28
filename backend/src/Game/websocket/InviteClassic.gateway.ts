@@ -6,13 +6,13 @@ import direct_ball from "../SocketGame/ClassicPong/ClassicBall";
 import paddle_left from "../SocketGame/ClassicPong/ClassicPaddle1";
 import paddle_right from "../SocketGame/ClassicPong/ClassicPaddle2";
 
-console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
-@WebSocketGateway({
-  namespace: '/ClassicInvite',
-  cors: {
-        origin: ["http://localhost:5173"]
-        }
-})
+// console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
+// @WebSocketGateway({
+//   namespace: '/ClassicInvite',
+//   cors: {
+//         origin: ["http://localhost:5173"]
+//         }
+// })
 
 export class InviteClassicSocketGateway
 {
