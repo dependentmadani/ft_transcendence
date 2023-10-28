@@ -79,7 +79,8 @@ export class UsersController {
     @Res() res: Response)  {
       const user = await this.userService.findUserById(req.user['sub']);
       const friend = await this.userService.addFriend(user.id, friendId);
-      return res.send(friend);
+      // return res.send(friend);
+      return friend
     }
 
   @Post('block-friend/:id')
@@ -157,6 +158,21 @@ export class UsersController {
     return res.sendFile(
       join(process.cwd(), filenamePath),
     );
+  }
+
+  @Get('blocked-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async checkBlockedFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.checkBlockedFriend(req.user['sub'], friendId);
+  }
+
+  @Get('friend-friends/:id')
+  async myFriendFriends(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.friendFriends(user.id, friendId);
   }
 
   @Post('/:id/infos')

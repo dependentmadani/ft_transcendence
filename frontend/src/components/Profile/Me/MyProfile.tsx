@@ -116,7 +116,7 @@ function MyProfile () {
     useEffect(() => {
     	async function fetchData () {
 			try {
-				const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/ko`, { withCredentials: true });
+				const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users`, { withCredentials: true });
 				setListFriend(res.data);
 				console.log('fetchDAta : ', res.data.friends)
 			} catch (error) {

@@ -33,17 +33,21 @@ function Profile() {
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
+      if (!profile)
+        setProfile('Me')
     }
 
     getUsers();
   }, [username]);
 
+  console.log('profile : ', profile)
+
   return (
     <>
-      {profile === 'NotFriend' && <FriendProfile userData={data} />}
-      {/* {data && profile === 'Friend' && <FriendProfile userData={data} />}
-      {data && profile === 'NotFriend' && <NotFriendProfile userData={data} />} */}
-      {!profile && <MyProfile />}
+      {/* {profile === 'NotFriend' && <FriendProfile userData={data} />} */}
+      {data && profile === 'Friend' && <FriendProfile userData={data} />}
+      {data && profile === 'NotFriend' && <NotFriendProfile userData={data} />}
+      {!data && profile === 'Me' && <MyProfile />}
     </>
   );
 }

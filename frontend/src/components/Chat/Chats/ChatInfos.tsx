@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { GameInviteForm } from './GameInviteForm';
 
+
+interface User {}
+
 export const ChatInfos = ({ chatData }: any) => {
 
     const [isFriend, setIsFriend] = useState(false)
@@ -68,7 +71,7 @@ export const ChatInfos = ({ chatData }: any) => {
                     <div className="contactPlay1">
                         <a href='#' ><FontAwesomeIcon className="info-icon" onClick={openForm} icon={faTableTennisPaddleBall} /></a>
                         {/* <a href='/play' ><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} /></a> */}
-                        <a href='/profile' ><FontAwesomeIcon className="info-icon" icon={faUser} /></a>
+                        <a href={`http://${import.meta.env.VITE_FRONT_ADDRESS}/profile/${currentUser?.receiver?.username}`} ><FontAwesomeIcon className="info-icon" icon={faUser} /></a>
                     </div>
                 </div>
                 <div className="contactPlay2">

@@ -120,10 +120,10 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
                 };
             
                 const chatMessages = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/chat/${chat.chatId}`, {withCredentials: true})
-                const isBlocked = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/blocked-friend/${newChat.receiver.id}`, {withCredentials: true})).data[0];
-                if (chatMessages.data.length !== 0 /*&& isBlocked === false*/)
-                  return newChat
                 // We must check for blocked Users and let'em pass
+                const isBlocked = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/blocked-friend/${newChat.receiver.id}`, {withCredentials: true})).data;
+                if (chatMessages.data.length !== 0 && isBlocked === false)
+                  return newChat
                 return null
               })
             );

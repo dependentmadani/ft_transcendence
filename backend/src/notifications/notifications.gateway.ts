@@ -108,7 +108,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
       this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
         receiver: notif.receiverUser.username,
-        title: notif.title,
+        // title: notif.title,
         status: 'accepted',
       });
     }
