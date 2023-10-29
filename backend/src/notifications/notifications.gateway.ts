@@ -105,19 +105,19 @@ export class NotificationsGateway implements OnGatewayConnection {
       }
   }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('acceptNotification')
-  async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
-    let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('acceptNotification')
+  // async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
+  //   let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
     
-    for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
-      this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
-        receiver: notif.receiverUser.username,
-        // title: notif.title,
-        status: 'accepted',
-      });
-    }
-  }
+  //   for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
+  //     this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
+  //       receiver: notif.receiverUser.username,
+  //       // title: notif.title,
+  //       status: 'accepted',
+  //     });
+  //   }
+  // }
 
   @UseGuards(WsGuard)
   @SubscribeMessage('refuseNotification')

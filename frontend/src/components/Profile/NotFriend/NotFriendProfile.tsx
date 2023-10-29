@@ -34,9 +34,9 @@ function ProfileInfo (props: any) {
         const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
         
         // They must not be friends
-        const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${user.id}`, {withCredentials: true})).data;
+        // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${user.id}`, {withCredentials: true})).data;
         // const isReqFound = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/isFound/${mainUser.id}/${user.id}`, {withCredentials: true})).data;
-        if (/*!isReqFound &&*/ !isFriend) {
+        // if (/*!isReqFound &&*/ !isFriend) {
             const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
                 // 'userId' : mainUser.id,
                 // 'title': 'Friend request',
@@ -51,7 +51,7 @@ function ProfileInfo (props: any) {
             withCredentials: true
             })
             console.log('WE TRYNNA ADD MR ', user.username, res)
-        }
+        // }
     }
 
     return (

@@ -386,18 +386,18 @@ export class NotificationsService {
     return updateNotif;
   }
 
-  async acceptFriend(notifBody: NotificationBody, userId: number) {
+  async acceptFriend(receiverId: number, senderId: number, notifId: number) {
     const friend = await this.prisma.users.findUnique({
       where: {
-        username: notifBody.receiverName,
+        id: receiverId,
       }
     });
-    if (friend.id === userId) {
+    if (friend.id === senderId) {
       throw new UnauthorizedException('should not be the same user!');
     }
     const alreadyFriend = await this.prisma.users.findFirst({
       where: {
-        id: userId,
+        id: senderId,
         friends: {
           some: {
             id: friend.id
@@ -410,7 +410,7 @@ export class NotificationsService {
     }
     const pendingFriend = await this.prisma.users.findFirst({
       where: {
-        id: userId,
+        id: senderId,
         pendingFriendReq: {
           some: {
             id: friend.id,
@@ -424,7 +424,7 @@ export class NotificationsService {
     //add users to friend lists
     const user = await this.prisma.users.update({
       where: {
-        id: userId,
+        id: senderId,
       },
       data: {
         friends: {
@@ -444,7 +444,7 @@ export class NotificationsService {
       data: {
         friends: {
           connect: {
-            id: userId
+            id: senderId
           }
         }
       },
@@ -460,19 +460,19 @@ export class NotificationsService {
       data: {
         pendingFriendReq: {
           disconnect: {
-            id: userId,
+            id: senderId,
           }
         },
         pendingFriendReqOf: {
           disconnect: {
-            id: userId,
+            id: senderId,
           }
         }
       }
     });
     let notif = await this.prisma.notifications.findFirst({
       where: {
-        id: notifBody.NotificationId,
+        id: notifId,
       },
       include: {
         receiverUser: true,
@@ -480,9 +480,8 @@ export class NotificationsService {
     });
     await this.prisma.notifications.deleteMany({
       where: {
-        senderId: notif.senderId,
-        receiverId: notif.receiverId,
-        // title: notif.title,
+        senderId: senderId,
+        receiverId: receiverId,
       }
     });
     return notif;

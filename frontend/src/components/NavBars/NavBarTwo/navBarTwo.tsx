@@ -113,14 +113,36 @@ const ListNotification = () => {
     const handleAccept = async (notif: Notifs) => {
         
         if (notif.type === 'FRIEND') { // Handling friend request
-            const res = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`, {
+            const response = await fetch(
+                `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`,
+                {
+                method: 'PUT',
+                body: JSON.stringify({
+                    senderId : notif.sender.id,
+                    receiverId: notif.receiver.id,
+                    notifId: notif.id,
+                }),
+                credentials: 'include', // Include credentials for cross-origin requests
+                }
+            );
+            console.log('print content', JSON.stringify({
                 'senderId' : notif.sender.id,
                 'receiverId': notif.receiver.id,
                 'notifId': notif.id,
-            }, {
-                withCredentials: true
-            })
-            console.log('FRIENDIW LINA HADO', notif.sender.username, notif.receiver.username, res.data)
+            }))
+    
+            
+            // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
+            const data = await response.json();
+            console.log('NEW FRIENDS', data);
+            // const res = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`, {
+            //     'senderId' : notif.sender.id,
+            //     'receiverId': notif.receiver.id,
+            //     'notifId': notif.id,
+            // }, {
+            //     withCredentials: true
+            // })
+            // console.log('FRIENDIW LINA HADO', notif.sender.username, notif.receiver.username, res.data)
         }
         else if (notif.type === 'GAME') { // Handling Game invitaion
             socketa?.emit('notification', { notif: notif });
@@ -129,7 +151,19 @@ const ListNotification = () => {
         }
 
         // Updating state of notification
-        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/state/${notif.id}`, { withCredentials: true })
+        // const requestOptions = 
+        const response = await fetch(
+            `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
+            {
+            method: 'PUT',
+            credentials: 'include', // Include credentials for cross-origin requests
+            }
+        );
+
+        
+        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
+        const data = await response.json();
+        console.log('NOTIFICATION UPDATED', data);
 
     }
 
@@ -140,6 +174,7 @@ const ListNotification = () => {
         // Removing the notificaiton
         try {
             await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,  { withCredentials: true })
+            console.log('notif deleted')
         }
         catch (err) {
             console.log(`Coudn't delete notification: `, err)
