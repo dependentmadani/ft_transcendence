@@ -34,3 +34,14 @@ export class NotificationBody {
     @IsString()
     title: string;
 }
+
+export class FriendDto {
+    @IsNumber()
+    senderId: number;
+
+    @IsNumber()
+    receiverId: number;
+
+    @IsNumber()
+    notifId: number;
+}

@@ -113,16 +113,16 @@ const ListNotification = () => {
     const handleAccept = async (notif: Notifs) => {
         
         if (notif.type === 'FRIEND') { // Handling friend request
-            const response = await fetch(
+            const response = await axios(
                 `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`,
                 {
-                method: 'PUT',
-                body: JSON.stringify({
-                    senderId : notif.sender.id,
-                    receiverId: notif.receiver.id,
-                    notifId: notif.id,
-                }),
-                credentials: 'include', // Include credentials for cross-origin requests
+                method: 'POST',
+                data: {
+                    'senderId' : notif.sender.id,
+                    'receiverId': notif.receiver.id,
+                    'notifId': notif.id,
+                },
+                withCredentials: true, // Include credentials for cross-origin requests
                 }
             );
             console.log('print content', JSON.stringify({
@@ -133,7 +133,7 @@ const ListNotification = () => {
     
             
             // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
-            const data = await response.json();
+            const data = await response.data;
             console.log('NEW FRIENDS', data);
             // const res = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`, {
             //     'senderId' : notif.sender.id,

@@ -4,7 +4,7 @@ import { Request, Response } from "express";
 import { Public } from "src/decorator";
 import { NotificationsGateway } from "./notifications.gateway";
 import { Notifications } from "@prisma/client";
-import { NotificationDto } from "./dto/create-notification.dto";
+import { NotificationDto, FriendDto } from "./dto/create-notification.dto";
 // import { Chat } from './dto'
 
 @Controller('notifications')
@@ -51,20 +51,18 @@ export class NotificationController {
         return this.notificationService.createNotification(type, read, receiverId, senderId, mode)
     }
 
+    @Post('friendAcception')
+    async friendAcception(@Body() body: FriendDto) {
+        console.log('------------------------------')
+        console.log('boyd', body)
+        return this.notificationService.acceptFriend(body.senderId, body.receiverId, body.notifId)
+    }
+
     @Put('/:id')
     async updateNotification(@Param('id', ParseIntPipe) id: number) {
         console.log('uui')
         return await this.notificationService.updateNotification(id)
     }
-
-    @Put('/friendAcception')
-    async friendAcception(@Body('senderId', ParseIntPipe) senderId: number,
-                                @Body('receiverId', ParseIntPipe) receiverId: number,
-                                @Body('notifId', ParseIntPipe) notifId: number) : Promise<Notifications> {
-        console.log('------------------------------')
-        return this.notificationService.acceptFriend(senderId, receiverId, notifId)
-    }
-
 
     // @Delete()
     // async deleteAllChats() {
