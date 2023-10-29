@@ -5,14 +5,17 @@ import { router } from './router'
 import { ClientProvider } from './context/clientContext'
 import '@/app.css'
 import { ProfileProvider } from './context/ProfileContext'
+import { SocketProvider } from '@/context/socketContext';
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ClientProvider>
-      <ProfileProvider>
-        <RouterProvider router={router}/>
-      </ProfileProvider>
+      <SocketProvider>
+        <ProfileProvider>
+          <RouterProvider router={router}/>
+        </ProfileProvider>
+      </SocketProvider>
     </ClientProvider>
   </React.StrictMode>,
 )

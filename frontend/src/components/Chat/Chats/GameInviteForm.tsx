@@ -2,7 +2,7 @@ import  { useEffect, useRef, useState,  } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
-
+import { useSocket } from '@/context/socketContext';
 
 interface User {
     id: number,
@@ -16,7 +16,7 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
     const GameInviteRef = useRef<HTMLDivElement>(null);
     const [loading, setLoading] = useState(false);
     const [remainingTime, setRemainingTime] = useState(15)
-
+    const {socketa} = useSocket();
 
     const startLoading = () => {
         setLoading(true);
@@ -29,7 +29,7 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
             clearInterval(interval);
             setRemainingTime(15);
         }, 15000);
-  };
+    };
   
     // handling the opening and the closing of the form
     useEffect(() => {
@@ -44,37 +44,52 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
     }, [onClose]);
-    
-    // useEffect(() => {
-    //     const timer = setTimeout(() => {
-    //         onClose();
-    //     }, 15000);
 
-    //     return () => {
-    //         clearTimeout(timer);
-    //     };
-    // }, [onClose]);\
+
+    const notificationListener = async (notif: any) => {
+        alert(notif.receiver.username + ' accepted you invitation to play a ' + notif.mode + ' pong game')
+        
+        // Redirect Invitation sender (notif.receiver.id) here
+
+    }
+    
+    useEffect(() => { 
+
+      socketa?.on('receiveNotification', notificationListener);
+
+        return () => {
+          socketa?.off('receiveNotification');
+        };
+    }, [socketa, notificationListener]);
+
 
     const sendGameInvite = async (mode: string) => {
-        const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-        const user: User = chatData?._chat?.chat?.receiver
-        
-        // They must not be friends
-        // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${user.id}`, {withCredentials: true})).data;
-        // const isReqFound = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/isFound/${mainUser.id}/${user.id}`, {withCredentials: true})).data;
-        // if (/*!isReqFound &&*/ !isFriend) {
-            console.log('YOW YOW', chatData?._chat?.chat?.receiver?.id, mainUser?.id)
-            const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
-                'type': 'GAME',
-                'read': false,
-                'receiverId': user?.id,
-                'senderId': mainUser?.id,
-                'mode': mode,
-            }, {
-            withCredentials: true
-            })
-            console.log('WE TRYNNA PLAY MR ', user.username, res)
-        // }
+        try {
+            const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+            const user: User = chatData?._chat?.chat?.receiver
+            
+            // They must not be friends
+            // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${user.id}`, {withCredentials: true})).data;
+            // const isReqFound = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/isFound/${mainUser.id}/${user.id}`, {withCredentials: true})).data;
+            // if (/*!isReqFound &&*/ !isFriend) {
+                console.log('YOW YOW', chatData?._chat?.chat?.receiver?.id, mainUser?.id)
+                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
+                    'type': 'GAME',
+                    'read': false,
+                    'receiverId': user?.id,
+                    'senderId': mainUser?.id,
+                    'mode': mode,
+                }, {
+                withCredentials: true
+                })
+                // console.log('WE TRYNNA PLAY MR ', user.username, res.data)
+            // }
+
+            // chatData?._socket.emit('notification', { notif: res.data });
+        }
+        catch (err) {
+            console.log(`coudn't create notification: `, err)
+        }
     }
 
 

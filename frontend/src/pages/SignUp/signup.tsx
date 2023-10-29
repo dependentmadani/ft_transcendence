@@ -3,6 +3,9 @@ import './SignUp.css';
 import axios from 'axios';
 import { useNavigate, } from 'react-router-dom';
 import { useClient } from '@/context/clientContext';
+import io, { Socket } from 'socket.io-client';
+import { useSocket } from '@/context/socketContext';
+
 
 function SetInfo() {
   const [fileUploaded, setFileUploaded] = useState<File | null>(null);
@@ -10,9 +13,26 @@ function SetInfo() {
   const [username, setUsername] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('/src/imgs/user-img.png');
   const {client, updateClient} = useClient();
+  const {socketa, setSocketa} = useSocket();
   const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
   // console.log('signup')
+  
+
+  // const [socket, setSocket] = useState<Socket>()
+
+    // useEffect(() => {
+
+
+    //     const _socket: any =   io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`);
+    //     console.log('=====', _socket)
+    //     // setSocket(_socket)
+    //     setSocketa(_socket)
+    //     return () => {
+    //       _socket?.disconnect()
+    //     }
+      
+    // }, []);
   
   useEffect(() => {
     async function fetchUserData() {
@@ -24,9 +44,10 @@ function SetInfo() {
         setAvatar(response.data.avatar);
         setUsername(response.data.username);
         await updateClient({ ...client, ...response.data, signedIn: true });
-        if (response.data.signedUp)
-          navigate('/')
-        // console.log('response.data : ', response.data);
+        if (response.data.signedUp) {
+          console.log('ooooooooooooo')
+          navigate('/');
+        }
       } catch (error) {
         console.error('Error fetching data: ', error);
       }

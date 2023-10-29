@@ -18,17 +18,24 @@ function GetRouteElement(props:any) {
 
     const defaultList = ['/', '/home', '/about', '/team'];
     const list = ['/login', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard']
-    console.log(props.tag)
-    console.log(client.signedIn)
+    console.log('props.tag : ' ,props.tag)
+    console.log('client.signedIn', client.signedIn)
     console.log(defaultList.includes(props.tag), list.includes(props.tag))
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
         console.log('**********************')
-        if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
+        if (/*(!client.signedIn || client.signedIn) && */defaultList.includes(props.tag)) {
+            console.log('1111111111111')
             return <DefaultSection section={props.tag} />;
-        else if (!client.signedIn && list.includes(props.tag))
+        }
+        else if (/*!client.signedIn && list.includes(props.tag)*/ props.tag === '/login') {
+            console.log('2222222222222')
             return <Sign tag='login' />;
-        else if (client.signedIn && !client.signedUp)
+        }
+        else if (/*client.signedIn && !client.signedUp*/ props.tag === '/signup')
+        {
+            console.log('333333333333')
             return <Sign tag='signup' />;
+        }
         else
             return <Section section={props.tag} />;
     }

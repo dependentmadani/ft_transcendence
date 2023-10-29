@@ -12,7 +12,6 @@ function NavBarOne() {
     const { client, updateClient }  = useClient();
     const [listItems, setListItems] = useState<JSX.Element>();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const [orientation, setOrientation] = useState<number>(window.orientation);
     const navigate = useNavigate();
 
     

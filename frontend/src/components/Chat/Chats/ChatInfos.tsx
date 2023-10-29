@@ -3,13 +3,14 @@ import { faBell, faUser, faBellSlash, faTableTennisPaddleBall } from '@fortaweso
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { GameInviteForm } from './GameInviteForm';
-
+import { useSocket } from "@/context/socketContext";
 
 interface User {}
 
 export const ChatInfos = ({ chatData }: any) => {
 
     const [isFriend, setIsFriend] = useState(false)
+    
 
     const currentUser = chatData?._chat?.chat
     useEffect(() => {
@@ -30,6 +31,7 @@ export const ChatInfos = ({ chatData }: any) => {
     }, [currentUser])
 
 
+    
     // const muteFriend = async () => {
     //     try {
     //         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${currentUser?.receiver?.id}`, { withCredentials: true,})

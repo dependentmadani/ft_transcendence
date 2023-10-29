@@ -251,6 +251,23 @@ export class NotificationsService {
     return notif;
   }
 
+  async deleteNotification(id: number) {
+    const notif = await this.prisma.notifications.findUnique({
+      where: {
+          id: id
+      }
+    })
+    if (notif) {
+        return await this.prisma.notifications.delete({
+            where: {
+                id: id
+            }
+        })
+    }
+    else
+        return `Couldn't find chat with id ${id}`
+  }
+
   ///////////////////////////////////
 
   async create(createNotificationDto: NotificationDto, userId: number, socketId: string) {

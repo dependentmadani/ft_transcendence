@@ -4,6 +4,8 @@ import  { useEffect, useState } from 'react';
 import { useClient } from '@/context/clientContext';
 import Client from '@/components/ClientClass/client';
 import axios from 'axios';
+import io, { Socket } from 'socket.io-client';
+import { useSocket } from '@/context/socketContext';
 
 interface Notifications {
     id: number,
@@ -13,6 +15,7 @@ interface Notifications {
     read: boolean,
     type: string,
     description: string,
+    mode: string,
 }
 
 interface Notifs {
@@ -23,6 +26,7 @@ interface Notifs {
     avatar: string,
     type: string,
     content: string,
+    mode: string,
 }
 
 interface User {
@@ -34,6 +38,21 @@ const ListNotification = () => {
 
     const [notifications, setNotifications] = useState<Notifications[]>([])
     const [newNotifications, setNewNotifications] = useState<Notifs[]>([])
+    const [socket, setSocket] = useState<Socket>()
+    const {socketa} = useSocket();
+    // useEffect(() => {
+
+    //   const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`);
+    //   setSocket(_socket)
+      
+    //   return () => {
+    //     socket?.disconnect()
+    //   }
+    // }, []);
+
+    
+    
+    
 
     useEffect(() => {
         const fetchNotifications = async () => {
@@ -66,12 +85,13 @@ const ListNotification = () => {
                         avatar: senderResponse?.data?.avatar,
                         type: notification.type,
                         content: senderResponse.data.username  + (notification.type === 'FRIEND' ? ' wants to connect with you' : ' wants to play with you'),
+                        mode: notification.mode,
                     };
 
                     
                     
                     // Only My notifs and pendending status stay
-                    console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
+                    // console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
                     if (newNotif.status === false && newNotif.receiver.id === mainUser.id)
                         return newNotif
                     return null
@@ -89,34 +109,45 @@ const ListNotification = () => {
     }, [notifications])
 
 
-    // Add friend function
+    // Handle friend request or Game invitaion function
     const handleAccept = async (notif: Notifs) => {
-
-        // Updating state of notification
         
-        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/state/${notif.id}`, { withCredentials: true })
-
-        if (notif.type === 'FRIEND') {
+        if (notif.type === 'FRIEND') { // Handling friend request
             const res = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/friendAcception`, {
-                    'senderId' : notif.sender.id,
-                    'receiverId': notif.receiver.id,
-                    'notifId': notif.id,
-                }, {
+                'senderId' : notif.sender.id,
+                'receiverId': notif.receiver.id,
+                'notifId': notif.id,
+            }, {
                 withCredentials: true
-                })
+            })
             console.log('FRIENDIW LINA HADO', notif.sender.username, notif.receiver.username, res.data)
         }
-        else if (notif.type === 'GAME') {
-            // GO AHEAD MR SRIYANI
-            console.log('GO AHEAD MR SRIYANI')
+        else if (notif.type === 'GAME') { // Handling Game invitaion
+            socketa?.emit('notification', { notif: notif });
+
+            // Redirect Invitation receiver (res.data.receiverId) here
         }
-        
-        // Call add-friend API
-        // const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/add-friend/${notif.receiver.id}`, { withCredentials: true })
-        
+
+        // Updating state of notification
+        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/state/${notif.id}`, { withCredentials: true })
+
+    }
+
+
+    // Handle Refuse of friend request or Game invitation
+    const handleRefuse = async (notif: Notifs) => {
+
+        // Removing the notificaiton
+        try {
+            await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,  { withCredentials: true })
+        }
+        catch (err) {
+            console.log(`Coudn't delete notification: `, err)
+        }
     }
 
     console.log('Notifs', notifications, newNotifications)
+
     return (
         <>
             {
@@ -126,7 +157,7 @@ const ListNotification = () => {
                         <span id='notific-user' >{ notification.sender.username }</span>
                         <span id='notific-title'>{ notification.content }</span>
                         <button id='accept' onClick={() => handleAccept(notification)} ></button>
-                        <button id='refuse'></button>
+                        <button id='refuse' onClick={() => handleRefuse(notification)}></button>
                     </div>
                 ))
             }
@@ -240,6 +271,7 @@ function NavBarTwo (props:any) {
         handleNotificOpen();
     }, [isNotificOpen]);
 
+    
     return ( 
         <>
             <div className='NavBarTwo'>

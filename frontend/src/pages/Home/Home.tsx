@@ -2,12 +2,15 @@ import './Home.css'
 import { useEffect, useState } from 'react';
 import { Link, Route, Routes, useNavigate } from "react-router-dom"
 import { useClient } from '@/context/clientContext';
+import { useSocket } from '@/context/socketContext';
+// import { Socket } from 'socket.io-client';
 
 
 export default function Home(props:any) {
 
     // const my_img:string = 'src/imgs/home.png'
     const { client, updateClient }  = useClient();
+    const {socketa} = useSocket();
     const  navigate = useNavigate();
 
     // const [socket, setSocket] = useState<Socket>(client.socket);
@@ -38,6 +41,8 @@ export default function Home(props:any) {
 
     console.log('home')
     console.log(client)
+    console.log(socketa)
+    
     
     // const handleLogout = async() => {
     //     try {

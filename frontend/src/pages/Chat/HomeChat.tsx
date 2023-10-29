@@ -18,6 +18,8 @@ export const HomeChat = () => {
   const [showInfos, setShowInfos] = useState(false);
 
   
+
+  
   useEffect(() => {
 
     const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`);
@@ -42,6 +44,8 @@ export const HomeChat = () => {
   }, [socket]);
 
   
+
+  
   const handleSelectedChat = (chat: any) => {
     setSelectedChat(chat)
     chatData._chat = chat
@@ -60,6 +64,9 @@ export const HomeChat = () => {
     setShowInfos(false);
   };
 
+
+
+  
 
   // console.log(chatData?._chat?.chat?.roomAvatar)
 

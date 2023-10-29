@@ -4,7 +4,6 @@ import {io, Socket } from 'socket.io-client'
 
 class Client {
     id: number;
-    socket: Socket | null;
     username: string;
     avatar: File | null;
     createdAt: Date | null;
@@ -22,7 +21,6 @@ class Client {
     search: string | null;
   
     constructor() {
-      this.socket = null;
       this.id = -1;
       this.username = '';
       this.avatar = null;
@@ -44,7 +42,6 @@ class Client {
     
     
     clean() {
-      this.socket = null;
       this.id = -1;
       this.username = '';
       this.avatar = null;

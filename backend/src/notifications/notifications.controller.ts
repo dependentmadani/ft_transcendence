@@ -70,9 +70,9 @@ export class NotificationController {
     //     return this.chatService.deleteAllChats()
     // }
     
-    // @Delete('/:chatId')
-    // async deleteChat(@Param('chatId', ParseIntPipe) chatId: number) {
-    //     return this.chatService.deleteOneChat(chatId)
-    // }
+    @Delete('/:id')
+    async deleteNotification(@Param('id', ParseIntPipe) id: number) {
+        return this.notificationService.deleteNotification(id)
+    }
 }
 

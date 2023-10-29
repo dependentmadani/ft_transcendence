@@ -18,6 +18,7 @@ function selectSection(section: string): JSX.Element {
 
 function DefaultSection(props: any) {
 
+    console.log('Yyyyyyyyyyyyyyyyyyyyy');
 
 	return (<>
         <NavBarOne />

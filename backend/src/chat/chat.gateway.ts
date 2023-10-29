@@ -178,4 +178,14 @@ export class ChatGateway {
   //     console.log(`User ${disconnectedUserId} disconnected`);
   //   }
   // }
+
+  @SubscribeMessage('notification')
+  handleNotification(@MessageBody() data: any): void {
+    const { notif } = data;
+    // Send the message to the recipient's socket
+    console.log('Yooo', notif)
+    // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
+    this.server.to(this.userSocketMap[notif.receiverId]).emit('receiveNotification', notif);
+  }
+
 }
