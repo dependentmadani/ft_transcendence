@@ -2,22 +2,21 @@
 import logo from '../../assets/42logo.png';
 import googlelogo from '../../assets/googlelogo.png';
 import './login.css';
-import '../../App.css';
 import axios from "axios";
 
-export default function Login() {
+export const Login = () => {
 
-    axios.get(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/logged_in`, {withCredentials: true})
-        .then(()=> window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:5173`))
+    axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, {withCredentials: true})
+        .then(()=> window.location.replace(`http://${import.meta.env.VITE_FRONT_ADDRESS}`))
         .catch(() =>  console.log('did not login yet! :)'))
         
     const request42 = async () => {
-        window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/42`);
+        window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
       };
 
 
     const requestGoogle = async () => {
-        window.location.replace(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/google_auth`);
+        window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
       };
 
     return (

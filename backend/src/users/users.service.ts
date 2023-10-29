@@ -36,12 +36,15 @@ export class UsersService {
         },
         include: {
           friends: true,
+          games: true,
+          myHistoryGames: true,
+          oppHistoryGames: true
         }
       });
     return user;
   }
 
-  async searchUser(username: string) {
+  async searchUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
     }
@@ -50,10 +53,36 @@ export class UsersService {
         username: {
           startsWith: username,
           mode: 'insensitive',
+        },
+        email : {
+          not: users.email
         }
       }
     });
     return user;
+  }
+  
+  async searchFriendUser(username: string, users: Users) {
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
+      where: {
+        email: users.email,
+      },
+      select: {
+        friends: {
+          where: {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          }
+        }
+      }
+    });
+
+    return user[0].friends;
   }
 
   async addFriend(userId: number, friendId: number) {
@@ -96,22 +125,6 @@ export class UsersService {
         friends: true,
       }
     });
-    // await this.prisma.users.update({
-    //   where: {
-    //     id: friendId,
-    //   },
-    //   data: {
-    //     pendingFriendReq: {
-    //       connect: {
-    //         id: userId
-    //       }
-    //     }
-    //   },
-    //   include: {
-    //     friends: false,
-    //     _count: false,
-    //   }
-    // });
     return user;
   }
 
@@ -188,6 +201,23 @@ export class UsersService {
     return blockUser;
   }
 
+  async checkBlockedFriend(userId: number, friendId: number) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        blocked: {
+          some: {
+            id: friendId,
+          }
+        }
+      }
+    });
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
   async mutualFriends(userId: number, friendId: number) {
     if (userId === friendId) {
       throw new UnauthorizedException("the same user is not allowed!");
@@ -262,6 +292,34 @@ export class UsersService {
     return unblockFriend;
   }
 
+  async friendFriends(userId:number, friendId: number) {
+    const friend = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: friendId
+          }
+        }
+      },
+    });
+
+    if (!friend) {
+      throw new UnauthorizedException("not your friend");
+    }
+
+    const friendsList = await this.prisma.users.findUnique({
+      where: {
+        id: friendId,
+      }, 
+      include: {
+        friends: true
+      }
+    })
+
+    return friendsList.friends;
+  }
+
   async mutualFriendsFinder(userFriends: any, friendFriends: any) {
     const user = userFriends.map(obj =>obj.id);
     const returnValue = friendFriends.filter(friend => user.includes(friend.id));
@@ -295,6 +353,7 @@ export class UsersService {
           data: {
             username: body?.username,
             avatar: body?.avatar,
+            signedUp: true,
           },
         },
       );
@@ -336,7 +395,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './public/uploadAvatar/' + filePath,
+              './uploadAvatar/' + filePath,
           },
         },
       );

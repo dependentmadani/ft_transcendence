@@ -41,4 +41,4 @@ if __name__ == "__main__":
         subprocess.run(['open', '/Applications/Docker.app'])
         print('\t\t\t\tOpened successfully. ✨')
     except:
-        print("Error in opening the docker engine. :(")
+        print('Error in opening the docker engine. :(')

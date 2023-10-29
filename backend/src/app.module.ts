@@ -1,9 +1,4 @@
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -15,34 +10,42 @@ import { APP_GUARD } from '@nestjs/core';
 import { AtGuard } from './guards';
 import { HomeController } from './home/home.controller';
 import { HomeModule } from './home/home.module';
+import { MessageModule } from './chat/message/message.module';
+import { RoomModule } from './chat/room/room.module';
+import { InvitationsModule } from './chat/room/invitations/invitations.module';
+import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
+import { HistoryModule } from './game/history/history.module';
+import { GameModule } from './game/game.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true }) ,
     PassportModule,
     HomeModule,
-    AuthModule,
+    AuthModule ,
     UsersModule,
     ChatModule,
+    MessageModule,
+    RoomModule,
+    InvitationsModule,
+    RoomUsersModule,
     PrismaModule,
     NotificationsModule,
+    HistoryModule,
+    GameModule,
   ],
-  providers: [
-    {
-      provide: APP_GUARD,
-      useClass: AtGuard,
-    },
-  ],
-  controllers: [HomeController],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: AtGuard,
+  }],
+  controllers: [HomeController]
 })
-export class AppModule implements NestModule {
+export class AppModule implements NestModule{
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(IfNotAuthenticatedMiddleware)
-      .forRoutes({
-        path: '/users*',
-        method: RequestMethod.ALL,
-      }); // Apply the middleware to all routes under /users
+      .exclude({path:'/auth*', method: RequestMethod.ALL})
+      .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
   }
 }

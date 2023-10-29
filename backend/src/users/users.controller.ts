@@ -71,15 +71,13 @@ export class UsersController {
         return user;
   }
 
-  @Post('add-friend/:id')
-  @HttpCode(HttpStatus.CREATED)
-  async addFriend(@Param('id', ParseIntPipe) friendId: number,
-    @Req() req: Request,
-    @Res() res: Response)  {
+  @Get('blocked-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async checkBlockedFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
       const user = await this.userService.findUserById(req.user['sub']);
-      const friend = await this.userService.addFriend(user.id, friendId);
-      return res.send(friend);
-    }
+      return await this.userService.checkBlockedFriend(req.user['sub'], friendId);
+  }
 
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
@@ -101,6 +99,13 @@ export class UsersController {
     return res.send(unblock);
   }
 
+  @Get('friend-friends/:id')
+  async myFriendFriends(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.friendFriends(user.id, friendId);
+  }
+
   @Get('mutual-friends/:id')
   @HttpCode(HttpStatus.FOUND)
   async mutualFriends(@Param('id', ParseIntPipe) friendId: number,
@@ -111,10 +116,25 @@ export class UsersController {
     return res.send(mutual);
   }
 
+  @Get('globalSearch/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchAnyUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchUser(username, req.user);
+  }
+
   @Get('search/:username')
   @HttpCode(HttpStatus.OK)
-  async searchUser(@Param('username') username: string) {
-    return this.userService.searchUser(username);
+  async searchUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchFriendUser(username, req.user);
+  }
+
+  @Get('search/:friendName/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchFriendUsers(@Param('friendName') friendName: string,
+        @Param('username') username: string, 
+        @Req() req: Request) {
+    const friendUser = await this.userService.findUserByUsername(friendName);
+    return this.userService.searchFriendUser(username, friendUser);
   }
 
   @Get('/:id')

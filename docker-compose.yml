@@ -8,9 +8,7 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/database
-      # device: $HOME/data/database
-      # device: $HOME/goinfre/data/database
-      # device: /home/mbadaoui/data/database
+
   backend_volume:
     driver: local
     name: backend_volume
@@ -18,18 +16,15 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/backend
-      # device: $HOME/data/backend
-      # device: $HOME/goinfre/data/backend
-      # device: /home/mbadaoui/data/backend
-  frontend_volume:
-    driver: local
-    name: frontend_volume
-    driver_opts:
-      type: none
-      o: bind
-      device: /tmp/data/frontend
+
+  # frontend_volume:
+  #   driver: local
+  #   name: frontend_volume
+  #   driver_opts:
+  #     type: none
+  #     o: bind
+  #     device: /tmp/data/frontend
       # device: $HOME/goinfre/data/frontend
-      # device: $HOME/data/frontend
 
 networks:
   hadnetwork:
@@ -40,17 +35,17 @@ services:
     restart: always
     env_file:
       - .env
-    networks:
-      - hadnetwork
-    volumes:
-      - db_volume:/var/lib/postgresql/data
-    # ports:
-    #   - 5432:5432
+    ports:
+      - 5432:5432
+    # networks:
+    #   - hadnetwork
+    # volumes:
+    #   - db_volume:/var/lib/postgresql/data
     
   backend:
     build:
       context: ./backend
-      dockerfile: dockerfile
+      dockerfile: Dockerfile
     container_name: pingpongBackend
     ports:
       - 8000:8000
@@ -62,21 +57,21 @@ services:
     volumes:
       - backend_volume:/app
   
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: dockerfile
-    container_name: pingpongFrontend
-    ports:
-      - 5173:5173
-    restart: always
-    depends_on:
-      - db
-      - backend
-    networks:
-      - hadnetwork
-    volumes:
-      - frontend_volume:/app
+  # frontend:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   container_name: pingpongFrontend
+  #   ports:
+  #     - 5173:5173
+  #   restart: always
+  #   depends_on:
+  #     - db
+  #     - backend
+  #   networks:
+  #     - hadnetwork
+  #   volumes:
+  #     - frontend_volume:/app
 
   pgadmin:
     container_name: pgadmin4_container

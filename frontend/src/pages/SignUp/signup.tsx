@@ -15,7 +15,7 @@ function InfoUpdate() {
     const [errorMessageFile, setErrorMessageFile] = useState("")
 
     useEffect(() => {
-        fetch(`http://${import.meta.env.VITE_ADDRESS}:8000/auth/me`, {
+        fetch(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, {
             method: 'GET',
             credentials: 'include'
           })
@@ -28,7 +28,7 @@ function InfoUpdate() {
 
     function handleChangeAvatar(file: FileList | null) {
         if (file) {
-            if (file[0].size > 20000) {
+            if (file[0].size > 200000) {
                 setErrorMessageFile("Image size is limited to 20 kb!")
                 return ;
             }
@@ -44,7 +44,7 @@ function InfoUpdate() {
             axios({
                 method: "POST",
                 withCredentials: true,
-                url: `http://${import.meta.env.VITE_ADDRESS}:8000/users/${userId}/infos`,
+                url: `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
                 headers: {'Content-Type':'multipart/form-data'},
                 data: {
                     avatar: fileUploaded,
@@ -57,7 +57,7 @@ function InfoUpdate() {
 
     function handleChangeUsername(event: any) {
 
-        fetch(`http://${import.meta.env.VITE_ADDRESS}:8000/users/${userId}`, {
+        fetch(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`, {
             method: 'PATCH',
             headers: { 'Content-Type':'application/json' },
             credentials: 'include',
@@ -110,7 +110,7 @@ function InfoUpdate() {
 }
 
 
-export function Signup() {
+export const Signup = () => {
 
     return (
         <>

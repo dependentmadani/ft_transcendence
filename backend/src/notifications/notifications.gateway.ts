@@ -15,7 +15,7 @@ export interface socketMetaPayload {
 }
 
 @WebSocketGateway({namespace: "notification",cors: {
-  origin: 'localhost:8000*'
+  origin: '*'
 }})
 export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -25,6 +25,7 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
 
   constructor( private prismaService: PrismaService, 
     private jwtService: JwtService,
+    private authService: AuthService,
     private readonly notificationsService: NotificationsService) {
       this.socketMap = new Map<number, Socket[] >();
     }
@@ -36,15 +37,15 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
         client.disconnect(true);
         return ;
       }
-
-      const payload = await this.jwtService.verify(token);
+      
+      const payload = await this.authService.verifyToken(token);
       if (!payload) {
         client.disconnect(true);
         return ;
       }
       const user = await this.prismaService.users.findFirst({
         where: {
-          id: payload.id,
+          id: payload['sub'],
         },
       });
       if (!this.socketMap.has(user.id)) {
@@ -61,9 +62,11 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
           userStatus: "ONLINE",
         },
       });
+      console.log('all passed successfully')
     }
     catch ( e ) {
-      throw new UnauthorizedException('Something wrong in handling connection!');
+      console.log(e);
+      console.log('Something wrong in handling connection!');
     }
   }
 
@@ -81,21 +84,18 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
     this.socketMap.delete(payload.id);
   }
 
-  // async emitNotification(userId: number, notification: Partial<Notifications>) {
-    
-  // }
-
   @UseGuards(WsGuard)
   @SubscribeMessage('sendNotification')
   async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
         @Req() req: Request) {
-      // console.log('socketMap:', this.socketMap);
-      // console.log('type of client id:', typeof(client.id));
+          
       if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
         throw new UnauthorizedException('something wrong with body');
       }
+      console.log('socketMap');
       const notif = await this.notificationsService.create(createNotificationDto, req.user['sub'], client.id);
-      for (let i = 0; i < this.socketMap.get(req.user['sub']).length; ++i) {
+      const len = this.socketMap.get(notif.receiverId) == undefined ? 0 : this.socketMap.get(notif.receiverId).length;
+      for (let i = 0; i < len; ++i) {
         this.socketMap.get(notif.receiverId)[i].emit('receiveNotification',notif);
       }
   }
@@ -105,7 +105,8 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
   async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
     let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
     
-    for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
+    const len = this.socketMap.get(notif.receiverId) == undefined ? 0 : this.socketMap.get(notif.receiverId).length;
+    for (let i = 0; i < len; ++i) {
       this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
         receiver: notif.receiverUser.username,
         title: notif.title,

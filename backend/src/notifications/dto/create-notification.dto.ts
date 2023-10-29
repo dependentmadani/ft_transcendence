@@ -2,23 +2,14 @@ import { NotificationType } from "@prisma/client";
 import { IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
 
 export class NotificationDto {
-    @IsNumber()
+    @IsString()
     receiverName: string;
 
     @IsString()
     title: string;
 
-    @IsString()
-    description: string;
-
-    @IsString()
-    icon: string;
-
     @IsNotEmpty()
     type: NotificationType;
-
-    @IsBoolean()
-    read: boolean;
 }
 
 export class NotificationBody {

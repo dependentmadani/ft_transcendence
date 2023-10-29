@@ -34,9 +34,6 @@ export class NotificationsService {
       data: {
         title: createNotificationDto.title,
         type: createNotificationDto.type,
-        read: createNotificationDto.read,
-        description: createNotificationDto.description,
-        icon: createNotificationDto.icon,
         socketId: socketId,
         receiverId: receiverInfo.id,
         senderId: userId
@@ -84,7 +81,7 @@ export class NotificationsService {
         friends: true,
       }
     });
-    return await this.prisma.notifications.findUnique({
+    const ret = await this.prisma.notifications.findUnique({
       where: {
         id: createNotif.id
       },
@@ -92,6 +89,7 @@ export class NotificationsService {
         receiverUser: true,
       }
     });
+    return ret;
   }
 
 

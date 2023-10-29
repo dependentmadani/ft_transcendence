@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  output = "../node_modules/.prisma/client"
 }
 
 datasource db {
@@ -11,71 +12,146 @@ datasource db {
 }
 
 model Users {
-  createdAt             DateTime        @default(now())
-  updatedAt             DateTime        @updatedAt
-  id                    Int             @id @default(autoincrement())
-  username              String          @unique
-  email                 String          @unique
-  // socketId              Int
-  password              String?
-  avatar                String?
-  hashRt                String?
-  twofa                 String?
-  twofaEmail            String?         @unique
-  twoEnabled            Boolean         @default(false)
-  pendingFriendReq      Users[]         @relation("PendingFriend")
-  pendingFriendReqOf    Users[]         @relation("PendingFriend")
-  friends               Users[]         @relation("friends")
-  friendOf              Users[]         @relation("friends")
-  blocked               Users[]         @relation("blockedUsers")
-  blockedBy             Users[]         @relation("blockedUsers")
-  chat                  Chat[]
-  isActive              Boolean         @default(false)
-  userStatus            userStatus      @default(OFFLINE)
-  senNotification       Notifications[] @relation("senderNotification")
-  recNotification       Notifications[] @relation("receiverNotification")
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  username                String?         @unique
+  email                   String          @unique
+  password                String?
+  avatar                  String?
+  hashRt                  String?
+  twofa                   String?
+  twofaEmail              String?         @unique
+  userStatus              userStatus      @default(ONLINE)
+  
+  twoEnabled              Boolean         @default(false)
+  isActive                Boolean         @default(false)
+  signedUp                Boolean         @default(false)
+  
+  // Notifications
+  pendingFriendReq        Users[]         @relation("PendingFriend")
+  pendingFriendReqOf      Users[]         @relation("PendingFriend")
+  friends                 Users[]         @relation("friends")
+  friendOf                Users[]         @relation("friends")
+  blocked                 Users[]         @relation("blockedUsers")
+  blockedBy               Users[]         @relation("blockedUsers")
+  senNotification         Notifications[] @relation("senderNotification")
+  recNotification         Notifications[] @relation("receiverNotification")
+
+  // Chat relation
+  chat                    Chat[]          @relation("chats")
+
+  // Messages relation
+  MessageSenId            Message[]       @relation("Messagesencontact")
+  
+  // Rooms relation
+  rooms                   RoomUsers[]
+  roomInvitationSender    Invitations[]   @relation("sender")
+  roomInvitationReceiver  Invitations[]   @relation("receiver")
+
+  // Game relation
+  games                   Game?
+
+  //Game History relation
+  myHistoryGames          History[]       @relation("myHistory")
+  oppHistoryGames         History[]       @relation("oppHistory")
+
+}
+
+model Game {
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  user                    Users           @relation(fields: [userId], references: [id])
+  userId                  Int             @unique
+  gamesPlayed             Int             @default(0)
+  wins                    Int             @default(0)
+  loses                   Int             @default(0)
+  score                   Int             @default(0)
+}
+
+model History {
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  myUser                  Users           @relation("myHistory", fields: [myUserId], references: [id])
+  myUserId                Int
+  oppUser                 Users           @relation("oppHistory", fields: [oppUserId], references: [id])
+  oppUserId               Int
+  myScore                 Int
+  oppScore                Int
 }
 
 model Notifications {
-  createdAt       DateTime    @default(now())
-  updatedAt       DateTime    @updatedAt
-  id              Int         @id @default(autoincrement())
-  title           String
-  description     String?
-  icon            String?
-  type            NotificationType
-  read            Boolean     @default(false)
-  socketId        String
-  senderUser      Users       @relation("senderNotification", fields: [senderId], references: [id])
-  senderId        Int
-  receiverUser    Users       @relation("receiverNotification", fields: [receiverId], references: [id])
-  receiverId      Int
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+  id                      Int             @id @default(autoincrement())
+  title                   String
+  type                    NotificationType
+  read                    Boolean         @default(false)
+  socketId                String
+  senderUser              Users           @relation("senderNotification", fields: [senderId], references: [id])
+  senderId                Int
+  receiverUser            Users           @relation("receiverNotification", fields: [receiverId], references: [id])
+  receiverId              Int
 }
 
 model Chat {
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  id            Int       @id @default(autoincrement())
-  user          Users     @relation(fields: [userId], references: [id]) //onDelete: Cascade "to check its usage"
-  userId        Int
-  banUser       Boolean
-  muteUser      Boolean
-  message       Messages[] @relation("textMessage")
-  gameInvite    String?
+  chatId                  Int             @id @default(autoincrement())
+  users                   Users[]         @relation("chats")
+  chatUsers               Int[]
+  msgChatId               Message[]
 }
 
-model Messages {
-  createdAt     DateTime  @default(now())
-  updateAt      DateTime  @updatedAt
-  id            Int       @id @default(autoincrement())
-  chatId        Int
-  text          String
-  chat          Chat      @relation("textMessage", fields: [chatId], references: [id])
+model Message {
+  messageId               Int             @id @default(autoincrement())
+  textContent             String
+  createdAt               DateTime        @default(now())
+  senderId                Users           @relation("Messagesencontact", fields: [MessageSenId], references: [id])
+  MessageSenId            Int
+  messageChatId           Chat?           @relation(fields: [msgChatId], references: [chatId])
+  msgChatId               Int?
+  messageRoomId           Room?           @relation(fields: [msgRoomId], references: [id])
+  msgRoomId               Int?
+  type                    String
+}
+
+model Room {
+  id                      Int             @id @default(autoincrement())
+  roomName                String
+  roomAvatar              String
+  roomUsers               RoomUsers[]
+  invitations             Invitations[]   @relation("room")
+  roomType                String
+  msgRoomId               Message[]
+}
+
+model RoomUsers {
+  id                      Int             @id @default(autoincrement())
+  room                    Room            @relation(fields: [roomId], references: [id])
+  roomId                  Int
+  user                    Users           @relation(fields: [userId], references: [id])
+  userId                  Int
+  role                    String
+}
+
+model Invitations {
+  id                      Int             @id @default(autoincrement())
+  status                  String          @default("Pending")
+  sender                  Users           @relation("sender", fields: [senderId], references: [id])
+  senderId                Int
+  receiver                Users           @relation("receiver", fields: [receiverId], references: [id])
+  receiverId              Int
+  room                    Room            @relation("room", fields: [roomId], references: [id])
+  roomId                  Int
 }
 
 enum Role {
   ADMIN
   USER
+  KICKED
+  MUTED
+  BANNED
 }
 
 enum RelationStatus {

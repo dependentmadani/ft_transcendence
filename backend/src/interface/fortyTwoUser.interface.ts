@@ -1,8 +1,8 @@
 interface Picture {
-  value: string;
+    value: string;
 }
 
 export interface fortyTwoUser {
-  id: number;
-  picture: Picture[];
+    id: number;
+    picture: Picture[],
 }
