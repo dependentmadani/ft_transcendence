@@ -59,6 +59,29 @@ export class UsersService {
     return user;
   }
 
+  async searchFriendUser(username: string, users: Users) {
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
+      where: {
+        email: users.email,
+      },
+      select: {
+        friends: {
+          where: {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          }
+        }
+      }
+    });
+
+    return user[0].friends;
+  }
+
   async addFriend(userId: number, friendId: number) {
     const friendExists = await this.prisma.users.findUnique({
       where: {
@@ -297,9 +320,11 @@ export class UsersService {
           },
           data: {
             username: username.username,
+            signedUp: true,
           },
         },
         );
+      console.log('user information: ', user)
         
       return user;
     } catch {
@@ -338,7 +363,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './public/uploadAvatar/' + filePath,
+              '/uploadAvatar/' + filePath,
           },
         },
       );

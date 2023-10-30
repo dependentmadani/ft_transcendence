@@ -1,0 +1,98 @@
+
+
+.img-frame {
+    width: 15%;
+}
+
+.status {
+    width: 15%;
+}
+
+.match-played {
+    width: 20%;
+}
+
+.wins {
+    width: 10%;
+}
+
+.ratio {
+    width: 10%;
+}
+
+.player-stats {
+    display: flex;
+    height: 75px;
+    /* background-color: rgb(85, 70, 147); */
+    background-color: #27338f;
+    border-radius: 10px;
+    border: 2px solid #108393;
+    /* border-radius: 5px; */
+    justify-content: space-around;
+    align-items: center;
+    /* color: rgba(169, 166, 166, 0.834); */
+    margin: 4px;
+    box-shadow: 1px 5px 60px 0px #100a886b;
+}
+
+.player-stats > span {
+    color: rgb(237, 241, 219);
+    font-weight: 600;
+    font-size: 1rem;
+    display: block;
+    font-family: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.player-stats > * {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.img-frame {
+    position: relative;
+    height: 69px;
+    width: 69px;
+    background: #6b64f3;
+    border-radius: 10px;
+    overflow: hidden;
+    outline: 1px solid #108393;
+}
+  
+.img-frame img {
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.img-frame::before {
+    content: "";
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 2px solid rgb(216, 211, 211);
+}
+
+.img-frame.online::before {
+    background-color: rgb(57, 231, 57);
+}
+  
+.img-frame.offline::before {
+    background-color: rgb(233, 53, 53);
+}
+
+@media (max-width: 400px) {
+    .status {
+        display: none;
+    }
+    .match-played {
+        display: none;
+    }
+    .wins {
+      display: none;
+    }
+}

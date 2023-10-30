@@ -1,77 +1,65 @@
-import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { log } from 'console';
-// import { Server } from 'http';
-import { array } from 'joi';
+import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { Message, Users, Room } from '@prisma/client';
 
- //@WebSocketGateway()
-@WebSocketGateway({ cors: { origin: "http://localhost:5173" } })
-export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
+@WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
+export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
-  private onlineUsers: Map<string, string> = new Map()
+  // private readonly onlineUsers: Map<number, Socket> = new Map<number, Socket>();
 
-  // handleConnection(client: Socket) {
-  //   console.log(`${client.id} connected..`);
-  //   this.onlineUsers.set(client.id, 'a_user')
-  //   this.updateOnlineUsers
-  // }
-  handleConnection(client: Socket) {
-    console.log(`${client.id} connected..`);
-    // You can store user ID associated with socket ID
-    this.onlineUsers.set(client.id, 'user123');
-    this.updateOnlineUsers();
+  @SubscribeMessage('connect')
+  handleSetup(client: Socket, userData: Users): void {
+    // const userId = userData.id;
+
+    // if (!this.onlineUsers.has(userId)) {
+    //   this.onlineUsers.set(userId, client);
+    //   console.log(`User ${userId} connected`);
+    // }
+
+    client.emit('connect', userData.id);
   }
 
-  handleDisconnect(client: Socket) {
-    console.log(`${client.id} disconnected..`);
+  @SubscribeMessage('message')
+  handleClickMessage(client: Socket, message: Message): void {
+    console.log('sent message', message);
+    this.server.emit('sendMessage', message);
+    // this.server.emit('sortChats')
   }
 
-  // @SubscribeMessage('sendMessage')
-  // newMessage(@MessageBody() data: string, client: any, payload: any) {
-  //   // this.server.emit('receivedMessage', data);
-  //   this.server.emit('receiveMessage', data)
-  // }
-
-  @SubscribeMessage('setup')
-  setup(client: Socket , userData: any) {
-    // this.server.emit('receivedMessage', data);
-    client.join('1')
-    console.log(`user ${'1'}: joined the server..`)
-    client.emit('connected')
-  }
-  
-  @SubscribeMessage('joinChat')
-  joinChat(client: Socket, room: any) {
-    // this.server.emit('receivedMessage', data);
-    client.join(room)
-    console.log(`user ${client.id}: joined room ${room}`)
+  @SubscribeMessage('roomMembers')
+  handleRoomMembers(client: Socket, user: Users): void {
+    console.log('Dkhol a ',user);
+    this.server.emit('members', user);
   }
 
-  @SubscribeMessage('newMessage')
-  newMessage(client: Socket, newMessageReceived: any) {
-    // const chat = newMessageReceived.chatId
-    // this.server.emit('receivedMessage', data);
-    this.server.emit('message received', newMessageReceived)
-    // console.log(`user ${client.id}: joined room ${room}`)
+  @SubscribeMessage('removeRoomMembers')
+  handleRemoveRoomMembers(client: Socket, user: Users): void {
+    console.log('Khrroj 3liya ',user);
+    this.server.emit('removeMembers', user);
   }
 
-  updateOnlineUsers() {
-    const onlineUserIds = Array.from(this.onlineUsers.values());
-    this.server.emit('onlineUsers', onlineUserIds);
+  @SubscribeMessage('createRoom')
+  handleRoomCreation(client: Socket, room: Room): void {
+    console.log('creati ', room);
+    this.server.emit('newRoom', room);
   }
 
-  // @SubscribeMessage('sendMessage')
-  // handleMessage(client: any, message: string) {
-  //   // Save message to database and emit to the room
-  //   this.server.to('2').emit('message received', message);
-  // }
+  @SubscribeMessage('leaveRoom')
+  handleRoomLeft(client: Socket, room: Room): void {
+    console.log('leavi ', room);
+    this.server.emit('leaveRoom', room);
+  }
 
-  // @SubscribeMessage('message')
-  // handleMessage(client: any, payload: any) {
-  //   // Handle and process the received message
-  //   // You can save it to the database and then emit it back to the client(s)
-  //   this.server.emit('newMessage', payload);
+
+  // handleDisconnect(client: Socket): void {
+  //   const disconnectedUserId = [...this.onlineUsers.entries()]
+  //     .find(([key, value]) => value === client)?.[0];
+
+  //   if (disconnectedUserId) {
+  //     this.onlineUsers.delete(disconnectedUserId);
+  //     console.log(`User ${disconnectedUserId} disconnected`);
+  //   }
   // }
 }

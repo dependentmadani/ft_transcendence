@@ -43,6 +43,22 @@ export class RoomUsersService {
                 where: {
                     AND: [
                         { roomId: roomId },
+                        { role: 'ADMIN' },
+                    ]
+                }
+            })
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
+    async getRoomOwner(roomId: number) {
+        try {
+            return this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
                         { role: 'OWNER' },
                     ]
                 }
@@ -53,7 +69,7 @@ export class RoomUsersService {
         }
     }
 
-    async createRoomUsers(roomId: number, userId: number, role: string) {
+    async getRoomMemberRole(roomId: number, userId: number) {
         try {
             const roomUser = await this.prisma.roomUsers.findMany({
                 where: {
@@ -63,6 +79,25 @@ export class RoomUsersService {
                     ]
                 }
             })
+            return roomUser
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
+    async createRoomUsers(roomId: number, userId: number, role: string) {
+        // console.log('Too')
+        try {
+            const roomUser = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                    ]
+                }
+            })
+            // It works but at what cost
             if (roomUser.length === 0) {
                 return await this.prisma.roomUsers.create({
                     data: {
@@ -71,6 +106,34 @@ export class RoomUsersService {
                         role: role,
                     }
                 })
+            }
+        }
+        catch (err) {
+            console.error(`Couldn't create room users table: ${err}`)
+        }
+    }
+
+    async editRoomUsers(roomId: number, userId: number, role: string) {
+        try {
+            const roomUser = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                    ]
+                }
+            })
+            // It works but at what cost
+            console.log('YOOOOOOOO')
+            if (roomUser.length === 1) {
+                return await this.prisma.roomUsers.update({
+                    where: {
+                        id: roomUser[0].id,
+                    },
+                    data: { 
+                        role: role,
+                    }
+                });
             }
         }
         catch (err) {
@@ -95,6 +158,27 @@ export class RoomUsersService {
             return await this.prisma.roomUsers.deleteMany({
                 where: {
                     roomId: roomId
+                }
+            })
+        }
+        else
+            return `Couldn't find room users with id ${roomId}`
+    }
+
+    async deleteSpecificRoomUser(roomId: number, userId: number) {
+        const roomUsers = await this.prisma.roomUsers.findMany({
+            where: {
+                AND :[
+                    { roomId: roomId },
+                    { userId: userId },
+                ]
+            }
+        })
+        // It works but at what cost
+        if (roomUsers) {
+            return await this.prisma.roomUsers.deleteMany({
+                where: {
+                    id: roomUsers[0].id
                 }
             })
         }
