@@ -38,6 +38,19 @@ export class AuthController {
     return true;
   }
 
+  @Get('signed_up')
+  async signedUp(@Req() req: Request) {
+    const user = req.user;
+    try {
+      const userInfo = await this.authService.returnUser(user['email']);
+      return userInfo.signedUp;
+
+    } catch(err) {
+      console.log('the user is not available');
+      return false;
+    }
+  }
+
   @Get('me')
   async getMe(
     @Req() req: Request,
@@ -50,6 +63,7 @@ export class AuthController {
       );
     return res.send(userInfo);
   }
+
 
   @Public()
   @Post('signup')
@@ -128,9 +142,9 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const user = req.user;
-    const tokens =
+    const userAuth =
       await this.authService.signinGoogle(req);
-    res.cookie('token', tokens.access_token, {
+    res.cookie('token', userAuth.token.access_token, {
       expires: new Date(
         new Date().getTime() + 60 * 60 * 24 * 7,
       ), // expires in 7 days
@@ -139,7 +153,7 @@ export class AuthController {
     });
     res.cookie(
       'refresh_token',
-      tokens.refresh_token,
+      userAuth.token.refresh_token,
       {
         expires: new Date(
           new Date().getTime() +
@@ -156,15 +170,17 @@ export class AuthController {
     await this.authService.updateUserState(
       userNew.id,
       true,
-      'ONLINE'
+      'ONLINE',
     );
-    console.log(
-      'vite address 1:',
-      process.env.VITE_ADDRESS,
-    );
-    res.redirect(
-      `http://${process.env.VITE_ADDRESS}:5173/`,
-    );
+    // if (userAuth.state) {
+      res.redirect(`http://${process.env.VITE_ADDRESS}:5173/signup`);
+    // }
+    // else {
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/login`,
+    //     // kheliha bhal haka 
+    //   );
+    // }
   }
 
   @Get('logout')
@@ -176,28 +192,30 @@ export class AuthController {
   ) {
     this.authService.logout(userId, req.cookies);
     if (req.cookies['token']) {
+      console.log('hello hmida')
       res.cookie('token', req.cookies['token'], {
-        expires: new Date(0),
+        expires: new Date(),
       });
       res.cookie(
         'refresh_token',
         req.cookies['refresh_token'],
-        { expires: new Date(0) },
-      );
-    }
-    const userNew =
+        { expires: new Date() },
+        );
+      }
+      const userNew =
       await this.authService.returnUser(
         req.user['email'],
-      );
+        );
     await this.authService.updateUserState(
       userNew.id,
       false,
       'OFFLINE'
     );
+    res.send('cookies deleted');
 
-    res.redirect(
-      `http://${process.env.VITE_ADDRESS}:5173/`,
-    );
+    // res.redirect(
+    //   `http://${process.env.VITE_ADDRESS}:5173/`,
+    // );
   }
 
   @Get('refresh')
@@ -306,13 +324,13 @@ export class AuthController {
       true,
       'ONLINE'
     );
-    if (state)
+    // if (state)
       res.redirect(
         `http://${process.env.VITE_ADDRESS}:5173/signup`,
       );
-    else
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/`,
-      );
+    // else
+    //   res.redirect(
+    //     `http://${process.env.VITE_ADDRESS}:5173/login`,
+    //   );
   }
 }

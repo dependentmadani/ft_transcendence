@@ -7,7 +7,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /tmp/docker/volumes/db_volume
+      device: /tmp/data/database
+      # device: /$HOME/goinfre/data/database
       # device: /home/mbadaoui/data/database
   backend_volume:
     driver: local
@@ -15,7 +16,8 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: $HOME/goinfre/data/backend
+      device: /tmp/data/backend
+      # device: /$HOME/goinfre/data/backend
       # device: /home/mbadaoui/data/backend
   # frontend_volume:
   #   driver: local
@@ -36,10 +38,13 @@ services:
       - .env
     ports:
       - 5432:5432
-    networks:
-      - hadnetwork
-    volumes:
-      - db_volume:/var/lib/postgresql/data
+
+        
+    # networks:
+    #   - hadnetwork
+    # volumes:
+    #   - db_volume:/var/lib/postgresql/data
+    
   backend:
     build:
       context: ./backend
@@ -84,8 +89,8 @@ services:
       - 5050:80
     networks:
       - hadnetwork
-    volumes:
-      - db_volume:/var/lib/postgresql/data
+    # volumes:
+    #   - db_volume:/var/lib/postgresql/data
 
   # test-db:
   #   image: postgres:13

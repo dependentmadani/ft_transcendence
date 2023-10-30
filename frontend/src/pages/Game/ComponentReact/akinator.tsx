@@ -13,11 +13,16 @@ interface User {
 
 export default function Akinator()
 {
+
+  const [musicOn, setMusicOn] = useState(true);
+  const [soundOn, setSoundOn] = useState(true);
   const navigate = useNavigate();
-  const goback = () =>
-  {
-    navigate(-1);
-  }
+
+  const goback = () => {
+    setMusicOn(false);
+    navigate('/game')
+  };
+
   const flag = useRef(false)
   const canvas = useRef(null)
   
@@ -50,7 +55,6 @@ export default function Akinator()
     getUserData()
   }, [])
 
-
   return (
     
     <div>
@@ -61,7 +65,7 @@ export default function Akinator()
   
     <div id="profile1"> 
           <img className='profile1Img' src='/src/assets/img/akinator.png'></img>
-          <strong className='profile1id'>{ Userdata?.username }</strong>
+          <strong className='profile1id'>Akinator</strong>
           
           <div className="BallScore1">
           {leftballs.map((color, index) => (
@@ -70,8 +74,8 @@ export default function Akinator()
         </div>
     </div>
     <div id="profile2">
-          <img className='profile2Img' src='/src/assets/img/jenny.png'></img>
-          <strong className='profile2id'>Gennie</strong>
+          <img className='profile2Img' src={Userdata?.avatar}></img>
+          <strong className='profile2id'>{ Userdata?.username }</strong>
           
           <div className="BallScore2">
           {rightballs.map((color, index) => (
@@ -85,16 +89,16 @@ export default function Akinator()
     <div id = "box">
         <div className = 'music'>
           <strong> Music</strong>&nbsp;
-          <Switch id= "music_switch"  defaultChecked size='small'/> &nbsp;
-          <small>On</small>
+          <Switch id= "music_switch"  defaultChecked={musicOn} size='small' onChange={() => {setMusicOn(!musicOn)}} /> &nbsp;
+          <small>{musicOn ? 'On' : 'Off'}</small>
         </div>
         <div className = 'sound'>
           <strong> Sound </strong> &nbsp;
-          <Switch id= "sound_switch" defaultChecked size = 'small' />&nbsp;
-          <small>On</small>
+          <Switch id= "sound_switch" defaultChecked={musicOn} size='small' onChange={() => {setSoundOn(!soundOn)}} />&nbsp;
+          <small> {soundOn ? 'On' : 'Off'} </small>
         </div>
     </div>
-      <button className='buttonExit' onClick={goback}>
+      <button id="ExitGame" className='buttonExit' onClick={goback}>
         <IoMdExit className="icon"> </IoMdExit>&nbsp;
         <strong className ="EXIT"> Exit</strong>
       </button> 

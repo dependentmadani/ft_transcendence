@@ -29,6 +29,19 @@ export class ChatService {
         }
     }
 
+    async getChatId(chatId: number) : Promise<Chat> {
+        try {
+            return this.prisma.chat.findUnique({
+                where: {
+                    chatId: chatId,
+                  },
+            })
+        }
+        catch {
+            throw new UnauthorizedException(`Couldn't find chat with id ${chatId}`)
+        }
+    }
+
     async getCommunChat(sender: number, receiver: number) : Promise<Chat[]> {
         try {
             return this.prisma.chat.findMany({

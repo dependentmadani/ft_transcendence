@@ -41,6 +41,51 @@ export class UsersService {
     return user;
   }
 
+  async checkBlockedFriend(userId: number, friendId: number) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        blocked: {
+          some: {
+            id: friendId,
+          }
+        }
+      }
+    });
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async friendFriends(userId:number, friendId: number) {
+    const friend = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: friendId
+          }
+        }
+      },
+    });
+
+    if (!friend) {
+      throw new UnauthorizedException("not your friend");
+    }
+
+    const friendsList = await this.prisma.users.findUnique({
+      where: {
+        id: friendId,
+      }, 
+      include: {
+        friends: true
+      }
+    })
+
+    return friendsList.friends;
+  }
+
   async searchUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
@@ -57,6 +102,29 @@ export class UsersService {
       }
     });
     return user;
+  }
+
+  async searchFriendUser(username: string, users: Users) {
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
+      where: {
+        email: users.email,
+      },
+      select: {
+        friends: {
+          where: {
+            username: {
+              startsWith: username,
+              mode: 'insensitive',
+            }
+          }
+        }
+      }
+    });
+
+    return user[0].friends;
   }
 
   async addFriend(userId: number, friendId: number) {
@@ -287,7 +355,7 @@ export class UsersService {
   async updateUser(
     userId: number,
     userInfo: Users,
-    body: UserModify,
+    username: UserModify,
   ) {
     try {
       const user = await this.prisma.users.update(
@@ -296,12 +364,13 @@ export class UsersService {
             id: userId,
           },
           data: {
-            username: body?.username,
-            avatar: body?.avatar,
+            username: username.username,
+            signedUp: true,
           },
         },
-      );
-
+        );
+      console.log('user information: ', user)
+        
       return user;
     } catch {
       throw new UnauthorizedException(
@@ -339,7 +408,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './public/uploadAvatar/' + filePath,
+              '/uploadAvatar/' + filePath,
           },
         },
       );

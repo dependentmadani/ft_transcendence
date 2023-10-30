@@ -1,22 +1,21 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
-
-RUN npm i --save @nestjs/websockets @nestjs/platform-socket.io
-
+# COPY package.json ./
 COPY . .
 
-EXPOSE 8000
+RUN npm i
 
-RUN npm run build
-# npm run start:dev
-RUN npm rebuild bcrypt --update-binary
+# RUN npm i --save @nestjs/websockets @nestjs/platform-socket.io
 
 RUN npx prisma generate
+
+RUN npm run build
+
+RUN npm rebuild bcrypt --update-binary
+# npm run start:dev
+EXPOSE 8000
 
 ENTRYPOINT [ "sh", "script_helper.sh" ]
 

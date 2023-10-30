@@ -1,0 +1,312 @@
+
+.NavBarTwo {
+    position: relative;
+    /* top: 0; */
+    height: 12%;
+    width: 100%;
+    max-height: 140px;
+    min-height: 70px;
+    backdrop-filter: blur(20px);
+    background-color: rgba(53, 50, 76, 0.2);
+
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* background-color: brown; */
+    z-index: 500;
+}
+
+
+
+.logo-img1 {
+    max-height: 100%;
+    /* aspect-ratio: 4/4; */
+    margin-left: 1.5rem;
+    margin-right: 4rem;
+    /* padding-top: .5rem; */
+    /* background-color: blueviolet; */
+}
+
+.right-bar {
+    width: 20%;
+    height: 60%;
+    /* min-width: 220px; */
+    max-width: 300px;
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: blue; */
+    margin-right: 2rem;
+}
+
+.notification {
+    height: 60%;
+    cursor: pointer;
+}
+
+.drop-notification {
+
+    height: 0;
+    width: 200px;
+    background-color: black;
+    position: absolute;
+    top: 110%;
+    right: 2%;
+    /* left: r; */
+    overflow: auto;
+    border-radius: 8px;
+    background-color: rgba(114, 113, 113, 0.7);
+    transition: height .6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 200;
+    backdrop-filter: blur(30px);
+}
+
+
+/* .open-notific {
+    height: 100px;
+} */
+
+.add-friend-notific,
+.play-notific {
+    width: 90%;
+    height: 45px;
+    margin: .5rem auto;
+    border-radius: 5px;
+    color: black;
+    font-size: small;
+    font-weight: 550;
+    position: relative;
+    background-color: antiquewhite;
+}
+
+.play-notific {
+    cursor: pointer;
+}
+
+.add-friend-notific > img,
+.play-notific > img {
+    position: relative;
+    height: 100%;
+    border-radius: 5px;
+    background-color: black;
+    z-index: 10;
+}
+
+
+#notific-user {
+    position: absolute;
+    top: 6%;
+    left: 16%;
+    color: azure;
+    background-color: gray;
+    border-radius: 3px;
+    width: 50%;
+    padding: 0 1rem;
+    text-align: center;
+    text-overflow: ellipsis;
+}
+
+#notific-title{
+    position: absolute;
+    left: 25%;
+    bottom: 4%;
+    max-width: 100px;
+    padding: 0 .5rem;
+    text-align: center;
+    text-overflow: ellipsis;
+    color: rgb(33, 55, 135);
+}
+
+
+#accept {
+    position: absolute;
+    width: 18px;
+    height: 14px;
+    right: 4%;
+    top: 10%;
+    border-radius: 2px;
+    border: 1.5px ridge black;
+    background-color: rgb(35, 242, 125);
+    cursor: pointer;
+}
+
+/* border: .05px solid black; */
+
+#refuse {
+    position: absolute;
+    width: 18px;
+    height: 14px;
+    right: 4%;
+    bottom: 10%;
+    border-radius: 2px;
+    cursor: pointer;
+    border: 1.5px ridge black;
+    background-color: red;
+}
+
+#accept:hover, 
+#refuse:hover {
+    scale: 1.05;
+}
+
+#accept:active, 
+#refuse:active {
+    scale: .95;
+}
+
+
+.user-img2 {
+    height: 75%;
+    width: auto;
+    aspect-ratio: 4/4;
+    object-fit: cover;
+    background-color: black;
+    border-radius: 50%;
+    border: 3px solid lightskyblue ;
+    cursor: pointer;
+}
+
+#drop2:hover,
+#notificDrop:hover {
+    scale: 1.05;
+}
+
+#drop2, 
+#notificDrop {
+    position: relative;
+    height: 100%;
+    min-height: 40px;
+    aspect-ratio: 4/4;
+    border: none;
+    background-color: transparent;
+}
+
+#newNotificaion {
+    position: absolute;
+    z-index: 500;
+    top: 20%;
+    right: 20%;
+    width: 15%;
+    border-radius: 50%;
+    aspect-ratio: 4/4;
+    background-color: rgb(255, 94, 0);
+    /* background-color: red; */
+}
+
+.drop-menu2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 105%;
+    right: 1rem;
+    height: 0;
+    width: 200px;
+    background-color: rgba(114, 113, 113, 0.7);
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: height .6s cubic-bezier(0.825, 0.115, 0.68, 0.725);
+    z-index: 200;
+}
+
+.drop-menu2 li {
+    /* background-color: black; */
+    margin: auto;
+}
+
+.drop-menu2 li > a {
+    font-size: large;
+    font-weight: 600;
+}
+
+.drop-menu2 li > a:hover {
+    /* padding: .5rem; */
+    color: aquamarine;
+}
+
+
+#logout {
+    text-align: center;
+    width: 90%;
+    padding: .5rem 0rem;
+    font-size: large;
+    font-weight: 700;
+    /* margin: auto auto; */
+    border-radius: 15px;
+    background-color: rgb(93, 199, 164);
+}
+
+#logout:hover {
+    background-color: rgb(114, 246, 202);
+}
+
+#logout > a {
+    color: white;
+}
+
+
+#logout:active {
+    scale: 1.05;
+}
+
+
+@media (min-width: 900px) {
+    .drop-notification {
+        width: 250px;
+        left: -35%;
+    }
+
+    /* .open-notific {
+        height: 200px;
+    } */
+}
+
+
+
+@media (orientation: portrait) {
+    
+    
+    .logo-img1 {
+        margin-left: .5rem;
+    }
+    
+    .right-bar {
+        min-width: 114px;
+        margin-right: .5rem;
+    }
+    
+
+    .drop-menu2 {
+        width: 300px;
+    }
+
+    /* .user-img2:focus {
+        border-color: brown;
+    } */
+
+
+    @media (max-width: 500px) {
+        .notification {
+            height: 50%;
+        }
+
+        .user-img {
+            margin-right: 4%;
+            /* height: 75%; */
+        }
+
+        .right-bar {
+            position: relative;
+            width: unset;
+        }
+
+        .drop-menu2 {
+            width: unset;
+            left: .5rem;
+            right: 0rem;
+        }
+    }
+}

@@ -6,11 +6,13 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         let start:any = document.getElementById('ButtonStart');
         let switchMusic:any = document.getElementById('music_switch');
         let switchSound:any = document.getElementById('sound_switch');
+        let ExitGame:any = document.getElementById('ExitGame');
       
          
 
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
+        let ExitValue:boolean = false;
         
         let play_start = 0;
 
@@ -27,7 +29,11 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             SoundValue = switchSound.checked;
             console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
-        
+        ExitGame.addEventListener('click', () => {
+            ExitValue = ExitGame.id;
+
+            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+        });
 
         let  img = new Image();
         let img_win = new Image();
@@ -121,7 +127,6 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                     ctx.fillStyle = 'yellow';
                     ctx.beginPath();
                     ctx.fillRect(this.x, this.y, this.width_paddle, this.height_paddle);
-                    // ctx.drawImage(img_paddle_left, this.x, this.y, this.width_paddle, this.height_paddle);
                     ctx.fill();
                     ctx.closePath()
                 }
@@ -250,7 +255,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                     this.direction_x = -1;
                     this.direction_y = -1;
                 }
-                // console.log(`-----------|${this.num}`);
+
             }
             check_colision()
             {
@@ -340,11 +345,15 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             flag_delta:number=0;
             
             robot_mouve()
-            {                    
-                if(pl1.paddle_y +pl2.paddle_h <= bl.ball_y + bl.ball_size)
-                    pl1.paddle_y+=3;
-                if(pl1.paddle_y  +3 >= bl.ball_y )
-                    pl1.paddle_y-=3;
+            {   
+                if(bl.ball_x <= canvas.width/2)
+                {
+                    if(pl1.paddle_y + pl1.paddle_h <= bl.ball_y + bl.ball_size)
+                        pl1.paddle_y+=6;
+                    if(pl1.paddle_y  +6 >= bl.ball_y )
+                        pl1.paddle_y-=6;
+                }
+               
             }
             get robot_flag()
             {
@@ -355,7 +364,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.flag = nb;
             }
         }
-        let rb = new robot ;
+        let rb = new robot;
         class game {
             start() {
                 
@@ -375,10 +384,15 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         let p = new game
         let sc = new score;
         
-        
         function render() 
         {
             
+            if(ExitValue)
+            {
+                MusicValue = false;
+               SoundValue = false;
+               sc.left_score = 5;
+            }
             if(MusicValue)
                 music.play();
             else

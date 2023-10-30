@@ -19,18 +19,18 @@ export default function HomeGame()
       </Link>
       </div>
       <div className="PongClassic">
-      <Link to="classicgame">
+      <Link to="classic">
         <button className="PongClassic">
           <img className='classic' src='/src/assets/img/classic.jpg' alt="Classic" />
         </button>
       </Link>
       </div>
       <div className="PingPong">
-      <Link to="matchgame">
+      <Link to="tennis">
         <button className="PingPong">
           <img className="match" src="/src/assets/img/match.jpg" alt="MatchGame" />
         </button>
-        </Link>
+      </Link>
       </div>
     </div>
   );
