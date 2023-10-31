@@ -18,6 +18,7 @@ console.log(`HELLO FROM SCRIPT Match________Random`);
         }
 })
 
+
 export class MatchSocketGateway
 {
   @WebSocketServer() server: Server;
@@ -52,14 +53,14 @@ export class MatchSocketGateway
      const cnv_y = await data[1];
      this.canvas_width =   await cnv_x;
      this.canvas_height =  await cnv_y;
-     console.log(`>>>>>>>>>>>>>CANVASSSSSS>>>>${cnv_x}`);
-  }
-  @SubscribeMessage('youcan start')
-  async handleyoucanstart(client, user)
-  {
-    this.client_id = await user[0];
+    }
+    @SubscribeMessage('youcan start')
+    async handleyoucanstart(client, user)
+    {
+      this.client_id = await user[0];
     this.name = await user[1];
     this.client_name.set(this.client_id,this.name);
+    console.log(`>>>>${this.client_id}>>>>>>>>>CANVASSSSSS>>>>${this.name}`);
       
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if (this.canvas_height && this.canvas_width)

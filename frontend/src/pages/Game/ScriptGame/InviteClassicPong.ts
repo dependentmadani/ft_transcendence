@@ -99,8 +99,8 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         }
         socket.on("ProfilesID", (prfl1, prfl2)=>
         {
-            // profileID1(prfl1);
-            // profileID2(prfl2);
+            profileID1(prfl1);
+            profileID2(prfl2);
             console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         })
 

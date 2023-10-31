@@ -1,11 +1,10 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-import { IoMdExit} from "react-icons/io";
+
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ReactSVG } from "react-svg";
 
 interface User
 {
@@ -31,7 +30,7 @@ export default function ClassicGame()
   const [Userdata, setUserdata] = useState<User>()
 
   const [user1, setUser1] = useState<User | null>(null);
-const [user2, setUser2] = useState<User | null>(null);
+  const [user2, setUser2] = useState<User | null>(null);
 
 
   useEffect(() => {
@@ -64,6 +63,7 @@ useEffect(() => {
   axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
       .then((response) => {
         setUser2(response.data);
+      
       })
       .catch((error) => {
         console.error('Error fetching user data for ProfileID2', error);

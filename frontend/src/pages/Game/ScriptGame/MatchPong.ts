@@ -1,4 +1,4 @@
-
+import axios from 'axios';
 import {io} from 'socket.io-client'
 
 export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, client_id:number, profileID1:any, profileID2:any)
@@ -13,7 +13,8 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
-  
+        let UserName:string;
+
         let music = new Audio();
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
@@ -34,13 +35,21 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         
         const socket = io('http://localhost:8000/MatchRandom');
         
+        socket.emit("canvas",canvas.width, canvas.height);
         
+        axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+        .then((res)=>{
+            UserName = res.data?.username;
+            console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+        }).catch((error)=>{  
+            console.error('Error fetching user data for ProfileID1', error);
+        })
         start.addEventListener('click',()=> 
         {
             start.style.display = 'none';
             play_start++;
             
-            socket.emit("youcan start",client_id);
+            socket.emit("youcan start",client_id,UserName);
             console.log(`start\\\\\\${client_id}`)
         })
         
@@ -63,7 +72,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         
         socket.on('connect',()=>
         {
-            socket.emit("canvas",canvas.width, canvas.height);
             console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
             document.addEventListener("mousemove", handleMouseMove);
             
@@ -78,7 +86,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             player = play;
             clientRoom = data;
-
             if(max_room < clientRoom)
                 max_room = clientRoom;
             socket.emit("new value room", clientRoom);

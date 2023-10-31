@@ -1,6 +1,6 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-import { IoMdExit} from "react-icons/io";
+
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/MatchPong'
 import { useNavigate } from 'react-router-dom';
