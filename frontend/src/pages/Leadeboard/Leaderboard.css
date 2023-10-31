@@ -34,7 +34,7 @@
     box-shadow: 1px 5px 60px 0px #100a886b;
 }
 
-.player-stats span {
+.player-stats > span {
     color: rgb(237, 241, 219);
     font-weight: 600;
     font-size: 1rem;

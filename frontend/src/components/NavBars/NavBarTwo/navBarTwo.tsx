@@ -1,6 +1,6 @@
 import './navBarTwo.css'
 import { Link, useNavigate } from "react-router-dom"
-import  { useEffect, useState } from 'react';
+import  { useEffect, useState, useRef } from 'react';
 import { useClient } from '@/context/clientContext';
 import Client from '@/components/ClientClass/client';
 import axios from 'axios';
@@ -34,6 +34,11 @@ const ListNotification = () => {
 
 function NavBarTwo (props:any) {
 
+    // const target1Ref = useRef(null);
+    const MenuRef = useRef(null);
+    const targetRef = useRef(null);
+    const NotificRef = useRef(null);
+    const dropRef = useRef(null);
     const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // const [orientation, setOrientation] = useState<number>(window.orientation);
@@ -78,6 +83,8 @@ function NavBarTwo (props:any) {
         navigate('/')
     }
 
+
+
     const handleMenuOpen = () => {
 
         if (!openDrop) 
@@ -91,7 +98,7 @@ function NavBarTwo (props:any) {
                         <li key="home"> <Link to='/' > Home </Link> </li>
                         <li key="profile1"> <Link to='/profile' > Profile </Link> </li>
                         <li key="chat"> <Link to='/chat'> Chat </Link> </li>
-                        <li key="play"> <Link to='/game' > Game </Link> </li>
+                        <li key="play"> <Link to='/play' > Play </Link> </li>
                         <li key="leaderboard"> <Link to='/leaderboard' > Leaderboard </Link> </li>
                         <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                     </>)
@@ -127,6 +134,26 @@ function NavBarTwo (props:any) {
         handleNotificOpen();
     }, [isNotificOpen]);
 
+
+    useEffect(() => {
+      const handleClick = (event) => {
+        if ((targetRef.current && !targetRef.current.contains(event.target)) && 
+            (NotificRef.current && !NotificRef.current.contains(event.target))) {
+            setIsNotificOpen(false);
+        }
+        if ((dropRef.current && !dropRef.current.contains(event.target)) && 
+            (MenuRef.current && !MenuRef.current.contains(event.target))) {
+            setIsMenuOpen(false)
+        }
+      };
+  
+      document.addEventListener('click', handleClick);
+  
+      return () => {
+        document.removeEventListener('click', handleClick);
+      };
+    }, [isNotificOpen, isMenuOpen]);
+    
     return ( 
         <>
             <div className='NavBarTwo'>
@@ -134,18 +161,18 @@ function NavBarTwo (props:any) {
                     <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
-                    <button  id='notificDrop' onClick={() => {setIsNotificOpen(!isNotificOpen)}}  onBlur={() => {setIsNotificOpen(false)}} >
-                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" />
+                    <button  id='notificDrop'   >
+                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" ref={NotificRef} onClick={() => setIsNotificOpen(!isNotificOpen)}  />
                         <div id='newNotificaion'></div>
                     </button>
-                    <div className='drop-notification'>
+                    <div className='drop-notification'  ref={targetRef}  >
                         <ListNotification />
                     </div>
-                    <button id='drop2' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
-                        <img className='user-img2' src={client.avatar} alt="user-img"/>
+                    <button id='drop2'  > 
+                        <img className='user-img2' src={client.avatar} alt="user-img" ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
                     </button>
                 </div>
-                <ul className="drop-menu2" >
+                <ul className="drop-menu2" ref={dropRef} >
                     {listItems}
                 </ul>
             </div>
@@ -153,6 +180,5 @@ function NavBarTwo (props:any) {
     )
 
 }
-
 
 export default NavBarTwo;

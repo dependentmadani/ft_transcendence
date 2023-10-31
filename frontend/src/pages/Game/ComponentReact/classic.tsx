@@ -95,10 +95,11 @@ useEffect(() => {
 const updateCanvasWidth = () => {
   console.log ('&&&&&&&&&&&&&&&&&&&&&')
   const container = document.querySelector('.game-mode') as HTMLElement;
-  const dimention = document.querySelector('.game-dimention') as HTMLElement;
-  const canvas = document.getElementById('canvas1');
+  const dimension = document.querySelector('.game-dimension') as HTMLElement;
+  const dimension_canvas = document.querySelector('.dimension-canvas') as HTMLElement;
+  // const canvas = document.getElementById('canvas1');
   const players = document.getElementById('players');
-  if (canvas && container && players && dimention) {
+  if (container && players && dimension) {
     console.log('ooooooooooooooooooo');
     let _width:number = container.getBoundingClientRect().width;
     let _height:number = container.getBoundingClientRect().height;
@@ -117,20 +118,23 @@ const updateCanvasWidth = () => {
     let tmp_height:number =  _width  * .75;
 
     if (tmp_height > _height * .75) {
-      dimention.style.width = `${_height * .75 * 1.25}px`;
-      dimention.style.height = `${_height * .75}px`;
+      dimension.style.width = `${_height * .75 * 1.25}px`;
+      dimension.style.height = `${_height * .75}px`;
     }
     else if (_height > tmp_height) {
       
-      dimention.style.width = `${_width}px`;
-      dimention.style.height = `${_width * .75}px`;
+      dimension.style.width = `${_width}px`;
+      dimension.style.height = `${_width * .75}px`;
     }
     
-    canvas.style.width =  `${dimention.getBoundingClientRect().width}px`;
-    canvas.style.height = `${dimention.getBoundingClientRect().height * .85}px`;
+    // canvas.style.width =  `${dimension.getBoundingClientRect().width}px`;
+    // canvas.style.height = `${dimension.getBoundingClientRect().height * .85}px`;
 
-    players.style.width = `${dimention.getBoundingClientRect().width}px`;
-    players.style.height = `${dimention.getBoundingClientRect().height * .15}px`;
+    dimension_canvas.style.width =  `${dimension.getBoundingClientRect().width}px`;
+    dimension_canvas.style.height = `${dimension.getBoundingClientRect().height * .85}px`;
+
+    players.style.width = `${dimension.getBoundingClientRect().width}px`;
+    players.style.height = `${dimension.getBoundingClientRect().height * .15}px`;
 
   }
 };
@@ -149,42 +153,49 @@ useEffect(() => {
     <div className='game-mode'>
         {/* <div >
         </div> */}
-      <div className='game-dimention'>
-      <div id='players'>
-          <div id="profile1"> 
-              <img className='profile1Img' src='/src/imgs/example.jpg'  /*src={user1?.avatar}*/ />
-                {/* <span className='profile1id'>{user1?.username}  </span> */}
-              <span className='profile1id'> Hamid </span>
-              <div className="BallScore1">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                {/* {leftballs.map((color, index) => (
-                  <div key={ball1${index}} className={pl1 ball${index + 1}} style={{ backgroundColor: color }}></div>
+      <div className='game-dimension'>
+        <div id='players'>
+            <div id="profile1"> 
+                <img className='profile1Img' src='/src/imgs/example.jpg'  /*src={user1?.avatar}*/ />
+                  {/* <span className='profile1id'>{user1?.username}  </span> */}
+                <div className='profile1id'> Hamidjhibjsdhvidbfvbjkbdfvjbsdbfvbjfbvb </div>
+                <div className="BallScore1">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  {/* {leftballs.map((color, index) => (
+                    <div key={ball1${index}} className={pl1 ball${index + 1}} style={{ backgroundColor: color }}></div>
+                  ))} */}
+                </div>
+            </div>
+                  <img className= "players-vs" src="/src/assets/img/vs.png"/>
+            <div id="profile2">
+              <img className='profile2Img' src={user2?.avatar}></img>
+              {/* <span className='profile2id'> {user2?.username}</span> */}
+              <div className='profile2id'> Hamid </div>
+              <div className="BallScore2">
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                  <div></div>
+                {/* {rightballs.map((color, index) => (
+                  <div key={ball2${index}} className={pl2 ball${index + 1}} style={{ backgroundColor: color }}></div>
                 ))} */}
               </div>
-          </div>
-                <img className= "players-vs" src="/src/assets/img/vs.png"/>
-          <div id="profile2">
-            <img className='profile2Img' src={user2?.avatar}></img>
-            {/* <span className='profile2id'> {user2?.username}</span> */}
-            <span className='profile2id'> Hamid </span>
-            <div className="BallScore2">
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-                <div></div>
-              {/* {rightballs.map((color, index) => (
-                <div key={ball2${index}} className={pl2 ball${index + 1}} style={{ backgroundColor: color }}></div>
-              ))} */}
             </div>
-          </div>
         </div>
-        <canvas ref={canvas} id = "canvas1"  > </canvas>
-      </div>
+        <div className='dimension-canvas'>
+          <canvas ref={canvas} id = "canvas1"  > 
+          </canvas>
+          <button id="ButtonStart" className='ButtonStart'>
+            <span className='startplus'>Start</span>
+            <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png"></img>
+          </button>
+        </div>
+        </div>
     <div className='game-setting'>
       <span id='setting-title' > Settings </span>
       <div id = "box">
@@ -204,11 +215,6 @@ useEffect(() => {
         <span className ="EXIT"> Exit</span>
       </button> 
     </div>
-
-    <button id="ButtonStart" className='ButtonStart'>
-      <span className='startplus'>Start</span>
-      <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png"></img>
-    </button>
   
   </div>
    )
