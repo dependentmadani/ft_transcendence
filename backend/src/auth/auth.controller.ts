@@ -27,6 +27,10 @@ import { ApiBody, ApiResponse } from '@nestjs/swagger';
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
 
+const oneDay = 1000 * 60 * 60 * 24;
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
+
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -75,9 +79,7 @@ export class AuthController {
     const tokens =
       await this.authService.signupLocal(dto);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 1000,
-      ), // expires in 1 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -85,10 +87,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 7 * 1000,
-        ), // expires in 7 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },

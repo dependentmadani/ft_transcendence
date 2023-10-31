@@ -21,6 +21,7 @@ body
   display: flex;
   /* align-items: center; */
   flex-wrap: wrap;
+  justify-content: space-around;
   align-items: center;
   
 }
@@ -34,7 +35,7 @@ body
   max-width: 400px;
   max-height: 400px;
   background-color: rgba(44, 99, 174, 0.55);
-  margin: auto;
+  margin: 20px;
   /* overflow: hidden; */
   border-radius: 20px;
   box-shadow: 0 0 10px 5px rgba(9, 105, 135, 0.5);
@@ -43,8 +44,10 @@ body
 
 .style-mode > img  {
   position: absolute;
-  right: -32%;
-  top: 10%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -20%); 
+
   /* float: right; */
   width: auto;
   height: 110%;
@@ -57,13 +60,14 @@ body
 .style-mode > span {
   font-weight: 600;
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(10px, 4.5vw, 5vh);
+  font-size: clamp(10px, 4vw, 55px);
   color: aqua;
   margin-top: 10%;
   padding-left: 2%;
   border-radius: 10px;
-  box-shadow: 0 0 10px 5px rgba(39, 44, 46, 0.5);
+  /* box-shadow: 0 0 10px 5px rgba(39, 44, 46, 0.5); */
 }
+
 
 .style-mode:hover    {
   scale: 1.02;

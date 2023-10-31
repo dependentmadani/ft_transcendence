@@ -44,15 +44,15 @@ export default function HomeGame() {
   return (
     <div className="GameHome">
       <div className="style-mode">
-        <span>Mode <br/>Classic</span>
+        <span>Mode <br/>&nbsp;Classic</span>
           <img  src='/src/imgs/classic.png' alt="Classic" onClick={() => {navigate('/game/classic')}} />
       </div>
       <div className="style-mode">
-        <span>Mode <br/>Tennis</span>
+        <span>Mode <br/>&nbsp;Tennis</span>
           <img  src="/src/imgs/tennis.png" alt="MatchGame" onClick={() => {navigate('/game/tennis')}} />
       </div>
       <div className="style-mode">
-          <span>Mode <br/>Akinator</span>
+          <span>Mode <br/>&nbsp;Akinator</span>
           <img src='/src/imgs/akinator.png' alt="Akinator" onClick={() => {navigate('/game/akinator')}} />
       </div>
     </div>

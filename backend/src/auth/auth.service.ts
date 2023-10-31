@@ -542,11 +542,11 @@ export class AuthService {
     const [at, rt] = await Promise.all([
       this.jwt.signAsync(payload, {
         secret: secretAt,
-        expiresIn: 60 * 15,
+        expiresIn: 1000 * 60 * 60 * 24,
       }),
       this.jwt.signAsync(payload, {
         secret: secretRt,
-        expiresIn: 60 * 60 * 24 * 7,
+        expiresIn: 1000 * 60 * 60 * 24 * 7,
       }),
     ]);
 
