@@ -198,9 +198,11 @@
     position: relative;
     z-index: 200;
     height: 100%;
+    aspect-ratio: 4/4;
     border-radius: 50%;
     border: .1vw solid skyblue;
     background-color: gainsboro;
+    object-fit: cover;
     float: left;
   }
   
@@ -211,8 +213,10 @@
     height: 100%;
     border-radius: 50%;
     background-color: gainsboro;
+    aspect-ratio: 4/4;
     /* border: 5px solid white; */
     border: .1vw solid skyblue;
+    object-fit: cover;
     float: right;
   }
 

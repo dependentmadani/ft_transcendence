@@ -1,12 +1,12 @@
-
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import direct_ball from "../UtilsGame/MatchPong/MatchBall";
+import paddle_left from "../UtilsGame/MatchPong/MatchPaddle1";
+import paddle_right from "../UtilsGame/MatchPong/MatchPaddle2";
 
-import direct_ball from "../SocketGame/MatchPong/MatchBall";
-import paddle_left from "../SocketGame/MatchPong/MatchPaddle1";
-import paddle_right from "../SocketGame/MatchPong/MatchPaddle2";
-
-
+import { GameService } from "../game.service"
+import { HistoryService } from '../history/history.service';
+import { historyDto } from "../history/dto/create-history.dto"
 console.log(`HELLO FROM SCRIPT Match________INVITE`);
 
 @WebSocketGateway({
@@ -38,7 +38,12 @@ export class InviteMatchSocketGateway
   private players = new Map< number ,number>()
   private PosPlayers = new Map< number ,number>()
 
-  private jojo = 0;
+
+  private name:string;
+  private client_name =  new Map<number,string>;
+
+  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+
 
   @SubscribeMessage('canvas')
   async handleCanvas(client, data)
@@ -49,10 +54,11 @@ export class InviteMatchSocketGateway
      this.canvas_height =  await cnv_y;
   }
   @SubscribeMessage('youcan start')
-  async handleyoucanstart(client, sock_id)
+  async handleyoucanstart(client, user)
   {
-      this.client_id = sock_id;
-      this.jojo++;
+    this.client_id = await user[0];
+    this.name = await user[1];
+    this.client_name.set(this.client_id,this.name);
       
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if (this.canvas_height && this.canvas_width)
@@ -222,6 +228,37 @@ async handlenewvalueroom(client, data)
       // console.log(`${  gameState.ball.x}|----JOJO${room_num}-------|${  gameState.ball.y}`)
     if (this.ball[room_num].score_left >= this.ball[room_num].score_max || this.ball[room_num].score_right >= this.ball[room_num].max_score)
     {
+      const roomSet = this.rooms.get(room_num);
+     
+      if (roomSet)
+      {
+          let roomArray = Array.from(roomSet);
+          let firstValue  = roomArray[0];
+          let secondValue = roomArray[1]; 
+    
+        if(this.ball[room_num].score_left > this.ball[room_num].score_right)
+        {
+          this.gameService.updateInfoGame(firstValue, true);
+          this.gameService.updateInfoGame(secondValue , false);
+        }
+        else
+        {
+          this.gameService.updateInfoGame(firstValue, false);
+          this.gameService.updateInfoGame(secondValue, true);
+        }
+        this.histor1.my_score = this.ball[room_num].score_left 
+        this.histor1.opp_score  = this.ball[room_num].score_right;
+        this.histor1.opp_name = this.client_name.get(secondValue);
+        this.historyService.createResultGame(firstValue,this.histor1);
+        console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
+      
+        this.histor2.my_score = this.ball[room_num].score_right;
+        this.histor2.opp_score  = this.ball[room_num].score_left ;
+        this.histor2.opp_name = this.client_name.get(firstValue);
+        this.historyService.createResultGame(secondValue,this.histor2);
+        console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
+    
+    }
       clearInterval(this.interval[room_num]);
 
         const clientId = this.players.get(client); 
@@ -242,6 +279,23 @@ async handlenewvalueroom(client, data)
     }
    this.server.to(room_num).emit("game_state", gameState);
 }
+
+@SubscribeMessage('playerDisconnect')
+  handlePlayerDisconnect(client,data)
+  {
+    const clientId = data;
+    const room = this.getRoomByClientId(clientId);
+
+    console.log(`---22222---disconnect ${clientId}`)
+
+    if (room)
+    {
+      if (this.PosPlayers.get(clientId) == 1 )
+        this.ball[room].score_r = this.ball[room].score_max;
+      else 
+        this.ball[room].score_l = this.ball[room].score_max;
+    }
+  }
 
 @SubscribeMessage('disconnect')
   handleDisconnect(client)
@@ -270,5 +324,4 @@ async handlenewvalueroom(client, data)
      }
    }
  }
-
 }

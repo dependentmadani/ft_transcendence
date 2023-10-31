@@ -6,11 +6,13 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         let start:any = document.getElementById('ButtonStart');
         let switchMusic:any = document.getElementById('music_switch');
         let switchSound:any = document.getElementById('sound_switch');
+        let ExitGame:any = document.getElementById('ExitGame');
       
          
 
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
+        let ExitValue:boolean = false;
         
         let play_start = 0;
 
@@ -27,7 +29,11 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             SoundValue = switchSound.checked;
             console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
-        
+        ExitGame.addEventListener('click', () => {
+            ExitValue = ExitGame.id;
+
+            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+        });
 
         let  img = new Image();
         let img_win = new Image();
@@ -381,6 +387,12 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         function render() 
         {
             
+            if(ExitValue)
+            {
+                MusicValue = false;
+               SoundValue = false;
+               sc.left_score = 5;
+            }
             if(MusicValue)
                 music.play();
             else

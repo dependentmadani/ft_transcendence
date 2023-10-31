@@ -1,41 +1,59 @@
+import axios from 'axios';
 import {io} from 'socket.io-client'
 
-export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, client_id:number, profileID1:any, profileID2:any)
+export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, client_id:number, profileID1:number, profileID2:number)
 {
     if(canvas)
     {
         let ctx:any = canvas.getContext('2d');
         let start:any = document.getElementById('ButtonStart');
         let switchSound:any = document.getElementById('sound_switch');
+        let ExitGame:any = document.getElementById('ExitGame');
         
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
         let SoundValue:boolean = true;
         let play_start = 0;
-        
-
         let img_lose = new Image();
+        let UserName:string;
         
+        let ExitValue:boolean = false;
         img_lose.src = "/src/assets/img/lose.jpg";
-  
+        
         ball_sound.src = "/src/assets/sounds/beeep.ogg";
         paddle_sound.src = "/src/assets/sounds/Pop.ogg";
+        
         
         const socket = io('http://localhost:8000/ClassicInvite');
         
         socket.emit("canvas",canvas.width, canvas.height);
-        start.addEventListener('click',() => 
-        {
-            start.style.display = 'none';
-            play_start++;
-            socket.emit("youcan start", client_id);
-            console.log(`start\\\\\\${client_id}`)
+        // socket.emit("SetProfilesId",profileID1, profileID2);
+        axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+        .then((res)=>{
+            UserName = res.data?.username;
+            console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+        }).catch((error)=>{  
+            console.error('Error fetching user data for ProfileID1', error);
         })
-        switchSound.addEventListener('change', () => 
-        {
-            SoundValue = switchSound.checked;
-       
-        });
+    
+            console.log(`1~~~~~~~~~FALWA          FALWAT~~|`)
+            start.addEventListener('click',() => 
+            {
+                start.style.display = 'none';
+                play_start++;
+
+                socket.emit("youcan start", client_id, UserName);
+                console.log(`start\\\\\\${client_id}`)
+            })
+            switchSound.addEventListener('change', () => 
+            {
+                SoundValue = switchSound.checked;
+            });
+            ExitGame.addEventListener('click', () => {
+                ExitValue = ExitGame.id;
+                socket.emit("playerDisconnect",client_id);
+                console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            });
         socket.on('connect',()=>
         {
             console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}`);
@@ -47,12 +65,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let max_room = 0;
         socket.on("playerId",(play, data) =>
         {
-            player = play;
-            clientRoom = data;
-            if(max_room < clientRoom)
+                player = play;
+                clientRoom = data;
+                if(max_room < clientRoom)
                 max_room = clientRoom;
-            socket.emit("new value room", clientRoom);
-        })
+                socket.emit("new value room", clientRoom);
+           
+    })
         function drawline()
         {
             const l = canvas.width / 2;
@@ -80,8 +99,8 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         }
         socket.on("ProfilesID", (prfl1, prfl2)=>
         {
-            profileID1(prfl1);
-            profileID2(prfl2);
+            // profileID1(prfl1);
+            // profileID2(prfl2);
             console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         })
 
@@ -230,13 +249,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                      if(this.score_left == 5)
                      {
-                        console.log("hello mother fucker ------111")
+                        console.log("hello  ------111")
                         const ttWidth = ctx.measureText("YOU WIN").width;
                         this.write_txt("YOU WIN",(canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
                     else
                     {
-                        console.log("hello mother fucker ------2222")
+                        console.log("hello ------2222")
                         const ttWidth = ctx.measureText("YOU LOSE").width;
                         this.write_txt("YOU LOSE",(canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
@@ -245,13 +264,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                     if (this.score_right == 5)
                     {
-                        console.log("hello mother fucker -----3333")
+                        console.log("hello  -----3333")
                         const ttWidth = ctx.measureText("YOU WIN").width ;
                         this.write_txt("YOU WIN",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
                     else
                     {
-                        console.log("hello mother fucker -----4444")
+                        console.log("hello  -----4444")
                         const ttWidth = ctx.measureText("YOU LOSE").width ;
                         this.write_txt("YOU LOSE",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
@@ -323,6 +342,15 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         }
     })
     var p = new game()
+
+    if(ExitValue)
+    {
+        SoundValue = false;
+        // socket.emit("playerDisconnect",client_id);
+        
+    }
+
+
     function render()
     {
         ctx.clearRect(0,0,canvas.width,canvas.height);

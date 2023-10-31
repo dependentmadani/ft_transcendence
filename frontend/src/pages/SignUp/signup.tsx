@@ -113,7 +113,7 @@ function SetInfo() {
             onChange={(e) => handleChangeAvatar(e.target.files)}
           />
           <label htmlFor='file' className='choose-img'>
-            <img src='/src/imgs/change-img.png' alt='Upload' />
+            <img src='/src/imgs/change-img.png' alt='Upload'  />
           </label>
         </div>
         <input

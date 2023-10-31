@@ -17,59 +17,73 @@ export class GameService {
             console.log(`Something wrong with database! !!!!!!! ${e}`)
         }
     }
-
-
-    async updateInfoGame(userId: number, win_state: boolean){
+    
+    async updateInfoGame(userId: number, win_state: boolean) {
         try {
-            const game = await this.prisma.game.findUnique({
-                where: {
-                    userId: userId,
-                }
-            });
-            let win = game.wins, lose = game.loses, played = game.gamesPlayed;
-            win_state == true ? win++ : lose++;
-            played += 1;
-            const updatedGames = await this.prisma.game.update({
+            let game = await this.prisma.game.findUnique({
                 where: {
                     userId: userId,
                 },
-                data: {
-                    gamesPlayed: played,
-                    wins: win,
-                    loses: lose,
-                }
             });
+    
+            if (!game)
+            {
+                game = await this.prisma.game.create({
+                    data: {
+                        userId: userId,
+                        gamesPlayed: 0,
+                        wins: win_state ? 1 : 0,
+                        loses: win_state ? 0 : 1,
+                    },
+                });
+            }
+            else
+            {
+                // let { wins, loses, gamesPlayed } = game;
+                let win = game.wins;
+                let lose = game.loses;
+                let played = game.gamesPlayed;
+    
+                if (win_state) 
+                    win++;
+                else 
+                    lose++;
+                played++;
+                game = await this.prisma.game.update({
+                    where: {
+                        userId: userId,
+                    },
+                    data: {
+                        gamesPlayed: played,
+                        wins: win,
+                        loses: lose,
+                    },
+                });
+            }
+    
 
-            return updatedGames;
-        } catch(e) {
-            console.log(`Something wrong with database! ?????? ${e}`)
+            return game;
+        } catch (e) {
+            console.error(`Something went wrong with the database: ${e}`);
+            // Handle the error appropriately
         }
     }
-}
+}    
 
 
-// async updateInfoGame(userId: number, win_state: boolean)
-// {
-//     try {
-//         const game = await this.prisma.game.findUnique({
-//             where: {
-//                 userId: userId,
-//             }
-//         });
+//     async updateInfoGame(userId: number, win_state: boolean){
+//         try {
+//             const game = await this.prisma.game.findUnique({
+//                 where: {
+//                     userId: userId,
+//                 }
+//             });
+//             let win = game.wins;
+//             let lose = game.loses;
+//             let played = game.gamesPlayed;
 
-//         if (game) {
-//             let win = game.wins || 0;
-//             let lose = game.loses || 0;
-//             let played = game.gamesPlayed || 0;
-
-//             if (win_state) {
-//                 win++;
-//             } else {
-//                 lose++;
-//             }
-            
+//             win_state == true ? win++ : lose++;
 //             played += 1;
-
 //             const updatedGames = await this.prisma.game.update({
 //                 where: {
 //                     userId: userId,
@@ -82,12 +96,9 @@ export class GameService {
 //             });
 
 //             return updatedGames;
-//         } else {
-//             // Handle the case when the user does not exist in the database
-//             console.log(`User with userId ${userId} does not exist in the database.`);
+//         } catch(e) {
+//             console.log(`Something wrong with database! ?????? ${e}`)
 //         }
-//     } catch(e) {
-//         console.log(`Something wrong with the database: ${e}`);
 //     }
 // }
-// }
+
