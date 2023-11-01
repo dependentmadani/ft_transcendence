@@ -1,10 +1,11 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-
+import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { ReactSVG } from "react-svg";
 
 interface User
 {
@@ -30,7 +31,7 @@ export default function ClassicGame()
   const [Userdata, setUserdata] = useState<User>()
 
   const [user1, setUser1] = useState<User | null>(null);
-  const [user2, setUser2] = useState<User | null>(null);
+const [user2, setUser2] = useState<User | null>(null);
 
 
   useEffect(() => {
@@ -63,7 +64,6 @@ useEffect(() => {
   axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
       .then((response) => {
         setUser2(response.data);
-      
       })
       .catch((error) => {
         console.error('Error fetching user data for ProfileID2', error);
@@ -151,7 +151,7 @@ useEffect(() => {
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src={user1?.avatar}  /*src={user1?.avatar}*/ />
+                <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
                   {/* <span className='profile1id'>{user1?.username}  </span> */}
                 <div className='profile1id' > {user1?.username}</div>
                 <div className="BallScore1">
@@ -167,7 +167,7 @@ useEffect(() => {
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={user2?.avatar}></img>
+              <img className='profile2Img' src={user2?.avatar}> onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} </img>
               {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">

@@ -3,36 +3,36 @@ import axios from "axios"
 import { useEffect, useState, useRef } from 'react'
 import './Settings.css';
 import { useClient } from '@/context/clientContext';
+import { ToastContainer, toast } from 'react-toastify';
+import { icon } from '@fortawesome/fontawesome-svg-core';
+import { useSetting } from '@/context/SettingContext';
 
-// import './SettingsV2.css';
 
 const SettingsComponent: React.FC = () => {
 
 	const {client, updateClient} = useClient();
     
     const [avatar, setAvatar] = useState<string>(client.avatar);
-    const [twoFactorEnabled, setTwoFactorEnabled] = useState(false);    // change it to its initial value;
-    const [email, setEmail] = useState('');
+    const [twoFactorEnabled, setTwoFactorEnabled] = useState(client.twoEnabled);   
+    const [email, setEmail] = useState(client.twofaEmail);
     const [qrCode, setQrCode] = useState('');
     const [smsCode, setSmsCode] = useState('');
     const [username, setUsername] = useState<string>(client.username);
     const [fileUpload, setFileUpload] = useState();
+    const [popSettings, setPopSettings] = useSetting();
 
     const fileInputRef = useRef<HTMLInputElement | null>(null);
 
         
     const handleImageChange = () => {
-        // Create an invisible file input element
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.accept = 'image/*';
       
-        // Listen for file selection
         fileInput.addEventListener('change', (e) => {
           const selectedFile = e.target.files[0];
       
           if (selectedFile) {
-            // Read the selected file and update the avatar state
             const reader = new FileReader();
             reader.onload = (e) => {
               setAvatar(e.target.result);
@@ -41,8 +41,7 @@ const SettingsComponent: React.FC = () => {
             reader.readAsDataURL(selectedFile);
           }
         });
-      
-        // Trigger the file input to open the file selection dialog
+
         fileInput.click();
       };
 
@@ -52,113 +51,174 @@ const SettingsComponent: React.FC = () => {
         console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
     };
     
-    const handleEmailSubmit = async () => {
-        try {
-            console.log(`mail: ${email}|`)
-            const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/setup`,
-            { email },
-            {withCredentials: true}
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const handleEmailSubmit = () => {
+      toast.promise(
+        (async () => {
+          try {
+            console.log(`mail: ${email}|`);
+            const response = await axios.post(
+              `http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/setup`,
+              { email },
+              { withCredentials: true }
             );
-            // Parse the response to get the QR code
             const qrCodeUrl = response.data;
+            await delay(1000); 
             setQrCode(qrCodeUrl);
-        } catch (error) {
-            console.error('Error fetching data: ', error);
+          } catch (error) {
+            await delay(1000);
+          }
+        })(),
+        {
+          pending: "Generating QR Code...",
+          success: {
+            render: "QR Code generated successfully!",
+            icon: <img src='/src/imgs/qr-code.gif' width='25px' alt='qr-code' />,
+            },
+          error: {
+            render: 'Gmail address Error',
+          },
         }
+      );
     };
+    
+      
 
     const handleSmsCodeSubmit = async () => {
-        try {
-                console.log(`smscode: ${smsCode}|`);
+        toast.promise(
+            (async () => {
+              try {
+                console.log(`mail: ${email}|`);
                 const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/verify`,
                 { code: smsCode },
                 { withCredentials: true }
                 );
-                console.log('response data', response.data);
-        } catch (error) {
-            console.log("incorrect QrCode");
-            console.error('Error fetching data: ', error);
-        }
-
+                await delay(1000);
+                if (response.data) 
+                    return "Enabled 2FA successfully!";
+                throw 'incorrect QrCode';
+              } catch (error) {
+                await delay(1000);
+                throw 'incorrect QrCode';
+              }
+            })(),
+            {
+              pending: "Check Code...",
+              success: {
+                render: ({ data }) => `${data}`,
+                icon: <img src='/src/imgs/password.gif' width='25px' alt='password' />,
+                },
+              error: {
+                render:({ data }) => `${data}`,
+              },
+            }
+          );
 
       };
 
-    const informTwoFactorState = async () => {
-        try {
-            setTwoFactorEnabled(!twoFactorEnabled);
-            if (!twoFactorEnabled)
-            {
-                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
-                { withCredentials: true },
-                );
+
+    useEffect (() => {
+
+        const informTwoFactorState = async () => {
+            try {
+              console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
+                if (!twoFactorEnabled && smsCode)
+                {
+                    await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
+                    { withCredentials: true },
+                    );
+                    toast.info("Disabled 2FA !", {
+                      position: toast.POSITION.TOP_RIGHT
+                    });
+                }
+            } catch (error) {
+              console.log('error in disbale of 2fa : ',error);
             }
-        } catch (error) {
-            console.log("incorrect QrCode");
-            console.error('Error fetching data: ', error);
         }
-    }
+
+        informTwoFactorState();
+    }, [twoFactorEnabled])
+
 
     const handleSubmit = async () => {
-        try {
-            if (username) {
 
-                await axios.patch(
-                    `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${client.id}`,
-                    {
-                        username: username,
-                    },
-                    {
-                        withCredentials: true,
-                        headers: { 'Content-Type': 'application/json' },
-                    }  
-                );
+      if (!username) {
+        toast.warn('Please enter a username');
+        return;
+      }
+      toast.promise(
+          (async () => {
+            try {
+              if (username) {
+
+                  await axios.patch(
+                      `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${client.id}`,
+                      {username: username,},
+                      {
+                          withCredentials: true,
+                          headers: { 'Content-Type': 'application/json' },
+                      }  
+                  );
+              }
+              if (avatar != client.avatar) {
+                  const gg = await axios.post(
+                  `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${client.id}/infos`,
+                  {avatar: fileUpload,},
+                  {
+                      withCredentials: true,
+                      headers: { 'Content-Type': 'multipart/form-data' },
+                  }
+                  );
+              }
+
+              await delay(1000);
+              const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
+              await updateClient({ ...client, ...response.data, signedIn: true });
+              console.log(client)
+              setPopSettings(false);
+            } catch (error) {
+              await delay(1000);
+              throw 'Error Update';
             }
-            if (avatar != client.avatar) {
-                const gg = await axios.post(
-                `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${client.id}/infos`,
-                {
-                    avatar: fileUpload,
-                },
-                {
-                    withCredentials: true,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                }
-                );
-                console.log('dataupdate : ' , gg.data)
-            }
-        } catch (error) {
-          console.error('Error submitting data:', error);
-        }
-        try {
-            const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
-            await updateClient({ ...client, ...response.data, signedIn: true });
-            console.log('data of client : ', response.data);
-        }catch{
-            
-        }
-      };
+          })(),
+          {
+            pending: "Updating Profile...",
+            success: {
+              render: "Update Profile successfully!",
+              icon: <img src='/src/imgs/life-cycle.gif' width='25px' alt='profile' />,
+              },
+            error: {
+              render: ({ data }) => `${data}`,
+            },
+          }
+    );
+
+  };
       
 
-    const handleKeyDown = (event) => {
+  const handleKeyDown = (event) => {
         if (event.key === 'Enter' && twoFactorEnabled) {
             handleEmailSubmit();
             console.log(`QrCode: ${qrCode}`);
         }
-    };
+  };
+    
 
-    const handleKeyDown2 = (event) => {
-        if (event.key === 'Enter' && twoFactorEnabled) {
-            handleSmsCodeSubmit();
-            console.log(`QrCode: ${qrCode}`);
-        }
-    };
+  const handleKeyDown2 = (event) => {
+      if (event.key === 'Enter' && twoFactorEnabled) {
+          handleSmsCodeSubmit();
+          console.log(`QrCode: ${qrCode}`);
+      }
+  };
 
+  console.log('client.twoEnabled : ', client.twoEnabled)
 
     return (
     <div className="settings-card">
         <div className="image-section">
             <div className="image-frame">
-                <img src={avatar} alt="User Image" />
+                <img src={avatar} alt="User Image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                 <div className="change-image-container" onClick={handleImageChange}>
                     <img src="/src/imgs/change-img.png" alt="Image Icon" />
                 </div>
@@ -174,23 +234,26 @@ const SettingsComponent: React.FC = () => {
         <div className="two-fact-section">
             <div className="two-fa-switch">
                 <input type="checkbox" id="check"  autoComplete='off'
-                    onChange={ informTwoFactorState }
+                    checked={twoFactorEnabled}
+                    onChange={() => setTwoFactorEnabled(!twoFactorEnabled) }
                 />
                 <label htmlFor="check" className="switch"></label>
                 <span>2FA</span>
             </div>
         <div className="container-mail">
             <input type="text" id="mail-for-qr" placeholder="Enter mail for QR code"  autoComplete='off'
-                     value={email} onKeyDown={handleKeyDown} onChange={(e) => setEmail(e.target.value)} />
+                     value={email} onKeyDown={handleKeyDown} onChange={(e) => setEmail(e.target.value)}
+                     disabled={twoFactorEnabled ? twoFactorEnabled : !twoFactorEnabled} />
         </div>
         <div className="container-qrcode">
             <div className="sms-input">
                 <input type="text" id="sms-code" placeholder="Enter code"  autoComplete='off'
-                    value={smsCode} onKeyDown={handleKeyDown2} onChange={ (e) => setSmsCode(e.target.value) } 
+                    value={smsCode} onKeyDown={handleKeyDown2} onChange={ (e) => setSmsCode(e.target.value)}
+                      disabled={twoFactorEnabled ? twoFactorEnabled : !twoFactorEnabled} 
                 />
             </div>
             <div className="qr-space">
-                {twoFactorEnabled && (<img src={qrCode} alt="QR Code" />)}
+                {twoFactorEnabled && qrCode && (<img src={qrCode} alt="QR Code" />)}
             </div>
         </div>
             <button className="submit-data" onClick={handleSubmit}>

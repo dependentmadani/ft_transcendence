@@ -5,6 +5,7 @@ import Friends from '../search/searchFriend';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SettingsComponent from './settings'
+import { useSetting } from '@/context/SettingContext';
 
 
 
@@ -134,7 +135,7 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={client.avatar} alt="user-img" />                    
+                    <img src={client.avatar} alt="user-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}  />                    
                 </div>
                 <div className='profile-name-rank'>
                     <div className='profile-name'> {client.username} </div>
@@ -173,16 +174,16 @@ function Statistic() {
 function MyProfile () {
 
     console.log('MyProfile ')
-    const [listFriend, setListFriend] = useState();
-    const [popSettings, setPopSettings] = useState(false);
+    const {client, updateClient} = useClient();
+    // const [listFriend, setListFriend] = useState();
+    const [popSettings, setPopSettings] = useSetting();
 
     useEffect(() => {
     	async function fetchData () {
 			try {
-				const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/`, { withCredentials: true });
-				setListFriend(res.data);
-				console.log('fetchDAta : ', res.data.friends)
-			} catch (error) {
+				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true } );
+                await updateClient({ ...client, ...response.data, signedIn: true });
+            } catch (error) {
 				console.error('Error fetching data: ', error);
 			}
 		}
@@ -203,21 +204,20 @@ function MyProfile () {
     }, [popSettings]);
 
 
-    console.log('-----------------------------------------')
+    console.log('-----------------------------------------', popSettings)
     return (
         <>
             <div className='profile'>
-                <img id='settings'  src="/src/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
+                <img id='settings'  src="/src/imgs/svg/setting.svg" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
                 <div className='profile-col-1'>
                     <ProfileInfo />
-                    <Friends friendData={listFriend} />
+                    <Friends />
                 </div>
                 <div className='profile-col-2'>
                     <History />
                     <Statistic />
                 </div>
                 <SettingsComponent />
-                {/* <div className='popup'></div> */}
             </div>
             <div className='blur'  style={!popSettings ? { display: 'none' } : { display: 'block' }} ></div>
         </>

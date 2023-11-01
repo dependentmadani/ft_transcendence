@@ -356,6 +356,7 @@ export class UsersService {
     filePath: string,
   ) {
     try {
+      // console.log('+++++++++++++++++++++++++++++++++++++++++')
       const user = await this.prisma.users.update(
         {
           where: {
@@ -379,6 +380,7 @@ export class UsersService {
     userId: number,
   ): Promise<string> {
     try {
+      // console.log('******************************************')
       const user =
         await this.prisma.users.findUnique({
           where: {

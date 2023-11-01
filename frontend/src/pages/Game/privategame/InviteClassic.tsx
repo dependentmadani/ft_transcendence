@@ -93,7 +93,7 @@ useEffect(() => {
         <img className= "vs" src="/src/assets/img/vs.png"/>
     </div>
     <div id="profile1"> 
-            <img className='profile1Img' src={user1?.avatar} />
+            <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
             <strong className='profile1id'>{user1?.username} </strong>
           <div className="BallScore1">
           {leftballs.map((color, index) => (
@@ -103,7 +103,7 @@ useEffect(() => {
     </div>
     <div id="profile2">
     
-          <img className='profile2Img' src={user2?.avatar}></img>
+          <img className='profile2Img' src={user2?.avatar}> onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} </img>
           <strong className='profile2id'>{user2?.username}</strong>
 
           <div className="BallScore2">

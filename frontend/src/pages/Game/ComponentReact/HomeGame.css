@@ -60,7 +60,7 @@ body
 .style-mode > span {
   font-weight: 600;
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(10px, 4vw, 55px);
+  font-size: clamp(10px, 3.3vw, 55px);
   color: aqua;
   margin-top: 10%;
   padding-left: 2%;
@@ -68,6 +68,12 @@ body
   /* box-shadow: 0 0 10px 5px rgba(39, 44, 46, 0.5); */
 }
 
+@media (orientation: portrait) {
+  .style-mode > span {
+    font-size: clamp(10px, 4vh, 55px);
+
+  }
+}
 
 .style-mode:hover    {
   scale: 1.02;

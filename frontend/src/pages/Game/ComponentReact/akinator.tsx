@@ -116,7 +116,7 @@ export default function Akinator()
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src='/src/imgs/example.jpg'  /*src={user1?.avatar}*/ />
+                <img className='profile1Img' src='/src/imgs/example.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}  /*src={user1?.avatar}*/ />
                   {/* <span className='profile1id'>{user1?.username}  </span> */}
                 <div className='profile1id'> Hamidjhibjsdhvidbfvbjkbdfvjbsdbfvbjfbvb </div>
                 <div className="BallScore1">
@@ -132,7 +132,7 @@ export default function Akinator()
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={Userdata?.avatar}></img>
+              <img className='profile2Img' src={Userdata?.avatar}> onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} </img>
               {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">

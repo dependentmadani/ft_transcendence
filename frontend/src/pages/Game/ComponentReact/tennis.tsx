@@ -149,7 +149,7 @@ useEffect(() => {
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src={user1?.avatar}  /*src={user1?.avatar}*/ />
+                <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
                   {/* <span className='profile1id'>{user1?.username}  </span> */}
                 <div className='profile1id' > {user1?.username}</div>
                 <div className="BallScore1">
@@ -165,7 +165,7 @@ useEffect(() => {
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={user2?.avatar}></img>
+              <img className='profile2Img' src={user2?.avatar}> onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} </img>
               {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">

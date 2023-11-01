@@ -44,7 +44,7 @@ export const Message = ({ currentMessage }: any) => {
   return (
     <div className={ `message ${currentMessage?.MessageSenId === owner?.id && 'owner'}` } >
         <div className="messageInfo">
-            <img className='msg-img' src={ sender?.avatar } alt="user_avatar" />
+            <img className='msg-img' src={ sender?.avatar } alt="user_avatar" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
             <span className="msg-date">{ new Date(currentMessage?.createdAt).getHours() } : { new Date(currentMessage?.createdAt).getMinutes() }</span>
         </div>
         <div className="messageContent">

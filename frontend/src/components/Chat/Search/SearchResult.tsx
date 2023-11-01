@@ -90,7 +90,7 @@ export const SearchResult = ({ onClose, searchResults, onValueChange }: any) => 
             { searchResults.length ? 
                 searchResults.map((user: any, index: number) => (
                 <div key={index} className="searchResInfo" onClick={() => createChat(user)} >
-                    <img src={ user.avatar } className='result-img' alt="user_avatar" />
+                    <img src={ user.avatar } className='result-img' alt="user_avatar" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                     <span>{ user.username }</span>
                 </div>
             )) : 'No Results :('

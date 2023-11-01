@@ -54,9 +54,8 @@ function Profile() {
   return (
     <>
       {profile === 'Me' && <MyProfile />}
-      {profile === 'NotFriend' && <FriendProfile userData={data} />}
-      {/* {data && profile === 'Friend' && <FriendProfile userData={data} />}
-      {data && profile === 'NotFriend' && <NotFriendProfile userData={data} />} */}
+      {profile === 'Friend' && <FriendProfile userData={data} />}
+      {profile === 'NotFriend' && <NotFriendProfile userData={data} />}
     </>
   );
 }

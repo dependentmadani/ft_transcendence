@@ -17,7 +17,7 @@ function GetRouteElement(props:any) {
     const { client } = useClient();
 
     const defaultList = ['/', '/home', '/about', '/team'];
-    const list = ['/login', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', 'invite-classic', 'invite-tennis']
+    const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', 'invite-classic', 'invite-tennis']
     console.log(props.tag)
     // console.log(client.signedIn)
     // console.log(defaultList.includes(props.tag), list.includes(props.tag))
@@ -27,6 +27,8 @@ function GetRouteElement(props:any) {
             return <DefaultSection section={props.tag} />;
         else if (!client.signedIn && list.includes(props.tag))
             return <Sign tag='login' />;
+        else if (client.signedIn && props.tag === '/login_2fa')
+            return <Sign tag='2fa' />;
         else if (client.signedIn && !client.signedUp)
             return <Sign tag='signup' />;
         else
@@ -43,7 +45,8 @@ export const router = createBrowserRouter([
             { path: '/home', element: < GetRouteElement tag='/home' /> },
             { path: '/about', element: < GetRouteElement tag='/about' /> },
             { path: '/team', element: < GetRouteElement tag='/team' /> },
-            { path: '/login', element: < GetRouteElement tag='/login' /> },
+            { path: '/login', element: < GetRouteElement tag='/login' /> }, 
+            { path: '/login_2fa', element: < GetRouteElement tag='/login_2fa' /> }, 
             { path: '/signup', element: < GetRouteElement tag='/signup' /> },
             { path: '/profile', element: < GetRouteElement tag='/profile' /> },
             { path: '/profile/:username', element: < GetRouteElement tag='/profile/:username' /> },

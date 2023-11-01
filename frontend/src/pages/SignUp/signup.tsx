@@ -92,9 +92,15 @@ function SetInfo() {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      console.log('hlwa')
+      // console.log(`hlwa {${event}} `)
       event.preventDefault();
-      handleSubmit();
+      if (username !== '')
+        handleSubmit();
+      else {
+        toast.warn("Empty Username !", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      }
     }
   };
   // ムハンマド

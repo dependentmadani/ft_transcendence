@@ -62,7 +62,7 @@ export const ChatInfos = ({ chatData }: any) => {
         <div className="contactInfo">
                 <div className="contactInfos">
                     <div className="contactAvatar">
-                        <img className="contact-avatar" src={ currentUser?.receiver?.avatar } alt="user_avatar" />
+                        <img className="contact-avatar" src={ currentUser?.receiver?.avatar } alt="user_avatar" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                     </div>
                     <span>{ currentUser?.receiver?.username }</span>
                     <div className="contactPlay1">

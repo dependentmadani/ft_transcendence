@@ -7,14 +7,20 @@ import '@/app.css'
 import { ProfileProvider } from './context/ProfileContext'
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { GameProvider } from './context/GameContext'
+import { SettingProvider } from './context/SettingContext'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ClientProvider>
       <ProfileProvider>
-        <RouterProvider router={router}/>
-        <ToastContainer />
+        <GameProvider>
+          <SettingProvider>
+            <RouterProvider router={router}/>
+            <ToastContainer />
+          </SettingProvider>
+        </GameProvider>
       </ProfileProvider>
     </ClientProvider>
   </React.StrictMode>,

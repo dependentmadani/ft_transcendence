@@ -110,7 +110,7 @@ function NavBarOne() {
                     {!client.signedIn ?
                         <div className='login' onClick={()=> {navigate('/login')}} > Get Started </div> :
                         <button id='drop1' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
-                            <img className='user-img' src={client.avatar} alt="user-img"  />
+                            <img className='user-img' src={client.avatar} alt="user-img"  onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                         </button>
                     }
                     {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>

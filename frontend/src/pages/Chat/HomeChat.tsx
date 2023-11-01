@@ -74,7 +74,7 @@ export const HomeChat = () => {
               <div className="chat-nav-header">
                 <div className="chat-nav-header-leftSide">
                   <a className="chat-nav-header-items" href="/chat" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
-                  <img className="chat-nav-header-avatar" src={chatData?._chat?.chat.type === 'chat' ? chatData?._chat?.chat.receiver.avatar : chatData?._chat?.chat?.roomAvatar } alt="user_avatar" />
+                  <img className="chat-nav-header-avatar" src={chatData?._chat?.chat.type === 'chat' ? chatData?._chat?.chat.receiver.avatar : chatData?._chat?.chat?.roomAvatar } onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} alt="user_avatar" />
                 </div>
                 <div className="chat-nav-header-rightSide">
                   <a className="chat-nav-header-items" onClick={handleDotsClick}><FontAwesomeIcon icon={faEllipsisV} /></a>

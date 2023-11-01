@@ -263,7 +263,7 @@ export class AuthController {
     );
   }
 
-  @Post('2fa/disable')
+  @Get('2fa/disable')
   @HttpCode(HttpStatus.OK)
   async disable2fa(@Req() req: Request) {
     const user: Users =

@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 import axios from "axios";
 import { useClient } from '@/context/clientContext';
 import { ToastContainer, toast } from 'react-toastify';
-
+import Login2FA from '@/pages/Login/login_2fa'
 
 
 
@@ -26,27 +26,30 @@ function  Sign(props:any) {
 
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
 
-        console.log(response.data)
+        console.log('response data is:',response.data)
         await updateClient({ ...client, ...response.data, signedIn: true });
         
-        if (response.data.signedUp) {
+        if (response.data.signedUp && !response.data.twoEnabled) 
           navigate('/');
-        }
+        else if (props.tag !== '2fa' && response.data.twoEnabled)
+          navigate('/login_2fa')
+
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     }
 
-    // Call the fetchData function within the useEffect
-    // if (props.tag === 'login')
       fetchData();
   }, []);
     
   const handelClick = () => {
-    // console.log
-    if (client.signedUp) 
+    if ((client.signedUp && !client.twoEnabled) || !client.signedIn) 
       navigate('/');
-
+    else if (client.twoEnabled) {
+      toast.info("Submit Code !", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    }
     else if (!client.username) {
       toast.warn("Username Used !", {
         position: toast.POSITION.TOP_LEFT
@@ -60,6 +63,8 @@ function  Sign(props:any) {
 
   }
 
+  console.log('======= : ', props.tag)
+
     return (
       <>
         <div className="row">
@@ -67,7 +72,9 @@ function  Sign(props:any) {
             <img className="logo-login-img" src="/src/imgs/mskota.png" alt="Mskota-Logo" onClick={handelClick} />
           </div>
           <div className='body-login'>
-              {(props.tag === 'login') ? <Login /> : <SignUp />}
+              {props.tag === 'login' && <Login />}
+              {props.tag === 'signup' && <SignUp />}
+              {props.tag === '2fa' && <Login2FA />}
             <div className='col2'>
               <img src="/src/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>

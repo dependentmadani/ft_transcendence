@@ -98,7 +98,7 @@ function NavBarTwo (props:any) {
                         <li key="home"> <Link to='/' > Home </Link> </li>
                         <li key="profile1"> <Link to='/profile' > Profile </Link> </li>
                         <li key="chat"> <Link to='/chat'> Chat </Link> </li>
-                        <li key="play"> <Link to='/play' > Play </Link> </li>
+                        <li key="play"> <Link to='/game' > Game </Link> </li>
                         <li key="leaderboard"> <Link to='/leaderboard' > Leaderboard </Link> </li>
                         <li key="logout" id="logout" onClick={handleLogout} >  LogOut </li>
                     </>)
@@ -169,7 +169,7 @@ function NavBarTwo (props:any) {
                         <ListNotification />
                     </div>
                     <button id='drop2'  > 
-                        <img className='user-img2' src={client.avatar} alt="user-img" ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
+                        <img className='user-img2' src={client.avatar} alt="user-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
                     </button>
                 </div>
                 <ul className="drop-menu2" ref={dropRef} >
