@@ -16,7 +16,7 @@ export const Search = ({ onValueChange, chatData }: any) => {
     if (username.trim() !== '') {
       const getResults = async () => {
         try {
-          const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, {withCredentials: true})
+          const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, {withCredentials: true})
           setSearchResults(results.data)
         }
         catch {
@@ -54,7 +54,7 @@ export const Search = ({ onValueChange, chatData }: any) => {
           <CreateRoom chatData={ chatData } />
         </div>
       </div>
-      { showForm && searchResults && <SearchResult onClose={closeForm} onValueChange={onValueChange} searchResults={searchResults} />}
+      { showForm && searchResults && <SearchResult onClose={closeForm} onValueChange={onValueChange} searchResults={searchResults}  chatData={chatData} />}
     </div>
   )
 }

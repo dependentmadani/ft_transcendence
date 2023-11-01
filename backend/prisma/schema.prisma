@@ -103,7 +103,12 @@ model Chat {
   chatId   Int @id @default(autoincrement())
   users    Users[]  @relation("chats")
   chatUsers    Int[]
-  msgChatId     Message[]
+  msgChatId     Message[] @relation("listMessages")
+  // latestMessage Message?  @relation(fields: [latestMsg], references: [messageId])
+  // latestMsg     Int?
+
+  latestMessageContent String?
+  latestMessageDate DateTime?
 }
 
 model Message {
@@ -114,11 +119,12 @@ model Message {
   MessageSenId       Int
   // receiverId  Users @relation("Messagereccontact", fields: [MessageRecId], references: [id])
   // MessageRecId       Int
-  messageChatId  Chat? @relation(fields: [msgChatId], references: [chatId])
+  messageChatId  Chat? @relation("listMessages",fields: [msgChatId], references: [chatId])
   msgChatId       Int?
   messageRoomId  Room? @relation(fields: [msgRoomId], references: [id])
   msgRoomId       Int?
   type            String
+  // latestMessage   Chat[]
 }
 
 model Room {
@@ -130,6 +136,9 @@ model Room {
   roomType  String
   roomPass  String?
   msgRoomId     Message[]
+
+  latestMessageContent String?
+  latestMessageDate DateTime?
 }
 
 model RoomUsers {
@@ -138,6 +147,7 @@ model RoomUsers {
   roomId Int
   user   Users @relation(fields: [userId], references: [id])
   userId Int
+  userUsername String
   role   String
   allowed Boolean
 }

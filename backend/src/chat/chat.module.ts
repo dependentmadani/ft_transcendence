@@ -9,10 +9,13 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { webSocketJwtStrategy } from 'src/strategy';
+import { RoomService } from './room/room.service';
+import { UsersService } from 'src/users/users.service';
+import { RoomUsersService } from './room/room-users/room-users.service';
 
 @Module({
     imports: [PrismaModule, JwtModule.register({})],
     controllers: [ChatController],
-    providers: [ChatService, ChatGateway],
+    providers: [ChatService, ChatGateway, RoomUsersService, RoomService, UsersService, AuthService, PrismaService],
 })
 export class ChatModule {}

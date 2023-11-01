@@ -6,7 +6,7 @@ import * as cookie from 'cookie';
 import * as jwt from 'jsonwebtoken';
 import { UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
+// import { JwtService } from '@nestjs/jwt';
 
 @WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
 export class ChatGateway {
@@ -15,69 +15,9 @@ export class ChatGateway {
 
   socketMap: Map<number, Socket[]>;
 
-  constructor( private prismaService: PrismaService, private jwtService: JwtService ) {}
-
-  // async handleConnection(client: Socket) {
-  //   try {
-  //     // const token: any = client.handshake.query.token;
-  //     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWVsLWFzcmlAc3R1ZGVudC4xMzM3Lm1hIiwiaWF0IjoxNjk4MjUxMDMxLCJleHAiOjE2OTgyNTE5MzF9._sNaE3xMRVTCn-Xls9E4dj07f8CtncUUcpqsvHAYhzo';
-  //     if (!token) {
-  //       console.log('Aloooo', token)
-  //       client.disconnect(true);
-  //       console.log('Unauthorized connection: Missing token');
-  //       return ;
-  //     }
-      
-  //     const payload = await this.jwtService.verify(token);
-  //     if (!payload) {
-  //       client.disconnect(true);
-  //       return ;
-  //     }
-  //     const user = await this.prismaService.users.findFirst({
-  //       where: {
-  //         id: payload.id,
-  //       },
-  //     });
-  //     if (!this.socketMap.has(user.id)) {
-  //       this.socketMap.set(user.id, [client]);
-  //     }
-  //     else {
-  //       this.socketMap.get(user.id).push(client);
-  //     }
-  //     await this.prismaService.users.update({
-  //       where: {
-  //         id: user.id,
-  //       },
-  //       data: {
-  //         userStatus: "ONLINE",
-  //       },
-  //     });
-  //   }
-  //   catch ( e ) {
-  //     throw new UnauthorizedException('Something wrong in handling connection!');
-  //   }
-  // }
-
-  // private readonly onlineUsers: Map<number, Socket> = new Map<number, Socket>();
+  constructor( private prismaService: PrismaService ) {}
 
   private userSocketMap = new Map<number, string>();
-
-  // private readonly connectedUsers: Map<number, Socket> = new Map<number, Socket>();
-
-  // private getUserIdSomehow(client: Socket): string | null {
-  //   const token: any = client.handshake.query.token;
-  //   if (!token) {
-  //     return null;
-  //   }
-  
-  //   try {
-  //     const decodedToken: any = jwt.verify(token, 'tzadina b wahed l9owa');
-  //     return decodedToken.userId;
-  //   } catch (error) {
-  //     console.error('Error verifying token:', error);
-  //     return null;
-  //   }
-  // }
 
   handleConnection(client: Socket): void {
 
@@ -115,9 +55,13 @@ export class ChatGateway {
   handleMessage(@MessageBody() data: any): void {
     const { sender, rec, message } = data;
     // Send the message to the recipient's socket
-    console.log('Yooo', rec)
-    this.server.to(this.userSocketMap[sender]).emit('sendMessage', message, data.rec);
-    this.server.to(this.userSocketMap[rec]).emit('sendMessage', message, data.rec);
+    console.log('Yooo', sender, rec, message)
+    if (message.type === 'Chat') {
+      this.server.to(this.userSocketMap[sender]).emit('receiveMessage', message);
+      this.server.to(this.userSocketMap[rec]).emit('receiveMessage', message);
+    }
+    else if (message.type === 'Room')
+      this.server.emit('receiveMessage', message);
   }
 
   @SubscribeMessage('sortContacts')
@@ -132,7 +76,7 @@ export class ChatGateway {
   @SubscribeMessage('roomMessage')
   handleRoomMessage(@MessageBody() data: any): void {
     const { message } = data;
-    this.server.emit('sendRoomMessage', message);
+    this.server.emit('receiveMessage', message);
   }
 
   @SubscribeMessage('roomMembers')
@@ -169,13 +113,23 @@ export class ChatGateway {
   // }
 
 
-  // handleDisconnect(client: Socket): void {
-  //   const disconnectedUserId = [...this.onlineUsers.entries()]
-  //     .find(([key, value]) => value === client)?.[0];
+  handleDisconnect(client: Socket): void {
+    const userIdToRemove = [...this.userSocketMap.entries()].find(([_, socketId]) => socketId === client.id)?.[0];
 
-  //   if (disconnectedUserId) {
-  //     this.onlineUsers.delete(disconnectedUserId);
-  //     console.log(`User ${disconnectedUserId} disconnected`);
-  //   }
+    if (userIdToRemove) {
+      this.userSocketMap.delete(userIdToRemove);
+      console.log(`User with ID ${userIdToRemove} disconnected`);
+      console.log('Updated map of users:', this.userSocketMap);
+    }
+  }
+
+  // @SubscribeMessage('notification')
+  // handleNotification(@MessageBody() data: any): void {
+  //   const { notif } = data;
+  //   // Send the message to the recipient's socket
+  //   console.log('Yooo', notif)
+  //   // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
+  //   this.server.to(this.userSocketMap[notif.receiverId]).emit('receiveNotification', notif);
   // }
+
 }

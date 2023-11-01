@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { RoomUsers } from '@prisma/client'
+import { Chat, RoomUsers, Users } from '@prisma/client'
 import { allow } from 'joi';
+import { ChatService } from 'src/chat/chat.service';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class RoomUsersService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService, private chatService: ChatService, private userService: UsersService) {}
     
     async getAllRoomUsers() {
         try {
@@ -30,7 +32,15 @@ export class RoomUsersService {
     async getUserRooms(userId: number) {
         try {
             return this.prisma.roomUsers.findMany({
-                where: { userId: userId }
+                where: {
+                    AND: [
+                        { userId: userId },
+                        { NOT: [
+                            {role: 'BANNED' },
+                            {role: 'MUTED' },
+                        ]}
+                    ],
+                }
             })
         }
         catch (err) {
@@ -54,6 +64,32 @@ export class RoomUsersService {
         }
     }
 
+    async isRoomAdmins(roomId: number, userId: number): Promise<Boolean> {
+        try {
+            const admin = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                        { OR: [
+                            { role: 'ADMIN' },
+                            { role: 'OWNER' },
+                        ] }
+                    ]
+                }
+            })
+
+            console.log(admin)
+            if (admin.length !== 0)
+                return true
+            return false
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+            return false
+        }
+    }
+
     async getRoomOwner(roomId: number) {
         try {
             return this.prisma.roomUsers.findMany({
@@ -70,7 +106,7 @@ export class RoomUsersService {
         }
     }
 
-    async getRoomMemberRole(roomId: number, userId: number) {
+    async getRoomMemberRole(roomId: number, userId: number): Promise<string> {
         try {
             const roomUser = await this.prisma.roomUsers.findMany({
                 where: {
@@ -80,14 +116,45 @@ export class RoomUsersService {
                     ]
                 }
             })
-            return roomUser
+            return roomUser[0].role
         }
         catch (err) {
             console.error(`Couldn't find users in this room: ${err}`)
         }
     }
 
-    async createRoomUsers(roomId: number, userId: number, role: string, allowed: boolean) {
+    async isRoomMemberAllowed(roomId: number, userId: number): Promise<boolean> {
+        try {
+            const roomUser = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                    ]
+                }
+            })
+            return roomUser[0].allowed
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
+
+    async getOneContact(me: number, userId: number, recId: number) {
+
+        const chat: Chat = await this.chatService.getCommunChat(userId, recId)
+
+        if (chat) {
+            const receiver = chat.chatUsers[0] === me ? chat.chatUsers[1] : chat.chatUsers[0];
+            const _receiver: Users = await this.userService.findUserById(receiver);
+            const contact =  { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
+            
+            return contact
+        }
+    }
+
+    async createRoomUsers(roomId: number, userId: number, userUsername: string, role: string, allowed: boolean) {
         // console.log('Too')
         try {
             const roomUser = await this.prisma.roomUsers.findMany({
@@ -105,6 +172,7 @@ export class RoomUsersService {
                     data: {
                         roomId: roomId,
                         userId: userId,
+                        userUsername: userUsername,
                         role: role,
                         allowed: allowed,
                     }
@@ -206,6 +274,7 @@ export class RoomUsersService {
             }
         })
         // It works but at what cost
+        console.log('HAIYA', roomUsers, roomId, userId)
         if (roomUsers) {
             return await this.prisma.roomUsers.deleteMany({
                 where: {

@@ -19,7 +19,7 @@ export const RoomFormInvite = ({ chatData }: any) => {
     const getResults = async () => {
         if (username) {
             try {
-                const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, {withCredentials: true})
+                const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, {withCredentials: true})
                 setSearchResults(results.data)
             }
             catch (err) {

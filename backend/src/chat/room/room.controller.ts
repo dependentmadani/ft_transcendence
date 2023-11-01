@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Res, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { Room, Users } from '@prisma/client'
 import { Public } from "src/decorator";
@@ -83,6 +83,11 @@ export class RoomController {
                     @Body('roomType') roomType: string,
                     @Body('roomPass') roomPass: string) {
         return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType, roomPass)
+    }
+
+    @Put('/last-message/:id')
+    async updateLastMessage(@Param('id', ParseIntPipe) id: number, @Body('content') content: string) {
+        return await this.roomService.updateLastMessage(id, content)
     }
 
     @Delete()

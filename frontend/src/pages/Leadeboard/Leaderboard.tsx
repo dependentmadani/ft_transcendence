@@ -32,6 +32,37 @@ function Leaderboard() {
         }
     };
 
+    const userLeaderboard  = ( ) => {
+        return (
+            leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map(user => {
+                return (
+                    <div className="player-stats" key={user.id}>
+                        <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
+                            <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                        </div>
+                        <div className="status">
+                            <span>{user.username}</span>
+                        </div>
+                        <div className="match-played">
+                            <span>Match played: {user.gamesPlayed}</span>
+                        </div>
+                        <div className="wins">
+                            <span>Wins: {user.wins}</span>
+                        </div>
+                        <div className="ratio">
+                            <span>Ratio: {user.wins && user.gamesPlayed ? `${(100 * user.wins / user.gamesPlayed).toFixed(2)}%` : 'N/A'}</span>
+                        </div>
+                        <div className="leaderboard-rank">
+                            <span>{user.rank}#</span>
+                        </div>
+                    </div> 
+                )
+            }
+        ))
+    } 
+
+    console.log('----- : ', userLeaderboard())
+
     return (
         <div className="leaderboard-section">
             <div className="leaderboard-heading">
@@ -44,33 +75,8 @@ function Leaderboard() {
                 />
             </div>
             {loading ? (
-                <div>Loading...</div>
-            ) : (
-                leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map(user => {
-                    return (
-                        <div className="player-stats" key={user.id}>
-                            <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
-                                <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
-                            </div>
-                            <div className="status">
-                                <span>{user.username}</span>
-                            </div>
-                            <div className="match-played">
-                                <span>Match played: {user.gamesPlayed}</span>
-                            </div>
-                            <div className="wins">
-                                <span>Wins: {user.wins}</span>
-                            </div>
-                            <div className="ratio">
-                                <span>Ratio: {user.wins && user.gamesPlayed ? `${(100 * user.wins / user.gamesPlayed).toFixed(2)}%` : 'N/A'}</span>
-                            </div>
-                            <div className="leaderboard-rank">
-                                <span>{user.rank}#</span>
-                            </div>
-                        </div> 
-                    );
-                })
-            )}
+                <img id='Loding' src='/src/imgs/svg/eat.svg' />
+            ) : userLeaderboard().length ? userLeaderboard() : <span id='no-users'> No Users .... </span>} 
         </div>
     );
 }

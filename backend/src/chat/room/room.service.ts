@@ -88,6 +88,23 @@ export class RoomService {
         }
     }
 
+    async updateLastMessage(id: number, content: string) {
+        try {
+            return await this.prisma.room.update({
+                where: {
+                    id: id,
+                },
+                data: {
+                    latestMessageContent: content,
+                    latestMessageDate: new Date(),
+                }
+            })
+        }
+        catch {
+            throw new UnauthorizedException("Couldn't update chat")
+        }
+    }
+
     async deleteAllRooms() {
         if (await this.prisma.room.deleteMany())
             return `All rooms deleted successufully!`
