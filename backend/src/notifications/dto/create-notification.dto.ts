@@ -10,6 +10,9 @@ export class NotificationDto {
 
     @IsNotEmpty()
     type: NotificationType;
+
+    @IsBoolean()
+    read: boolean;
 }
 
 export class NotificationBody {
@@ -24,4 +27,15 @@ export class NotificationBody {
 
     @IsString()
     title: string;
+}
+
+export class FriendDto {
+    @IsNumber()
+    senderId: number;
+
+    @IsNumber()
+    receiverId: number;
+
+    @IsNumber()
+    notifId: number;
 }

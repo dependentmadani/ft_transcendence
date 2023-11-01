@@ -15,9 +15,4 @@ export class GameController {
     async updateGame(@Body('game_nums') body: boolean ,@Req() req: Request) {
         return this.game.updateInfoGame(req.user['sub'], body);
     }
-
-    @Get('leaderboard')
-    async leaderboard(@Req() req: Request) {
-        return this.game.leaderboard();
-    }
 }

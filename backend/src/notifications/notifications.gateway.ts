@@ -1,6 +1,6 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket } from '@nestjs/websockets';
 import { NotificationsService } from './notifications.service';
-import { NotificationDto, NotificationBody } from './dto/create-notification.dto';
+import { NotificationDto, NotificationBody, FriendDto } from './dto/create-notification.dto';
 import { JwtPayload } from 'src/auth/types';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
@@ -14,102 +14,106 @@ export interface socketMetaPayload {
   socketId: string;
 }
 
-@WebSocketGateway({namespace: "notification",cors: {
-  origin: '*'
-}})
-export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+// @WebSocketGateway({namespace: "notification",cors: {
+//   origin: 'localhost:8000*'
+// }})
+
+
+@WebSocketGateway({ namespace: 'notification', cors: { origin: "http://localhost:5173" } })
+export class NotificationsGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
   socketMap: Map<number, Socket[]>;
 
+  private userSocketMap = new Map<number, string>();
+
   constructor( private prismaService: PrismaService, 
-    private jwtService: JwtService,
-    private authService: AuthService,
+    // private jwtService: JwtService,
     private readonly notificationsService: NotificationsService) {
-      this.socketMap = new Map<number, Socket[] >();
+      // this.socketMap = new Map<number, Socket[] >();
     }
 
-  async handleConnection(client: Socket) {
-    try {
-      const token = client.handshake.headers.authorization?.split(' ')[1];
-      if (!token) {
-        client.disconnect(true);
-        return ;
-      }
-      
-      const payload = await this.authService.verifyToken(token);
-      if (!payload) {
-        client.disconnect(true);
-        return ;
-      }
-      const user = await this.prismaService.users.findFirst({
-        where: {
-          id: payload['sub'],
-        },
-      });
-      if (!this.socketMap.has(user.id)) {
-        this.socketMap.set(user.id, [client]);
-      }
-      else {
-        this.socketMap.get(user.id).push(client);
-      }
-      await this.prismaService.users.update({
-        where: {
-          id: user.id,
-        },
-        data: {
-          userStatus: "ONLINE",
-        },
-      });
-      console.log('all passed successfully')
-    }
-    catch ( e ) {
-      console.log(e);
-      console.log('Something wrong in handling connection!');
-    }
-  }
+  // async handleConnection(client: Socket) {
+  //   try {
+  //     const token = client.handshake.headers.authorization?.split(' ')[1];
+  //     if (!token) {
+  //       client.disconnect(true);
+  //       return ;
+  //     }
 
-  async handleDisconnect(client: Socket) {
-    const token = client.handshake.headers.authorization?.split(' ')[1];
-    const payload = await this.jwtService.verify(token);
-    const user = await this.prismaService.users.update({
-      where: {
-        id: payload.id,
-      },
-      data: {
-        userStatus: 'OFFLINE',
-      }
-    })
-    this.socketMap.delete(payload.id);
-  }
+  //     const payload = await this.jwtService.verify(token);
+  //     if (!payload) {
+  //       client.disconnect(true);
+  //       return ;
+  //     }
+  //     const user = await this.prismaService.users.findFirst({
+  //       where: {
+  //         id: payload.id,
+  //       },
+  //     });
+  //     if (!this.socketMap.has(user.id)) {
+  //       this.socketMap.set(user.id, [client]);
+  //     }
+  //     else {
+  //       this.socketMap.get(user.id).push(client);
+  //     }
+  //     await this.prismaService.users.update({
+  //       where: {
+  //         id: user.id,
+  //       },
+  //       data: {
+  //         userStatus: "ONLINE",
+  //       },
+  //     });
+  //   }
+  //   catch ( e ) {
+  //     throw new UnauthorizedException('Something wrong in handling connection!');
+  //   }
+  // }
+
+  // async handleDisconnect(client: Socket) {
+  //   const token = client.handshake.headers.authorization?.split(' ')[1];
+  //   const payload = await this.jwtService.verify(token);
+  //   const user = await this.prismaService.users.update({
+  //     where: {
+  //       id: payload.id,
+  //     },
+  //     data: {
+  //       userStatus: 'OFFLINE',
+  //     }
+  //   })
+  //   this.socketMap.delete(payload.id);
+  // }
+
+  // async emitNotification(userId: number, notification: Partial<Notifications>) {
+    
+  // }
 
   @UseGuards(WsGuard)
   @SubscribeMessage('sendNotification')
   async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
         @Req() req: Request) {
-          
+      // console.log('socketMap:', this.socketMap);
+      // console.log('type of client id:', typeof(client.id));
       if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
         throw new UnauthorizedException('something wrong with body');
       }
-      console.log('socketMap');
       const notif = await this.notificationsService.create(createNotificationDto, req.user['sub'], client.id);
-      const len = this.socketMap.get(notif.receiverId) == undefined ? 0 : this.socketMap.get(notif.receiverId).length;
-      for (let i = 0; i < len; ++i) {
+      for (let i = 0; i < this.socketMap.get(req.user['sub']).length; ++i) {
         this.socketMap.get(notif.receiverId)[i].emit('receiveNotification',notif);
       }
   }
 
   @UseGuards(WsGuard)
   @SubscribeMessage('acceptNotification')
-  async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
-    let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
+  async acceptFriend(@MessageBody() notifBody: FriendDto, @Req() req: Request) {
+    let notif = await this.notificationsService.acceptFriend(notifBody.receiverId, notifBody.senderId, notifBody.notifId);
     
-    const len = this.socketMap.get(notif.receiverId) == undefined ? 0 : this.socketMap.get(notif.receiverId).length;
-    for (let i = 0; i < len; ++i) {
+    for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
       this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
         receiver: notif.receiverUser.username,
-        title: notif.title,
+        // title: notif.title,
         status: 'accepted',
       });
     }
@@ -117,7 +121,30 @@ export class NotificationsGateway implements OnGatewayConnection, OnGatewayDisco
 
   @UseGuards(WsGuard)
   @SubscribeMessage('refuseNotification')
-  async refuseFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
+  async refuseFriend(@MessageBody() notifBody: FriendDto, @Req() req: Request) {
     let notif = await this.notificationsService.refureFriend(notifBody, req.user['sub']);
+  }
+
+  ////////////////////////////////////
+  handleConnection(client: Socket): void {
+
+    client.on('someEvent', (userId: number) => {
+      console.log('Received data from client:', userId);
+
+      // Send a message back to the client
+      // client.emit('messageFromServer', 'Hello from the server!');
+      this.userSocketMap[userId] = client.id;
+      console.log('notification map of users', this.userSocketMap);
+    });
+    // const userId = this.getUserIdSomehow(client);
+  }
+
+  @SubscribeMessage('notification')
+  handleNotification(@MessageBody() data: any): void {
+    const { notif } = data;
+    // Send the message to the recipient's socket
+    console.log('Yooooooooo', notif)
+    // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
+    this.server.to(this.userSocketMap[notif.sender.id]).emit('receiveNotification', notif);
   }
 }

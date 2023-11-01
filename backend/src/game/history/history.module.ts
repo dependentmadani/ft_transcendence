@@ -7,7 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 
 @Module({
   imports: [PassportModule, JwtModule.register({})],
-  providers: [HistoryService, PrismaService],
+  providers: [HistoryService, PrismaService,],
   controllers: [HistoryController]
 })
 export class HistoryModule {}

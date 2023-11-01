@@ -36,9 +36,9 @@ if __name__ == "__main__":
     
     print("\t\t\t\treload the vscode window if necessary! 💻")
     
-    print("Now, I will open the docker engine")
-    try:
-        subprocess.run(['open', '/Applications/Docker.app'])
-        print('\t\t\t\tOpened successfully. ✨')
-    except:
-        print('Error in opening the docker engine. :(')
+    # print("Now, I will open the docker engine")
+    # try:
+    #     subprocess.run(['open', '/Applications/Docker.app'])
+    #     print('\t\t\t\tOpened successfully. ✨')
+    # except:
+    #     print('Error in opening the docker engine. :(')

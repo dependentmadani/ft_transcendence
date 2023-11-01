@@ -36,12 +36,98 @@ export class UsersService {
         },
         include: {
           friends: true,
-          games: true,
-          myHistoryGames: true,
-          oppHistoryGames: true
         }
       });
     return user;
+  }
+
+  async getAchievements(userId: number) {
+    const games = await this.prisma.game.findUnique({
+      where: {
+        id: userId,
+      }
+    });
+    const historyGames = await this.prisma.history.findMany({
+      where: {
+        myUserId: userId,
+      }
+    });
+    var result = {
+      "first_server": false,
+      "conqueror": false,
+      "ai_crusher": false,
+      "disciplined": false,
+      "introuvert": false,
+      "challenger": false,
+    }
+
+    if (!games) {
+      return result;
+    }
+    if (games.wins >= 1) {
+      result.first_server = true;
+    }
+    if (games.wins >= 3) {
+      result.conqueror = true;
+    }
+    if (games.gamesPlayed >= 5) {
+      result.disciplined = true;
+    }
+    const uniqueIds = new Set<number>();
+    historyGames.forEach((obj) => {
+      uniqueIds.add(obj.oppUserId);
+    });
+
+    if (uniqueIds.size >= 3) {
+      result.challenger = true;
+    }
+
+    return result;
+  }
+
+  async checkBlockedFriend(userId: number, friendId: number) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        blocked: {
+          some: {
+            id: friendId,
+          }
+        }
+      }
+    });
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async friendFriends(userId:number, friendId: number) {
+    const friend = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: friendId
+          }
+        }
+      },
+    });
+
+    if (!friend) {
+      throw new UnauthorizedException("not your friend");
+    }
+
+    const friendsList = await this.prisma.users.findUnique({
+      where: {
+        id: friendId,
+      }, 
+      include: {
+        friends: true
+      }
+    })
+
+    return friendsList.friends;
   }
 
   async searchUser(username: string, users: Users) {
@@ -61,7 +147,7 @@ export class UsersService {
     });
     return user;
   }
-  
+
   async searchFriendUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
@@ -82,7 +168,7 @@ export class UsersService {
       }
     });
 
-    return user[0].friends;
+    return user[0]?.friends;
   }
 
   async addFriend(userId: number, friendId: number) {
@@ -125,6 +211,22 @@ export class UsersService {
         friends: true,
       }
     });
+    // await this.prisma.users.update({
+    //   where: {
+    //     id: friendId,
+    //   },
+    //   data: {
+    //     pendingFriendReq: {
+    //       connect: {
+    //         id: userId
+    //       }
+    //     }
+    //   },
+    //   include: {
+    //     friends: false,
+    //     _count: false,
+    //   }
+    // });
     return user;
   }
 
@@ -201,23 +303,6 @@ export class UsersService {
     return blockUser;
   }
 
-  async checkBlockedFriend(userId: number, friendId: number) {
-    const user = await this.prisma.users.findUnique({
-      where: {
-        id: userId,
-        blocked: {
-          some: {
-            id: friendId,
-          }
-        }
-      }
-    });
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
   async mutualFriends(userId: number, friendId: number) {
     if (userId === friendId) {
       throw new UnauthorizedException("the same user is not allowed!");
@@ -292,34 +377,6 @@ export class UsersService {
     return unblockFriend;
   }
 
-  async friendFriends(userId:number, friendId: number) {
-    const friend = await this.prisma.users.findUnique({
-      where: {
-        id: userId,
-        friends: {
-          some: {
-            id: friendId
-          }
-        }
-      },
-    });
-
-    if (!friend) {
-      throw new UnauthorizedException("not your friend");
-    }
-
-    const friendsList = await this.prisma.users.findUnique({
-      where: {
-        id: friendId,
-      }, 
-      include: {
-        friends: true
-      }
-    })
-
-    return friendsList.friends;
-  }
-
   async mutualFriendsFinder(userFriends: any, friendFriends: any) {
     const user = userFriends.map(obj =>obj.id);
     const returnValue = friendFriends.filter(friend => user.includes(friend.id));
@@ -342,7 +399,7 @@ export class UsersService {
   async updateUser(
     userId: number,
     userInfo: Users,
-    body: UserModify,
+    username: UserModify,
   ) {
     try {
       const user = await this.prisma.users.update(
@@ -351,13 +408,13 @@ export class UsersService {
             id: userId,
           },
           data: {
-            username: body?.username,
-            avatar: body?.avatar,
+            username: username.username,
             signedUp: true,
           },
         },
-      );
-
+        );
+      console.log('user information: ', user)
+        
       return user;
     } catch {
       throw new UnauthorizedException(
@@ -395,7 +452,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              './uploadAvatar/' + filePath,
+              '/uploadAvatar/' + filePath,
           },
         },
       );

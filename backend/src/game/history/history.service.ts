@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { historyDto } from './dto';
+import { error } from 'console';
 
 @Injectable()
 export class HistoryService {
@@ -24,7 +25,7 @@ export class HistoryService {
 
             return latest;
         } catch(error) {
-            console.log('something wrong with database');
+            console.log(`Something wrong happend with database2222222${error}`);
         }
 
     }
@@ -42,16 +43,16 @@ export class HistoryService {
             const newGameAdded = await this.prisma.history.create({
                 data: {
                     myUserId: userId,
-                    oppUserId: oppUser.id,
+                    oppUserId: oppUser?.id,
                     myScore: body.my_score,
                     oppScore: body.opp_score
                 }
             });
             return 'The history game added successfully';
         } catch (err) {
-            console.log("Something wrong happend with database");
+            console.log(`Something wrong happend with database${err}`);
         }
     }
 
-
 }
+
