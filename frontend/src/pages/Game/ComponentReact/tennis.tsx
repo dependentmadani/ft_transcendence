@@ -165,7 +165,7 @@ useEffect(() => {
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={user2?.avatar}> onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} </img>
+              <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
               {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">
@@ -184,7 +184,7 @@ useEffect(() => {
           <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
           <button id="ButtonStart" className='ButtonStart'>
             <span className='startplus'>Start</span>
-            <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png"></img>
+            <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
         </div>
         </div>

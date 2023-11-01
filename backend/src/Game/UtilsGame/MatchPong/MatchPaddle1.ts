@@ -3,7 +3,7 @@ export default class paddle_left
     canvas_height:number =0;
     x:number = 0;
     y:number = this.canvas_height/2;
-    speed = 1;
+    speed = 10;
     height_paddle = this.canvas_height*20/100;
     move_up(){
         if(this.y - this.speed < 0 )
