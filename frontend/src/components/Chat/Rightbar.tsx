@@ -30,8 +30,8 @@ export const Rightbar = ({ chatData }: any) => {
   
   return (
     <div id='RightSidebar' className="rightSidebar">
-        { chatData && chatData?._chat?.type === 'chat' && <ChatInfos chatData={ chatData } /> }
-        { isAllowed && chatData && chatData?._chat?.type === 'room' && <RoomInfos chatData={ chatData } /> }
+        { chatData && chatData?._chat?.type === 'Chat' && <ChatInfos chatData={ chatData } /> }
+        { isAllowed && chatData && chatData?._chat?.type === 'Room' && <RoomInfos chatData={ chatData } /> }
     </div>
   )
 }

@@ -54,7 +54,7 @@ export const Search = ({ onValueChange, chatData }: any) => {
           <CreateRoom chatData={ chatData } />
         </div>
       </div>
-      { showForm && searchResults && <SearchResult onClose={closeForm} onValueChange={onValueChange} searchResults={searchResults} />}
+      { showForm && searchResults && <SearchResult onClose={closeForm} onValueChange={onValueChange} searchResults={searchResults}  chatData={chatData} />}
     </div>
   )
 }

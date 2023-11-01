@@ -17,9 +17,9 @@ interface RoomUsers {
 
 export const RoomMembers = ({ chatData }: any) => {
 
-    const currentRoom = chatData?._chat?.chat
+    const currentRoom: Contact = chatData?._chat
     const [roomMembers, setRoomMembers] = useState<User[]>([])
-    const [mainUser, setMainUser] = useState<any>()
+    // const [mainUser, setMainUser] = useState<any>()
 
 
     const addMemberListener = (user: User) => {
@@ -52,7 +52,7 @@ export const RoomMembers = ({ chatData }: any) => {
     useEffect(() =>{
         const getRoomMembers = async () => {
             try {
-                const result = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
+                const result = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/Room/${currentRoom.id}`, {withCredentials: true})
                 if (result.data) {
                     let membersIds: number[] = []
                     result.data.map((member: RoomUsers) => (
@@ -83,19 +83,19 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
 
-    useEffect(() => {
-        const getMainUser = async () => {
-            try {
-                const _MAIN_USER_ = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
-                setMainUser(_MAIN_USER_.data)
-            }
-            catch (err) {
-                console.log(err)
-            }
-        }
+    // useEffect(() => {
+    //     const getMainUser = async () => {
+    //         try {
+    //             const _MAIN_USER_ = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
+    //             setMainUser(_MAIN_USER_.data)
+    //         }
+    //         catch (err) {
+    //             console.log(err)
+    //         }
+    //     }
 
-        getMainUser()
-    })
+    //     getMainUser()
+    // })
 
     const kickMember = async (user: User) => {
         try {
@@ -103,7 +103,7 @@ export const RoomMembers = ({ chatData }: any) => {
             chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: user.id})
 
 
-            const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/room/${currentRoom.id}`, {withCredentials: true})
+            const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/Room/${currentRoom.id}`, {withCredentials: true})
             if (res.data.length === 1 && res.data[0].role !== 'OWNER' && res.data[0].role !== 'ADMIN') {
                 await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${res?.data[0]?.userId}`, {
                     'role': 'ADMIN',
@@ -155,7 +155,7 @@ export const RoomMembers = ({ chatData }: any) => {
                             <span className='admin'>{ user.role === 'OWNER' && <FontAwesomeIcon className='roleIcon' icon={faBriefcase} /> }</span>
                             <span className='admin'>{ user.role === 'ADMIN' && <FontAwesomeIcon className='roleIcon' style={{'color': 'gold'}} icon={faUserTie} /> }</span>
                             {
-                                user.id !== mainUser?.id && user.role !== 'OWNER' && user.role !== 'ADMIN' && <div className="memberActions">
+                                user.id !== chatData?.mainUser?.id && user.role !== 'OWNER' && user.role !== 'ADMIN' && <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
                                     { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
                                     { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'ADMIN')} /> }

@@ -26,6 +26,10 @@ import { Users } from '@prisma/client';
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
 
+const oneDay = 1000 * 60 * 60 * 24;
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
+
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -75,9 +79,7 @@ export class AuthController {
     const tokens =
       await this.authService.signupLocal(dto);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -85,10 +87,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -106,9 +105,7 @@ export class AuthController {
     const tokens =
       await this.authService.signinLocal(dto);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -116,10 +113,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -145,9 +139,7 @@ export class AuthController {
     const userAuth =
       await this.authService.signinGoogle(req);
     res.cookie('token', userAuth.token.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -155,10 +147,7 @@ export class AuthController {
       'refresh_token',
       userAuth.token.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -297,9 +286,7 @@ export class AuthController {
         req.user['users'],
       );
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 7,
-      ), // expires in 7 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -307,10 +294,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 60,
-        ), // expires in 60 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },

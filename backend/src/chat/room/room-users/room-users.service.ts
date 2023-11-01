@@ -30,7 +30,15 @@ export class RoomUsersService {
     async getUserRooms(userId: number) {
         try {
             return this.prisma.roomUsers.findMany({
-                where: { userId: userId }
+                where: {
+                    AND: [
+                        { userId: userId },
+                        { NOT: [
+                            {role: 'BANNED' },
+                            {role: 'MUTED' },
+                        ]}
+                    ],
+                }
             })
         }
         catch (err) {
@@ -51,6 +59,32 @@ export class RoomUsersService {
         }
         catch (err) {
             console.error(`Couldn't find users in this room: ${err}`)
+        }
+    }
+
+    async isRoomAdmins(roomId: number, userId: number): Promise<Boolean> {
+        try {
+            const admin = await this.prisma.roomUsers.findMany({
+                where: {
+                    AND: [
+                        { roomId: roomId },
+                        { userId: userId },
+                        { OR: [
+                            { role: 'ADMIN' },
+                            { role: 'OWNER' },
+                        ] }
+                    ]
+                }
+            })
+
+            console.log(admin)
+            if (admin.length !== 0)
+                return true
+            return false
+        }
+        catch (err) {
+            console.error(`Couldn't find users in this room: ${err}`)
+            return false
         }
     }
 
@@ -206,6 +240,7 @@ export class RoomUsersService {
             }
         })
         // It works but at what cost
+        console.log('HAIYA', roomUsers, roomId, userId)
         if (roomUsers) {
             return await this.prisma.roomUsers.deleteMany({
                 where: {

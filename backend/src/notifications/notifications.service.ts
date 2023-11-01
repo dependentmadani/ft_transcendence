@@ -149,107 +149,107 @@ export class NotificationsService {
     }
   }
 
-  async friendAcception(receiverId: number, senderId: number, notifId: number) {
-    const friend = await this.prisma.users.findUnique({
-      where: {
-        id: receiverId,
-      }
-    });
-    if (friend.id === senderId) {
-      throw new UnauthorizedException('should not be the same user!');
-    }
-    const alreadyFriend = await this.prisma.users.findFirst({
-      where: {
-        id: senderId,
-        friends: {
-          some: {
-            id: friend.id
-          }
-        }
-      }
-    });
-    if (alreadyFriend) {
-      throw new UnauthorizedException("already friends!");
-    }
-    const pendingFriend = await this.prisma.users.findFirst({
-      where: {
-        id: senderId,
-        pendingFriendReq: {
-          some: {
-            id: friend.id,
-          }
-        }
-      },
-    });
-    if (!pendingFriend) {
-      throw new UnauthorizedException("No friend request!");
-    }
-    //add users to friend lists
-    const user = await this.prisma.users.update({
-      where: {
-        id: senderId,
-      },
-      data: {
-        friends: {
-          connect: {
-            id: friend.id
-          }
-        }
-      },
-      include: {
-        friends: true,
-      }
-    });
-    await this.prisma.users.update({
-      where: {
-        id: friend.id,
-      },
-      data: {
-        friends: {
-          connect: {
-            id: senderId
-          }
-        }
-      },
-      include: {
-        friends: false,
-        _count: false,
-      }
-    });
-    await this.prisma.users.update({
-      where: {
-        id: friend.id,
-      },
-      data: {
-        pendingFriendReq: {
-          disconnect: {
-            id: senderId,
-          }
-        },
-        pendingFriendReqOf: {
-          disconnect: {
-            id: senderId,
-          }
-        }
-      }
-    });
-    let notif = await this.prisma.notifications.findFirst({
-      where: {
-        id: notifId,
-      },
-      include: {
-        receiverUser: true,
-      }
-    });
-    await this.prisma.notifications.deleteMany({
-      where: {
-        senderId: notif.senderId,
-        receiverId: notif.receiverId,
-        // title: notif.title,
-      }
-    });
-    return notif;
-  }
+  // async friendAcception(receiverId: number, senderId: number, notifId: number) {
+  //   const friend = await this.prisma.users.findUnique({
+  //     where: {
+  //       id: receiverId,
+  //     }
+  //   });
+  //   if (friend.id === senderId) {
+  //     throw new UnauthorizedException('should not be the same user!');
+  //   }
+  //   const alreadyFriend = await this.prisma.users.findFirst({
+  //     where: {
+  //       id: senderId,
+  //       friends: {
+  //         some: {
+  //           id: friend.id
+  //         }
+  //       }
+  //     }
+  //   });
+  //   if (alreadyFriend) {
+  //     throw new UnauthorizedException("already friends!");
+  //   }
+  //   const pendingFriend = await this.prisma.users.findFirst({
+  //     where: {
+  //       id: senderId,
+  //       pendingFriendReq: {
+  //         some: {
+  //           id: friend.id,
+  //         }
+  //       }
+  //     },
+  //   });
+  //   if (!pendingFriend) {
+  //     throw new UnauthorizedException("No friend request!");
+  //   }
+  //   //add users to friend lists
+  //   const user = await this.prisma.users.update({
+  //     where: {
+  //       id: senderId,
+  //     },
+  //     data: {
+  //       friends: {
+  //         connect: {
+  //           id: friend.id
+  //         }
+  //       }
+  //     },
+  //     include: {
+  //       friends: true,
+  //     }
+  //   });
+  //   await this.prisma.users.update({
+  //     where: {
+  //       id: friend.id,
+  //     },
+  //     data: {
+  //       friends: {
+  //         connect: {
+  //           id: senderId
+  //         }
+  //       }
+  //     },
+  //     include: {
+  //       friends: false,
+  //       _count: false,
+  //     }
+  //   });
+  //   await this.prisma.users.update({
+  //     where: {
+  //       id: friend.id,
+  //     },
+  //     data: {
+  //       pendingFriendReq: {
+  //         disconnect: {
+  //           id: senderId,
+  //         }
+  //       },
+  //       pendingFriendReqOf: {
+  //         disconnect: {
+  //           id: senderId,
+  //         }
+  //       }
+  //     }
+  //   });
+  //   let notif = await this.prisma.notifications.findFirst({
+  //     where: {
+  //       id: notifId,
+  //     },
+  //     include: {
+  //       receiverUser: true,
+  //     }
+  //   });
+  //   await this.prisma.notifications.deleteMany({
+  //     where: {
+  //       senderId: notif.senderId,
+  //       receiverId: notif.receiverId,
+  //       // title: notif.title,
+  //     }
+  //   });
+  //   return notif;
+  // }
 
   async deleteNotification(id: number) {
     const notif = await this.prisma.notifications.findUnique({

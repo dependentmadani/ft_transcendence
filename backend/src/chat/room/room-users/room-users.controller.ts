@@ -1,10 +1,15 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req } from '@nestjs/common';
 import { RoomUsersService } from './room-users.service';
 import { Public } from "src/decorator";
+import { ChatService } from 'src/chat/chat.service';
+import { Chat, Room, RoomUsers, Users } from '@prisma/client';
+import { RoomService } from '../room.service';
+import { UsersService } from 'src/users/users.service';
+import { Request } from 'express';
 
 @Controller('roomUsers')
 export class RoomUsersController {
-    constructor(private roomUsersService: RoomUsersService) {}
+    constructor(private roomUsersService: RoomUsersService, private chatService: ChatService, private roomService: RoomService, private userService: UsersService) {}
 
     @Get()
     async getAllRoomUsers() {
@@ -16,14 +21,56 @@ export class RoomUsersController {
         return this.roomUsersService.getRoomUsers(roomId)
     }
 
-    @Get('user/:userId')
+    @Get('user/:userId/:')
     async getUserRooms(@Param('userId', ParseIntPipe) userId: number) {
-        return this.roomUsersService.getUserRooms(userId)
+        return await this.roomUsersService.getUserRooms(userId)
+    }
+
+    @Get('all-contacts')
+    async getAllContacts(@Req() req: Request) {
+        const me = req.user['sub']
+        const chats: Chat[] = await this.chatService.getUserChats(me)
+        const rooms: RoomUsers[] = await this.roomUsersService.getUserRooms(me)
+
+        // const { chats, rooms } = data;
+
+        // const concatenatedArray = [...chats, ...rooms];
+        const chatPromises = chats.map(async chat => {
+            const user = req.user['sub']
+            const receiver = chat.chatUsers[0] === user ? chat.chatUsers[1] : chat.chatUsers[0];
+            const _receiver: Users = await this.userService.findUserById(receiver);
+            return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
+        });
+        
+        const roomPromises = rooms.map(async room => {
+            const _room: Room = await this.roomService.getOneRoom(room.roomId);
+            return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
+        });
+        
+        const chatResults = await Promise.all(chatPromises);
+        const roomResults = await Promise.all(roomPromises);
+        
+        const contacts = [...chatResults, ...roomResults];
+
+        const sortedContacts = contacts.sort((a, b) => {
+            const dateA = new Date(a.latestMessageDate).getTime();
+            const dateB = new Date(b.latestMessageDate).getTime();
+            return dateB - dateA;
+        });
+
+        // console.log(sortedContacts);
+        return sortedContacts
     }
 
     @Get('admins/:roomId')
     async getRoomAdmins(@Param('roomId', ParseIntPipe) roomId: number) {
         return this.roomUsersService.getRoomAdmins(roomId)
+    }
+
+    @Get('is-admin/:roomId/:userId')
+    async isRoomAdmins(@Param('roomId', ParseIntPipe) roomId: number,
+                            @Param('userId', ParseIntPipe) userId: number) {
+        return this.roomUsersService.isRoomAdmins(roomId, userId)
     }
 
     @Get('owner/:roomId')

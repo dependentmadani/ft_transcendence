@@ -1,5 +1,5 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { Chat } from "@prisma/client";
+import { Chat, Message } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
 
 
@@ -26,6 +26,19 @@ export class ChatService {
         }
         catch {
             throw new UnauthorizedException(`Couldn't find message with id ${usrChatId}`)
+        }
+    }
+
+    async getUserChats(id: number) : Promise<Chat[]> {
+        try {
+            return this.prisma.chat.findMany({
+                where: {
+                    users: { some: { id: { equals: id } } },
+                  },
+            })
+        }
+        catch {
+            throw new UnauthorizedException(`Couldn't find message with id ${id}`)
         }
     }
 
@@ -65,7 +78,7 @@ export class ChatService {
                     // senId: senId,
                     // recId: recId,
                     // usrChatId: usrChatId,
-                    chatUsers: [senId, recId]
+                    chatUsers: [senId, recId],
                 }
             })
             await this.prisma.users.update({
@@ -94,8 +107,26 @@ export class ChatService {
             });
             return chat
         }
+        catch (e) {
+            console.log(e)
+            throw new UnauthorizedException("Couldn't create chat", e.data)
+        }
+    }
+
+    async updateLastMessage(id: number, content: string) {
+        try {
+            return await this.prisma.chat.update({
+                where: {
+                    chatId: id,
+                },
+                data: {
+                    latestMessageContent: content,
+                    latestMessageDate: new Date(),
+                }
+            })
+        }
         catch {
-            throw new UnauthorizedException("Couldn't create chat")
+            throw new UnauthorizedException("Couldn't update chat")
         }
     }
 

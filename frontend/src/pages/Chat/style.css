@@ -358,7 +358,7 @@ body {
   border-radius: 50px;
   height: 50%;
   width: 90%;
-  margin: auto;      
+  margin: 20px auto;   
 }
 
 
@@ -415,7 +415,7 @@ body {
 
 .searchChatResults {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   z-index: 999;
   background: #deddf6;
   padding: 10px;
@@ -1029,7 +1029,7 @@ body {
 }
   
 .input {
-  height: 50px;
+  height: 70px;
   background-color: #dddef6;
   display: flex;
   align-items: center;
@@ -1401,20 +1401,21 @@ body {
     width: 90%;
     margin: 10px auto;
 
-    .searchResInfo {
-      margin: auto;
-      width: 90%;
-      padding: 5px;
-      background-color: #666fca87;
-      border-radius: 65px;
-      display: flex;
-      flex-direction: row;
-      cursor: pointer;
+  }
+  
+  .searchResInfo {
+    margin: auto;
+    width: 90%;
+    padding: 5px;
+    background-color: #666fca87;
+    border-radius: 65px;
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
 
-      
+    
 
-      
-    }
+    
   }
 
   .searchChatResults > img {

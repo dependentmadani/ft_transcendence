@@ -78,6 +78,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
             catch (error) {
                 console.log(error);
             }
+            window.location.reload()
         }
     };
 
@@ -118,7 +119,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             private
                         </span>
                     </div>
-                    { roomType === 'Private' && <input type="text" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
+                    { roomType === 'Private' && <input type="password" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
                     <span className='saveChanges' onClick={ uploadImage }>save</span>
                 </div>
             </div>

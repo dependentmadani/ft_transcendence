@@ -19,9 +19,9 @@ interface Room {
 
 export const RoomSettings = ({ chatData, onClose }: any) => {
 
-    const currentRoom: Room = chatData?._chat?.chat
+    const currentRoom: Contact = chatData?._chat
     const [currentUserIsAdmin, setCurrentUserIsAdmin] = useState(false)
-    const [newRoomType, setNewRoomType] = useState(currentRoom?.roomType)
+    const [newRoomType, setNewRoomType] = useState(currentRoom.protection)
     const [newRoomName, setNewRoomName] = useState('')
     const [newRoomAvatar, setNewRoomAvatar] = useState<File | null>(null)
     const [newRoomPass, setNewRoomPass] = useState('')
@@ -30,22 +30,25 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     
     useEffect(() => {
         const isCurrentUserAdmin = async () => {
-            if (currentRoom.roomType === 'Public' || currentRoom.roomType === 'Protected')
+            if (currentRoom.protection === 'Public' || currentRoom.protection === 'Protected')
                 setCurrentUserIsAdmin(true)
-            else if (currentRoom.roomType === 'Private')
+            else if (currentRoom.protection === 'Private')
             {
-                const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-                const currentUserId: number = _MAIN_USER_.id
-                const roomAdmins = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/admins/${currentRoom.id}`, {withCredentials: true})
-                let t: number[] = []
+                // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+                // const currentUserId: number = chatData._mainUser.id
+                const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
+
+                if (isAdmin)
+                    setCurrentUserIsAdmin(true)
+
+                // let t: number[] = []
                     
-                roomAdmins.data.map((roomUser: RoomUsers) => (
-                    t.push(roomUser.userId)
-                ))
+                // roomAdmins.data.map((roomUser: RoomUsers) => (
+                //     t.push(roomUser.userId)
+                // ))
                 
-                for (let i=0; i<t.length; i++)
-                    if (t[i] === currentUserId)
-                        setCurrentUserIsAdmin(true)
+                // for (let i=0; i<t.length; i++)
+                //     if (t[i] === currentUserId)
             }
         }
 
@@ -97,6 +100,9 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
         };
     }, [onClose]);
 
+
+    console.log('Ayoo', currentUserIsAdmin)
+
     return (
         <div className="overlay">
             <div className="form-container" ref={searchResultsRef}>
@@ -105,7 +111,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                 <div className="changeRoomSettings">
                     <div className="changes">
                         <div className="mainInfos">
-                            <input type="text" className='form-invite-input' placeholder={ currentRoom.roomName } onChange={e => setNewRoomName(e.target.value)} />
+                            <input type="text" className='form-invite-input' placeholder={ currentRoom.name } onChange={e => setNewRoomName(e.target.value)} />
                             <span>
                                 <label htmlFor="image-upload" className="upload-label">
                                     <input type="file" id="image-upload" accept="image/*" onChange={handleImageChange} style={{ display: 'none' }} />
