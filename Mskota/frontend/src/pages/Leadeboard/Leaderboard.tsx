@@ -9,11 +9,13 @@ interface User {
     gamesPlayed: number;
     wins: number;
     rank: number;
+    userStatus: string;
 }
 
 function Leaderboard() {
     const [leaderboard, setLeaderboard] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [searchQuery, setSearchQuery] = useState<string>("");
 
     useEffect(() => {
         getLeaderboard();
@@ -32,13 +34,22 @@ function Leaderboard() {
 
     return (
         <div>
+            <div className="leaderboard-heading">
+                <h2>Leaderboard</h2>
+                <input
+                    type="text"
+                    placeholder="Search by username"
+                    value={searchQuery}
+                    onChange={(e) => {setSearchQuery(e.target.value); console.log("Search For: ", searchQuery); }}
+                />
+            </div>
             {loading ? (
                 <div>Loading...</div>
             ) : (
-                leaderboard.map(user => {
+                leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map(user => {
                     return (
                         <div className="player-stats" key={user.id}>
-                            <div className="img-frame online">
+                            <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
                                 <img src={user.avatar} alt="User image" />
                             </div>
                             <div className="status">
@@ -56,7 +67,7 @@ function Leaderboard() {
                             <div className="rank">
                                 <span>{user.rank}#</span>
                             </div>
-                        </div>
+                        </div> 
                     );
                 })
             )}

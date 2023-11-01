@@ -32,7 +32,6 @@ const SettingsComponent: React.FC = () => {
           const selectedFile = e.target.files[0];
       
           if (selectedFile) {
-            // Read the selected file and update the avatar state
             const reader = new FileReader();
             reader.onload = (e) => {
               setAvatar(e.target.result);

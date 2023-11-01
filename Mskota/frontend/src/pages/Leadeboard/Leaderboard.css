@@ -96,3 +96,26 @@
       display: none;
     }
 }
+
+.leaderboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 2%;
+    height: 45px;
+    width: 100%;
+    /* background-color: #108393; */
+
+}
+
+.leaderboard-heading > input {
+    width: 25%;
+    max-height: 45px;
+    font-size: 0.95rem;
+    border: 2px solid #108393;
+}
+
+.leaderboard-heading > h2 {
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
