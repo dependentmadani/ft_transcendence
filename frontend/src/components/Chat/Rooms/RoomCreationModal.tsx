@@ -54,16 +54,17 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 
-                const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-                chatData?._socket?.emit('createRoom', {room: response.data, owner: _MAIN_USER_.id})
+                // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+                chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
 
                 if (response.data) {
                     const roomId: number = response.data.id
                     try {
-                        const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+                        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
                         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                             roomId: roomId,
-                            userId: _MAIN_USER_.id,
+                            userId: chatData._mainUser.id,
+                            userUsername: chatData._mainUser.username,
                             role: 'OWNER',
                             allowed: roomType === 'Private' ? false : true,
                         }, {

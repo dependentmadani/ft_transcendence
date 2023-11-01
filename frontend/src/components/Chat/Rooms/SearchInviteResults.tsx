@@ -2,9 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-interface User {
-    id: number,
-}
+// interface User {
+//     id: number,
+// }
 
 export const SearchInviteResults = ({ chatData, searchResults }: any) => {
 
@@ -34,6 +34,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
             await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                 roomId: currentRoom.id,
                 userId: invitedUser.id,
+                userUsername: invitedUser.username,
                 role: 'MEMBER',
                 allowed: allow,
             },

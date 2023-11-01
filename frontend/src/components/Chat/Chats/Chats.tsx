@@ -54,7 +54,7 @@ import { Chat } from "./Chat";
 //   room: Room,
 // }
 
-var _MAIN_USER_: User
+// var _MAIN_USER_: User
 
 export  const Chats = ({ onValueChange, chatData }: any) => {
 

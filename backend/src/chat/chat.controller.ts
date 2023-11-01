@@ -1,11 +1,7 @@
 import { Body, Controller, Get,  Param,  ParseIntPipe,  Post, Res, Req, HttpStatus, Delete, Put } from "@nestjs/common";
 import { ChatService } from "./chat.service";
-import { Request, Response } from "express";
+import { Request } from "express";
 import { Chat } from "@prisma/client";
-import { Public } from "src/decorator";
-import { ChatGateway } from "./chat.gateway";
-import { Message } from "./message/dto";
-// import { Chat } from './dto'
 
 @Controller('chat')
 export class ChatController {
@@ -22,12 +18,12 @@ export class ChatController {
     // }
     @Get('id/:chatId')
     async getChatId(@Param('chatId', ParseIntPipe) chatId: number) : Promise<Chat> {
-        return this.chatService.getChatId(chatId)
+        return await this.chatService.getChatId(chatId)
     }
 
     @Get('/:usrChatId')
     async getOneChat(@Param('usrChatId', ParseIntPipe) usrChatId: number) : Promise<Chat[]> {
-        return this.chatService.getOneChat(usrChatId)
+        return await this.chatService.getOneChat(usrChatId)
     }
 
     @Get('user/:id')
@@ -37,29 +33,30 @@ export class ChatController {
 
     @Get('/:sender/:receiver')
     async getCommunChat(@Param('sender', ParseIntPipe) sender: number,
-                        @Param('receiver', ParseIntPipe) receiver: number) : Promise<Chat[]> {
-        return this.chatService.getCommunChat(sender, receiver)
+                        @Param('receiver', ParseIntPipe) receiver: number) : Promise<Chat> {
+        return await this.chatService.getCommunChat(sender, receiver)
     }
 
     @Post()
-    async createChat(@Body("senId", ParseIntPipe) senId: number,
-                    @Body('recId', ParseIntPipe) recId: number) : Promise<Chat> {
-        return this.chatService.createChat(senId, recId)
+    async createChat(@Req() req: Request, @Body("senId", ParseIntPipe) senId: number, @Body('recId', ParseIntPipe) recId: number) {  
+        
+        const me = req.user['sub']
+        return await this.chatService.createChat(me, senId, recId)
     }
 
     @Put('/last-message/:id')
     async updateLastMessage(@Param('id', ParseIntPipe) id: number, @Body('content') content: string) {
-        return this.chatService.updateLastMessage(id, content)
+        return await this.chatService.updateLastMessage(id, content)
     }
 
     @Delete()
     async deleteAllChats() {
-        return this.chatService.deleteAllChats()
+        return await this.chatService.deleteAllChats()
     }
     
     @Delete('/:chatId')
     async deleteChat(@Param('chatId', ParseIntPipe) chatId: number) {
-        return this.chatService.deleteOneChat(chatId)
+        return await this.chatService.deleteOneChat(chatId)
     }
 }
 

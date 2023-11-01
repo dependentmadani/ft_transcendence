@@ -11,10 +11,10 @@ export const Rightbar = ({ chatData }: any) => {
 
     const checkAllow = async () => {
 
-      if (chatData?._chat?.type === 'room') {
-        const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-        const allwd = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
-        if (allwd.data[0].allowed !== true)
+      if (chatData?._chat?.type === 'Room') {
+        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+        const allwd = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
+        if (allwd !== true)
           setIsAllowed(false)
         else
           setIsAllowed(true)
@@ -25,7 +25,9 @@ export const Rightbar = ({ chatData }: any) => {
 
     checkAllow()
 
-  }, [chatData?._chat?.chat?.id])
+  }, [ chatData ])
+
+  console.log('Right bar allow', isAllowed)
   
   
   return (

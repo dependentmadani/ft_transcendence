@@ -14,39 +14,33 @@ export const Input = ({ chatData }: any) => {
   // Creating new message eather for chats or rooms
   const createNewMessage = async (inputText: string) => {
     try {
-      // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
       
-      if (chatData._chat.type === 'Chat') {
-        // const sender = currentChat?.chatUsers[0] === _MAIN_USER_.id ? currentChat?.chatUsers[0] : currentChat?.chatUsers[1];
-        
-        const _message = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}`, {
+      let _message
+      if (chatData._chat.type === 'Chat') {  
+        _message = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}`, {
           'msgChatId': chatData?._chat?.id,
           'MessageSenId': chatData?._mainUser.id,
           'textContent': inputText,
           'type': chatData._chat.type,
-        }, {
-          withCredentials: true
-        })
-        console.log('created message', _message)
-          const res = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/last-message/${chatData?._chat?.id}`, {
-            'content': _message.data.textContent,
-          }, {
-            withCredentials: true
-          })
-          console.log('Updated chat', currentChat)
-          return _message
+        }, { withCredentials: true })
       }
-      else if (chatData._chat.type === 'room'){
+      else if (chatData._chat.type === 'Room'){
       
-        return await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}`, {
+        _message = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData._chat.type}`, {
           'msgRoomId': currentChat?.id,
-          'MessageSenId': chatData?._mainUser.id,
+          'MessageSenId': chatData._mainUser.id,
           'textContent': inputText,
           'type': chatData._chat.type,
-        }, {
-          withCredentials: true
-        })
+        }, { withCredentials: true })
+
       }
+      
+      // console.log('Message', _message.data)
+      await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/${chatData._chat.type}/last-message/${chatData?._chat?.id}`, {
+        'content': _message?.data.textContent,
+      }, {  withCredentials: true })
+
+      return _message?.data
     }
     catch (err)
     {
@@ -58,12 +52,9 @@ export const Input = ({ chatData }: any) => {
   // Handling message sending Click
   const handleClick = async () => {
     if (inputText.trim() !== '') {
+      
       const msg: any = await createNewMessage(inputText)
-      // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-      const rec = chatData?._receiver?.id
-      const actionEmit = chatData?._chat?.type === 'Chat' ? 'message' : 'roomMessage'
-      chatData?._socket.emit(actionEmit, { sender: chatData?._mainUser.id, rec: rec || null, message: msg.data });
-      // chatData?._socket?.emit("contactSorting");
+      chatData?._socket.emit('message', { sender: chatData._mainUser.id, rec: chatData?._receiver?.id || null, message: msg });
       setInputText('')
     }
   }
@@ -73,15 +64,9 @@ export const Input = ({ chatData }: any) => {
   const handleKeyPress = async (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
       if (inputText.trim() !== '') {
+
         const msg: any = await createNewMessage(inputText)
-        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-        // if (chatData?._chat?.type === 'chat') {
-        //   const rec = 
-        const actionEmit = chatData?._chat?.type === 'Chat' ? 'message' : 'roomMessage'
-        // }
-        // else if (chatData?._chat?.type === 'room')
-        chatData?._socket.emit(actionEmit, { sender: chatData?._mainUser.id, rec: chatData?._receiver?.id || null, message: msg.data });
-        
+        chatData?._socket.emit('message', { sender: chatData._mainUser.id, rec: chatData?._receiver?.id || null, message: msg });
         setInputText('')
       }
     }
@@ -89,32 +74,33 @@ export const Input = ({ chatData }: any) => {
 
   // const [isAllowed, setIsAllowed] = useState(true);
 
-  // useEffect(() => {
+  useEffect(() => {
 
-  //   const checkAllow = async () => {
+    const checkAllow = async () => {
 
-  //     if (chatData?._chat?.type === 'room') {
-  //       // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-  //       const allwd = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${chatData?._mainUser.id}`, { withCredentials: true })
-  //       if (allwd.data[0].allowed !== true)
-  //         setIsAllowed(false)
-  //       else
-  //         setIsAllowed(true)
-  //     }
-  //     else
-  //       setIsAllowed(true)
-  //   }
+      if (chatData?._chat && chatData?._chat?.type === 'Room') {
+        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+        const isAllowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData?._mainUser.id}`, { withCredentials: true })).data
+        if (isAllowed !== true)
+          setDisableInput(false)
+        else
+          setDisableInput(false)
+      }
+      else
+        setDisableInput(false)
+    }
 
-  //   checkAllow()
-
-  // }, [chatData?._chat?.chat?.id])
+    checkAllow()
+  }, [ chatData ])
 
   useEffect(() => {
-    if (chatData?._chat !== undefined)
+    if (chatData._chat === undefined)
       setDisableInput(true)
-  }, [chatData?._chat])
+    else
+      setDisableInput(false)
+  }, [ chatData ])
 
-  // console.log('input disabled', disableInput)
+  console.log('input disabled', disableInput)
 
 
   return (
@@ -125,7 +111,7 @@ export const Input = ({ chatData }: any) => {
           // :
           // (
           <>
-            <input type="text" className="input-input" placeholder="Type something..." disabled={!disableInput} value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
+            <input type="text" className="input-input" placeholder="Type something..." disabled={disableInput} value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
             <div className="send">
               {<span><FontAwesomeIcon className="send-msg-icon" icon={faPaperPlane} onClick={handleClick} /></span>}
             </div>

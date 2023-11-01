@@ -60,7 +60,7 @@ export class ChatGateway {
       this.server.to(this.userSocketMap[sender]).emit('receiveMessage', message);
       this.server.to(this.userSocketMap[rec]).emit('receiveMessage', message);
     }
-    else
+    else if (message.type === 'Room')
       this.server.emit('receiveMessage', message);
   }
 

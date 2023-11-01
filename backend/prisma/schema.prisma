@@ -148,6 +148,7 @@ model RoomUsers {
   roomId Int
   user   Users @relation(fields: [userId], references: [id])
   userId Int
+  userUsername String
   role   String
   allowed Boolean
 }

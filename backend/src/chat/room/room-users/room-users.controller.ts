@@ -26,6 +26,13 @@ export class RoomUsersController {
         return await this.roomUsersService.getUserRooms(userId)
     }
 
+    @Get('one-contact/:userId/:recId')
+    async getOneContacts(@Req() req: Request, @Param('userId', ParseIntPipe) userId: number, @Param('recId', ParseIntPipe) recId: number) {
+        
+        const me = req.user['sub']
+        return await this.roomUsersService.getOneContact(me, userId, recId)
+    }
+
     @Get('all-contacts')
     async getAllContacts(@Req() req: Request) {
         const me = req.user['sub']
@@ -80,8 +87,14 @@ export class RoomUsersController {
 
     @Get('role/:roomId/:userId')
     async getRoomMemberRole(@Param('roomId', ParseIntPipe) roomId: number,
-                        @Param('userId', ParseIntPipe) userId: number) {
-        return this.roomUsersService.getRoomMemberRole(roomId, userId)
+                        @Param('userId', ParseIntPipe) userId: number): Promise<string> {
+        return await this.roomUsersService.getRoomMemberRole(roomId, userId)
+    }
+
+    @Get('is-allowed/:roomId/:userId')
+    async isRoomMemberAllowed(@Param('roomId', ParseIntPipe) roomId: number,
+                        @Param('userId', ParseIntPipe) userId: number): Promise<boolean> {
+        return await this.roomUsersService.isRoomMemberAllowed(roomId, userId)
     }
 
     @Put('allow/:roomId/:userId')
@@ -93,10 +106,11 @@ export class RoomUsersController {
 
     @Post()
     async createRoomUsers(@Body('roomId', ParseIntPipe) roomId: number,
-                         @Body('userId', ParseIntPipe) userId: number, 
+                         @Body('userId', ParseIntPipe) userId: number,
+                         @Body('userUsername') userUsername: string,
                          @Body('role') role: string,
                          @Body('allowed') allowed: boolean) {
-        return this.roomUsersService.createRoomUsers(roomId, userId, role, allowed)
+        return this.roomUsersService.createRoomUsers(roomId, userId, userUsername, role, allowed)
     }
 
     @Patch('/:roomId/:userId')

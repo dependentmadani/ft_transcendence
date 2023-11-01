@@ -17,7 +17,7 @@ import { Messages } from "../Messages/Messages"
 
 export const Chat = ({ chatData, messages }: any) => {
 
-  // const [isPrivate, setIsPrivate] = useState(true)
+  const [isPrivate, setIsPrivate] = useState(true)
   const [showForm, setShowForm] = useState(false);
   // const [isAllowed, updateAllow] = useState(false);
   // const [chatMessages, setChatMessages] = useState<Message[]>([])
@@ -47,39 +47,40 @@ export const Chat = ({ chatData, messages }: any) => {
 
   // const currentChat = chatData?._chat?.chat
   
-  // useEffect(() => {
-  //   const checkAllow = async () => {
+  useEffect(() => {
+    const checkAllow = async () => {
 
-  //     if (chatData?._chat?.type === 'room') {
-  //       const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-  //       const allwd = await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
-  //       if (allwd.data[0].allowed !== true)
-  //       {
-  //         setIsPrivate(true)
-  //         setShowForm(true);
-  //       }
-  //       else {
-  //         setShowForm(false)
-  //         setIsPrivate(false);
-  //       }
-  //       // console.log('-------', allwd.data[0].allowed, 'AYOOOOooo', showForm)
-  //     }
-  //   }
+      if (chatData?._chat?.type === 'Room') {
+        // const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        const isAllowed = (await axios.get(`http://localhost:8000/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
+        console.log('Is allowed', isAllowed)
+        if (isAllowed)
+        {
+          setIsPrivate(true)
+          setShowForm(false);
+        }
+        else {
+          setShowForm(true)
+          setIsPrivate(false);
+        }
+        // console.log('-------', allwd.data[0].allowed, 'AYOOOOooo', showForm)
+      }
+    }
 
-  //   checkAllow()
+    checkAllow()
 
-  //   console.log('selceted Chat', isPrivate)
-  // }, [chatData?._chat?.chat?.id])
+    console.log('selceted Chat', isPrivate)
+  }, [ chatData ])
   
   
 
-  // useEffect(() => {
-  //   if (chatData?._chat?.chat?.roomType === 'Private') {
-  //     setIsPrivate(true);
-  //   } else {
-  //     setIsPrivate(false);
-  //   }
-  // }, [chatData?._chat?.chat?.id]);
+  useEffect(() => {
+    if (chatData?._chat?.chat?.roomType === 'Private') {
+      setIsPrivate(true);
+    } else {
+      setIsPrivate(false);
+    }
+  }, [chatData?._chat?.chat?.id]);
 
   const openForm = () => {
     if (showForm === false)
@@ -144,7 +145,7 @@ export const Chat = ({ chatData, messages }: any) => {
   //   fetchRoomMessages()
   // }, [chatData?._chat?.chat?.id])
 
-  // console.log('show from', showForm, 'is allowed', isPrivate) 
+  console.log('show from', showForm, 'is allowed', isPrivate) 
 
   // console.log('HA LIWSAL', chatData)
 

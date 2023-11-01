@@ -112,7 +112,7 @@ export const HomeChat = () => {
     console.log('Yoo', message)
     if (message.type === 'Chat' && (chatData?._chat?.id === message.msgChatId) && messages.find(m => m.messageId === message.messageId) === undefined)
       setMessages([...messages, message])
-    else if (message.type === 'Room' && messages.find(m => m.messageId === message.messageId) === undefined)
+    else if (message.type === 'Room' && (chatData?._chat?.id === message.msgRoomId) && messages.find(m => m.messageId === message.messageId) === undefined)
       setMessages([...messages, message])
     // chatData?._socket?.emit('sortChats')
   }
