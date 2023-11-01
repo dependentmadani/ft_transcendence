@@ -9,12 +9,27 @@ import HomeGame from '@/pages/Game/ComponentReact/HomeGame';
 import ClassicGame from '@/pages/Game/ComponentReact/classic';
 import Akinator from '@/pages/Game/ComponentReact/akinator';
 import Tennis from '@/pages/Game/ComponentReact/tennis';
+import { default as InviteTennis } from '@/pages/Game/Invitegame/InviteMatch';
+import InviteClassic from '@/pages/Game/Invitegame/InviteClassic';
+import { useGame } from '@/context/GameContext';
 
 const Test = () => {
     return (<>
         <div className='kika' >kika</div>
     </>)
 }
+
+const InviteGame = () => {
+
+    //check data of ids of players
+    // const [_game] = useGame();
+
+
+    // if (_game.mode === 'classic')
+        return <InviteClassic ProfileID1={1} ProfileID2={2} />
+    // else if (_game.mode === 'tennis')
+    //     return <InviteTennis ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
+}   
 
 
 function selectSection(section: string): JSX.Element {
@@ -35,6 +50,8 @@ function selectSection(section: string): JSX.Element {
         return ( <ClassicGame /> )
     else if (section === '/game/tennis')
         return ( <Tennis /> )
+    else if (section === '/game/invite')
+        return ( <InviteGame /> )
     else if (section === 'test')
         return ( <Test /> )
     else 

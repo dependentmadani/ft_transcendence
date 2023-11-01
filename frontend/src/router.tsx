@@ -17,7 +17,7 @@ function GetRouteElement(props:any) {
     const { client } = useClient();
 
     const defaultList = ['/', '/home', '/about', '/team'];
-    const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', 'invite-classic', 'invite-tennis']
+    const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
     console.log(props.tag)
     // console.log(client.signedIn)
     // console.log(defaultList.includes(props.tag), list.includes(props.tag))
@@ -55,8 +55,7 @@ export const router = createBrowserRouter([
             { path: '/game/akinator', element: < GetRouteElement tag='/game/akinator' /> },
             { path: '/game/classic', element: < GetRouteElement tag='/game/classic' /> },
             { path: '/game/tennis', element: < GetRouteElement tag='/game/tennis' /> },
-            { path: '/game/invite-tennis', element: < GetRouteElement tag='/invite-tennis' /> },
-            { path: '/game/invite-classic', element: < GetRouteElement tag='/invite-classic' /> },
+            { path: '/game/invite', element: < GetRouteElement tag='/game/invite' /> },
             { path: '/leaderboard', element: < GetRouteElement tag='/leaderboard' /> },
         ],
     },

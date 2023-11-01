@@ -52,7 +52,6 @@ export class MatchSocketGateway
      const cnv_y = await data[1];
      this.canvas_width =   await cnv_x;
      this.canvas_height =  await cnv_y;
-     console.log(`>>>>>>>>>>>>>CANVASSSSSS>>>>${cnv_x}`);
   }
   @SubscribeMessage('youcan start')
   async handleyoucanstart(client, user)

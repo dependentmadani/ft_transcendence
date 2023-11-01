@@ -3,9 +3,12 @@ import './InviteGame.css';
 import { Link } from 'react-router-dom';
 
 
-export default function InviteGame()
+export default function Invite()
 {
   
+
+
+
   return (
     <div className="GameHome">
       <div className="PongClassic">
