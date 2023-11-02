@@ -8,11 +8,6 @@ import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 // import My from '@/imgs/add-friend.svg'
 import { ReactSVG } from "react-svg";
 
-interface User {
-    id: number,
-    username: string,
-    avatar: string,
-}
 
 function ProfileInfo (props: any) {
 
@@ -29,30 +24,6 @@ function ProfileInfo (props: any) {
             statu.style.background = '#15a3e9'
 
     }, [])
-
-    const sendFriendRequest = async (user: User) => {
-        const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-        
-        // They must not be friends
-        // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${user.id}`, {withCredentials: true})).data;
-        // const isReqFound = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/isFound/${mainUser.id}/${user.id}`, {withCredentials: true})).data;
-        // if (/*!isReqFound &&*/ !isFriend) {
-            const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
-                // 'userId' : mainUser.id,
-                // 'title': 'Friend request',
-                'type': 'FRIEND',
-                'read': false,
-                // 'description': 'wants to connect with you',
-                // 'icon': user?.avatar,
-                'socketId': 'test123',
-                'receiverId': user?.id,
-                'senderId': mainUser?.id,
-            }, {
-            withCredentials: true
-            })
-            console.log('WE TRYNNA ADD MR ', user.username, res)
-        // }
-    }
 
     return (
         <div className='profile-info1'>
@@ -71,7 +42,7 @@ function ProfileInfo (props: any) {
                     <div className='profile-rank1'> 5 </div>
                 </div>
                 <div className='profile-buttons'>
-                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => sendFriendRequest(props.userData)} />
+                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" />
                     <ReactSVG src='/src/imgs/svg/play-game.svg' className="play-game" />
                 </div>
             </div>

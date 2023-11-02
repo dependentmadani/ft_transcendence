@@ -17,25 +17,20 @@ function GetRouteElement(props:any) {
     const { client } = useClient();
 
     const defaultList = ['/', '/home', '/about', '/team'];
-    const list = ['/login', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard']
-    console.log('props.tag : ' ,props.tag)
-    console.log('client.signedIn', client.signedIn)
-    console.log(defaultList.includes(props.tag), list.includes(props.tag))
+    const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
+    console.log(props.tag)
+    // console.log(client.signedIn)
+    // console.log(defaultList.includes(props.tag), list.includes(props.tag))
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
         console.log('**********************')
-        if (/*(!client.signedIn || client.signedIn) && */defaultList.includes(props.tag)) {
-            console.log('1111111111111')
+        if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
             return <DefaultSection section={props.tag} />;
-        }
-        else if (/*!client.signedIn && list.includes(props.tag)*/ props.tag === '/login') {
-            console.log('2222222222222')
+        else if (!client.signedIn && list.includes(props.tag))
             return <Sign tag='login' />;
-        }
-        else if (/*client.signedIn && !client.signedUp*/ props.tag === '/signup')
-        {
-            console.log('333333333333')
+        else if (client.signedIn && props.tag === '/login_2fa')
+            return <Sign tag='2fa' />;
+        else if (client.signedIn && !client.signedUp)
             return <Sign tag='signup' />;
-        }
         else
             return <Section section={props.tag} />;
     }
@@ -50,16 +45,18 @@ export const router = createBrowserRouter([
             { path: '/home', element: < GetRouteElement tag='/home' /> },
             { path: '/about', element: < GetRouteElement tag='/about' /> },
             { path: '/team', element: < GetRouteElement tag='/team' /> },
-            { path: '/login', element: < GetRouteElement tag='/login' /> },
+            { path: '/login', element: < GetRouteElement tag='/login' /> }, 
+            { path: '/login_2fa', element: < GetRouteElement tag='/login_2fa' /> }, 
             { path: '/signup', element: < GetRouteElement tag='/signup' /> },
             { path: '/profile', element: < GetRouteElement tag='/profile' /> },
             { path: '/profile/:username', element: < GetRouteElement tag='/profile/:username' /> },
             { path: '/chat', element: < GetRouteElement tag='/chat' /> },
             { path: '/game', element: < GetRouteElement tag='/game' /> },
-            
+            { path: '/game/akinator', element: < GetRouteElement tag='/game/akinator' /> },
+            { path: '/game/classic', element: < GetRouteElement tag='/game/classic' /> },
+            { path: '/game/tennis', element: < GetRouteElement tag='/game/tennis' /> },
+            { path: '/game/invite', element: < GetRouteElement tag='/game/invite' /> },
             { path: '/leaderboard', element: < GetRouteElement tag='/leaderboard' /> },
-            // { path: '/kika', element: <Section section='test' /> },
-            // { path: '/kkk', element: <Section section='test2' /> },
         ],
     },
 ]);

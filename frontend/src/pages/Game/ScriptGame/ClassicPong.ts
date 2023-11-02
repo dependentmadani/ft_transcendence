@@ -8,6 +8,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let ctx:any = canvas.getContext('2d');
         let start:any = document.getElementById('ButtonStart');
         let switchSound:any = document.getElementById('sound_switch');
+        let ExitGame:any = document.getElementById('ExitGame');
         
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
@@ -16,7 +17,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let img_lose = new Image();
         let UserName:string;
 
-        
+        let ExitValue:boolean = false;
         img_lose.src = "/src/assets/img/lose.jpg";
         
         ball_sound.src = "/src/assets/sounds/beeep.ogg";
@@ -47,6 +48,11 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             SoundValue = switchSound.checked;
        
         });
+        ExitGame.addEventListener('click', () => {
+            ExitValue = ExitGame.id;
+            socket.emit("playerDisconnect",client_id);
+            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+        });
         socket.on('connect',()=>
         {
             console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}`);
@@ -68,8 +74,8 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             const l = canvas.width / 2;
             ctx.strokeStyle = 'white';
-            ctx.lineWidth = 10;
-            ctx.setLineDash([15, 15]);
+            ctx.lineWidth = 2;
+            ctx.setLineDash([5, 5]);
             ctx.beginPath();
             ctx.moveTo(l, 0);
             ctx.lineTo(l, canvas.height);
@@ -105,7 +111,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             draw()
             {
                 ctx.beginPath();
-                ctx.fillStyle = 'white'
+                ctx.fillStyle = 'rgb(208, 205, 205)'
                 ctx.fillRect(this.x, this.y, this.width_paddle, this.height_paddle);
                 ctx.fill();
                 ctx.closePath()
@@ -136,7 +142,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             draw()
             {
                 ctx.beginPath();
-                ctx.fillStyle = 'white'
+                ctx.fillStyle = 'rgb(208, 205, 205)'
                 ctx.fillRect(this.x, this.y, this.width_paddle, this.height_paddle);
                 ctx.fill();
                 ctx.closePath() 
@@ -175,7 +181,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             draw()
             {
                 ctx.beginPath();
-                ctx.fillStyle = 'white'
+                ctx.fillStyle = 'rgb(208, 205, 205)'
                 ctx.fillRect(this.x, this.y, this.ball_size, this.ball_size);
                 ctx.fill();
                 ctx.closePath()
@@ -217,7 +223,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
     var pl1 = new paddle_left;
     var pl2 = new paddle_right;
     var bl = new ball;
-    
+    const font = `clamp(10px, 10vw, 100px)`
     class score
     {
         score_left:number = 0;
@@ -234,7 +240,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             this.write_txt(this.score_left, (canvas.width - textWidth)*0.4, (canvas.height - canvas.height*85/100))
             
             const ttWidth = ctx.measureText(this.score_right).width;
-            this.write_txt(this.score_right,(canvas.width - ttWidth)*0.57, (canvas.height - canvas.height*85/100))
+            this.write_txt(this.score_right,(canvas.width - ttWidth)*0.6, (canvas.height - canvas.height*85/100))
             if(this.score_left == 5 || this.score_right == 5)
             {
                 if (player % 2 != 0)
@@ -274,8 +280,8 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         write_txt(msg:any,xx:number,yy:number)
         {
             ctx.beginPath();
-            ctx.font = "100px solid";
-            ctx.lineWidth = 2
+            ctx.font = `${font} solid `;
+            ctx.lineWidth = 5
             ctx.fillStyle = 'white';
             ctx.fillText(msg, xx, yy);
             ctx.closePath()
@@ -334,6 +340,15 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         }
     })
     var p = new game()
+
+    if(ExitValue)
+    {
+        SoundValue = false;
+        // socket.emit("playerDisconnect",client_id);
+        
+    }
+
+
     function render()
     {
         ctx.clearRect(0,0,canvas.width,canvas.height);

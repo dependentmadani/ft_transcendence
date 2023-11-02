@@ -6,11 +6,13 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         let start:any = document.getElementById('ButtonStart');
         let switchMusic:any = document.getElementById('music_switch');
         let switchSound:any = document.getElementById('sound_switch');
+        let ExitGame:any = document.getElementById('ExitGame');
       
          
 
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
+        let ExitValue:boolean = false;
         
         let play_start = 0;
 
@@ -27,7 +29,11 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             SoundValue = switchSound.checked;
             console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
-        
+        ExitGame.addEventListener('click', () => {
+            ExitValue = ExitGame.id;
+
+            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+        });
 
         let  img = new Image();
         let img_win = new Image();
@@ -43,9 +49,11 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         paddle_sound.src = "/src/assets/sounds/Pop.ogg" 
         music.src = "/src/assets/sounds/Arabesque.mp3";
         
-        img.src = "/src/assets/img/castle.png";
+        img.src = "/src/assets/img/arabec.png";
         let speed_paddle:number =20;
         window.addEventListener('keydown', handlePlayerKeyPress);
+
+        
         function handlePlayerKeyPress(event: any) 
         {
             if (event.keyCode === 40) 
@@ -177,10 +185,13 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             
             ctx.beginPath();
             ctx.fillStyle = "yellow"
-            ctx.strokeStyle ="black"
-            ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
             ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
             ctx.fill();
+            ctx.closePath();
+            ctx.beginPath();
+            ctx.setLineDash([]);
+            ctx.strokeStyle ="black"
+            ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
             ctx.stroke();
             ctx.closePath();
         
@@ -306,6 +317,18 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         }
         
         var bl = new ball;
+        function drawline()
+        {
+            const l = canvas.width / 2;
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(l, 0);
+            ctx.lineTo(l, canvas.height);
+            ctx.stroke();
+            ctx.closePath()
+        }
   
         class score
         {
@@ -381,12 +404,19 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         function render() 
         {
             
+            if(ExitValue)
+            {
+                MusicValue = false;
+               SoundValue = false;
+               sc.left_score = 5;
+            }
             if(MusicValue)
                 music.play();
             else
                 music.pause();
             ctx.clearRect(0, 0, canvas.width,canvas.height);
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            drawline();
             if(sc.left_score < 5 && sc.right_score < 5)
             {
                 p.start()

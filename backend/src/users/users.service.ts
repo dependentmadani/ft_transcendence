@@ -41,51 +41,6 @@ export class UsersService {
     return user;
   }
 
-  async checkBlockedFriend(userId: number, friendId: number) {
-    const user = await this.prisma.users.findUnique({
-      where: {
-        id: userId,
-        blocked: {
-          some: {
-            id: friendId,
-          }
-        }
-      }
-    });
-    if (user) {
-      return true;
-    }
-    return false;
-  }
-
-  async friendFriends(userId:number, friendId: number) {
-    const friend = await this.prisma.users.findUnique({
-      where: {
-        id: userId,
-        friends: {
-          some: {
-            id: friendId
-          }
-        }
-      },
-    });
-
-    if (!friend) {
-      throw new UnauthorizedException("not your friend");
-    }
-
-    const friendsList = await this.prisma.users.findUnique({
-      where: {
-        id: friendId,
-      }, 
-      include: {
-        friends: true
-      }
-    })
-
-    return friendsList.friends;
-  }
-
   async searchUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
@@ -401,6 +356,7 @@ export class UsersService {
     filePath: string,
   ) {
     try {
+      // console.log('+++++++++++++++++++++++++++++++++++++++++')
       const user = await this.prisma.users.update(
         {
           where: {
@@ -424,6 +380,7 @@ export class UsersService {
     userId: number,
   ): Promise<string> {
     try {
+      // console.log('******************************************')
       const user =
         await this.prisma.users.findUnique({
           where: {

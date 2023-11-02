@@ -4,8 +4,8 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 const data = [
   { name: "Wins", value: 12, color: "#00C49F"},
-  { name: "Loses", value: 10, color: "#FF8042" },
-  { name: "Ties", value: 15, color: "#00c8fe" }
+  { name: "Loses", value: 10, color: "#F85B30" },
+  { name: "Ties", value: 0, color: "#00c8fe" }
 ];
 
 

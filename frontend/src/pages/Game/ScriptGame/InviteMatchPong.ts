@@ -9,7 +9,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let start:any = document.getElementById('ButtonStart');
         let switchMusic:any = document.getElementById('music_switch');
         let switchSound:any = document.getElementById('sound_switch');
-      
+        let ExitGame:any = document.getElementById('ExitGame');
         
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
@@ -17,6 +17,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let music = new Audio();
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
+        let ExitValue:boolean = false;
         let play_start:number = 0;
         
         let img = new Image();
@@ -52,6 +53,12 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             SoundValue = switchSound.checked;
             console.log(`||||||||| switch |||||||||${SoundValue}`)
+        });
+        
+        ExitGame.addEventListener('click', () => {
+            ExitValue = ExitGame.id;
+            socket.emit("playerDisconnect",client_id);
+            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
         
         socket.on('connect',()=>
@@ -377,6 +384,11 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         function render()
         {
 
+            if(ExitValue)
+            {
+                MusicValue = false;
+               SoundValue = false;
+            }
             if(MusicValue)
                 music.play();
             else
@@ -418,7 +430,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         // console.log("hello world!")
     }
 }
-
 
 
 // import {io} from 'socket.io-client'

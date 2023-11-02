@@ -72,9 +72,9 @@ export class NotificationController {
     //     return this.chatService.deleteAllChats()
     // }
     
-    @Delete('/:id')
-    async deleteNotification(@Param('id', ParseIntPipe) id: number) {
-        return this.notificationService.deleteNotification(id)
+    @Delete('/:notifId/:senderId/:receiverId')
+    async deleteNotification(@Param('senderId', ParseIntPipe) senderId: number, @Param('receiverId', ParseIntPipe) receiverId: number, @Param('notifId', ParseIntPipe) notifId: number) {
+        return this.notificationService.refureFriend(senderId, receiverId, notifId)
     }
 }
 

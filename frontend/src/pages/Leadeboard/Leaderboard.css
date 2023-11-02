@@ -20,24 +20,40 @@
     width: 10%;
 }
 
+.leaderboard-rank {
+    margin: 2%;
+}
+
+.leaderboard-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    /* background-color: salmon; */
+    margin: auto;
+}
+
 .player-stats {
     display: flex;
     height: 75px;
     /* background-color: rgb(85, 70, 147); */
-    background-color: #3e4aa0;
+    width: 100%;
+    background-color: #27338f;
     border-radius: 10px;
+    box-shadow: 0px 0px 4px 1px #81d1db;
+
     /* border-radius: 5px; */
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     /* color: rgba(169, 166, 166, 0.834); */
     margin: 4px;
-    box-shadow: 1px 5px 60px 0px #100a886b;
+    /* box-shadow: 1px 5px 60px 0px #100a886b; */
 }
 
-.player-stats span {
+.player-stats > * > span {
     color: rgb(237, 241, 219);
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: clamp(15px, .9vw, 30px);
     display: block;
     font-family: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -50,18 +66,23 @@
 
 .img-frame {
     position: relative;
-    height: 72px;
-    width: 72px;
-    background: #6b64f3;
+    /* height: 69px;
+    width: 69px; */
+    height: 100%;
+    width: auto;
+    aspect-ratio: 4/4;
+    background: rgb(225, 225, 225);
     border-radius: 10px;
     overflow: hidden;
-    outline: 1px solid rgb(226, 216, 216);
+    /* margin: auto; */
+    box-shadow: 0px 0px 10px 5px #108393;
 }
   
-.img-frame img {
+.img-frame > img {
     border-radius: 10px;
     height: 100%;
-    width: 100%;
+    width: auto;
+    aspect-ratio: 4/4;
     object-fit: cover;
 }
 
@@ -94,4 +115,35 @@
     .wins {
       display: none;
     }
+}
+
+.leaderboard-heading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2%;
+    height: 45px;
+    width: 100%;
+    /* border-radius: 10; */
+    /* background-color: #108393; */
+
+}
+
+
+
+.leaderboard-heading > input {
+    width: 25%;
+    max-height: 45px;
+    font-size: 0.95rem;
+    border: 2px solid #108393;
+    border-radius: 8px;
+}
+
+.leaderboard-heading > h2 {
+    font-size: clamp(10px, 4vw, 40px);
+    /* border: 2px solid #108393; */
+    font-family: 'Orbitron', sans-serif;
+    color: aqua;
+    border-radius: 8px;
+    margin-right: 5%;
 }

@@ -35,7 +35,6 @@ function Achivement () {
 
 function ProfileInfo (props: any) {
 
-    const [baseImg, setBaseImg] = useState(props.userData.avatar);
 
     useEffect(() => {
 
@@ -57,7 +56,7 @@ function ProfileInfo (props: any) {
                         <span>{props.userData.userStatus}</span>
                         <div></div>
                     </div>
-                    <img src={baseImg} onError={() => {setBaseImg('/src/imgs/user-img.png')}} alt="user-img" />
+                    <img src={props.userData.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} alt="user-img" />
                 </div>
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}

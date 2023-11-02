@@ -7,14 +7,11 @@ export const PromptPassword = ({ openForm, chatData }: any) => {
 
     const checPassword = async () => {
         if (pass.trim() !== '') {
-            // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
             const isAllowd = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
-            console.log('isAllowed', isAllowd)
             if (isAllowd !== true) {
                 const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room/pass/${chatData?._chat?.id}`, {
                 'roomPass': pass,
                 }, { withCredentials: true })
-                console.log('Pass check', res.data)
                 if (res.data === true) {
                     await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/allow/${chatData?._chat?.id}/${chatData._mainUser.id}`, {
                     'allowed': true,

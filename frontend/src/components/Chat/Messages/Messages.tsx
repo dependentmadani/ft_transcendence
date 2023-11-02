@@ -3,7 +3,6 @@ import { Message } from "./Message"
 import axios from "axios"
 
 
-interface Message {}
 
 export const Messages = ({ chatData, messages }: any) => {
 
@@ -11,9 +10,8 @@ export const Messages = ({ chatData, messages }: any) => {
   useEffect(() => {
     const checkUserPermission = async () => {
 
-      if (chatData?._chat?.type === 'room') {
+      if (chatData?._chat?.type === 'Room') {
         try {
-          // const _MAIN_USER_ = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
           const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${chatData.mainUser.id}`, { withCredentials: true })
           
           res.data[0].role === 'BANNED' || res.data[0].role === 'MUTED' ? setIsAllowed(false) : setIsAllowed(true)

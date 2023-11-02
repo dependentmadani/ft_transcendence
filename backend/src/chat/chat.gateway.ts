@@ -80,9 +80,9 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('roomMembers')
-  handleRoomMembers(client: Socket, user: Users): void {
-    console.log('Dkhol a ',user);
-    this.server.emit('members', user);
+  handleRoomMembers(client: Socket, rec: number): void {
+    // console.log('Dkhol a ',user);
+    this.server.emit('addMember', rec);
   }
 
   @SubscribeMessage('removeRoomMembers')

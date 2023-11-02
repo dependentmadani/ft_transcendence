@@ -1,59 +1,16 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faUser, faBellSlash, faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { faUser, faTableTennisPaddleBall } from '@fortawesome/free-solid-svg-icons';
+import { useState } from 'react';
 import { GameInviteForm } from './GameInviteForm';
-import { useSocket } from "@/context/socketContext";
 
-// interface User {}
+
 
 export const ChatInfos = ({ chatData }: any) => {
 
-    // const [isFriend, setIsFriend] = useState(false)
-    
 
-    // const currentUser: User = chatData?._receiver
+    
     const _receiver: User = chatData?._receiver
-    // useEffect(() => {
-    //     const getFriends = async () => {
-    //         try {
-    //             const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/mutual-friends/${currentUser?.receiver?.id}`, {withCredentials: true})
-    //             // console.log('Friends', isFriend)
 
-    //                 if (res.data.length !== 0)
-    //                     setIsFriend(true)
-    //         }
-    //         catch (err) {
-    //             console.log(`Coudn't fetch friends: `, err)
-    //         }
-    //     }
-
-    //     getFriends()
-    // }, [currentUser])
-
-
-    
-    // const muteFriend = async () => {
-    //     try {
-    //         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${currentUser?.receiver?.id}`, { withCredentials: true,})
-    //         console.log(currentUser?.receiver?.id, 'blocked!')
-    //     }
-    //     catch (err) {
-    //         console.log(`Coudn't block friend: `, err)
-    //     }
-    // }
-
-    // const unmuteFriend = async () => {
-    //     try {
-    //         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${currentUser?.receiver?.id}`, {withCredentials: true})
-    //     }
-    //     catch (err) {
-    //         console.log(`Coudn't unblock friend: `, err)
-    //     }
-    //     console.log(currentUser?.receiver?.id, 'unblocked')
-    // }
-
-    // console.log('chat info', currentUser)
     const [showForm, setShowForm] = useState(false);
 
     const openForm = () => {
@@ -63,8 +20,7 @@ export const ChatInfos = ({ chatData }: any) => {
     const closeForm = () => {
       setShowForm(false);
     };
-
-    console.log('HA LI WSALNA HAD SA3A', _receiver)
+    
 
     return (
         <div className="contactInfo">

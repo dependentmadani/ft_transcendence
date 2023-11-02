@@ -47,7 +47,7 @@ export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 export const useSocket = () => {
   const context = useContext(SocketContext);
   if (!context) {
-    throw new Error('useProfile must be used within a ProfileProvider');
+    throw new Error('useSocket must be used within a SocketProvider');
   }
   return context;
 };

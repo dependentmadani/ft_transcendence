@@ -41,8 +41,9 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
             {
                 withCredentials: true,
             });
-            chatData?._socket?.emit('roomMembers', invitedUser)
+            chatData?._socket?.emit('roomMembers', invitedUser.id)
             chatData?._socket?.emit('createRoom', {room: currentRoom, owner: invitedUser.id})
+            chatData?._socket?.emit('sortContacts')
         }
         catch (error) {
             console.log(error);

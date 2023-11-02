@@ -57,9 +57,9 @@ function Badges() {
 
         return (
             <div key={badge.id} className='badge' >
-                <img src={badge.img} alt="person-img"  className='team-img'/> 
+                <img src={badge.img} alt="person-img"  className='team-img' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /> 
                 <div className='portfolio'>
-                    <p>{badge.name}</p>
+                    <span>{badge.name}</span>
                     <div className='follow'>
                         <a href={badge.intra42}>
                             <ReactSVG src="/src/imgs/svg/42_Logo.svg" className='contact'  />
@@ -88,15 +88,15 @@ function Badges() {
 const Tools = () => {
     return (
         <div  className='tools'>
-            <ReactSVG src='/src/imgs/svg/nodejs.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/npm.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/vite.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/typescript.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/css.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/react.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/nestjs.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/prisma.svg' className='tool' />
-            <ReactSVG src='/src/imgs/svg/docker.svg' className='tool' />
+            <img src='/src/imgs/svg/nodejs.svg' className='tool' />
+            <img src='/src/imgs/svg/npm.svg' className='tool' />
+            <img src='/src/imgs/svg/vite.svg' className='tool' />
+            <img src='/src/imgs/svg/typescript.svg' className='tool' />
+            <img src='/src/imgs/svg/css.svg' className='tool' />
+            <img src='/src/imgs/svg/react-.svg' className='tool' />
+            <img src='/src/imgs/svg/nestjs.svg' className='tool' />
+            <img src='/src/imgs/svg/prisma.svg' className='tool' />
+            <img src='/src/imgs/svg/docker.svg' className='tool' />
         </div> 
     )
 }

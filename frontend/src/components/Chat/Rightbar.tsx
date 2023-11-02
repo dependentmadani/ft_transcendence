@@ -12,7 +12,6 @@ export const Rightbar = ({ chatData }: any) => {
     const checkAllow = async () => {
 
       if (chatData?._chat?.type === 'Room') {
-        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         const allwd = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
         if (allwd !== true)
           setIsAllowed(false)

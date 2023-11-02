@@ -1,66 +1,19 @@
 import './Home.css'
-import { useEffect, useState } from 'react';
-import { Link, Route, Routes, useNavigate } from "react-router-dom"
+import {  useNavigate } from "react-router-dom"
 import { useClient } from '@/context/clientContext';
-import { useSocket } from '@/context/socketContext';
-// import { Socket } from 'socket.io-client';
+import {  toast } from 'react-toastify';
 
 
 export default function Home(props:any) {
 
-    // const my_img:string = 'src/imgs/home.png'
+
     const { client, updateClient }  = useClient();
-    const {socketa} = useSocket();
     const  navigate = useNavigate();
 
-    // const [socket, setSocket] = useState<Socket>(client.socket);
-    // const { auth, updateAuth } = useAuth();
-    // const navigate = useNavigate();
-
-
-    // useEffect ( () => {
-    //     async function fetchUserData() {
-    //         try {
-    //           const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`,
-    //             { withCredentials: true, }
-    //           );
-    //           const data = response.data;
-    //           updateClient(data);
-    //           console.log('data : ')
-    //           console.log(data)
-    //           console.log('client data : ')
-    //           console.log(client);
-      
-    //         } catch (error) {
-    //           console.error('Error fetching data: ', error);
-    //         }
-    //       }
-      
-    //       fetchUserData();
-    // }, [])
 
     console.log('home')
     console.log(client)
-    console.log(socketa)
     
-    
-    // const handleLogout = async() => {
-    //     try {
-    //         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
-    //             {withCredentials: true,}
-    //         )
-    //         // let tmp = client;
-    //         // client.clean();
-    //         // console.log("tmp : ")
-    //         // console.log(tmp.clean)
-    //         // socket.disconnect();
-    //         // updateClient({...(client.clean)});
-    //     } catch (error) {
-    //         console.error('Error logout: ', error);
-    //     }
-    //     await updateClient({...(client.clean)});
-    //     // navigate('/login')
-    // }
 
     const handelStart = () => {
 
@@ -70,6 +23,7 @@ export default function Home(props:any) {
         else
             navigate('/game');
     }
+    toast.dismiss();
 
     return (
             <main className='main-home' >

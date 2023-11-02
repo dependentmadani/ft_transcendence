@@ -5,17 +5,7 @@ import axios from 'axios';
 import { RoomMembers } from './RoomMembers';
 import { RoomFormInvite } from './RoomFormIvite';
 
-interface RoomUsers {
-    roomId: number,
-    userId: number,
-    role: string
-}
 
-interface Room {
-    id: number,
-    roomName: string,
-    roomType: string,
-}
 
 export const RoomSettings = ({ chatData, onClose }: any) => {
 
@@ -34,21 +24,9 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                 setCurrentUserIsAdmin(true)
             else if (currentRoom.protection === 'Private')
             {
-                // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-                // const currentUserId: number = chatData._mainUser.id
                 const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
-
                 if (isAdmin)
                     setCurrentUserIsAdmin(true)
-
-                // let t: number[] = []
-                    
-                // roomAdmins.data.map((roomUser: RoomUsers) => (
-                //     t.push(roomUser.userId)
-                // ))
-                
-                // for (let i=0; i<t.length; i++)
-                //     if (t[i] === currentUserId)
             }
         }
 
@@ -101,7 +79,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     }, [onClose]);
 
 
-    console.log('Ayoo', currentUserIsAdmin)
+    
 
     return (
         <div className="overlay">

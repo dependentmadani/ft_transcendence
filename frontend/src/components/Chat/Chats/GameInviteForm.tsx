@@ -50,6 +50,7 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
 
 
     const notificationListener = async (notif: any) => {
+        console.log('TTTTTTTTTTTTTTTTTNNNNNNNTTTTTT', notif)
         alert(notif.receiver.username + ' accepted you invitation to play a ' + notif.mode + ' pong game')
         
         // Redirect Invitation sender (notif.receiver.id) here
@@ -58,26 +59,24 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
     
     useEffect(() => { 
 
-      socketa?.on('receiveNotification', notificationListener);
+      socketa?.on('notificationAccepted', notificationListener);
 
         return () => {
-          socketa?.off('receiveNotification');
+          socketa?.off('notificationAccepted');
         };
     }, [socketa, notificationListener]);
 
 
     const sendGameInvite = async (mode: string) => {
         try {
-            
-            
-            
+
             // They must not be friends
-            const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${_receiver.id}`, {withCredentials: true})).data;
-            console.log('isFriend', isFriend)
+            // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${_receiver.id}`, {withCredentials: true})).data;
+            // console.log('isFriend', isFriend)
             // const isReqFound = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/isFound/${mainUser.id}/${user.id}`, {withCredentials: true})).data;
-            if (/*!isReqFound &&*/ !isFriend) {
+            // if (/*!isReqFound &&*/ !isFriend) {
                 // console.log('YOW YOW', chatData?._receiver?.id, mainUser.id)
-                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
+                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
                     'type': 'GAME',
                     'read': false,
                     'receiverId': _receiver?.id,
@@ -86,10 +85,10 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
                 }, {
                 withCredentials: true
                 })
-                // console.log('WE TRYNNA PLAY MR ', user.username, res.data)
-            }
+                console.log('WE TRYNNA PLAY MR ', res.data)
+            // }
 
-            // chatData?._socket.emit('notification', { notif: res.data });
+            socketa.emit('notification', { notif: res.data });
         }
         catch (err) {
             console.log(`coudn't create notification: `, err)
