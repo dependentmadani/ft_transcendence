@@ -8,8 +8,7 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/database
-      # device: /$HOME/goinfre/data/database
-      # device: /home/mbadaoui/data/database
+
   backend_volume:
     driver: local
     name: backend_volume
@@ -17,15 +16,15 @@ volumes:
       type: none
       o: bind
       device: /tmp/data/backend
-      # device: /$HOME/goinfre/data/backend
-      # device: /home/mbadaoui/data/backend
+
   # frontend_volume:
   #   driver: local
   #   name: frontend_volume
   #   driver_opts:
   #     type: none
   #     o: bind
-  #     device: $HOME/goinfre/data/frontend
+  #     device: /tmp/data/frontend
+      # device: $HOME/goinfre/data/frontend
 
 networks:
   hadnetwork:
@@ -38,8 +37,6 @@ services:
       - .env
     ports:
       - 5432:5432
-
-        
     # networks:
     #   - hadnetwork
     # volumes:

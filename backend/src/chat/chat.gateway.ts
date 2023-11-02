@@ -1,191 +1,77 @@
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import { log } from 'console';
+// import { Server } from 'http';
+import { array } from 'joi';
 import { Server, Socket } from 'socket.io';
-import { Message, Users, Room } from '@prisma/client';
-import { number } from 'joi';
-import * as cookie from 'cookie';
-import * as jwt from 'jsonwebtoken';
-import { UnauthorizedException } from '@nestjs/common';
-import { PrismaService } from 'src/prisma/prisma.service';
-import { JwtService } from '@nestjs/jwt';
 
-@WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
-export class ChatGateway {
+ //@WebSocketGateway()
+@WebSocketGateway({ cors: { origin: "http://localhost:5173" } })
+export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  socketMap: Map<number, Socket[]>;
+  private onlineUsers: Map<string, string> = new Map()
 
-  constructor( private prismaService: PrismaService, private jwtService: JwtService ) {}
-
-  // async handleConnection(client: Socket) {
-  //   try {
-  //     // const token: any = client.handshake.query.token;
-  //     const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoiYWVsLWFzcmlAc3R1ZGVudC4xMzM3Lm1hIiwiaWF0IjoxNjk4MjUxMDMxLCJleHAiOjE2OTgyNTE5MzF9._sNaE3xMRVTCn-Xls9E4dj07f8CtncUUcpqsvHAYhzo';
-  //     if (!token) {
-  //       console.log('Aloooo', token)
-  //       client.disconnect(true);
-  //       console.log('Unauthorized connection: Missing token');
-  //       return ;
-  //     }
-      
-  //     const payload = await this.jwtService.verify(token);
-  //     if (!payload) {
-  //       client.disconnect(true);
-  //       return ;
-  //     }
-  //     const user = await this.prismaService.users.findFirst({
-  //       where: {
-  //         id: payload.id,
-  //       },
-  //     });
-  //     if (!this.socketMap.has(user.id)) {
-  //       this.socketMap.set(user.id, [client]);
-  //     }
-  //     else {
-  //       this.socketMap.get(user.id).push(client);
-  //     }
-  //     await this.prismaService.users.update({
-  //       where: {
-  //         id: user.id,
-  //       },
-  //       data: {
-  //         userStatus: "ONLINE",
-  //       },
-  //     });
-  //   }
-  //   catch ( e ) {
-  //     throw new UnauthorizedException('Something wrong in handling connection!');
-  //   }
+  // handleConnection(client: Socket) {
+  //   console.log(`${client.id} connected..`);
+  //   this.onlineUsers.set(client.id, 'a_user')
+  //   this.updateOnlineUsers
   // }
-
-  // private readonly onlineUsers: Map<number, Socket> = new Map<number, Socket>();
-
-  private userSocketMap = new Map<number, string>();
-
-  // private readonly connectedUsers: Map<number, Socket> = new Map<number, Socket>();
-
-  // private getUserIdSomehow(client: Socket): string | null {
-  //   const token: any = client.handshake.query.token;
-  //   if (!token) {
-  //     return null;
-  //   }
-  
-  //   try {
-  //     const decodedToken: any = jwt.verify(token, 'tzadina b wahed l9owa');
-  //     return decodedToken.userId;
-  //   } catch (error) {
-  //     console.error('Error verifying token:', error);
-  //     return null;
-  //   }
-  // }
-
-  handleConnection(client: Socket): void {
-
-    client.on('someEvent', (userId: number) => {
-      console.log('Received data from client:', userId);
-
-      // Send a message back to the client
-      // client.emit('messageFromServer', 'Hello from the server!');
-      this.userSocketMap[userId] = client.id;
-      console.log('map of users', this.userSocketMap);
-    });
-    // const userId = this.getUserIdSomehow(client);
+  handleConnection(client: Socket) {
+    console.log(`${client.id} connected..`);
+    // You can store user ID associated with socket ID
+    this.onlineUsers.set(client.id, 'user123');
+    this.updateOnlineUsers();
   }
 
-  // @SubscribeMessage('connect')
-  // handleSetup(client: Socket, userData: Users): void {
-  //   const userId: number = userData.id;
+  handleDisconnect(client: Socket) {
+    console.log(`${client.id} disconnected..`);
+  }
 
-  //   if (!this.connectedUsers.has(userId)) {
-  //     this.connectedUsers.set(userId, client);
-  //     console.log(`User ${userId} connected`);
-  //   }
-  //   console.log('alo?')
-  //   client.emit('connect', userId);
+  // @SubscribeMessage('sendMessage')
+  // newMessage(@MessageBody() data: string, client: any, payload: any) {
+  //   // this.server.emit('receivedMessage', data);
+  //   this.server.emit('receiveMessage', data)
+  // }
+
+  @SubscribeMessage('setup')
+  setup(client: Socket , userData: any) {
+    // this.server.emit('receivedMessage', data);
+    client.join('1')
+    console.log(`user ${'1'}: joined the server..`)
+    client.emit('connected')
+  }
+  
+  @SubscribeMessage('joinChat')
+  joinChat(client: Socket, room: any) {
+    // this.server.emit('receivedMessage', data);
+    client.join(room)
+    console.log(`user ${client.id}: joined room ${room}`)
+  }
+
+  @SubscribeMessage('newMessage')
+  newMessage(client: Socket, newMessageReceived: any) {
+    // const chat = newMessageReceived.chatId
+    // this.server.emit('receivedMessage', data);
+    this.server.emit('message received', newMessageReceived)
+    // console.log(`user ${client.id}: joined room ${room}`)
+  }
+
+  updateOnlineUsers() {
+    const onlineUserIds = Array.from(this.onlineUsers.values());
+    this.server.emit('onlineUsers', onlineUserIds);
+  }
+
+  // @SubscribeMessage('sendMessage')
+  // handleMessage(client: any, message: string) {
+  //   // Save message to database and emit to the room
+  //   this.server.to('2').emit('message received', message);
   // }
 
   // @SubscribeMessage('message')
-  // handleClickMessage(client: Socket, message: Message): void {
-  //   console.log('sent message', message);
-  //   this.server.emit('sendMessage', message);
-  //   // this.server.emit('sortChats')
+  // handleMessage(client: any, payload: any) {
+  //   // Handle and process the received message
+  //   // You can save it to the database and then emit it back to the client(s)
+  //   this.server.emit('newMessage', payload);
   // }
-
-  @SubscribeMessage('message')
-  handleMessage(@MessageBody() data: any): void {
-    const { sender, rec, message } = data;
-    // Send the message to the recipient's socket
-    console.log('Yooo', sender, rec, message)
-    this.server.to(this.userSocketMap[sender]).emit('sendMessage', message, rec);
-    this.server.to(this.userSocketMap[rec]).emit('sendMessage', message, rec);
-  }
-
-  @SubscribeMessage('sortContacts')
-  handleSortContacts(@MessageBody() data: any): void {
-    const { sender, rec, contact } = data;
-    // Send the message to the recipient's socket
-    console.log('Sort', contact , ' for ', sender , ' and ', rec)
-    this.server.to(this.userSocketMap[sender]).emit('sortChats', contact);
-    this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
-  }
-
-  @SubscribeMessage('roomMessage')
-  handleRoomMessage(@MessageBody() data: any): void {
-    const { message } = data;
-    this.server.emit('sendRoomMessage', message);
-  }
-
-  @SubscribeMessage('roomMembers')
-  handleRoomMembers(client: Socket, user: Users): void {
-    console.log('Dkhol a ',user);
-    this.server.emit('members', user);
-  }
-
-  @SubscribeMessage('removeRoomMembers')
-  handleRemoveRoomMembers(client: Socket, user: Users): void {
-    console.log('Khrroj 3liya ',user);
-    this.server.emit('removeMembers', user);
-  }
-
-  @SubscribeMessage('createRoom')
-  handleRoomCreation(client: Socket, data: any): void {
-    const { room, owner } = data
-    console.log(owner, 'WANTS TO CREATE ROOM', room)
-    this.server.to(this.userSocketMap[owner]).emit('newRoom', room, owner);
-  }
-
-  @SubscribeMessage('leaveRoom')
-  handleRoomLeft(client: Socket, data: any): void {
-    const { roomId, owner } = data
-    console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
-    this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
-  }
-
-  // @SubscribeMessage('sortChats')
-  // handleRoomLeft(client: Socket, data: any): void {
-  //   const { roomId, owner } = data
-  //   console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
-  //   this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
-  // }
-
-
-  // handleDisconnect(client: Socket): void {
-  //   const disconnectedUserId = [...this.onlineUsers.entries()]
-  //     .find(([key, value]) => value === client)?.[0];
-
-  //   if (disconnectedUserId) {
-  //     this.onlineUsers.delete(disconnectedUserId);
-  //     console.log(`User ${disconnectedUserId} disconnected`);
-  //   }
-  // }
-
-  @SubscribeMessage('notification')
-  handleNotification(@MessageBody() data: any): void {
-    const { notif } = data;
-    // Send the message to the recipient's socket
-    console.log('Yooo', notif)
-    // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
-    this.server.to(this.userSocketMap[notif.receiverId]).emit('receiveNotification', notif);
-  }
-
 }

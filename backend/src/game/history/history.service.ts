@@ -2,10 +2,12 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { historyDto } from './dto';
 import { error } from 'console';
+import { GameService } from '../game.service';
 
 @Injectable()
 export class HistoryService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService,
+        private game: GameService) {}
 
     async getLatestGames(userId: number) {
         try {
@@ -48,6 +50,14 @@ export class HistoryService {
                     oppScore: body.opp_score
                 }
             });
+            if (newGameAdded.myScore > newGameAdded.oppScore) {
+                await this.game.updateInfoGame(newGameAdded.myUserId, true);
+                await this.game.updateInfoGame(newGameAdded.oppUserId, false);
+            }
+            else {
+                await this.game.updateInfoGame(newGameAdded.myUserId, false);
+                await this.game.updateInfoGame(newGameAdded.oppUserId, true);
+            }
             return 'The history game added successfully';
         } catch (err) {
             console.log(`Something wrong happend with database${err}`);

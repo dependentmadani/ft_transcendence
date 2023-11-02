@@ -47,19 +47,6 @@ export class NotificationsService {
     if (senderId == receiverInfo.id) {
       throw new UnauthorizedException("Cannot send add friend request to yourself!");
     }
-    // const alreadyFriend = await this.prisma.users.findFirst({
-    //   where: {
-    //     id: senderId,
-    //     friends: {
-    //       some: {
-    //         id: receiverInfo.id,
-    //       }
-    //     }
-    //   }
-    // });
-    // if (alreadyFriend) {
-    //   throw new UnauthorizedException("already friends!");
-    // }
 
     const createNotif = await this.prisma.notifications.create({
       data: {
@@ -511,10 +498,10 @@ export class NotificationsService {
     }
     const pendingFriend = await this.prisma.users.findFirst({
       where: {
-        id: userId,
+        id: friend.id,
         pendingFriendReq: {
           some: {
-            id: friend.id,
+            id: userId,
           }
         }
       },

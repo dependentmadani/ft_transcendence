@@ -65,14 +65,8 @@ export class RoomController {
     @UseInterceptors(FileInterceptor('roomAvatar', storage))
     createRoom(@Body('roomName') roomName: string,
                 @UploadedFile() file: Express.Multer.File,
-                @Body('roomType') roomType: string,
-                @Body('roomPass') roomPass: string) {
-        return this.roomService.createRoom(roomName, file.filename, roomType, roomPass)
-    }
-
-    @Post('pass/:id')
-    async checkRoomAccess(@Param('id', ParseIntPipe) roomId: number, @Body('roomPass') roomPass: string): Promise<boolean> {
-        return this.roomService.checkRoomAccess(roomId, roomPass)
+                @Body('roomType') roomType: string) {
+        return this.roomService.createRoom(roomName, file.filename, roomType)
     }
 
     @Patch('/:roomId')
@@ -80,9 +74,8 @@ export class RoomController {
     async updateRoom(@Param('roomId', ParseIntPipe) roomId: number,
                     @Body('roomName') roomName: string,
                     @UploadedFile() file,
-                    @Body('roomType') roomType: string,
-                    @Body('roomPass') roomPass: string) {
-        return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType, roomPass)
+                    @Body('roomType') roomType: string) {
+        return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType)
     }
 
     @Delete()

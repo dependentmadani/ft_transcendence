@@ -36,6 +36,7 @@ export class UsersService {
         },
         include: {
           friends: true,
+          blocked: true,
         }
       });
     return user;
@@ -44,7 +45,7 @@ export class UsersService {
   async getAchievements(userId: number) {
     const games = await this.prisma.game.findUnique({
       where: {
-        id: userId,
+        userId: userId,
       }
     });
     const historyGames = await this.prisma.history.findMany({
@@ -77,9 +78,33 @@ export class UsersService {
     historyGames.forEach((obj) => {
       uniqueIds.add(obj.oppUserId);
     });
-
     if (uniqueIds.size >= 3) {
       result.challenger = true;
+    }
+    const akinator = await this.prisma.users.findUnique({
+      where: {
+        username: 'akinator',
+      }
+    });
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        friends: true,
+      }
+    });
+    historyGames.forEach((obj) => {
+      if (obj.oppUserId === akinator.id) {
+        if (obj.myScore > obj.oppScore) {
+          result.ai_crusher = true;
+          console.log('result', result);
+          return true;
+        }
+      }
+    });
+    if (user.friends.length >= 5) {
+      result.introuvert = true;
     }
 
     return result;

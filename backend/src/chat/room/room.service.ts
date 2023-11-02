@@ -1,15 +1,10 @@
-import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Room, Users } from '@prisma/client'
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class RoomService {
     constructor(private prisma: PrismaService) {}
-
-    async hashData(pass: string) {
-        return await bcrypt.hash(pass, 10);
-    }
 
     async getRooms(): Promise<Room[]> {
         try {
@@ -43,33 +38,19 @@ export class RoomService {
         }
     }
 
-    async createRoom(roomName: string, roomAvatar: string, roomType: string, roomPass: string) {
+    async createRoom(roomName: string, roomAvatar: string, roomType: string) {
         return await this.prisma.room.create({
             data: {
                 roomName: roomName,
                 roomAvatar: roomAvatar,
                 roomType: roomType,
-                roomPass: await this.hashData(roomPass),
                 // roomMembers: [roomUser],
                 // role: role//'ADMIN',
             }
         })
     }
 
-    async checkRoomAccess(roomId: number, roomPass: string): Promise<boolean> {
-        const room = await this.prisma.room.findUnique({
-            where: { id: roomId }
-        })
-        if (room) {
-            console.log('Pass ', roomPass, room.roomPass)
-            const passCheck = await bcrypt.compare(roomPass, room.roomPass)
-            if (passCheck)
-                return true
-        }
-        return false
-    }
-
-    async updateRoom(roomId: number, roomName: string, roomAvatar: string, roomType: string, roomPass: string) {
+    async updateRoom(roomId: number, roomName: string, roomAvatar: string, roomType: string) {
         try {
             return await this.prisma.room.update({
                 where: {
@@ -79,7 +60,6 @@ export class RoomService {
                     roomName: roomName,
                     roomAvatar: roomAvatar,
                     roomType: roomType,
-                    roomPass: await this.hashData(roomPass),
                 }
             });
         }

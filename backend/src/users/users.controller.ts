@@ -74,7 +74,8 @@ export class UsersController {
 
   @Get('achievements')
   async UserAchievements(@Req() req: Request) {
-    
+      const user = req.user;
+      return this.userService.getAchievements(user['sub']);
   }
 
   @Post('add-friend/:id')
