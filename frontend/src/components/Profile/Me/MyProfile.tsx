@@ -175,13 +175,13 @@ function MyProfile () {
 
     console.log('MyProfile ')
     const {client, updateClient} = useClient();
-    // const [listFriend, setListFriend] = useState();
+    const [listFriend, setListFriend] = useState();
     const [popSettings, setPopSettings] = useSetting();
 
     useEffect(() => {
     	async function fetchData () {
 			try {
-				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true } );
+				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true } );
                 await updateClient({ ...client, ...response.data, signedIn: true });
             } catch (error) {
 				console.error('Error fetching data: ', error);
@@ -204,14 +204,14 @@ function MyProfile () {
     }, [popSettings]);
 
 
-    console.log('-----------------------------------------', popSettings)
+    console.log('-----------------------------------------', client)
     return (
         <>
             <div className='profile'>
                 <img id='settings'  src="/src/imgs/svg/setting.svg" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
                 <div className='profile-col-1'>
                     <ProfileInfo />
-                    <Friends />
+                    <Friends friendsData={client.friends} />
                 </div>
                 <div className='profile-col-2'>
                     <History />

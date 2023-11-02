@@ -55,7 +55,7 @@ export const Input = ({ chatData }: any) => {
       
       const msg: any = await createNewMessage(inputText)
       chatData?._socket.emit('message', { sender: chatData._mainUser.id, rec: chatData?._receiver?.id || null, message: msg });
-      setInputText('')
+      setInputText('') 
     }
   }
   
@@ -67,6 +67,7 @@ export const Input = ({ chatData }: any) => {
 
         const msg: any = await createNewMessage(inputText)
         chatData?._socket.emit('message', { sender: chatData._mainUser.id, rec: chatData?._receiver?.id || null, message: msg });
+
         setInputText('')
       }
     }

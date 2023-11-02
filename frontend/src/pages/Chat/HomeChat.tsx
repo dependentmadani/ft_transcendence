@@ -114,7 +114,8 @@ export const HomeChat = () => {
       setMessages([...messages, message])
     else if (message.type === 'Room' && (chatData?._chat?.id === message.msgRoomId) && messages.find(m => m.messageId === message.messageId) === undefined)
       setMessages([...messages, message])
-    // chatData?._socket?.emit('sortChats')
+    chatData?._socket?.emit('sortContacts')
+    //add l3iba lhmra.........
   }
 
  

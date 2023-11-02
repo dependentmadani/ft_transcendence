@@ -7,16 +7,18 @@ import { useClient } from '@/context/clientContext';
 function Friends_list(props:any) {
 
     let friends;
-    const {client} = useClient();
+    // const {client} = useClient();
     const navigate = useNavigate();
-        // console.log('hna : ', props.friendData)
+        console.log('hna : ', props.friendData)
         console.log('target : ', props.target)
-	if (!client.friends )
-		return (<img id='no_friend' src='/src/imgs/svg/eat.svg' />)
+    // console.log('********', client)
+
+	if (!props.friendsData)
+		return (<span id='no-users'> No friends .... </span>)
 
     if (!props.target) {
         console.log('natija 1: ')
-        friends =	client.friends.map(friend => {
+        friends =	props.friendsData.map(friend => {
 
             let statusColor = '';
             if (friend.userStatus === 'ONLINE') 
@@ -38,7 +40,7 @@ function Friends_list(props:any) {
     }
     else {
         console.log('natija 2: ')
-        friends =	client.friends.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
+        friends =	props.friendsData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
         .map(friend => {
 
             let statusColor = '';
@@ -63,13 +65,14 @@ function Friends_list(props:any) {
     return (friends)
 }
 
-function Friends () {
+function Friends (props:any) {
 
     // let friendData = props.friendData;
     const [searchOpen, setSearchOpen] = useState(false);
     const [target, setTarget] = useState('');
     const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
     
+
 
     const my_search = document.querySelector('.search-input') as HTMLInputElement
     const input = document.getElementById('search');
@@ -99,6 +102,8 @@ function Friends () {
         }
     }
 
+    console.log('friends : ', props.friendsData)
+
     return (
         <div className='user-friends'>
             <div className='search-bar'>
@@ -114,7 +119,7 @@ function Friends () {
                 <span>Friends </span>
             </div>
             <div className='friends-list'>
-                <Friends_list target={target} />
+                <Friends_list friendsData={props.friendsData} target={target} />
             </div>
         </div>
     )

@@ -91,9 +91,12 @@
 .play-notific > img {
     position: relative;
     height: 100%;
+    aspect-ratio: 4/4;
     border-radius: 5px;
     background-color: black;
     z-index: 10;
+    object-fit: cover;
+    
 }
 
 
@@ -112,9 +115,10 @@
 
 #notific-title{
     position: absolute;
-    left: 25%;
+    left: 20%;
     bottom: 4%;
-    max-width: 100px;
+    width: 60%;
+    /* max-width: 100px; */
     padding: 0 .5rem;
     text-align: center;
     text-overflow: ellipsis;

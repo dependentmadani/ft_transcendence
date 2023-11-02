@@ -113,13 +113,21 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
     // fetchChats()
     const fetchContacts = async () => {
-      let cs: Contact[] = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-contacts`, {withCredentials: true})).data
-      console.log('Contacts', cs)
-      setContacts(cs)
+      setContacts((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-contacts`, {withCredentials: true})).data)
     }
+
+    chatData._socket?.on('sortingContacts', async () => {
+      setContacts((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-contacts`, {withCredentials: true})).data)
+    })
 
     fetchContacts()
   }, [])
+
+  useEffect(() => {
+    chatData._socket?.on('sortingContacts', async () => {
+      setContacts((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-contacts`, {withCredentials: true})).data)
+    })
+  }, [ chatData._socket ]) 
 
   console.log('Contacts', contacts)
   
@@ -286,58 +294,58 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
 
 
-    const roomListener = (room: Room, owner: number) => {
-      if (newRooms.find(r => r.id === room.id) === undefined && chatData?.mainUser?.id == owner) {
-        // setContacts([...contacts, room])
-        const newRoom: Room = {
-          id: room.id,
-          roomName: room.roomName,
-          roomAvatar: room.roomAvatar,
-          roomType: room.roomType,
-          // latestMessageDate: 'latestMessageDate',
-          // latestMessageContent: 'latestMessageContent',
-          type: 'room',
-          roomPass: room.roomPass,
-        };
-        setNewRooms([...newRooms, newRoom])
-      }
-    }
+    // const roomListener = (room: Room, owner: number) => {
+    //   if (newRooms.find(r => r.id === room.id) === undefined && chatData?.mainUser?.id == owner) {
+    //     // setContacts([...contacts, room])
+    //     const newRoom: Room = {
+    //       id: room.id,
+    //       roomName: room.roomName,
+    //       roomAvatar: room.roomAvatar,
+    //       roomType: room.roomType,
+    //       // latestMessageDate: 'latestMessageDate',
+    //       // latestMessageContent: 'latestMessageContent',
+    //       type: 'room',
+    //       roomPass: room.roomPass,
+    //     };
+    //     setNewRooms([...newRooms, newRoom])
+    //   }
+    // }
 
-    const leaveRoomListener = (roomId: number, owner: number) => {
-      console.log('l akh m3ana>', roomId, owner)
-      if (newRooms.find(r => r.id === roomId) !== undefined && chatData?.mainUser?.id === owner) {
-        setNewRooms(prevMembers => prevMembers.filter(r => r.id !== roomId))
-      }
-    }
-  
-  
-    // const contactsSorting = async () => {
-    //   const allChats: any = chats || [];
-    //   const allRooms: any = newRooms || [];
-
-    //   const _contacts = allChats.concat(allRooms);
-      
-    //   // _contacts.sort((a: Chat, b: Chat) => {
-    //   //   const dateA: any = new Date(a.latestMessageDate);
-    //   //   const dateB: any = new Date(b.latestMessageDate);
-    //   //   return dateB - dateA;
-    //   // });
-    
-    //   setContacts(_contacts);
-
+    // const leaveRoomListener = (roomId: number, owner: number) => {
+    //   console.log('l akh m3ana>', roomId, owner)
+    //   if (newRooms.find(r => r.id === roomId) !== undefined && chatData?.mainUser?.id === owner) {
+    //     setNewRooms(prevMembers => prevMembers.filter(r => r.id !== roomId))
+    //   }
     // }
   
-    useEffect(() => {
-      
-      chatData?._socket?.on('newRoom', roomListener);
-      chatData?._socket?.on('leavingRoom', leaveRoomListener);
-      // chatData?._socket?.on('sortChats', contactsSorting);
   
-        return () => {
-          chatData?._socket?.off('newRoom');
-          chatData?._socket?.off('leavingRoom');
-        };
-    }, [roomListener, leaveRoomListener]);
+    // // const contactsSorting = async () => {
+    // //   const allChats: any = chats || [];
+    // //   const allRooms: any = newRooms || [];
+
+    // //   const _contacts = allChats.concat(allRooms);
+      
+    // //   // _contacts.sort((a: Chat, b: Chat) => {
+    // //   //   const dateA: any = new Date(a.latestMessageDate);
+    // //   //   const dateB: any = new Date(b.latestMessageDate);
+    // //   //   return dateB - dateA;
+    // //   // });
+    
+    // //   setContacts(_contacts);
+
+    // // }
+  
+    // useEffect(() => {
+      
+    //   chatData?._socket?.on('newRoom', roomListener);
+    //   chatData?._socket?.on('leavingRoom', leaveRoomListener);
+    //   // chatData?._socket?.on('sortChats', contactsSorting);
+  
+    //     return () => {
+    //       chatData?._socket?.off('newRoom');
+    //       chatData?._socket?.off('leavingRoom');
+    //     };
+    // }, [roomListener, leaveRoomListener]);
 
 
 

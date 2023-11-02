@@ -7,11 +7,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 // import My from '@/imgs/add-friend.svg'
 import { ReactSVG } from "react-svg";
-
+import { useSocket } from '@/context/socketContext';
 
 function ProfileInfo (props: any) {
 
     const [baseImg, setBaseImg] = useState(props.userData.avatar);
+    const {socketa} = useSocket();
 
     useEffect(() => {
 
@@ -24,6 +25,23 @@ function ProfileInfo (props: any) {
             statu.style.background = '#15a3e9'
 
     }, [])
+
+    const sendFriendRequest = async (user: User) => {
+        const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+        
+            const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
+
+                'type': 'FRIEND',
+                'read': false,
+                'socketId': 'test123',
+                'receiverId': user?.id,
+                'senderId': mainUser?.id,
+            }, {
+            withCredentials: true
+            })
+            console.log('WE TRYNNA ADD MR ', user.username, res)
+            socketa.emit('notification', { notif: res.data });
+    }
 
     return (
         <div className='profile-info1'>
@@ -42,7 +60,7 @@ function ProfileInfo (props: any) {
                     <div className='profile-rank1'> 5 </div>
                 </div>
                 <div className='profile-buttons'>
-                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" />
+                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => sendFriendRequest(props.userData)} />
                     <ReactSVG src='/src/imgs/svg/play-game.svg' className="play-game" />
                 </div>
             </div>

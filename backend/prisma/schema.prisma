@@ -87,17 +87,19 @@ model Notifications {
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
   id              Int         @id @default(autoincrement())
-  title           String
-  description     String?
-  icon            String?
+  // title           String
+  // description     String?
+  // icon            String?
   type            NotificationType
   read            Boolean     @default(false)
-  socketId        String
+  // socketId        String
   senderUser      Users       @relation("senderNotification", fields: [senderId], references: [id])
   senderId        Int
   receiverUser    Users       @relation("receiverNotification", fields: [receiverId], references: [id])
   receiverId      Int
+  mode            String?
 }
+
 
 model Chat {
   chatId   Int @id @default(autoincrement())

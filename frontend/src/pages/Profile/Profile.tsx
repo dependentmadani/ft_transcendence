@@ -26,17 +26,15 @@ function Profile() {
             setData(res.data);
             setProfile('Friend');
           } else {
-            try {
               const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, { withCredentials: true });
               console.log(res.data);
               if (res.data.length) {
                 setData(res.data);
                 setProfile('NotFriend');
               }
-            } catch (error) {
-              console.error('Error fetching data: ', error);
-            }
           }
+
+          
         } catch (error) {
           console.error('Error fetching data: ', error);
         }

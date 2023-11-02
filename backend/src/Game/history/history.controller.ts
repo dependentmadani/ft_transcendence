@@ -35,6 +35,7 @@ export class HistoryController {
     async addResultGame(@Req() req: Request, 
             @Body() body: historyDto) {
         const user = req.user;
+        return await this.history.createResultGame(user['sub'], body);
     }
 
 }

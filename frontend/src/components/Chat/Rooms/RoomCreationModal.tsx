@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-// interface User {}
 
 
 export const RoomCreationModal = ({ onClose, chatData }: any) => {
@@ -54,13 +53,11 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 
-                // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-                chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
+                // chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
 
                 if (response.data) {
                     const roomId: number = response.data.id
                     try {
-                        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
                         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                             roomId: roomId,
                             userId: chatData._mainUser.id,

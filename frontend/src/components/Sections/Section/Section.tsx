@@ -21,14 +21,15 @@ const Test = () => {
 
 const InviteGame = () => {
 
-    //check data of ids of players
-    // const [_game] = useGame();
+    // check data of ids of players
+    const [_game] = useGame();
 
+    console.log('game :::::::::: ', _game)
 
-    // if (_game.mode === 'classic')
-        return <InviteClassic ProfileID1={1} ProfileID2={2} />
-    // else if (_game.mode === 'tennis')
-    //     return <InviteTennis ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
+    if (_game.mode === 'classic')
+        return <InviteClassic ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
+    else if (_game.mode === 'tennis')
+        return <InviteTennis ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
 }   
 
 

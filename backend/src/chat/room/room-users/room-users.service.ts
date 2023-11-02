@@ -133,10 +133,13 @@ export class RoomUsersService {
                     ]
                 }
             })
+            if (roomUser.length !== 1)
+                return false
             return roomUser[0].allowed
         }
         catch (err) {
             console.error(`Couldn't find users in this room: ${err}`)
+            return false
         }
     }
 
@@ -275,7 +278,7 @@ export class RoomUsersService {
         })
         // It works but at what cost
         console.log('HAIYA', roomUsers, roomId, userId)
-        if (roomUsers) {
+        if (roomUsers.length === 1) {
             return await this.prisma.roomUsers.deleteMany({
                 where: {
                     id: roomUsers[0].id

@@ -69,7 +69,14 @@ export class UsersController {
       await this.userService.findUserById(
         req.user['sub'],
         );
+        console.log('users', user)
         return user;
+  }
+
+  @Get('achievements')
+  async UserAchievements(@Req() req: Request) {
+      const user = req.user;
+      return this.userService.getAchievements(user['sub']);
   }
 
   @Post('add-friend/:id')
@@ -79,7 +86,8 @@ export class UsersController {
     @Res() res: Response)  {
       const user = await this.userService.findUserById(req.user['sub']);
       const friend = await this.userService.addFriend(user.id, friendId);
-      return res.send(friend);
+      // return res.send(friend);
+      return friend
     }
 
   @Post('block-friend/:id')
@@ -103,7 +111,7 @@ export class UsersController {
   }
 
   @Get('mutual-friends/:id')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   async mutualFriends(@Param('id', ParseIntPipe) friendId: number,
   @Req() req:Request,
   @Res() res: Response) {
@@ -159,6 +167,21 @@ export class UsersController {
     );
   }
 
+  @Get('blocked-friend/:id')
+  @HttpCode(HttpStatus.OK)
+  async checkBlockedFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.checkBlockedFriend(req.user['sub'], friendId);
+  }
+
+  @Get('friend-friends/:id')
+  async myFriendFriends(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.friendFriends(user.id, friendId);
+  }
+
   @Post('/:id/infos')
   @UseInterceptors(
     FileInterceptor('avatar', storage),
@@ -168,12 +191,6 @@ export class UsersController {
     @Param('id', ParseIntPipe) userId: number,
     @UploadedFile() file,
   ) {
-    console.log(req.user);
-    // await this.userService.updateUser(
-    //   req.user['sub'],
-    //   req.user,
-    //   userInfo,
-    // );
     if (!file) {
       console.log(process.cwd());
       throw new UnauthorizedException(

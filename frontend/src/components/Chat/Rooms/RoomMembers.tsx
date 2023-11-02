@@ -43,7 +43,7 @@ export const RoomMembers = ({ chatData }: any) => {
         const getRoomMembers = async () => {
             try {
                 setRoomMembers((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/Room/${currentRoom.id}`, {withCredentials: true})).data)
-                setMainUserRole((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData._mainUser.id}/${currentRoom.id}`, {withCredentials: true})).data)
+                setMainUserRole((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data)
             }
             catch (err) {
                 console.log('Something went wrong :<', err)
@@ -54,9 +54,9 @@ export const RoomMembers = ({ chatData }: any) => {
     }, [])
 
 
-    const kickMember = async (user: User) => {
+    const kickMember = async (user: any) => {
         try {
-            await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, { withCredentials: true, });
+            await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.userId}`, { withCredentials: true, });
             chatData?._socket?.emit('leaveRoom', {roomId: currentRoom.id, owner: user.id})
 
 
@@ -68,6 +68,8 @@ export const RoomMembers = ({ chatData }: any) => {
                     withCredentials: true,
                 });
             }
+
+            chatData?._socket?.emit('sortContacts') 
                 
         } catch (error) {
             console.log(error);
@@ -102,8 +104,6 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
 
-    console.log('Members: ', roomMembers)
-
     return (
         <div className='roomMembers'>
             <p>Members</p>
@@ -121,7 +121,7 @@ export const RoomMembers = ({ chatData }: any) => {
                                     
                             }
                             {
-                                (mainUesrRole === 'OWNER' && user.role !== 'OWNER' && user.role !== 'ADMIN') &&
+                                ((mainUesrRole === 'OWNER' || mainUesrRole === 'ADMIN') && user.role !== 'OWNER' && user.role !== 'ADMIN') &&
                                     
                                 <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }

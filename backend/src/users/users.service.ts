@@ -36,9 +36,123 @@ export class UsersService {
         },
         include: {
           friends: true,
+          blocked: true,
         }
       });
     return user;
+  }
+
+  async getAchievements(userId: number) {
+    const games = await this.prisma.game.findUnique({
+      where: {
+        userId: userId,
+      }
+    });
+    const historyGames = await this.prisma.history.findMany({
+      where: {
+        myUserId: userId,
+      }
+    });
+    var result = {
+      "first_server": false,
+      "conqueror": false,
+      "ai_crusher": false,
+      "disciplined": false,
+      "introuvert": false,
+      "challenger": false,
+    }
+
+    if (!games) {
+      return result;
+    }
+    if (games.wins >= 1) {
+      result.first_server = true;
+    }
+    if (games.wins >= 3) {
+      result.conqueror = true;
+    }
+    if (games.gamesPlayed >= 5) {
+      result.disciplined = true;
+    }
+    const uniqueIds = new Set<number>();
+    historyGames.forEach((obj) => {
+      uniqueIds.add(obj.oppUserId);
+    });
+    if (uniqueIds.size >= 3) {
+      result.challenger = true;
+    }
+    const akinator = await this.prisma.users.findUnique({
+      where: {
+        username: 'akinator',
+      }
+    });
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+      },
+      include: {
+        friends: true,
+      }
+    });
+    historyGames.forEach((obj) => {
+      if (obj.oppUserId === akinator.id) {
+        if (obj.myScore > obj.oppScore) {
+          result.ai_crusher = true;
+          console.log('result', result);
+          return true;
+        }
+      }
+    });
+    if (user.friends.length >= 5) {
+      result.introuvert = true;
+    }
+
+    return result;
+  }
+
+  async checkBlockedFriend(userId: number, friendId: number) {
+    const user = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        blocked: {
+          some: {
+            id: friendId,
+          }
+        }
+      }
+    });
+    if (user) {
+      return true;
+    }
+    return false;
+  }
+
+  async friendFriends(userId:number, friendId: number) {
+    const friend = await this.prisma.users.findUnique({
+      where: {
+        id: userId,
+        friends: {
+          some: {
+            id: friendId
+          }
+        }
+      },
+    });
+
+    if (!friend) {
+      throw new UnauthorizedException("not your friend");
+    }
+
+    const friendsList = await this.prisma.users.findUnique({
+      where: {
+        id: friendId,
+      }, 
+      include: {
+        friends: true
+      }
+    })
+
+    return friendsList.friends;
   }
 
   async searchUser(username: string, users: Users) {
@@ -79,7 +193,7 @@ export class UsersService {
       }
     });
 
-    return user[0].friends;
+    return user[0]?.friends;
   }
 
   async addFriend(userId: number, friendId: number) {
@@ -356,7 +470,6 @@ export class UsersService {
     filePath: string,
   ) {
     try {
-      // console.log('+++++++++++++++++++++++++++++++++++++++++')
       const user = await this.prisma.users.update(
         {
           where: {
@@ -380,7 +493,6 @@ export class UsersService {
     userId: number,
   ): Promise<string> {
     try {
-      // console.log('******************************************')
       const user =
         await this.prisma.users.findUnique({
           where: {

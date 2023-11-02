@@ -9,6 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { GameProvider } from './context/GameContext'
 import { SettingProvider } from './context/SettingContext'
+import { SocketProvider } from './context/socketContext'
 
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -17,8 +18,10 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       <ProfileProvider>
         <GameProvider>
           <SettingProvider>
-            <RouterProvider router={router}/>
-            <ToastContainer />
+            <SocketProvider>
+              <RouterProvider router={router}/>
+              <ToastContainer />
+            </SocketProvider>
           </SettingProvider>
         </GameProvider>
       </ProfileProvider>
