@@ -12,42 +12,45 @@ datasource db {
 }
 
 model Users {
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
-  id                      Int             @id @default(autoincrement())
-  username                String?         @unique
-  email                   String          @unique
-  password                String?
-  avatar                  String?
-  hashRt                  String?
-  twofa                   String?
-  twofaEmail              String?         @unique
-  userStatus              userStatus      @default(ONLINE)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  id          Int         @id @default(autoincrement())
+  username    String      @unique
+  email       String      @unique
+  password    String?
+  avatar      String?
+  hashRt      String?
+  twofa       String?
+  twofaEmail  String?     @unique
+  twoEnabled  Boolean     @default(false)
+  userStatus  userStatus  @default(ONLINE)
   
-  twoEnabled              Boolean         @default(false)
-  isActive                Boolean         @default(false)
-  signedUp                Boolean         @default(false)
+  isActive              Boolean         @default(false)
+  signedUp    Boolean     @default(false)
+
   
   // Notifications
-  pendingFriendReq        Users[]         @relation("PendingFriend")
-  pendingFriendReqOf      Users[]         @relation("PendingFriend")
-  friends                 Users[]         @relation("friends")
-  friendOf                Users[]         @relation("friends")
-  blocked                 Users[]         @relation("blockedUsers")
-  blockedBy               Users[]         @relation("blockedUsers")
-  senNotification         Notifications[] @relation("senderNotification")
-  recNotification         Notifications[] @relation("receiverNotification")
+  pendingFriendReq      Users[]         @relation("PendingFriend")
+  pendingFriendReqOf    Users[]         @relation("PendingFriend")
+  friends               Users[]         @relation("friends")
+  friendOf              Users[]         @relation("friends")
+  blocked               Users[]         @relation("blockedUsers")
+  blockedBy             Users[]         @relation("blockedUsers")
+  senNotification       Notifications[] @relation("senderNotification")
+  recNotification       Notifications[] @relation("receiverNotification")
 
-  // Chat relation
-  chat                    Chat[]          @relation("chats")
+  // Chat
+  chat        Chat[] @relation("chats")
 
-  // Messages relation
-  MessageSenId            Message[]       @relation("Messagesencontact")
+  // Messages
+  MessageSenId     Message[] @relation("Messagesencontact")
+  // MessageRecId     Message[] @relation("Messagereccontact")
   
-  // Rooms relation
-  rooms                   RoomUsers[]
-  roomInvitationSender    Invitations[]   @relation("sender")
-  roomInvitationReceiver  Invitations[]   @relation("receiver")
+  // Rooms
+  rooms       RoomUsers[]
+  roomInvitationSender Invitations[] @relation("sender")
+  roomInvitationReceiver Invitations[] @relation("receiver")
+
 
   // Game relation
   games                   Game?
@@ -55,7 +58,6 @@ model Users {
   //Game History relation
   myHistoryGames          History[]       @relation("myHistory")
   oppHistoryGames         History[]       @relation("oppHistory")
-
 }
 
 model Game {
@@ -82,19 +84,16 @@ model History {
 }
 
 model Notifications {
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
-  id                      Int             @id @default(autoincrement())
-  title                   String
-  description             String?
-  icon                    String?
-  type                    NotificationType
-  read                    Boolean         @default(false)
-  socketId                String
-  senderUser              Users           @relation("senderNotification", fields: [senderId], references: [id])
-  senderId                Int
-  receiverUser            Users           @relation("receiverNotification", fields: [receiverId], references: [id])
-  receiverId              Int
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  id              Int         @id @default(autoincrement())
+  type            NotificationType
+  read            Boolean     @default(false)
+  senderUser      Users       @relation("senderNotification", fields: [senderId], references: [id])
+  senderId        Int
+  receiverUser    Users       @relation("receiverNotification", fields: [receiverId], references: [id])
+  receiverId      Int
+  mode            String?
 }
 
 model Chat {
