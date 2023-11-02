@@ -141,6 +141,7 @@ const ListNotification = () => {
     
             const data = await response.json();
             console.log('NEW FRIENDS', data);
+            setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
         }
         // console.log('Da type', notif.type === 'GAME')
         else if (notif.type === 'GAME') { // Handling Game invitaion

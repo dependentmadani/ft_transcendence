@@ -50,7 +50,7 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
 
 
     const notificationListener = async (notif: any) => {
-        console.log('TTTTTTTTTTTTTTTTTNNNNNNNTTTTTT', notif)
+        // console.log('')
         alert(notif.receiver.username + ' accepted you invitation to play a ' + notif.mode + ' pong game')
         
         // Redirect Invitation sender (notif.receiver.id) here
@@ -69,7 +69,9 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
 
     const sendGameInvite = async (mode: string) => {
         try {
-
+            
+            
+            
             // They must not be friends
             // const isFriend = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friend/${_receiver.id}`, {withCredentials: true})).data;
             // console.log('isFriend', isFriend)

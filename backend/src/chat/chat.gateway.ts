@@ -65,12 +65,12 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('sortContacts')
-  handleSortContacts(@MessageBody() data: any): void {
-    const { sender, rec, contact } = data;
+  handleSortContacts(): void { 
+    // const { sender, rec, contact } = data;
     // Send the message to the recipient's socket
-    console.log('Sort', contact , ' for ', sender , ' and ', rec)
-    this.server.to(this.userSocketMap[sender]).emit('sortChats', contact);
-    this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
+    // console.log('Sort', contact , ' for ', sender , ' and ', rec)
+    this.server.emit('sortingContacts');
+    // this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
   }
 
   @SubscribeMessage('roomMessage')

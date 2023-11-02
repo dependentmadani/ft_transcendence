@@ -511,12 +511,12 @@ export class NotificationsService {
     if (alreadyFriend) {
       throw new UnauthorizedException("already friends!");
     }
-    const pendingFriend = await this.prisma.users.findFirst({
+    const pendingFriend = await this.prisma.users.findUnique({
       where: {
-        id: senderId,
+        id: friend.id,
         pendingFriendReq: {
           some: {
-            id: friend.id,
+            id: senderId,
           }
         }
       },
