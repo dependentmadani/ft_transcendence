@@ -20,11 +20,14 @@ import * as qrcode from 'qrcode';
 
 @Injectable({})
 export class AuthService {
+  private aiUserCreated : boolean;
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
-  ) {}
+  ) {
+    this.aiUserCreated = false;
+  }
 
   async hashData(data: string) {
     return await bcrypt.hash(data, 10);
@@ -78,6 +81,22 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
+      if (this.aiUserCreated === false) {
+        const user = await this.prisma.users.create({
+          data: {
+            username: 'akinator',
+            email: 'ai@gmail.com',
+            isActive: true,
+            avatar: '/boot.jpg',
+          }
+        })
+        await this.prisma.game.create({
+          data: {
+            userId: user.id,
+          }
+        });
+        this.aiUserCreated = true;
+      }
       const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
       if (usernameTaken) {
         const users =
@@ -212,6 +231,22 @@ export class AuthService {
     //need to hash the password for security reasons
 
     try {
+      if (this.aiUserCreated === false) {
+        const user = await this.prisma.users.create({
+          data: {
+            username: 'akinator',
+            email: 'ai@gmail.com',
+            isActive: true,
+            avatar: '/boot.jpg',
+          }
+        })
+        await this.prisma.game.create({
+          data: {
+            userId: user.id,
+          }
+        });
+        this.aiUserCreated = true;
+      }
       const usernameAvailable = await this.prisma.users.findUnique({
         where: {
           username: dto.username,
@@ -340,9 +375,10 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: userDto.email,
+          username: userDto?.username
         },
       });
-      console.log('user info google', user)
+
     await this.prisma.users.update({
       where: {
         id: user.id,
@@ -469,7 +505,6 @@ export class AuthService {
     });
     if (verified)
       return true;
-    //     throw new UnauthorizedException('code entered is wrong, please retry again!');
 
     return false;
   }
@@ -597,6 +632,10 @@ export class AuthService {
         where: {
           email: email,
         },
+        include: {
+          friends: true,
+          blocked: true,
+        }
       });
     return user;
   }

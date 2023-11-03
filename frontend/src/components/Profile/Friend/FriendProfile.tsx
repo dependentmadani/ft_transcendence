@@ -89,27 +89,30 @@ function Statistic() {
 function FriendProfile (props: any) {
 
     console.log('profileFriend', props.userData)
-    const [listFriend, setListFriend] = useState();
+    const [listFriend, setListFriend] = useState(null);
+    // const {client, updateClient} = useClient();
 
     useEffect(() => {
         async function fetchData () {
             try {
-                const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${props.userData.username}`, { withCredentials: true });
-                console.log('fetchDAta : ', res.data)
+                const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friends/${props.userData[0].id}`, { withCredentials: true });
                 setListFriend(res.data);
+                // console.log('fetchDAta : ', res.data)
+                // updateClient({...client, ...res})
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
         }
         fetchData();
-    }, [])
+    }, [props.userData[0].id])
+    console.log('00000 : ',props.userData)
 
     return (
         <div className='profile'>
             <img id='settings'  src="/src/imgs/setting.png" alt="setting" />
             <div className='profile-col-1'>
                 <ProfileInfo userData={props.userData[0]} />
-                <Friends friendData={listFriend} />
+                {listFriend && <Friends friendsData={listFriend} /> }
             </div>
             <div className='profile-col-2'>
                 <Achivement />

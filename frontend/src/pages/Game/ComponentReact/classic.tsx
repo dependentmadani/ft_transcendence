@@ -58,7 +58,7 @@ const [user2, setUser2] = useState<User | null>(null);
 }, [ProfileID1,Userdata?.id]);
 
 useEffect(() => {
-    setUser2({ id:2, username: "Waiting ...", avatar: "/src/assets/img/jenny.png" });
+    setUser2({ id:2, username: "Waiting...", avatar: "/src//imgs/svg/waiting.svg" });
   if (ProfileID2)
   {
   axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
@@ -96,9 +96,9 @@ const updateCanvasWidth = () => {
   const container = document.querySelector('.game-mode') as HTMLElement;
   const dimension = document.querySelector('.game-dimension') as HTMLElement;
   const dimension_canvas = document.querySelector('.dimension-canvas') as HTMLElement;
-  // const canvas = document.getElementById('canvas1');
+  const classic = document.querySelector('.style-classic') as HTMLElement;
   const players = document.getElementById('players');
-  if (container && players && dimension) {
+  if (classic && container && players && dimension) {
     let _width:number = container.getBoundingClientRect().width;
     let _height:number = container.getBoundingClientRect().height;
 
@@ -128,8 +128,12 @@ const updateCanvasWidth = () => {
     dimension_canvas.style.width =  `${dimension.getBoundingClientRect().width}px`;
     dimension_canvas.style.height = `${dimension.getBoundingClientRect().width * .6}px`;
 
+    classic.style.borderTop = `${dimension_canvas.getBoundingClientRect().height * .02}px solid whitesmoke`
+    classic.style.borderBottom = `${dimension_canvas.getBoundingClientRect().height * .02}px solid whitesmoke`
+
     players.style.width = `${dimension.getBoundingClientRect().width}px`;
     players.style.height = `${dimension.getBoundingClientRect().height * .15}px`;
+
 
   }
 };
@@ -146,44 +150,22 @@ useEffect(() => {
   return (
     
     <div className='game-mode'>
-        {/* <div >
-        </div> */}
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
-                  {/* <span className='profile1id'>{user1?.username}  </span> */}
+                <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                 <div className='profile1id' > {user1?.username}</div>
-                <div className="BallScore1">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  {/* {leftballs.map((color, index) => (
-                    <div key={ball1${index}} className={pl1 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                  ))} */}
-                </div>
             </div>
-                  <img className= "players-vs" src="/src/assets/img/vs.png"/>
+            <img className= "players-vs" src="/src/imgs/vs5.png"/>
             <div id="profile2">
               <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
-              {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'>  {user2?.username} </div>
-              <div className="BallScore2">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                {/* {rightballs.map((color, index) => (
-                  <div key={ball2${index}} className={pl2 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                ))} */}
-              </div>
             </div>
         </div>
         <div className='dimension-canvas'>
-          <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
+          <div className='style-classic'>
+            <canvas ref={canvas} id = "canvas1"   width='1000px' height='600px'  > </canvas>
+          </div>
           <button id="ButtonStart" className='ButtonStart'>
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />

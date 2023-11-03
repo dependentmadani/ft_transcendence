@@ -143,17 +143,18 @@ img {
 
 #status:hover > span {
     position: absolute;
-    left: 30%;
+    left: 40%;
     top: 0;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: rgba(113, 113, 146, 0.8);
-    width: 80px;
+    width: 300%;
     height: 100%;
     border-radius: 20px;
     z-index: 1;
     padding-top: 15%;
+    padding-left: 15%;
     font-size: 70%;
     font-weight: 600;
     transition: width .6s cubic-bezier(0.075, 0.82, 0.165, 1);

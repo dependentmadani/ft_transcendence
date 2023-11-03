@@ -20,9 +20,9 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     
     useEffect(() => {
         const isCurrentUserAdmin = async () => {
-            if (currentRoom.protection === 'Public' || currentRoom.protection === 'Protected')
+            if (currentRoom.protection === 'Public')
                 setCurrentUserIsAdmin(true)
-            else if (currentRoom.protection === 'Private')
+            else if (currentRoom.protection === 'Protected' || currentRoom.protection === 'Private')
             {
                 const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
                 if (isAdmin)
@@ -61,6 +61,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
             catch (error) {
                 console.log(error);
             }
+            window.location.reload()
         }
     }
 
@@ -106,16 +107,16 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                             </label>
 
                             <label>
-                                <input type="radio" value="Protected" checked={newRoomType === 'Protected'} onChange={handleOptionChange} />
-                                Protected
-                            </label>
-
-                            <label>
                                 <input type="radio" value="Private" checked={newRoomType === 'Private'} onChange={handleOptionChange} />
                                 Private
                             </label>
+
+                            <label>
+                                <input type="radio" value="Protected" checked={newRoomType === 'Protected'} onChange={handleOptionChange} />
+                                Protected
+                            </label>
                         </div>
-                        { newRoomType === 'Private' && <input type="text" className='form-invite-input' placeholder="Room password" value={newRoomPass} onChange={(e) => setNewRoomPass(e.target.value)} />}
+                        { newRoomType === 'Protected' && <input type="password" className='form-invite-input' placeholder="Room password" value={newRoomPass} onChange={(e) => setNewRoomPass(e.target.value)} />}
                     </div>
                     <div className="saveIcon">
                         <span className='saveChanges' onClick={ saveChanges }>save</span>

@@ -249,13 +249,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                      if(this.score_left == 5)
                      {
-                        console.log("hello  ------111")
+                        // console.log("hello  ------111")
                         const ttWidth = ctx.measureText("YOU WIN").width;
                         this.write_txt("YOU WIN",(canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
                     else
                     {
-                        console.log("hello ------2222")
+                        // console.log("hello ------2222")
                         const ttWidth = ctx.measureText("YOU LOSE").width;
                         this.write_txt("YOU LOSE",(canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
@@ -264,13 +264,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                     if (this.score_right == 5)
                     {
-                        console.log("hello  -----3333")
+                        // console.log("hello  -----3333")
                         const ttWidth = ctx.measureText("YOU WIN").width ;
                         this.write_txt("YOU WIN",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
                     }
                     else
                     {
-                        console.log("hello  -----4444")
+                        // console.log("hello  -----4444")
                         const ttWidth = ctx.measureText("YOU LOSE").width ;
                         this.write_txt("YOU LOSE",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
                     }

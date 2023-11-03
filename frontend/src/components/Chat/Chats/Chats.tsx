@@ -1,7 +1,7 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
-
+import { useShow } from "@/context/ShowFormContext";
 
 // interface User {
 //   roomId: number,
@@ -63,7 +63,9 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<roomUsers[]>([])
-  const [contacts, setContacts] = useState<Contact[]>()
+  const [contacts, setContacts] = useState<Contact[] | null>()
+  const [show, setShow] = useShow();
+
 // 
 
 
@@ -289,6 +291,10 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
     const handleClick = (contact: Contact) => {
       // setSelectedChat({chat, type});
+      if (contact.type === 'Chat')
+        setShow('false');
+      else
+        setShow('true')
       onValueChange(contact)
     };
 
@@ -350,10 +356,10 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
 
 
     return (
-        <div className="chats">
+      <div className="chats">
           {
             contacts?.map((contact: Contact, index: number) => (
-              <div className="userChats" key={index} onClick={() => handleClick(contact)}>
+              <div className="userChats" key={index} onClick={() => {handleClick(contact) }}>
                 <div className="chatAvatar">
                   <img className="avatar-img" src={ contact?.avatar } alt="user_avatar" />
                 </div>

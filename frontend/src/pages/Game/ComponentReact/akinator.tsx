@@ -26,20 +26,14 @@ export default function Akinator()
   const canvas = useRef(null)
   const [size, setSize] = useState<'small' | 'medium'>('medium');
   
-  const [leftballs, setLeftBalls] = useState(['grey', 'grey', 'grey', 'grey', 'grey']);
-  const [rightballs, setRightBalls] = useState(['grey', 'grey', 'grey', 'grey', 'grey']);
+  const [leftballs, setLeftBalls] = useState<number>(0);
+  const [rightballs, setRightBalls] = useState<number>(0);
 
   
   useEffect(() => {
     if (flag.current === false)
     {
-      ping_pong(canvas.current,(left:any) => {
-        const updatedBallColors = leftballs.map((color, index) => (index < left ? 'purple' : 'gray'));
-        setLeftBalls(updatedBallColors);
-      },(right:any)=>{
-          const updatedBallColors = rightballs.map((color, index) => (4 - index < right ? 'purple' : 'gray'));
-          setRightBalls(updatedBallColors);
-        })
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
       flag.current = true 
     }
   },  [leftballs,rightballs])
@@ -107,43 +101,33 @@ export default function Akinator()
     };
   }, [])
 
+  const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
+
   return (
-    
-    
     <div className='game-mode'>
         {/* <div >
         </div> */}
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src='/src/imgs/example.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}  /*src={user1?.avatar}*/ />
-                  {/* <span className='profile1id'>{user1?.username}  </span> */}
-                <div className='profile1id'> Hamidjhibjsdhvidbfvbjkbdfvjbsdbfvbjfbvb </div>
+                <img className='profile1Img' src='/src/imgs/example.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}   />
+                <div className='profile1id'> Akinator </div>
                 <div className="BallScore1">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  {/* {leftballs.map((color, index) => (
-                    <div key={ball1${index}} className={pl1 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                  ))} */}
+                  {score.map((element, index) => (
+                    <div key={element} style={index < leftballs ? { backgroundColor: 'cyan' } : {}}></div>
+                  ))}
                 </div>
+
+
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
               <img className='profile2Img' src={Userdata?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
-              {/* <span className='profile2id'> {user2?.username}</span> */}
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                  <div></div>
-                {/* {rightballs.map((color, index) => (
-                  <div key={ball2${index}} className={pl2 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                ))} */}
+                {score.map((element, index) => (
+                  <div key={element} style={index < rightballs ? { backgroundColor: 'cyan' } : {}}></div>
+                ))}
               </div>
             </div>
         </div>

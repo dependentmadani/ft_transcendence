@@ -2,15 +2,18 @@ import { useEffect, useState } from "react"
 import axios from "axios"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { useShow } from "@/context/ShowFormContext"
 
 
-export const Input = ({ chatData }: any) => {
+export const Input = ({ chatData, isAllowed }: any) => {
 
   const [inputText, setInputText] = useState('')
-  const [disableInput, setDisableInput] = useState(false)
+  // const [disableInput, setDisableInput] = useState(false)
+  const [show, setShow] = useShow();
   const currentChat = chatData?._chat
   
 
+  // console.log(`disableInput = [${disableInput}]`);
   // Creating new message eather for chats or rooms
   const createNewMessage = async (inputText: string) => {
     try {
@@ -67,6 +70,7 @@ export const Input = ({ chatData }: any) => {
 
         const msg: any = await createNewMessage(inputText)
         chatData?._socket.emit('message', { sender: chatData._mainUser.id, rec: chatData?._receiver?.id || null, message: msg });
+
         setInputText('')
       }
     }
@@ -74,33 +78,41 @@ export const Input = ({ chatData }: any) => {
 
   // const [isAllowed, setIsAllowed] = useState(true);
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const checkAllow = async () => {
+  //   const checkAllow = async () => {
 
-      if (chatData?._chat && chatData?._chat?.type === 'Room') {
-        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-        const isAllowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData?._mainUser.id}`, { withCredentials: true })).data
-        if (isAllowed !== true)
-          setDisableInput(false)
-        else
-          setDisableInput(false)
-      }
-      else
-        setDisableInput(false)
-    }
+  //     if (chatData?._chat && chatData?._chat?.type === 'Room') {
+  //       // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
+  //       const allowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData?._mainUser.id}`, { withCredentials: true })).data
+  //       console.log('Is he allowed', allowed, isAllowed)
+  //       if (!allowed || !isAllowed)
+  //         setDisableInput(true)
+  //       else
+  //         setDisableInput(false) 
+  //     }
+  //     else
+  //       setDisableInput(false)
+  //   }
 
-    checkAllow()
-  }, [ chatData ])
+  //   checkAllow()
+  // }, [ isAllowed ])
 
-  useEffect(() => {
-    if (chatData._chat === undefined)
-      setDisableInput(true)
-    else
-      setDisableInput(false)
-  }, [ chatData ])
+  // useEffect(() => {
+  //   console.log('Zzzzzzzzzzzzzzzzzzzzzz, ', show, `[${disableInput}]`)
+  //   if (chatData._chat === undefined )
+  //   {
+  //     console.log('...................... ')
+  //     setDisableInput(true)
+  //   }
+  //   else
+  //     setDisableInput(false)
+  // }, [ isAllowed ])
 
-  console.log('input disabled', disableInput)
+  // console.log('input disabled', disableInput, isAllowed)
+  console.log('-----> : ', show)
+
+  // const checkDisable = () => (show === 'l3washr' || (show === 'true' && !isAllowed)) ? true : false;
 
 
   return (
@@ -111,7 +123,8 @@ export const Input = ({ chatData }: any) => {
           // :
           // (
           <>
-            <input type="text" className="input-input" placeholder="Type something..." disabled={disableInput} value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
+            <input type="text" className="input-input" placeholder="Type something..." disabled={(show === 'l3washr' || ((show === 'true' || show === 'false') && !isAllowed)) ? true : false}
+               value={inputText} onChange={(e) => setInputText(e.target.value)} onKeyDown={handleKeyPress} />
             <div className="send">
               {<span><FontAwesomeIcon className="send-msg-icon" icon={faPaperPlane} onClick={handleClick} /></span>}
             </div>

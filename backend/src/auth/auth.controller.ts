@@ -28,8 +28,7 @@ import { ApiBody, ApiResponse } from '@nestjs/swagger';
 // $ CXX=g++-12 npm install argon2
 
 const oneDay = 1000 * 60 * 60 * 24;
-const oneWeek = 1000 * 60 * 60 * 24 * 7;
-
+const oneWeek= 1000 * 60 * 60 * 24 * 7;
 
 @Controller('auth')
 export class AuthController {
@@ -105,7 +104,7 @@ export class AuthController {
     const tokens =
       await this.authService.signinLocal(dto);
     res.cookie('token', tokens.access_token, {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -113,7 +112,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -139,7 +138,7 @@ export class AuthController {
     const tokens =
       await this.authService.signinGoogle(req);
     res.cookie('token', tokens.access_token, {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -147,7 +146,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -161,7 +160,6 @@ export class AuthController {
       true,
       'ONLINE'
     );
-    // res.send('logged successfully!');
     res.redirect(
       `http://${process.env.VITE_ADDRESS}:5173/signup`,
     );
@@ -263,7 +261,7 @@ export class AuthController {
     );
   }
 
-  @Get('2fa/disable')
+  @Post('2fa/disable')
   @HttpCode(HttpStatus.OK)
   async disable2fa(@Req() req: Request) {
     const user: Users =
@@ -298,7 +296,7 @@ export class AuthController {
       );
     console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
-      maxAge: 1000 * 60 * 60 * 24,
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -306,7 +304,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        maxAge: 1000 * 60 * 60 * 24 * 7,
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -320,8 +318,8 @@ export class AuthController {
       true,
       'ONLINE'
     );
-      res.redirect(
-        `http://${process.env.VITE_ADDRESS}:5173/signup`,
-      );
+    res.redirect(
+      `http://${process.env.VITE_ADDRESS}:5173/signup`,
+    );
   }
 }

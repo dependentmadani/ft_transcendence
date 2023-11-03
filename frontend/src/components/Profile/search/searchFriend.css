@@ -24,7 +24,7 @@
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%); 
-	font-size: clamp(15px, 3.5vw, 60px);
+	font-size: clamp(15px, 3.5vw, 40px);
 	font-weight: 700;
     font-family: 'Orbitron', sans-serif;
 
