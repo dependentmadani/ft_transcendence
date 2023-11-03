@@ -29,7 +29,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                         // }
                         // console.log('data to room', currentRoom, invitedUser)
                         
-        const allow = (currentRoom.protection === 'Private') ? false : true
+        const allow = (currentRoom.protection === 'Protected') ? false : true
         try {
             await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                 roomId: currentRoom.id,

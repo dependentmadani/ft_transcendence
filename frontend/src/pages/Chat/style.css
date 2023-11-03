@@ -1004,7 +1004,9 @@ body {
   background-color: white;
   padding: 10px 20px;
   border-radius: 0px 10px 10px 10px;
-  max-width: max-content;
+  max-width: 100%;
+  word-wrap: break-word;
+  
 }
   
 .owner {

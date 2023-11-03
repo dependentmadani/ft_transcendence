@@ -46,11 +46,15 @@ export class RoomUsersController {
             const user = req.user['sub']
             const receiver = chat.chatUsers[0] === user ? chat.chatUsers[1] : chat.chatUsers[0];
             const _receiver: Users = await this.userService.findUserById(receiver);
+            
+            // Check if receiver is not blocked
             return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
         });
         
         const roomPromises = rooms.map(async room => {
             const _room: Room = await this.roomService.getOneRoom(room.roomId);
+
+            // Check if user is not banned or muted
             return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
         });
         

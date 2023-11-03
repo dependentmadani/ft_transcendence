@@ -6,6 +6,7 @@ import io, { Socket } from 'socket.io-client';
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faArrowLeft, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
+import {ShowProvider } from '@/context/ShowFormContext';
 import './style.css'
 
 // interface User {
@@ -146,40 +147,42 @@ export const HomeChat = () => {
   console.log(chatData)
 
   return (
-    <div className='home'>
-        <div className='container'>
-        <div className="chat-nav-container">
-          {selectedChat === undefined && <div className='chat-nav-item'><Leftbar onValueChange={handleSelectedChat} chatData={chatData} /></div>}
-          
-          {selectedChat && showChat && (
-            <div className='chat-nav-item'>
-              <div className="chat-nav-header">
-                <div className="chat-nav-header-leftSide">
-                  <a className="chat-nav-header-items" href="/chat" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
-                  <img className="chat-nav-header-avatar" src={chatData?._chat?.type === 'chat' ? chatData?._chat?.avatar : chatData?._chat?.avatar } alt="user_avatar" />
+    <ShowProvider>
+      <div className='home'>
+          <div className='container'>
+          <div className="chat-nav-container">
+            {selectedChat === undefined && <div className='chat-nav-item'><Leftbar onValueChange={handleSelectedChat} chatData={chatData} /></div>}
+            
+            {selectedChat && showChat && (
+              <div className='chat-nav-item'>
+                <div className="chat-nav-header">
+                  <div className="chat-nav-header-leftSide">
+                    <a className="chat-nav-header-items" href="/chat" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
+                    <img className="chat-nav-header-avatar" src={chatData?._chat?.type === 'chat' ? chatData?._chat?.avatar : chatData?._chat?.avatar } alt="user_avatar" />
+                  </div>
+                  <div className="chat-nav-header-rightSide">
+                    <a className="chat-nav-header-items" onClick={handleDotsClick}><FontAwesomeIcon icon={faEllipsisV} /></a>
+                  </div>
                 </div>
-                <div className="chat-nav-header-rightSide">
-                  <a className="chat-nav-header-items" onClick={handleDotsClick}><FontAwesomeIcon icon={faEllipsisV} /></a>
-                </div>
+                <Chat chatData={chatData} messages={ messages } />
               </div>
-              <Chat chatData={chatData} messages={ messages } />
-            </div>
-          )}
+            )}
 
-          {showInfos &&
-            <div className='chat-nav-item'>
-              <div className="chat-nav-header">
-                <a className="chat-nav-header-items" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
-              </div>
-              <Rightbar chatData={chatData} />
-            </div>}
-        </div>
-        <div className="normal-mode">
-          <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
-          <Chat chatData={ chatData } messages={ messages } />
-          <Rightbar chatData={ chatData } />
-        </div>
-        </div>
-    </div>
+            {showInfos &&
+              <div className='chat-nav-item'>
+                <div className="chat-nav-header">
+                  <a className="chat-nav-header-items" onClick={handleReturnClick}><FontAwesomeIcon icon={faArrowLeft} /></a>
+                </div>
+                <Rightbar chatData={chatData} />
+              </div>}
+          </div>
+          <div className="normal-mode">
+            <Leftbar onValueChange={handleSelectedChat} chatData={ chatData } />
+            <Chat chatData={ chatData } messages={ messages } />
+            <Rightbar chatData={ chatData } />
+          </div>
+          </div>
+      </div>
+    </ShowProvider>
   )
 }

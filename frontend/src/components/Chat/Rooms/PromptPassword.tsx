@@ -1,9 +1,13 @@
 import axios from "axios";
 import { useState } from "react";
+import { useShow } from "@/context/ShowFormContext";
 
-export const PromptPassword = ({ openForm, chatData }: any) => {
+export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
 
     const [pass, setPass] = useState('')
+    const [show, setShow] = useShow();
+
+
 
     const checPassword = async () => {
         if (pass.trim() !== '') {
@@ -16,11 +20,12 @@ export const PromptPassword = ({ openForm, chatData }: any) => {
                     await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/allow/${chatData?._chat?.id}/${chatData._mainUser.id}`, {
                     'allowed': true,
                     }, { withCredentials: true })
-                    openForm(true)
+                    setIsAllowed(true)
                 }
             }
-            else
-                openForm(true)
+            else {
+                setIsAllowed(true)
+            }
 
         }
     }
@@ -32,7 +37,7 @@ export const PromptPassword = ({ openForm, chatData }: any) => {
                 <div className="room-pass-form">
                     <input type="password" placeholder="Password" className="room-pass-input" onChange={(e) => setPass(e.target.value)} />
                     <span className="room-form-span" onClick={checPassword}>ok</span>
-                    <span className="room-form-span" onClick={openForm}>cancel</span>
+                    <span className="room-form-span" onClick={()=> {setShow('false')}}>cancel</span>
                 </div>
             </div>
         </div>

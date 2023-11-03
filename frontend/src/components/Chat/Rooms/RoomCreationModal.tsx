@@ -63,7 +63,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             userId: chatData._mainUser.id,
                             userUsername: chatData._mainUser.username,
                             role: 'OWNER',
-                            allowed: roomType === 'Private' ? false : true,
+                            allowed: roomType === 'Protected' ? false : true,
                         }, {
                             withCredentials: true
                         });
@@ -109,15 +109,15 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             public
                         </span>
                         <span>
-                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
-                            protected
-                        </span>
-                        <span>
                             <input type="radio" value="Private" checked={roomType === 'Private'} onChange={handleOptionChange} />
                             private
                         </span>
+                        <span>
+                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
+                            protected
+                        </span>
                     </div>
-                    { roomType === 'Private' && <input type="password" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
+                    { roomType === 'Protected' && <input type="password" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
                     <span className='saveChanges' onClick={ uploadImage }>save</span>
                 </div>
             </div>
