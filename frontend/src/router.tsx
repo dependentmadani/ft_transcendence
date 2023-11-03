@@ -5,18 +5,6 @@ import Section from "@/components/Sections/Section/Section";
 import { useClient } from "@/context/clientContext";
 import NotFriendProfile from  "@/components/Profile/NotFriend/NotFriendProfile"
 import FriendProfile from "@/components/Profile/Friend/FriendProfile"
-import InviteClassic from "./pages/Game/Invitegame/InviteClassic";
-import InviteGame from "./pages/Game/Invitegame/InviteGame";
-
-
-
-// import { Chattest } from "./pages/Chattest";
-
-// const navigate = useNavigate();
-
-
-
-
 // import { AuthLayout } from "./pages/layouts/AuthLayout";
 
 // import { Chattest } from "./pages/Chattest";
@@ -29,22 +17,18 @@ function GetRouteElement(props:any) {
     const { client } = useClient();
 
     const defaultList = ['/', '/home', '/about', '/team'];
-    const list = ['/login', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/game/classic', '/game/tennis', '/game/akinator', '/game/invite', '/leaderboard']
+    const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
     console.log(props.tag)
-    console.log(client.signedIn)
-    console.log(defaultList.includes(props.tag), list.includes(props.tag))
-    // if (props.tag === '/game/invite')
-    // {
-    //     return <InviteGame />
-    //     // return <InviteClassic ProfileID1={1} ProfileID2={2} />
-
-    // }
+    // console.log(client.signedIn)
+    // console.log(defaultList.includes(props.tag), list.includes(props.tag))
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
         console.log('**********************')
         if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
             return <DefaultSection section={props.tag} />;
         else if (!client.signedIn && list.includes(props.tag))
             return <Sign tag='login' />;
+        else if (client.signedIn && props.tag === '/login_2fa')
+            return <Sign tag='2fa' />;
         else if (client.signedIn && !client.signedUp)
             return <Sign tag='signup' />;
         else
@@ -61,25 +45,21 @@ export const router = createBrowserRouter([
             { path: '/home', element: < GetRouteElement tag='/home' /> },
             { path: '/about', element: < GetRouteElement tag='/about' /> },
             { path: '/team', element: < GetRouteElement tag='/team' /> },
-            { path: '/login', element: < GetRouteElement tag='/login' /> },
+            { path: '/login', element: < GetRouteElement tag='/login' /> }, 
+            { path: '/login_2fa', element: < GetRouteElement tag='/login_2fa' /> }, 
             { path: '/signup', element: < GetRouteElement tag='/signup' /> },
             { path: '/profile', element: < GetRouteElement tag='/profile' /> },
             { path: '/profile/:username', element: < GetRouteElement tag='/profile/:username' /> },
             { path: '/chat', element: < GetRouteElement tag='/chat' /> },
-            
             { path: '/game', element: < GetRouteElement tag='/game' /> },
-            { path: '/game/tennis', element: < GetRouteElement tag='/game/tennis' /> },
             { path: '/game/akinator', element: < GetRouteElement tag='/game/akinator' /> },
             { path: '/game/classic', element: < GetRouteElement tag='/game/classic' /> },
+            { path: '/game/tennis', element: < GetRouteElement tag='/game/tennis' /> },
             { path: '/game/invite', element: < GetRouteElement tag='/game/invite' /> },
-            
             { path: '/leaderboard', element: < GetRouteElement tag='/leaderboard' /> },
-            // { path: '/kika', element: <Section section='test' /> },
-            // { path: '/kkk', element: <Section section='test2' /> },
         ],
     },
 ]);
-
 
 // export const router = createBrowserRouter([
 //     {

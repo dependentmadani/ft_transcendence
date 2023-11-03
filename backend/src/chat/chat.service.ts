@@ -1,11 +1,13 @@
 import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { Chat } from "@prisma/client";
+import { Chat, Message, Users } from "@prisma/client";
 import { PrismaService } from "../prisma/prisma.service";
+import { UsersService } from "src/users/users.service";
 
 
 @Injectable()
 export class ChatService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private prisma: PrismaService, private userService: UsersService) {}
+
 
     async getChats() : Promise<Chat[]> {
         try {
@@ -29,6 +31,19 @@ export class ChatService {
         }
     }
 
+    async getUserChats(id: number) : Promise<Chat[]> {
+        try {
+            return this.prisma.chat.findMany({
+                where: {
+                    users: { some: { id: { equals: id } } },
+                  },
+            })
+        }
+        catch {
+            throw new UnauthorizedException(`Couldn't find message with id ${id}`)
+        }
+    }
+
     async getChatId(chatId: number) : Promise<Chat> {
         try {
             return this.prisma.chat.findUnique({
@@ -42,9 +57,9 @@ export class ChatService {
         }
     }
 
-    async getCommunChat(sender: number, receiver: number) : Promise<Chat[]> {
+    async getCommunChat(sender: number, receiver: number) : Promise<Chat> {
         try {
-            return this.prisma.chat.findMany({
+            const communChat = await this.prisma.chat.findMany({
                 where: {
                     AND: [
                         { users: { some: { id: { equals: sender } } } },
@@ -52,20 +67,29 @@ export class ChatService {
                     ]
                   },
             })
+
+            if (communChat)
+                return communChat[0]
         }
         catch (err) {
             throw new UnauthorizedException(`Error getting commun chat between ${sender} and ${receiver} : `, err)
         }
     }
 
-    async createChat(senId: number, recId: number) : Promise<Chat> {
+    async createChat(me: number, senId: number, recId: number) {
+        
         try {
+
+            const _chat = await this.getCommunChat(senId, recId)
+            if (_chat)
+                throw new UnauthorizedException(`Chat already exists`)
+
             const chat = await this.prisma.chat.create({
                 data: {
                     // senId: senId,
                     // recId: recId,
                     // usrChatId: usrChatId,
-                    chatUsers: [senId, recId]
+                    chatUsers: [senId, recId],
                 }
             })
             await this.prisma.users.update({
@@ -92,10 +116,32 @@ export class ChatService {
                     }
                 }
             });
-            return chat
+
+            const receiver = chat.chatUsers[0] === me ? chat.chatUsers[1] : chat.chatUsers[0];
+            const _receiver: Users = await this.userService.findUserById(receiver);
+            const contact =  { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
+            
+            return contact
+        }
+        catch (err) {
+            throw new UnauthorizedException("Couldn't create chat", err)
+        }
+    }
+
+    async updateLastMessage(id: number, content: string) {
+        try {
+            return await this.prisma.chat.update({
+                where: {
+                    chatId: id,
+                },
+                data: {
+                    latestMessageContent: content,
+                    latestMessageDate: new Date(),
+                }
+            })
         }
         catch {
-            throw new UnauthorizedException("Couldn't create chat")
+            throw new UnauthorizedException("Couldn't update chat")
         }
     }
 

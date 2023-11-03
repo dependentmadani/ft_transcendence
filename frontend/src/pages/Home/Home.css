@@ -114,25 +114,25 @@
 
     .title1 {
         /* color: red;      */
-        font-size: clamp(70px, 11vw, 15vh);
+        font-size: clamp(70px, 11vw, 12vh);
         /* background-color: aliceblue; */
     }
 
     .title2 {
         
-        font-size: clamp(50px, 7vw, 8vh);
+        font-size: clamp(50px, 7vw, 7vh);
         /* font-size: clamp(14px, 1.5vw, 200px); */
     }
 
     .comment {
         
-        font-size: clamp(10px, 2vw, 3vh);
+        font-size: clamp(10px, 2.5vw, 2.5vh);
     }
 
     .getStart-b {
 
         padding: 1.5vh 4vh;
-        font-size: clamp(10px, 3.5vw, 3.5vh);
+        font-size: clamp(10px, 3vw, 3vh);
         /* font-size: ; */
     }
 }
@@ -141,25 +141,25 @@
     
     .title1 {
         /* color: red;      */
-        font-size: clamp(20px, 11vh, 15vw);
+        font-size: clamp(20px, 11vh, 12vw);
         /* background-color: aliceblue; */
     }
     
     .title2 {
         
-        font-size: clamp(20px, 7vh, 10vw);
+        font-size: clamp(20px, 7vh, 7vw);
         /* font-size: clamp(14px, 1.5vw, 200px); */
     }
     
     .comment {
         
-        font-size: clamp(10px, 2.5vh, 3vw);
+        font-size: clamp(10px, 2.5vh, 2.5vw);
     }
 
     .getStart-b {
 
         padding: 1.5vh 4vh;
-        font-size: clamp(10px, 3.5vh, 3vw);
+        font-size: clamp(10px, 3vh, 3vw);
         /* font-size: ; */
     }
 

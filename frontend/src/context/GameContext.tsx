@@ -2,11 +2,6 @@ import axios from 'axios';
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
 import io, { Socket } from 'socket.io-client';
 
-// Define the possible profile states.
-// interface ProfileContextType {
-//   profileState: ProfileState;
-//   setProfileState: (newState: ProfileState) => void;
-// }
 
 interface Game {
     playerID1: number,

@@ -3,8 +3,7 @@ import './SignUp.css';
 import axios from 'axios';
 import { useNavigate, } from 'react-router-dom';
 import { useClient } from '@/context/clientContext';
-import io, { Socket } from 'socket.io-client';
-import { useSocket } from '@/context/socketContext';
+import { ToastContainer, toast } from 'react-toastify';
 
 
 function SetInfo() {
@@ -13,26 +12,9 @@ function SetInfo() {
   const [username, setUsername] = useState<string>('');
   const [avatar, setAvatar] = useState<string>('/src/imgs/user-img.png');
   const {client, updateClient} = useClient();
-  const {socketa, setSocketa} = useSocket();
   const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
   // console.log('signup')
-  
-
-  // const [socket, setSocket] = useState<Socket>()
-
-    // useEffect(() => {
-
-
-    //     const _socket: any =   io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`);
-    //     console.log('=====', _socket)
-    //     // setSocket(_socket)
-    //     setSocketa(_socket)
-    //     return () => {
-    //       _socket?.disconnect()
-    //     }
-      
-    // }, []);
   
   useEffect(() => {
     async function fetchUserData() {
@@ -43,11 +25,11 @@ function SetInfo() {
         setUserId(response.data.id);
         setAvatar(response.data.avatar);
         setUsername(response.data.username);
-        await updateClient({ ...client, ...response.data, signedIn: true });
-        if (response.data.signedUp) {
-          console.log('ooooooooooooo')
-          navigate('/');
-        }
+        if (fetchData)
+          await updateClient({ ...client, ...response.data, signedIn: true });
+        if (response.data.signedUp)
+          navigate('/')
+        // console.log('response.data : ', response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -55,8 +37,6 @@ function SetInfo() {
   
     fetchUserData();
   }, [fetchData]);
-  
-
 
   const handleChangeAvatar = (file: FileList | null) => {
     if (file && file.length > 0) {
@@ -101,19 +81,29 @@ function SetInfo() {
         );
         console.log('dataupdate : ' , gg.data)
       }
+      setFetchData(true);
     } catch (error) {
+        toast.warn("Username Used !", {
+          position: toast.POSITION.TOP_LEFT
+        });
       console.error('Error submitting data:', error);
     }
-    setFetchData(true);
   };
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      // console.log('hlwa')
-      handleSubmit();
+      // console.log(`hlwa {${event}} `)
+      event.preventDefault();
+      if (username !== '')
+        handleSubmit();
+      else {
+        toast.warn("Empty Username !", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      }
     }
   };
-
+  // ムハンマド
   return (
     <div className='main-signup'>
       <span id='signup-header'>
@@ -129,7 +119,7 @@ function SetInfo() {
             onChange={(e) => handleChangeAvatar(e.target.files)}
           />
           <label htmlFor='file' className='choose-img'>
-            <img src='/src/imgs/change-img.png' alt='Upload' />
+            <img src='/src/imgs/change-img.png' alt='Upload'  />
           </label>
         </div>
         <input

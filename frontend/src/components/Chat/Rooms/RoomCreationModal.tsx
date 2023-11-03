@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 
-// interface User {}
 
 
 export const RoomCreationModal = ({ onClose, chatData }: any) => {
@@ -54,18 +53,17 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     headers: { 'Content-Type': 'multipart/form-data' },
                 });
                 
-                const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
-                chatData?._socket?.emit('createRoom', {room: response.data, owner: _MAIN_USER_.id})
+                // chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
 
                 if (response.data) {
                     const roomId: number = response.data.id
                     try {
-                        const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
                         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                             roomId: roomId,
-                            userId: _MAIN_USER_.id,
+                            userId: chatData._mainUser.id,
+                            userUsername: chatData._mainUser.username,
                             role: 'OWNER',
-                            allowed: roomType === 'Private' ? false : true,
+                            allowed: roomType === 'Protected' ? false : true,
                         }, {
                             withCredentials: true
                         });
@@ -78,6 +76,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
             catch (error) {
                 console.log(error);
             }
+            window.location.reload()
         }
     };
 
@@ -110,15 +109,15 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                             public
                         </span>
                         <span>
-                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
-                            protected
-                        </span>
-                        <span>
                             <input type="radio" value="Private" checked={roomType === 'Private'} onChange={handleOptionChange} />
                             private
                         </span>
+                        <span>
+                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
+                            protected
+                        </span>
                     </div>
-                    { roomType === 'Private' && <input type="text" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
+                    { roomType === 'Protected' && <input type="password" className='room-creation-pass-input' placeholder="Room password" value={roomPass} onChange={(e) => setRoomPass(e.target.value)} />}
                     <span className='saveChanges' onClick={ uploadImage }>save</span>
                 </div>
             </div>

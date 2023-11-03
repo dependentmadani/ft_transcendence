@@ -51,18 +51,20 @@ export class NotificationController {
         return this.notificationService.createNotification(type, read, receiverId, senderId, mode)
     }
 
-    @Put('/state/:id')
-    async updateNotification(@Param('id', ParseIntPipe) id: number) : Promise<Notifications> {
-        console.log('uui')
-        return this.notificationService.updateNotification(id)
-    }
-
-    @Put('/friendAcception')
+    @Put('/accept-friend')
     async friendAcception(@Body('senderId', ParseIntPipe) senderId: number,
                                 @Body('receiverId', ParseIntPipe) receiverId: number,
-                                @Body('notifId', ParseIntPipe) notifId: number) : Promise<Notifications> {
-        return this.notificationService.friendAcception(senderId, receiverId, notifId)
+                                @Body('id', ParseIntPipe) notifId: number) {
+        console.log('------------------------------')
+        return this.notificationService.acceptFriend(senderId, receiverId, notifId)
     }
+
+    @Put('/:id')
+    async updateNotification(@Param('id', ParseIntPipe) id: number) {
+        console.log('uui')
+        return await this.notificationService.updateNotification(id)
+    }
+
 
 
     // @Delete()
@@ -70,9 +72,9 @@ export class NotificationController {
     //     return this.chatService.deleteAllChats()
     // }
     
-    @Delete('/:id')
-    async deleteNotification(@Param('id', ParseIntPipe) id: number) {
-        return this.notificationService.deleteNotification(id)
+    @Delete('/:notifId/:senderId/:receiverId')
+    async deleteNotification(@Param('senderId', ParseIntPipe) senderId: number, @Param('receiverId', ParseIntPipe) receiverId: number, @Param('notifId', ParseIntPipe) notifId: number) {
+        return this.notificationService.refureFriend(senderId, receiverId, notifId)
     }
 }
 

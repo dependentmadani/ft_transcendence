@@ -69,7 +69,14 @@ export class UsersController {
       await this.userService.findUserById(
         req.user['sub'],
         );
+        // console.log('users', user)
         return user;
+  }
+
+  @Get('achievements')
+  async UserAchievements(@Req() req: Request) {
+      const user = req.user;
+      return this.userService.getAchievements(user['sub']);
   }
 
   @Post('add-friend/:id')
@@ -104,7 +111,7 @@ export class UsersController {
   }
 
   @Get('mutual-friends/:id')
-  @HttpCode(HttpStatus.FOUND)
+  @HttpCode(HttpStatus.OK)
   async mutualFriends(@Param('id', ParseIntPipe) friendId: number,
   @Req() req:Request,
   @Res() res: Response) {
@@ -184,12 +191,6 @@ export class UsersController {
     @Param('id', ParseIntPipe) userId: number,
     @UploadedFile() file,
   ) {
-    console.log(req.user);
-    // await this.userService.updateUser(
-    //   req.user['sub'],
-    //   req.user,
-    //   userInfo,
-    // );
     if (!file) {
       console.log(process.cwd());
       throw new UnauthorizedException(

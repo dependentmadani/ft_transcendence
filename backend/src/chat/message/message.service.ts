@@ -30,7 +30,7 @@ export class MessageService {
             return this.prisma.message.findMany({ where: {
                 AND: [
                     { msgChatId: chatId },
-                    { type: 'chat' },
+                    { type: 'Chat' },
                 ]
             } })
         }
@@ -44,7 +44,7 @@ export class MessageService {
             return this.prisma.message.findMany({ where: {
                 AND: [
                     { msgRoomId: roomId },
-                    { type: 'room' },
+                    { type: 'Room' },
                 ]
             } })
         }

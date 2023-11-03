@@ -14,62 +14,72 @@ body
  justify-content: space-around;
 } */
 
-body
-{
-  margin: 0;
-  padding: 0;  
-  background-color:  #232760;
+.GameHome {
+  width: 100%;
+  height: 100%;
+  /* background-color: #ca90fa; */
+  display: flex;
+  /* align-items: center; */
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  
+}
 
-} 
-.akinatorButton
-{
-  display: flex;
-  position: fixed;
-  width: 400px;
-  height: 350px; 
-  right: 40%;
-  top :60%;
-  background-color:  #ca90fa;
-}
-.PongClassic
-{
-  display: flex;
-  position: fixed;
-  width: 400px;
-  height: 350px; 
-  right: 25%;
-  top :20%;
-  background-color:  #ca90fa;
-}
-.PingPong
-{
-  display: flex;
-  position: fixed;
-  width: 400px;
-  height: 350px; 
-  left: 25%;
-  top :20%;
-  background-color:  #ca90fa;
-}
-.akinat
-{
-  display: flex;
-  position: fixed;
-  width: 400px;
-  height: 350px;  
-}
-.match
-{
-  display: flex;
+
+.style-mode {
   position: relative;
-  width: 400px;
-  height: 350px;  
- 
-}
-.classic
-{
   display: flex;
-  position: relative;
-  width: 400px;
-  height: 350px;   
+  flex-direction: column;
+
+  max-width: 400px;
+  max-height: 400px;
+  background-color: rgba(44, 99, 174, 0.55);
+  margin: 20px;
+  /* overflow: hidden; */
+  border-radius: 20px;
+  box-shadow: 0 0 10px 5px rgba(9, 105, 135, 0.5);
+}
+
+
+.style-mode > img  {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -20%); 
+
+  /* float: right; */
+  width: auto;
+  height: 110%;
+  aspect-ratio: 4/4;
+  object-fit: contain;
+  /* background-color: saddlebrown; */
+  /* overflow: hidden; */
+}
+
+.style-mode > span {
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(10px, 3.3vw, 55px);
+  color: aqua;
+  margin-top: 10%;
+  padding-left: 2%;
+  border-radius: 10px;
+  /* box-shadow: 0 0 10px 5px rgba(39, 44, 46, 0.5); */
+}
+
+@media (orientation: portrait) {
+  .style-mode > span {
+    font-size: clamp(10px, 4vh, 55px);
+
+  }
+}
+
+.style-mode:hover    {
+  scale: 1.02;
+  cursor: pointer;
+}
+
+.style-mode:active   {
+  scale: .95;
 }

@@ -3,149 +3,70 @@ import { Input } from '../Input'
 import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
-// import { useAllow } from '@/context/AllowContext';
+import { useShow } from "@/context/ShowFormContext"
 
-interface Chat {}
+export const Chat = ({ chatData, messages }: any) => {
 
-interface Message {
-  messageId: number,
-  textContent: string,
-  msgRoomId: number,
-  msgChatId: number,
-  type: string,
-}
+  const [isAllowed, setIsAllowed] = useState(true)
+  // const [showForm, setShowForm] = useState(false);
+  // const [test, setTset] = useState(true);
+  const [show, setShow] = useShow();
 
-export const Chat = ({ chatData }: any) => {
+  // const [test, setTest] = useState(false);
 
-  const [isPrivate, setIsPrivate] = useState(true)
-  const [showForm, setShowForm] = useState(false);
-  const [isAllowed, updateAllow] = useState(false);
-  const [chatMessages, setChatMessages] = useState<Message[]>([])
-  const [roomMessages, setRoomMessages] = useState<Message[]>([])
-  // const [contextAllow] = useAllow();
-
-  
-  const currentChat = chatData?._chat?.chat
   
   useEffect(() => {
     const checkAllow = async () => {
 
-      if (chatData?._chat?.type === 'room') {
-        const _MAIN_USER_ = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
-        const allwd = await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.chat?.id}/${_MAIN_USER_.id}`, { withCredentials: true })
-        if (allwd.data[0].allowed !== true)
-        {
-          setIsPrivate(true)
-          setShowForm(true);
+      console.log('##############')
+      if (chatData?._chat?.type === 'Room') {
+      console.log('~~~~~~~~~~~~~~~~~~~~')
+
+        const allowed = (await axios.get(`http://localhost:8000/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
+        if (allowed) {
+          console.log('666666666666666666')
+          // setShow(false);
+          // setTset(true)
+          // setShowForm(false);
+          setIsAllowed(true)
         }
         else {
-          setShowForm(false)
-          setIsPrivate(false);
+          console.log('1111111111111111111')
+          // setTset(false)
+          // setShow(true);
+
+          // setShowForm(true)
+          setIsAllowed(false)
         }
-        // console.log('-------', allwd.data[0].allowed, 'AYOOOOooo', showForm)
+      }
+      else {
+        console.log('daz mn hna')
+        setIsAllowed(true)
       }
     }
 
     checkAllow()
-
-    console.log('selceted Chat', isPrivate)
-  }, [chatData?._chat?.chat?.id])
-  
+  }, [ chatData, show])
   
 
-  // useEffect(() => {
-  //   if (chatData?._chat?.chat?.roomType === 'Private') {
-  //     setIsPrivate(true);
-  //   } else {
-  //     setIsPrivate(false);
-  //   }
-  // }, [chatData?._chat?.chat?.id]);
 
-  const openForm = () => {
-    if (showForm === false)
-      setShowForm(true);
-    else
-      setShowForm(false)
-  };
+  // const openForm = () => {
+  //   // if (showForm === false)
+  //   //   console.log('-----------------showForm : ', showForm)  
+  //   setTset(!test)
 
-  // const setAllowing = () => {
-  //   setIsAllowed(true)
-  //   setIsPrivate(false);
-  // }
+  //   // else
+  //     // setShowForm(false)
+  // };
+  // console.log('showForm : ', showForm);
 
-
-  const chatMessageListener = (message: any, rec: number) => {
-    // const message = data.message
-    // const rec = data.rec
-    console.log(chatData?._chat?.chat?.chatId, 'vs' ,message.msgChatId)
-    if (message.type === 'chat' && (chatData?._chat?.chat?.chatId === message.msgChatId) && chatMessages.find(m => m.messageId === message.messageId) === undefined) {
-      console.log('DATAAAA', message, rec)
-      setChatMessages([...chatMessages, message])
-    }
-    chatData?._socket?.emit('sortChats')
-  }
-
-  const roomMessageListener = (message: any) => {
-    if (message.type === 'room' && roomMessages.find(m => m.messageId === message.messageId) === undefined)
-      setRoomMessages([...roomMessages, message])
-    chatData?._socket?.emit('sortChats')
-  }
-
-
-  useEffect(() => {
-    
-    // chatData?._socket?.on('sendMessage', messageListener);
-    chatData?._socket?.on('sendMessage', chatMessageListener);
-    chatData?._socket?.on('sendRoomMessage', roomMessageListener);
-
-      return () => {
-        chatData?._socket?.off('sendMessage');
-      };
-  }, [chatData?._socket, chatMessages, roomMessages, chatMessageListener, roomMessageListener]);
-
-
-  
-
-  
-  useEffect(() => {
-    const fetchChatMessages = async () => {
-      try {
-        if (currentChat.chatId !== undefined)
-          setChatMessages((await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.chatId}`, {withCredentials: true}))?.data)
-      }
-      catch (err) {
-          console.log(`No message`)
-      }
-    }
-
-    fetchChatMessages()
-  }, [chatData?._chat?.chat?.chatId])
-
-  useEffect(() => {
-    const fetchRoomMessages = async () => {
-      try {
-          if (currentChat.id !== undefined) {
-            let roomMessages: Message[] = (await axios.get(`http://localhost:8000/message/${chatData._chat.type}/${currentChat?.id}`, { withCredentials: true }))?.data
-            if (roomMessages !== undefined)
-              setRoomMessages(roomMessages)
-          }
-      }
-      catch (err) {
-          console.log(`No message`)
-      }
-    }
-
-    fetchRoomMessages()
-  }, [chatData?._chat?.chat?.id])
-
-  // console.log('show from', showForm, 'is allowed', isPrivate) 
-
+  console.log('ISALLOWED', isAllowed)
 
   return (
     <div id='Conversation' className={`chat`}>
-      { showForm && <PromptPassword onClick={openForm} openForm={openForm} chatData={chatData} /> }
-      <Messages chatData={chatData} messages={ chatData?._chat?.type === 'chat' ? chatMessages : roomMessages } />
-      <Input chatData={ chatData } />
+      {show === 'true' && !isAllowed && < PromptPassword setIsAllowed={setIsAllowed}  chatData={chatData} /> }
+      <Messages chatData={chatData} messages={ messages } />
+      <Input chatData={ chatData } isAllowed={ isAllowed } />
     </div>
   )
 }

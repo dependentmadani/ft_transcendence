@@ -2,64 +2,79 @@
 import SignUp from '@/pages/SignUp/SignUp';
 import Login from '@/pages/Login/Login';
 import { Link, useNavigate} from "react-router-dom"
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from "axios";
 import { useClient } from '@/context/clientContext';
-import { useSocket } from '@/context/socketContext';
-import io, { Socket } from 'socket.io-client';
-
+import { ToastContainer, toast } from 'react-toastify';
+import Login2FA from '@/pages/Login/login_2fa'
 
 
 
 
 function  Sign(props:any) {
   
-  const {socketa, setSocketa} = useSocket();
+  // const navigate = useNavigate();
+  // const [login, setLogin] = useState<boolean>(false);
   const {client, updateClient} = useClient();
   const navigate = useNavigate();
-  console.log('***** sign ******')
-  
+
   useEffect(() => {
     async function fetchData() {
       console.log('fetch ')
       try {
         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true });
 
-        // setSocketa(io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`))
-
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
 
-        console.log(response.data)
+        console.log('response data is:',response.data)
         await updateClient({ ...client, ...response.data, signedIn: true });
         
-        if (response.data.signedUp) {
-          console.log('vvvvvvvvvvvvvvvvvvvvvv')
-          // setSocketa(io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`))
-          navigate('/')
-          }
-        // return () => {
-        //   _socket?.disconnect()
-        // }
+        if (response.data.signedUp && !response.data.twoEnabled) 
+          navigate('/');
+        else if (props.tag !== '2fa' && response.data.twoEnabled)
+          navigate('/login_2fa')
+
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
     }
 
-    // Call the fetchData function within the useEffect
-    // if (props.tag === 'login')
       fetchData();
   }, []);
     
+  const handelClick = () => {
+    if ((client.signedUp && !client.twoEnabled) || !client.signedIn) 
+      navigate('/');
+    else if (client.twoEnabled) {
+      toast.info("Submit Code !", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    }
+    else if (!client.username) {
+      toast.warn("Username Used !", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    }
+    else {
+      toast.info("Submit Data First !", {
+        position: toast.POSITION.TOP_LEFT
+      });
+    }
+
+  }
+
+  console.log('======= : ', props.tag)
+
     return (
       <>
         <div className="row">
           <div className="logo-login">
-            <Link to="/">
-                <img className="logo-login-img" src="/src/imgs/mskota.png" alt="Mskota-Logo" />
-            </Link>
+            <img className="logo-login-img" src="/src/imgs/mskota.png" alt="Mskota-Logo" onClick={handelClick} />
           </div>
           <div className='body-login'>
-              {(props.tag === 'login') ? <Login /> : <SignUp />}
+              {props.tag === 'login' && <Login />}
+              {props.tag === 'signup' && <SignUp />}
+              {props.tag === '2fa' && <Login2FA />}
             <div className='col2'>
               <img src="/src/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>

@@ -19,7 +19,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         start.addEventListener('click',()=> {
             start.style.display = 'none';
             play_start++;
-            console.log(`start\\\\\\${play_start}`)
+            // console.log(`start\\\\\\${play_start}`)
         })
 
         switchMusic.addEventListener('change', () => {
@@ -27,12 +27,12 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         });
         switchSound.addEventListener('change', () => {
             SoundValue = switchSound.checked;
-            console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
 
-            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
 
         let  img = new Image();
@@ -49,14 +49,16 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         paddle_sound.src = "/src/assets/sounds/Pop.ogg" 
         music.src = "/src/assets/sounds/Arabesque.mp3";
         
-        img.src = "/src/assets/img/castle.png";
+        img.src = "/src/assets/img/arabec.png";
         let speed_paddle:number =20;
         window.addEventListener('keydown', handlePlayerKeyPress);
+
+        
         function handlePlayerKeyPress(event: any) 
         {
             if (event.keyCode === 40) 
             {
-                console.log("down")
+                // console.log("down")
                 if( pl2.paddle_y + speed_paddle + pl2.paddle_h<= canvas.height)
                 {
                     
@@ -66,7 +68,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             }
             else if (event.keyCode === 38)
             {
-                console.log("up")
+                // console.log("up")
                 if( pl2.paddle_y >= speed_paddle)
                 {
                     pl2.paddle_y-=speed_paddle;
@@ -163,34 +165,38 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             speed:number=3;
             ball_size = canvas.width*1.5/100;
 
-            draw(){
+            draw()
+            {
                 if(!this.first_mouve)
                 this.mouveball();
-            this.first_mouve++;
-            this.check_colision()
-            rb.robot_mouve();
-            this.x += this.direction_x*this.speed;
-            this.y += this.direction_y*this.speed;
+                this.first_mouve++;
+                this.check_colision()
+                rb.robot_mouve();
+                this.x += this.direction_x*this.speed;
+                this.y += this.direction_y*this.speed;
             
-            this.ball_paddle();
-            sc.left_score
-            if (this.flag)
-            {
-                this.mouveball();
-                this.reset_ball()
-                this.flag = 0;
+                this.ball_paddle();
+                sc.left_score
+                if (this.flag)
+                {
+                    this.mouveball();
+                    this.reset_ball()
+                    this.flag = 0;
+                }
+
+                ctx.beginPath();
+                ctx.fillStyle = "yellow"
+                ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
+                ctx.fill();
+                ctx.closePath();
+                ctx.beginPath();
+                ctx.lineWidth = 2;
+                ctx.setLineDash([]);
+                ctx.strokeStyle ="black"
+                ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
+                ctx.stroke();
+                ctx.closePath();
             }
-            
-            ctx.beginPath();
-            ctx.fillStyle = "yellow"
-            ctx.strokeStyle ="black"
-            ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
-            ctx.arc(this.x, this.y,this.ball_size,0,Math.PI*4);
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath();
-        
-        }
         ball_paddle(){
             if (this.x - (this.ball_size + pl1.paddle_w + this.speed)  < 0 && this.y + this.ball_size >= pl1.paddle_y && this.y - this.ball_size <= pl1.paddle_y + pl1.paddle_h)
             {
@@ -212,7 +218,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.direction_y = (this.y - (pl2.paddle_y + pl2.paddle_h/2)) / pl2.paddle_h/2;
                 // this.flag_paddle = 0;
                 this.speed++
-                console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
+                // console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
 
             } 
                 else if (this.x < this.ball_size || this.x > canvas.width-this.ball_size)
@@ -312,6 +318,18 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         }
         
         var bl = new ball;
+        function drawline()
+        {
+            const l = canvas.width / 2;
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 4;
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(l, 0);
+            ctx.lineTo(l, canvas.height);
+            ctx.stroke();
+            ctx.closePath()
+        }
   
         class score
         {
@@ -383,6 +401,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         let pl2 = new paddle_right;
         let p = new game
         let sc = new score;
+        let animationId = 0;
         
         function render() 
         {
@@ -399,16 +418,26 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 music.pause();
             ctx.clearRect(0, 0, canvas.width,canvas.height);
             ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+            drawline();
             if(sc.left_score < 5 && sc.right_score < 5)
             {
                 p.start()
                 bl.draw();
             }
             else if(sc.left_score == 5)
+            {
                 ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
+                stopAnimation();
+            }
             else if(sc.right_score == 5)
+            {
                 ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
+                stopAnimation();
+            }
 
+        }
+        function stopAnimation() {
+            cancelAnimationFrame(animationId);
         }
         
         let msPrev = performance.now()
@@ -416,7 +445,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         const msPerFrame = 1000 / fps
         let frames = 0
         function animate() {
-            requestAnimationFrame(animate)
+            animationId = requestAnimationFrame(animate)
             const msNow = performance.now()
             const msPassed = msNow - (msPrev)
             
@@ -426,7 +455,6 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             msPrev = msNow - excessTime
             if(play_start)
                 render()
-            
             frames++
         }
     }

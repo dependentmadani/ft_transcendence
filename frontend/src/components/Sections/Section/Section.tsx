@@ -5,10 +5,14 @@ import { HomeChat } from "@/pages/Chat/HomeChat";
 import { Navigate, useParams } from 'react-router-dom';
 import Profile from '@/pages/Profile/Profile';
 import Leaderboard from '@/pages/Leadeboard/Leaderboard';
-import HomeGame from '@/pages/Game/ComponentReact/HomeGame' 
-import { useGame } from '@/context/GameContext';
+import HomeGame from '@/pages/Game/ComponentReact/HomeGame';
+import ClassicGame from '@/pages/Game/ComponentReact/classic';
+import Akinator from '@/pages/Game/ComponentReact/akinator';
+import Tennis from '@/pages/Game/ComponentReact/tennis';
 import { default as InviteTennis } from '@/pages/Game/Invitegame/InviteMatch';
 import InviteClassic from '@/pages/Game/Invitegame/InviteClassic';
+import { useGame } from '@/context/GameContext';
+
 const Test = () => {
     return (<>
         <div className='kika' >kika</div>
@@ -17,8 +21,10 @@ const Test = () => {
 
 const InviteGame = () => {
 
-    //check data of ids of players
+    // check data of ids of players
     const [_game] = useGame();
+
+    console.log('game :::::::::: ', _game)
 
     if (_game.mode === 'classic')
         return <InviteClassic ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
@@ -39,6 +45,12 @@ function selectSection(section: string): JSX.Element {
         return ( <Leaderboard /> )
     else if (section === '/game')
         return ( <HomeGame /> )
+    else if (section === '/game/akinator')
+        return ( <Akinator /> )
+    else if (section === '/game/classic')
+        return ( <ClassicGame /> )
+    else if (section === '/game/tennis')
+        return ( <Tennis /> )
     else if (section === '/game/invite')
         return ( <InviteGame /> )
     else if (section === 'test')

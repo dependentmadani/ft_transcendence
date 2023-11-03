@@ -1,18 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
-interface Message {
-  MessageSenId: number,
-  MessageRecId: number,
-  textContent: string,
-  createdAt: Date
-}
-
-interface User {
-  id: number,
-  username: string,
-  avatar: string,
-}
 
 export const Message = ({ currentMessage }: any) => {
 

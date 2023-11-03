@@ -2,19 +2,23 @@ import './searchFriend.css'
 import  { useState, useEffect, KeyboardEventHandler } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useClient } from '@/context/clientContext';
 
 function Friends_list(props:any) {
 
     let friends;
+    // const {client} = useClient();
     const navigate = useNavigate();
         console.log('hna : ', props.friendData)
         console.log('target : ', props.target)
-	if (!props.friendData)
-		return (<span id='no_friend' >No Friends ...</span>)
+    // console.log('********', client)
+
+	if (!props.friendsData)
+		return (<span id='no-users'> No friends .... </span>)
 
     if (!props.target) {
         console.log('natija 1: ')
-        friends =	props.friendData.map(friend => {
+        friends =	props.friendsData.map(friend => {
 
             let statusColor = '';
             if (friend.userStatus === 'ONLINE') 
@@ -26,7 +30,7 @@ function Friends_list(props:any) {
 
             return (
                 <div key={friend.id} className='friend'>
-                    <img className='user-friend' src={friend.avatar} alt="friend-img" onClick={() => {navigate(`/profile/${friend.username}`)}} />
+                    <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
                     <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
@@ -36,7 +40,7 @@ function Friends_list(props:any) {
     }
     else {
         console.log('natija 2: ')
-        friends =	props.friendData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
+        friends =	props.friendsData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
         .map(friend => {
 
             let statusColor = '';
@@ -49,7 +53,7 @@ function Friends_list(props:any) {
 
             return (
                 <div key={friend.id} className='friend'>
-                    <img className='user-friend' src={friend.avatar} alt="friend-img" onClick={() => {navigate(`/profile/${friend.username}`)}} />
+                    <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
                     <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
@@ -61,17 +65,14 @@ function Friends_list(props:any) {
     return (friends)
 }
 
-function Friends (props: any) {
+function Friends (props:any) {
 
-    let friendData = props.friendData;
+    // let friendData = props.friendData;
     const [searchOpen, setSearchOpen] = useState(false);
     const [target, setTarget] = useState('');
     const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
     
-    // console.log('props.friendData :', props.friendData);
-    // useEffect(() => {
-    //     console.log('Updated friendData:', friendData);
-    //   }, [friendData]);
+
 
     const my_search = document.querySelector('.search-input') as HTMLInputElement
     const input = document.getElementById('search');
@@ -101,6 +102,8 @@ function Friends (props: any) {
         }
     }
 
+    console.log('friends : ', props.friendsData)
+
     return (
         <div className='user-friends'>
             <div className='search-bar'>
@@ -116,7 +119,7 @@ function Friends (props: any) {
                 <span>Friends </span>
             </div>
             <div className='friends-list'>
-                <Friends_list friendData={friendData} target={target} />
+                <Friends_list friendsData={props.friendsData} target={target} />
             </div>
         </div>
     )
