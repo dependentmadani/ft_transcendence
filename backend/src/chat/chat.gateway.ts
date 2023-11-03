@@ -80,30 +80,36 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('roomMembers')
-  handleRoomMembers(client: Socket, rec: number): void {
-    // console.log('Dkhol a ',user);
-    this.server.emit('addMember', rec);
+  handleRoomMembers(client: Socket, user: any): void {
+    console.log('Dkhol a ',user);
+    this.server.emit('addMember', user);
+  }
+
+  @SubscribeMessage('updateMemberRole')
+  handleUpdateRoomMembers(client: Socket, user: any): void {
+    console.log('Dkhol a ',user);
+    this.server.emit('updateRole', user);
   }
 
   @SubscribeMessage('removeRoomMembers')
-  handleRemoveRoomMembers(client: Socket, user: Users): void {
+  handleRemoveRoomMembers(client: Socket, user: any): void {
     console.log('Khrroj 3liya ',user);
     this.server.emit('removeMembers', user);
   }
 
-  @SubscribeMessage('createRoom')
-  handleRoomCreation(client: Socket, data: any): void {
-    const { room, owner } = data
-    console.log(owner, 'WANTS TO CREATE ROOM', room)
-    this.server.to(this.userSocketMap[owner]).emit('newRoom', room, owner);
-  }
+  // @SubscribeMessage('createRoom')
+  // handleRoomCreation(client: Socket, data: any): void {
+  //   const { room, owner } = data
+  //   console.log(owner, 'WANTS TO CREATE ROOM', room)
+  //   this.server.to(this.userSocketMap[owner]).emit('newRoom', room, owner);
+  // }
 
-  @SubscribeMessage('leaveRoom')
-  handleRoomLeft(client: Socket, data: any): void {
-    const { roomId, owner } = data
-    console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
-    this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
-  }
+  // @SubscribeMessage('leaveRoom')
+  // handleRoomLeft(client: Socket, data: any): void {
+  //   const { roomId, owner } = data
+  //   console.log(owner, 'WANTS TO LEAVE ROOM', roomId)
+  //   this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
+  // }
 
   // @SubscribeMessage('sortChats')
   // handleRoomLeft(client: Socket, data: any): void {

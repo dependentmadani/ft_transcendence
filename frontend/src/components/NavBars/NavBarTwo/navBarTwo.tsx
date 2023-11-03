@@ -75,7 +75,7 @@ const ListNotification = () => {
                     
                     // Only My notifs and pendending status stay
                     // console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
-                    if (newNotif.status === false && newNotif.receiver.id === mainUser.id)
+                    if (newNotif.status === false && newNotif.receiver.id === mainUser.id && newNotif.type === 'FRIEND')
                         return newNotif
                     return null
                 })
