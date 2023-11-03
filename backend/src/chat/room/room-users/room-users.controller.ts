@@ -35,41 +35,46 @@ export class RoomUsersController {
 
     @Get('all-contacts')
     async getAllContacts(@Req() req: Request) {
+
         const me = req.user['sub']
         const chats: Chat[] = await this.chatService.getUserChats(me)
         const rooms: RoomUsers[] = await this.roomUsersService.getUserRooms(me)
 
-        // const { chats, rooms } = data;
-
-        // const concatenatedArray = [...chats, ...rooms];
         const chatPromises = chats.map(async chat => {
             const user = req.user['sub']
             const receiver = chat.chatUsers[0] === user ? chat.chatUsers[1] : chat.chatUsers[0];
             const _receiver: Users = await this.userService.findUserById(receiver);
-            
+
             // Check if receiver is not blocked
-            return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
+            if (this.userService.checkBlockedFriend(me, receiver))
+                return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
+            return null
         });
         
         const roomPromises = rooms.map(async room => {
             const _room: Room = await this.roomService.getOneRoom(room.roomId);
 
             // Check if user is not banned or muted
-            return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
+            console.log('Hado roles', room.role)
+            if (room.role !== 'BANNED' && room.role !== 'MUTED')
+                return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
+            return null
         });
         
         const chatResults = await Promise.all(chatPromises);
         const roomResults = await Promise.all(roomPromises);
         
-        const contacts = [...chatResults, ...roomResults];
-
+        const t = [...chatResults, ...roomResults];
+        const contacts: any = t.filter((contact) => contact !== null);
         const sortedContacts = contacts.sort((a, b) => {
             const dateA = new Date(a.latestMessageDate).getTime();
             const dateB = new Date(b.latestMessageDate).getTime();
             return dateB - dateA;
         });
 
-        // console.log(sortedContacts);
+        // console.log('Contacts', contacts);
+        // const filteredContacts: any = sortedContacts.filter((contact) => contact !== null);
+    //     setChats(filteredChatsData)
         return sortedContacts
     }
 

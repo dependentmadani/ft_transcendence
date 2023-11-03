@@ -63,7 +63,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   const [newRooms, setNewRooms] = useState<Room[]>([])
   const [chats, setChats] = useState<Chat[]>([])
   const [rooms, setRooms] = useState<roomUsers[]>([])
-  const [contacts, setContacts] = useState<Contact[]>()
+  const [contacts, setContacts] = useState<Contact[] | null>()
   const [show, setShow] = useShow();
 
 // 

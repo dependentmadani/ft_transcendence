@@ -78,7 +78,8 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const muteBanMember = async (user: User, role: string) => {
         try {
-            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, {
+            console.log('Ayoooooooo', user)
+            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.userId}`, {
                 'role': role,
             }, {
                 withCredentials: true,
@@ -91,7 +92,7 @@ export const RoomMembers = ({ chatData }: any) => {
 
     const unMuteBanMember = async (user: User, role: string) => {
         try {
-            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.id}`, {
+            await axios.patch(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${user.userId}`, {
                 'role': role,
             }, {
                 withCredentials: true,
