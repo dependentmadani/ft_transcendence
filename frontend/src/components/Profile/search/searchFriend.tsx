@@ -9,11 +9,11 @@ function Friends_list(props:any) {
     let friends;
     // const {client} = useClient();
     const navigate = useNavigate();
-        console.log('hna : ', props.friendData)
+        console.log('hna : ', props.friendsData)
         console.log('target : ', props.target)
     // console.log('********', client)
 
-	if (!props.friendsData)
+	if (!props.friendsData.length)
 		return (<span id='no-users'> No friends .... </span>)
 
     if (!props.target) {

@@ -17,6 +17,7 @@ console.log(`HELLO FROM SCRIPT CLASSIC___________RANDOM`);
         }
 })
 
+
 export class ClassicSocketGateway
 {
   constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}

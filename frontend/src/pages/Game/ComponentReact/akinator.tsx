@@ -31,12 +31,40 @@ export default function Akinator()
 
   
   useEffect(() => {
-    if (flag.current === false)
-    {
-      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
-      flag.current = true 
+  
+    async function fetchData() {
+      if (flag.current === false)
+      {
+        ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
+        flag.current = true 
+        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      }
     }
-  },  [leftballs,rightballs])
+    
+    async function addHistory() {
+      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+      if (leftballs === 5 || rightballs === 5) {
+        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+        try {
+          const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+          {
+            opp_name: `akinator`,
+            opp_score: leftballs,
+            my_score: rightballs,
+          },
+          {withCredentials: true}
+          )
+          console.log('res : ', res)
+        }catch (err) {
+          console.log('Error Fetcing data : ', err)
+        }
+      }
+    }
+
+    fetchData();
+    addHistory();
+  },  [leftballs, rightballs])
+
 
   const [Userdata, setUserdata] = useState<User>()
 
@@ -110,7 +138,7 @@ export default function Akinator()
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src='/src/imgs/example.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}   />
+                <img className='profile1Img' src='/src/imgs/boot.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}   />
                 <div className='profile1id'> Akinator </div>
                 <div className="BallScore1">
                   {score.map((element, index) => (

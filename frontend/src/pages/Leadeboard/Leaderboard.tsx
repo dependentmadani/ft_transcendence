@@ -13,7 +13,7 @@ interface User {
 }
 
 function Leaderboard() {
-    const [leaderboard, setLeaderboard] = useState<User[]>([]);
+    const [leaderboard, setLeaderboard] = useState([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
 
@@ -23,7 +23,7 @@ function Leaderboard() {
 
     const getLeaderboard = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/users`, {withCredentials: true});
+            const response = await axios.get(`http://localhost:8000/game/leaderboard`, {withCredentials: true});
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
@@ -32,9 +32,14 @@ function Leaderboard() {
         }
     };
 
+    useEffect(() => {
+        console.log(`leaderboard : ${leaderboard[0]}`)
+
+    }, [leaderboard]) 
+
     const userLeaderboard  = ( ) => {
         return (
-            leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map(user => {
+            leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user, index) => {
                 return (
                     <div className="player-stats" key={user.id}>
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
@@ -44,16 +49,16 @@ function Leaderboard() {
                             <span>{user.username}</span>
                         </div>
                         <div className="match-played">
-                            <span>Match played: {user.gamesPlayed}</span>
+                            <span>Match played: {user.games.gamesPlayed}</span>
                         </div>
                         <div className="wins">
-                            <span>Wins: {user.wins}</span>
+                            <span>Wins: {user.games.wins}</span>
                         </div>
                         <div className="ratio">
-                            <span>Ratio: {user.wins && user.gamesPlayed ? `${(100 * user.wins / user.gamesPlayed).toFixed(2)}%` : 'N/A'}</span>
+                            <span>Ratio: {user.games.wins && user.games.gamesPlayed ? `${(100 * user.games.wins / user.games.gamesPlayed).toFixed(2)}%` : 'N/A'}</span>
                         </div>
                         <div className="leaderboard-rank">
-                            <span>{user.rank}#</span>
+                            <span>{++index}#</span>
                         </div>
                     </div> 
                 )
@@ -61,7 +66,7 @@ function Leaderboard() {
         ))
     } 
 
-    console.log('----- : ', userLeaderboard())
+    // console.log('----- : ', userLeaderboard())
 
     return (
         <div className="leaderboard-section">

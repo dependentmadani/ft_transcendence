@@ -556,11 +556,18 @@ img {
         height: 350px;
         margin-top: 1rem;
     }
+
+    @media (max-width: 600px) {
+        #settings {
+            top: 1.5rem;
+        }
+    }
     
     @media (max-width: 300px) {
     
         #settings {
             width: 25px;
+            top: 2rem;
             right: 1;
         }
     }

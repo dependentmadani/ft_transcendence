@@ -5,12 +5,9 @@ import { Server,Namespace } from 'socket.io';
 import direct_ball from "../UtilsGame/ClassicPong/ClassicBall";
 import paddle_left from "../UtilsGame/ClassicPong/ClassicPaddle1";
 import paddle_right from "../UtilsGame/ClassicPong/ClassicPaddle2";
-
 import { GameService } from "../game.service"
-
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
-
 
 console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
 @WebSocketGateway({
@@ -20,14 +17,12 @@ console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
         }
 })
 
-
 export class InviteClassicSocketGateway
 {
   constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
 
   @WebSocketServer() server: Server;
 
-  // private players = new Map();
   private canvas_width;
   private canvas_height;
   private pl1 = [];
@@ -47,7 +42,8 @@ export class InviteClassicSocketGateway
   private PosPlayers = new Map< number ,number>();
   private name:string;
   private client_name =  new Map<number,string>;
-
+  private prfl = 0;
+  private adver =0;
 
   @SubscribeMessage('canvas')
   async handleCanvas(client, data)
@@ -63,6 +59,8 @@ export class InviteClassicSocketGateway
   {
       this.client_id = await user[0];
       this.name = await user[1];
+      this.prfl = await user[2];
+      this.adver = await user[3];
       this.client_name.set(this.client_id,this.name);
       
       console.log(`|${this.name}|------YOUCAN------|${this.client_id}|`)
@@ -75,35 +73,47 @@ export class InviteClassicSocketGateway
   if(this.count <= 2)
    {
     
-      if (this.rooms.has(this.room) && !this.pass) 
+      if ((this.rooms.has(this.room) && !this.pass)) 
       {
         this.pass = true;
-        this.profileID2 = this.client_id;
+        // this.profileID2 = this.client_id;
         this.count++;
         this.rooms.get(this.room).add(this.client_id);
-        this.players.set(client.id, this.client_id);
-        this.PosPlayers.set(this.client_id, 2);
-        client.emit('playerId', 2 , this.room);
-
-      console.log(`ALREADY EXIST------111----||||${ this.room}`);
-    }
-    else
-    {
-      this.ROOM_NUM++;
-      this.room = this.ROOM_NUM;
-      this.pass = false;
-      this.count++;
-      this.rooms.set(this.room, new Set([this.client_id]));
+        
+        // client.emit('playerId', 2 , this.room);
+        
+        // console.log(`${this.profileID2} ------1111-| ${this.PosPlayers.get(this.client_id)}| ---|||| ${ this.room}`);
+      }
+      else
+      {
+        this.ROOM_NUM++;
+        this.room = this.ROOM_NUM;
+        this.pass = false;
+        this.count++;
+        this.rooms.set(this.room, new Set([this.client_id]));
+        
+        // this.profileID1 = this.client_id;
+        // client.emit('playerId', 1 , this.room);
+        // console.log(`${this.profileID1} ------22222-| ${this.PosPlayers.get(this.client_id)}| ---|||| ${ this.room}`);
+      }
+      if(this.client_id == this.prfl)
+      {
+      client.emit('playerId', 1 , this.room);
+      this.profileID1 = this.client_id;
       this.players.set(client.id, this.client_id);
       this.PosPlayers.set(this.client_id, 1);
-      this.profileID1 = this.client_id;
-      client.emit('playerId', 1 , this.room);
-
+    }
+    if (this.client_id == this.adver)
+    {
+      this.profileID2 = this.client_id;
+      client.emit('playerId', 2 , this.room);
+      this.players.set(client.id, this.client_id);
+      this.PosPlayers.set(this.client_id, 2);
       }
       client.join(this.room);
       if (this.profileID1 && this.profileID2)
       {
-        this.server.to(this.room).emit('ProfilesID', this.profileID1, this.profileID2);
+        // this.server.to(this.room).emit('ProfilesID', this.profileID1, this.profileID2);
   
         this.profileID1 = 0;
         this.profileID2 = 0;

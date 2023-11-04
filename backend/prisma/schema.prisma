@@ -69,6 +69,7 @@ model Game {
   gamesPlayed             Int             @default(0)
   wins                    Int             @default(0)
   loses                   Int             @default(0)
+  score                   Int             @default(0)
 }
 
 model History {
