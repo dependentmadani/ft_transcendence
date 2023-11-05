@@ -1,6 +1,6 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req, Res } from '@nestjs/common';
 import { HistoryService } from './history.service';
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { ApiBody, ApiResponse } from '@nestjs/swagger';
 import { historyDto } from './dto';
 
@@ -33,9 +33,11 @@ export class HistoryController {
     })
     @HttpCode(HttpStatus.CREATED)
     async addResultGame(@Req() req: Request, 
-            @Body() body: historyDto) {
+            @Body() body: historyDto,
+            @Res() res: Response) {
+        console.log('the history has been added');
         const user = req.user;
-        return await this.history.createResultGame(user['sub'], body);
+        res.send(await this.history.createResultGame(user['sub'], body));
     }
 
 }

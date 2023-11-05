@@ -156,7 +156,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
-                  <div key={element} style={index < leftballs ? { backgroundColor: 'cyan' } : {}}></div>
+                        <div key={element} style={5 - index <= rightballs ? { backgroundColor: 'cyan' } : {}}></div>
                 ))}
               </div>
             </div>

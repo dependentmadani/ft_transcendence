@@ -37,6 +37,7 @@ export class UsersService {
         include: {
           friends: true,
           blocked: true,
+          games: true
         }
       });
     return user;
@@ -168,6 +169,9 @@ export class UsersService {
         email : {
           not: users.email
         }
+      },
+      include: {
+        games: true,
       }
     });
     return user;
@@ -188,6 +192,9 @@ export class UsersService {
               startsWith: username,
               mode: 'insensitive',
             }
+          },
+          include: {
+            games: true
           }
         }
       }
@@ -317,7 +324,7 @@ export class UsersService {
             id: userId,
           }
         },
-        blocked: {
+        blockedBy: {
           connect: {
             id: userId,
           }

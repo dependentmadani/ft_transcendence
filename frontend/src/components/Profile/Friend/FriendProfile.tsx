@@ -3,6 +3,8 @@ import { useClient } from '@/context/clientContext';
 import MyPieChart from '@/components/Profile/PieChart/pieChart'
 import Friends from '../search/searchFriend';
 import React, { useState, useEffect } from 'react';
+import { useSetting } from '@/context/SettingContext';
+import SettingsComponent from './settings'
 import axios from 'axios';
 
 
@@ -90,6 +92,7 @@ function FriendProfile (props: any) {
 
     console.log('profileFriend', props.userData)
     const [listFriend, setListFriend] = useState(null);
+    const [popSettings, setPopSettings] = useSetting();
     // const {client, updateClient} = useClient();
 
     useEffect(() => {
@@ -107,20 +110,35 @@ function FriendProfile (props: any) {
     }, [props.userData[0].id])
     console.log('00000 : ',props.userData)
 
+    useEffect(() => {
+        console.log('befor : ', popSettings)
+        const settings_card = document.querySelector('.settings-friend') as HTMLElement
+        
+        if (!popSettings)
+            settings_card.style.display = 'none';
+        else
+            settings_card.style.display = 'flex'
+
+        console.log('after : ', popSettings)
+    }, [popSettings]);
+
+
     return (
-        <div className='profile'>
-            <img id='settings'  src="/src/imgs/setting.png" alt="setting" />
-            <div className='profile-col-1'>
-                <ProfileInfo userData={props.userData[0]} />
-                {listFriend && <Friends friendsData={listFriend} /> }
+        <>
+            <div className='profile'>
+                <img id='settings'  src="/src/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
+                <div className='profile-col-1'>
+                    <ProfileInfo userData={props.userData[0]} />
+                    {listFriend && <Friends friendsData={listFriend} /> }
+                </div>
+                <div className='profile-col-2'>
+                    <Achivement />
+                    <Statistic />
+                </div>
+                <SettingsComponent userId={props.userData[0].id} />
             </div>
-            <div className='profile-col-2'>
-                <Achivement />
-                <Statistic />
-            </div>
-            {/* <div className='blur' ></div>
-            <div className='popup'></div> */}
-        </div>
+            {/* <div className='blur'  style={!popSettings ? { display: 'none' } : { display: 'block' }} ></div> */}
+        </>
     )
 }
 

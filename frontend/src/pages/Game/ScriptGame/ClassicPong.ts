@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect } from 'react';
 import {io} from 'socket.io-client'
 
 export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, client_id:number, profileID1:any, profileID2:any)
@@ -23,6 +24,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         ball_sound.src = "/src/assets/sounds/beeep.ogg";
         paddle_sound.src = "/src/assets/sounds/Pop.ogg";
         
+        
         const socket = io('http://localhost:8000/ClassicRandom');
         
         socket.emit("canvas",canvas.width, canvas.height);
@@ -30,7 +32,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
-            console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+            // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
         }).catch((error)=>{  
             console.error('Error fetching user data for ProfileID1', error);
         })
@@ -41,7 +43,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             play_start++;
 
             socket.emit("youcan start", client_id, UserName);
-            console.log(`start\\\\\\${client_id}`)
+            // console.log(`start\\\\\\${client_id}`)
         })
         switchSound.addEventListener('change', () => 
         {
@@ -51,13 +53,13 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
             socket.emit("playerDisconnect",client_id);
-            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
         socket.on('connect',()=>
         {
-            console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}`);
+            // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}`);
             window.addEventListener('keydown', handlePlayerKeyPress);
-            console.log(client_id)
+            // console.log(client_id)
         })
         let player:number;
         let clientRoom:number =0;
@@ -83,15 +85,15 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         }
         function handlePlayerKeyPress(event: any)
         {
-            console.log(`this id of the player:${player}`)  
+            // console.log(`this id of the player:${player}`)  
             if (event.keyCode === 40) 
             { 
-                console.log("down_RIGHT")
+                // console.log("down_RIGHT")
                 socket.emit("move_paddle","down", player, clientRoom);
             }
             else if (event.keyCode === 38) 
             {
-                console.log("up_Right")
+                // console.log("up_Right")
                 socket.emit("move_paddle","up",player, clientRoom);
             }
         }
@@ -99,7 +101,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             profileID1(prfl1);
             profileID2(prfl2);
-            console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
+            // console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         })
 
         class paddle_left
@@ -247,30 +249,34 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                      if(this.score_left == 5)
                      {
-                        // console.log("hello  ------111")
+                     
                         const ttWidth = ctx.measureText("YOU WIN").width;
                         this.write_txt("YOU WIN",(canvas.width/4 - ttWidth/2), canvas.height/3)
+                        stopAnimation()
                     }
                     else
                     {
-                        // console.log("hello ------2222")
+                        
                         const ttWidth = ctx.measureText("YOU LOSE").width;
                         this.write_txt("YOU LOSE",(canvas.width/4 - ttWidth/2), canvas.height/3)
+                        stopAnimation()
                     }
                 }
                 if (player % 2 == 0)
                 {
                     if (this.score_right == 5)
                     {
-                        // console.log("hello  -----3333")
+                      
                         const ttWidth = ctx.measureText("YOU WIN").width ;
                         this.write_txt("YOU WIN",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
+                        stopAnimation()
                     }
                     else
                     {
-                        // console.log("hello  -----4444")
+                       
                         const ttWidth = ctx.measureText("YOU LOSE").width ;
                         this.write_txt("YOU LOSE",(3*canvas.width/4 - ttWidth/2), canvas.height/3)
+                        stopAnimation()
                     }
 
                 }
@@ -348,32 +354,34 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         
     }
 
-
+    socket.on('disconnect', () => {
+        // console.log("Disconnected from the server");
+    
+        stopAnimation();
+      
+    });
     function render()
     {
         ctx.clearRect(0,0,canvas.width,canvas.height);
-        // ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        
         drawline()
         
         p.start()
         bl.draw();
         sc.update_score()
     }
-    // let   pl_exist = 0;
-    // socket.on("alreadyInRoom",()=>{
-    //     pl_exist++;
-    //     console.log("ALREADY EXIST----------||||")
-    // });
+
     let msPrev = performance.now()
     const fps = 60
     const msPerFrame = 1000 / fps
     let frames = 0
+    let animationId = 0;
     animate()
-        
+    function stopAnimation() {
+        cancelAnimationFrame(animationId);
+    }
     function animate()
     {
-        requestAnimationFrame(animate)
+        animationId =  requestAnimationFrame(animate)
         const msNow = performance.now()
         const msPassed = msNow - (msPrev)
         

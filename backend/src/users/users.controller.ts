@@ -93,11 +93,12 @@ export class UsersController {
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
-    @Req() req:Request,
-    @Res() res:Response) {
+    @Req() req:Request) {
+    console.log('the request reach here');
     const user = await this.userService.findUserById(req.user['sub']);
     const blockedFriend = await this.userService.blockFriend(user.id, friendId);
-    return res.send(blockedFriend);
+    return blockedFriend
+    // return res.send(blockedFriend);
   }
 
   @Post('unblock-friend/:id')

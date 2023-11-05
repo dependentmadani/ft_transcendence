@@ -40,7 +40,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
-            console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+            // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
         }).catch((error)=>{  
             console.error('Error fetching user data for ProfileID1', error);
         })
@@ -50,7 +50,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             play_start++;
             
             socket.emit("youcan start",client_id,UserName);
-            console.log(`start\\\\\\${client_id}`)
+            // console.log(`start\\\\\\${client_id}`)
         })
         
         switchMusic.addEventListener('change', () =>
@@ -61,19 +61,19 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         switchSound.addEventListener('change', () => 
         {
             SoundValue = switchSound.checked;
-            console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
         
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
             socket.emit("playerDisconnect",client_id);
-            console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
         
         socket.on('connect',()=>
         {
-            console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
-            document.getElementById('canvas1')?.addEventListener("mousemove", handleMouseMove);
+            // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
+            document .addEventListener("mousemove", handleMouseMove);
             
             console.log(client_id)
         })
@@ -93,16 +93,16 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
      
         function handleMouseMove(event: MouseEvent)
         {
-            console.log(`this id of the player:${player}`);
+            // console.log(`this id of the player:${player}`);
             
             if (event.clientY > prev_right_y)
             {
-                console.log("down_RIGHT");
+                // console.log("down_RIGHT");
                 socket.emit("move_paddle", "down",player, clientRoom);
             }
             else if (event.clientY < prev_right_y)
             {
-                console.log("up_Right");
+                // console.log("up_Right");
                 socket.emit("move_paddle", "up",player, clientRoom);
             }
             prev_right_y = event.clientY;
@@ -112,7 +112,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             profileID1(prfl1);
             profileID2(prfl2);
-            console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
+            // console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         })
         
         class paddle_left
@@ -264,33 +264,19 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 {
                     if (player % 2 != 0)
                     {
+                        stopAnimation();
                          if(this.score_left == 5)
-                         {
-                            console.log("hello mother fucker ------111")
                             ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
-
-                        }
                         else
-                        {
-                            console.log("hello mother fucker ------2222")
                             ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
-
-                        }
                     }
                     if (player % 2 == 0)
                     {
+                        stopAnimation();
                         if (this.score_right == 5)
-                        {
-                            console.log("hello mother fucker -----3333")
                             ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
-                        }
                         else
-                        {
-                            
-                            console.log("hello mother fucker -----4444")
                             ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
-
-                        }
     
                     }
                }
@@ -333,31 +319,21 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         var p = new game
         let stop = 0;
 
+socket.on('disconnect', () => {
+    console.log("Disconnected from the server");
+
+    stopAnimation();
+  
+});
+
+// Rest of your code
+
     
-        socket.on("player1 disconect",(msg)=>
-        {
-            stop++;
-            console.log(`msg----------------------|`);
-            if (msg === "WIN")
-                ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
-            else
-                ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
-        })
-      
-        socket.on("player2 disconect",(msg)=>
-        {
-            stop++;
-            // console.log(`msg----------------------|`);
-            if (msg === "WIN")
-                ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
-            else
-                ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height)
-        })
 
         socket.on("game_state",(gameState)=>
         {
             const room = gameState.room.id;
-            console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
+            // console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
             if (room === clientRoom)
             {
                 pl1.paddle_y = gameState.paddles.left
@@ -404,11 +380,17 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let msPrev = performance.now()
         const fps = 60
         const msPerFrame = 1000 / fps
-        let frames = 0
+        let frames = 0;
+        let animationId =0 
+        
         animate()
+        function stopAnimation() {
+            cancelAnimationFrame(animationId);
+        }
+
         function animate() 
         {
-            requestAnimationFrame(animate)
+            animationId =  requestAnimationFrame(animate)
             const msNow = performance.now()
             const msPassed = msNow - (msPrev)
             

@@ -7,6 +7,7 @@ import paddle_right from "../UtilsGame/MatchPong/MatchPaddle2";
 import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
+
 console.log(`HELLO FROM SCRIPT Match________INVITE`);
 
 @WebSocketGateway({
@@ -18,6 +19,8 @@ console.log(`HELLO FROM SCRIPT Match________INVITE`);
 
 export class InviteMatchSocketGateway
 {
+  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+  
   @WebSocketServer() server: Server;
 
   private canvas_width;
@@ -37,13 +40,10 @@ export class InviteMatchSocketGateway
   private profileID2 = 0
   private players = new Map< number ,number>()
   private PosPlayers = new Map< number ,number>()
-
-
   private name:string;
   private client_name =  new Map<number,string>;
-
-  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
-
+  private prfl = 0;
+  private adver =0;
 
   @SubscribeMessage('canvas')
   async handleCanvas(client, data)
@@ -52,12 +52,15 @@ export class InviteMatchSocketGateway
      const cnv_y = await data[1];
      this.canvas_width =   await cnv_x;
      this.canvas_height =  await cnv_y;
+     
   }
   @SubscribeMessage('youcan start')
   async handleyoucanstart(client, user)
   {
     this.client_id = await user[0];
     this.name = await user[1];
+    this.prfl = await user[2];
+    this.adver = await user[3];
     this.client_name.set(this.client_id,this.name);
       
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
@@ -72,33 +75,40 @@ export class InviteMatchSocketGateway
           if (this.rooms.has(this.room) && !this.pass) 
           {
             this.pass = true;
-            this.profileID2 = this.client_id;
+            // this.profileID2 = this.client_id;
             this.count++;
             this.rooms.get(this.room).add(this.client_id);
-            this.players.set(client.id, this.client_id);
-            this.PosPlayers.set(this.client_id, 2);
-            client.emit('playerId', 2 , this.room);
-          
+            
             // console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------111----||||${ this.room}`);
-        }
-        else 
-        {
-          this.ROOM_NUM++;
-          this.room = this.ROOM_NUM.toString();
+          }
+          else 
+          {
+            this.ROOM_NUM++;
+          this.room = this.ROOM_NUM;
           this.pass = false;
           this.count++;
           this.rooms.set(this.room, new Set([this.client_id]));
+          
+          // console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------22222----||||${ this.room}`);
+        }
+        if(this.client_id == this.prfl)
+        {
+          client.emit('playerId', 1 , this.room);
+          this.profileID1 = this.client_id;
           this.players.set(client.id, this.client_id);
           this.PosPlayers.set(this.client_id, 1);
-          this.profileID1 = this.client_id;
-          client.emit('playerId', 1 , this.room);
-
-          // console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------22222----||||${ this.room}`);
+        }
+        if (this.client_id == this.adver)
+        {
+          this.profileID2 = this.client_id;
+          client.emit('playerId', 2 , this.room);
+          this.players.set(client.id, this.client_id);
+          this.PosPlayers.set(this.client_id, 2);
         }
         client.join(this.room);
         if (this.profileID1 && this.profileID2)
         {
-          this.server.to(this.room).emit('ProfilesID', this.profileID1, this.profileID2);
+          // this.server.to(this.room).emit('ProfilesID', this.profileID1, this.profileID2);
           this.profileID1 = 0;
           this.profileID2 = 0;
         }
@@ -137,8 +147,9 @@ async handlenewvalueroom(client, data)
     if(this.rooms.has(data))
     {
       this.room = await data;
-    if((this.canvas_height && this.canvas_width ))
+    if(this.canvas_height && this.canvas_width )
       this.startGameIfNeeded(this.room, client.id);
+
     }
   }
   @SubscribeMessage('move_paddle')
