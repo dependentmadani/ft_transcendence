@@ -1,5 +1,8 @@
+import axios from "axios";
+
 
 export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
+
     if(canvas)
     {
         var ctx:any = canvas.getContext('2d');
@@ -29,9 +32,26 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             SoundValue = switchSound.checked;
             // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
+
+        async function addHistory() {
+            try {
+                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+                {
+                opp_name: `akinator`,
+                opp_score: 5,
+                my_score: sc.right_score,
+                },
+                {withCredentials: true}
+                )
+                console.log('res : ', res)
+            }catch (err) {
+                console.log('Error Fetcing data : ', err)
+            }
+        }
+        
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
-
+            addHistory();
             // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
 

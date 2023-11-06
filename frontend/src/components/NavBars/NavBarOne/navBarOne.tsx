@@ -27,6 +27,7 @@ function NavBarOne() {
             console.error('Error logout: ', error);
         }
         updateClient(new Client);
+        localStorage.removeItem(import.meta.env.VITE_CLIENT_STORAGE_KEY)
         navigate('/')
     }
 

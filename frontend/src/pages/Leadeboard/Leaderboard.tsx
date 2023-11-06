@@ -1,5 +1,6 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom";
 import './Leaderboard.css';
 
 interface User {
@@ -16,6 +17,8 @@ function Leaderboard() {
     const [leaderboard, setLeaderboard] = useState([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [searchQuery, setSearchQuery] = useState<string>("");
+    const [akinatorRank, setAkinatorRank] = useState<number>(0);
+    const [akinatorUser, setAkinatorUser] = useState<User>();
 
     useEffect(() => {
         getLeaderboard();
@@ -24,6 +27,9 @@ function Leaderboard() {
     const getLeaderboard = async () => {
         try {
             const response = await axios.get(`http://localhost:8000/game/leaderboard`, {withCredentials: true});
+            setAkinatorUser(response.data.find(user => user.username === "akinator"));
+            setAkinatorRank(response.data.findIndex(user => user.username === "akinator"));
+            console.log("akinator  ---> ", akinatorUser);
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
@@ -37,13 +43,19 @@ function Leaderboard() {
 
     }, [leaderboard]) 
 
+    const navigate = useNavigate();
+    const goProfile = (username : string) => { navigate(`/profile/${username}`) }
+
     const userLeaderboard  = ( ) => {
         return (
             leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user, index) => {
+                if (user.username === "akinator")
+                    return <></>
                 return (
                     <div className="player-stats" key={user.id}>
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
-                            <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                            <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} 
+                                onClick={ () => goProfile(user.username) } />
                         </div>
                         <div className="status">
                             <span>{user.username}</span>
@@ -79,9 +91,31 @@ function Leaderboard() {
                     onChange={(e) => {setSearchQuery(e.target.value); console.log("Search For: ", searchQuery); }}
                 />
             </div>
+            { akinatorUser && (
+                <div className="player-stats akinator-bot" key={akinatorUser.id}>
+                    <div className={(akinatorUser.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
+                        <img src={akinatorUser.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                    </div>
+                    <div className="status">
+                        <span>{akinatorUser.username}</span>
+                    </div>
+                    <div className="match-played">
+                        <span>Match played: {akinatorUser.games.gamesPlayed}</span>
+                    </div>
+                    <div className="wins">
+                        <span>Wins: {akinatorUser.games.wins}</span>
+                    </div>
+                    <div className="ratio">
+                        <span>Ratio: {akinatorUser.games.wins && akinatorUser.games.gamesPlayed ? `${(100 * akinatorUser.games.wins / akinatorUser.games.gamesPlayed).toFixed(2)}%` : 'N/A'}</span>
+                    </div>
+                    <div className="leaderboard-rank">
+                        <span>{akinatorRank + 1}#</span>
+                </div>
+            </div> 
+            )}
             {loading ? (
                 <img id='Loding' src='/src/imgs/svg/eat.svg' />
-            ) : userLeaderboard().length ? userLeaderboard() : <span id='no-users'> No Users .... </span>} 
+            ) : userLeaderboard().length ? userLeaderboard() : <span className='no-users'> No Users .... </span>} 
         </div>
     );
 }

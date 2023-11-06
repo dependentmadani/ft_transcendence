@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
 import { GameService } from './game.service';
 import { Request } from 'express';
 
@@ -19,5 +19,10 @@ export class GameController {
     @Get('leaderboard')
     async leaderboard(@Req() req: Request) {
         return await this.game.leaderboard();
+    }
+
+    @Get('leaderboard/:username')
+    async playerPosition(@Param('username') username: string) {
+        return await this.game.playerPosition(username);
     }
 }

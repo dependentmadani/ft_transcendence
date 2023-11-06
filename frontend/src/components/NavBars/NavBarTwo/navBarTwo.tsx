@@ -164,15 +164,7 @@ const ListNotification = () => {
             setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
             socketa?.emit('acceptNotification', { notif: notif });
         }
-        // console.log('Da type', notif.type === 'GAME')
-        // else if (notif.type === 'GAME') { // Handling Game invitaion
-        //     socketa?.emit('acceptNotification', { notif: notif });
- 
-        // //     // Redirect Invitation receiver (res.data.receiverId) here
-        // }
 
-        // Updating state of notification
-        // const requestOptions = 
         const response = await fetch(
             `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
             {
@@ -182,7 +174,6 @@ const ListNotification = () => {
         );
 
         
-        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
         const data = await response.json();
         console.log('NOTIFICATION UPDATED', data);
 

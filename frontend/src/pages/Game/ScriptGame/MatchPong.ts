@@ -259,7 +259,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                     this.score_left = l;
                     this.score_right = r;
                 })
-
+                // console.log('left : [', this.left_score, '] | right : [', this.right_score, ']')
                 if(this.score_left == 5 || this.score_right == 5)
                 {
                     if (player % 2 != 0)

@@ -19,7 +19,7 @@ console.log(`HELLO FROM SCRIPT Match________INVITE`);
 
 export class InviteMatchSocketGateway
 {
-  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+  constructor(private historyService: HistoryService,private histor1:historyDto) {}
   
   @WebSocketServer() server: Server;
 
@@ -247,28 +247,13 @@ async handlenewvalueroom(client, data)
           let firstValue  = roomArray[0];
           let secondValue = roomArray[1]; 
     
-        if(this.ball[room_num].score_left > this.ball[room_num].score_right)
-        {
-          this.gameService.updateInfoGame(firstValue, true);
-          this.gameService.updateInfoGame(secondValue , false);
-        }
-        else
-        {
-          this.gameService.updateInfoGame(firstValue, false);
-          this.gameService.updateInfoGame(secondValue, true);
-        }
+       
         this.histor1.my_score = this.ball[room_num].score_left 
         this.histor1.opp_score  = this.ball[room_num].score_right;
         this.histor1.opp_name = this.client_name.get(secondValue);
         this.historyService.createResultGame(firstValue,this.histor1);
         console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
       
-        this.histor2.my_score = this.ball[room_num].score_right;
-        this.histor2.opp_score  = this.ball[room_num].score_left ;
-        this.histor2.opp_name = this.client_name.get(firstValue);
-        this.historyService.createResultGame(secondValue,this.histor2);
-        console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
-    
     }
       clearInterval(this.interval[room_num]);
 

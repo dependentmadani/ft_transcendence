@@ -14,7 +14,7 @@ function Friends_list(props:any) {
     // console.log('********', client)
 
 	if (!props.friendsData.length)
-		return (<span id='no-users'> No friends .... </span>)
+		return (<span className='no-users'> No friends .... </span>)
 
     if (!props.target) {
         console.log('natija 1: ')

@@ -30,39 +30,39 @@ export default function Akinator()
   const [rightballs, setRightBalls] = useState<number>(0);
 
   
-  useEffect(() => {
+  function fetchData() {
+    if (flag.current === false)
+    {
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
+      flag.current = true 
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+    }
+  }
   
-    async function fetchData() {
-      if (flag.current === false)
-      {
-        ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
-        flag.current = true 
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  async function addHistory(sure:boolean) {
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
+    if (leftballs === 5 || rightballs === 5 || sure) {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+      try {
+        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+        {
+          opp_name: `akinator`,
+          opp_score: sure ? 5 : leftballs,
+          my_score: rightballs,
+        },
+        {withCredentials: true}
+        )
+        console.log('res : ', res)
+      }catch (err) {
+        console.log('Error Fetcing data : ', err)
       }
     }
-    
-    async function addHistory() {
-      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-      if (leftballs === 5 || rightballs === 5) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        try {
-          const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
-          {
-            opp_name: `akinator`,
-            opp_score: leftballs,
-            my_score: rightballs,
-          },
-          {withCredentials: true}
-          )
-          console.log('res : ', res)
-        }catch (err) {
-          console.log('Error Fetcing data : ', err)
-        }
-      }
-    }
+  }
+
+  useEffect(() => {
 
     fetchData();
-    addHistory();
+    addHistory(false);
   },  [leftballs, rightballs])
 
 
@@ -75,6 +75,35 @@ export default function Akinator()
     }
 
     getUserData()
+  
+  }, [])
+
+
+  useEffect(() => {
+    
+    const beforeUnloadHandler = async (event) => {
+      // You can display a confirmation message or perform actions here.
+      // For example:
+      console.log('event.preventDefault() :', event.preventDefault())
+      const confirmationMessage = 'You will lose . Are you sure you want to leave?';
+      event.returnValue = confirmationMessage; // For modern browsers
+      const userDecision = window.confirm(confirmationMessage);
+      if (!userDecision) {
+        event.preventDefault();
+      }
+      else {
+        // leftballs = 5;
+        await addHistory(true); // Replace with your database action
+      }
+      // return confirmationMessage; // For older browsers
+    };
+
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    return () => {
+      // Remove the event listener when the component unmounts
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
+    };
   }, [])
 
   const updateCanvasWidth = () => {
@@ -133,8 +162,6 @@ export default function Akinator()
 
   return (
     <div className='game-mode'>
-        {/* <div >
-        </div> */}
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
@@ -154,7 +181,7 @@ export default function Akinator()
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
-                  <div key={element} style={index < rightballs ? { backgroundColor: 'cyan' } : {}}></div>
+                  <div key={element} style={5 - index <= rightballs ? { backgroundColor: 'cyan' } : {}}></div>
                 ))}
               </div>
             </div>

@@ -19,7 +19,7 @@ console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
 
 export class InviteClassicSocketGateway
 {
-  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+  constructor( private historyService: HistoryService,private histor1:historyDto) {}
 
   @WebSocketServer() server: Server;
 
@@ -238,28 +238,12 @@ async handlenewvalueroom(client, data)
             let firstValue  = roomArray[0];
             let secondValue = roomArray[1]; 
       
-            if(this.ball[room_num].score_left > this.ball[room_num].score_right)
-            {
-              this.gameService.updateInfoGame(firstValue, true);
-              this.gameService.updateInfoGame(secondValue , false);
-              console.log(` ${firstValue}---------1111---|${secondValue }|----111--------|`)
-            }
-            else
-            {
-              this.gameService.updateInfoGame(firstValue, false);
-              this.gameService.updateInfoGame(secondValue, true);
-              console.log(`${firstValue}|-----------222---|${secondValue}`)
-            }
             this.histor1.my_score = this.ball[room_num].score_left 
             this.histor1.opp_score  = this.ball[room_num].score_right;
             this.histor1.opp_name = this.client_name.get(secondValue);
             this.historyService.createResultGame(firstValue,this.histor1);
             // console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
           
-            this.histor2.my_score = this.ball[room_num].score_right;
-            this.histor2.opp_score  = this.ball[room_num].score_left ;
-            this.histor2.opp_name = this.client_name.get(firstValue);
-            this.historyService.createResultGame(secondValue,this.histor2);
             // console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
       
     }

@@ -10,9 +10,6 @@ export class HistoryController {
 
     //Get all last 10 games score
     @Get()
-    @ApiBody({
-        description: 'no body is needed here'
-    })
     @ApiResponse({
         status: 200,
         description: 'return latest 10 games'

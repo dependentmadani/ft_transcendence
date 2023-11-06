@@ -23,8 +23,8 @@ export default function Tennis()
   const canvas = useRef(null)
   
   const [size, setSize] = useState<'small' | 'medium'>('medium');
-  const [leftballs, setLeftBalls] = useState<number>(0);
-  const [rightballs, setRightBalls] = useState<number>(0);
+  const [leftballs, setLeftBalls] = useState(0);
+  const [rightballs, setRightBalls] = useState(0);
   const [ProfileID1, setProfileID1] = useState(0);
   const [ProfileID2, setProfileID2] = useState(0);
   const [Userdata, setUserdata] = useState<User>()
@@ -72,13 +72,15 @@ axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true }
 useEffect(() => {
   if (flag.current === false && Userdata?.id)
   {
-    ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
+    ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);},
       Userdata.id,
       (prl1:any) =>{setProfileID1(prl1);},
       (prl2:any) =>{setProfileID2(prl2);}
     )
     flag.current = true 
   }
+
+// console.log('leftball : ', leftballs, ' | rightball : ', rightballs);
 },  [leftballs,rightballs, Userdata?.id,ProfileID1,ProfileID2])
 
 
@@ -146,7 +148,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
                 <div className='profile1id' > {user1?.username}</div>
                 <div className="BallScore1">
                   {score.map((element, index) => (
-                    <div key={element} style={index < rightballs ? { backgroundColor: 'cyan' } : {}}></div>
+                    <div key={element} style={index < leftballs ? { backgroundColor: 'cyan' } : {}}></div>
                   ))}
                 </div>
             </div>

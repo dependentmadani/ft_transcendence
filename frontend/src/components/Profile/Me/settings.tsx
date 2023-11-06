@@ -123,7 +123,7 @@ const SettingsComponent: React.FC = () => {
         const informTwoFactorState = async () => {
             try {
               console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
-                if (!twoFactorEnabled && smsCode)
+                if (!twoFactorEnabled && email)
                 {
                     await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
                     { withCredentials: true },
@@ -213,6 +213,7 @@ const SettingsComponent: React.FC = () => {
   };
 
   console.log('client.twoEnabled : ', client.twoEnabled)
+  console.log('twoEnabled : ', twoFactorEnabled)
 
     return (
     <div className="settings-card">
@@ -243,13 +244,13 @@ const SettingsComponent: React.FC = () => {
         <div className="container-mail">
             <input type="text" id="mail-for-qr" placeholder="Enter mail for QR code"  autoComplete='off'
                      value={email} onKeyDown={handleKeyDown} onChange={(e) => setEmail(e.target.value)}
-                     disabled={twoFactorEnabled ? twoFactorEnabled : !twoFactorEnabled} />
+                     disabled={!twoFactorEnabled ? true : false} />
         </div>
         <div className="container-qrcode">
             <div className="sms-input">
                 <input type="text" id="sms-code" placeholder="Enter code"  autoComplete='off'
                     value={smsCode} onKeyDown={handleKeyDown2} onChange={ (e) => setSmsCode(e.target.value)}
-                      disabled={twoFactorEnabled ? twoFactorEnabled : !twoFactorEnabled} 
+                      disabled={!twoFactorEnabled ? true : false} 
                 />
             </div>
             <div className="qr-space">

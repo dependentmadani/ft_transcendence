@@ -74,13 +74,7 @@ useEffect(() => {
   useEffect(() => {
     if (flag.current === false && Userdata?.id)
     {
-      ping_pong(canvas.current,(left:any) => {
-        const updatedBallColors = leftballs.map((color, index) => (index < left ? 'purple' : 'gray'));
-        setLeftBalls(updatedBallColors);
-      },(right:any)=>{
-          const updatedBallColors = rightballs.map((color, index) => (4 - index < right ? 'purple' : 'gray'));
-          setRightBalls(updatedBallColors);
-        },
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
         Userdata.id,
         (prl1:any) =>{setProfileID1(prl1);},
         (prl2:any) =>{setProfileID2(prl2);}

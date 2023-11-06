@@ -5,14 +5,21 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { toast } from 'react-toastify';
 // import My from '@/imgs/add-friend.svg'
 import { ReactSVG } from "react-svg";
 import { useSocket } from '@/context/socketContext';
+import { useNavigate } from 'react-router-dom';
 
 function ProfileInfo (props: any) {
 
     const [baseImg, setBaseImg] = useState(props.userData.avatar);
     const {socketa} = useSocket();
+    const { client, updateClient}  = useClient();
+    const [fetch, setFetch] = useState<boolean>(false)
+
+    // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const navigate = useNavigate(); 
 
     useEffect(() => {
 
@@ -25,6 +32,43 @@ function ProfileInfo (props: any) {
             statu.style.background = '#15a3e9'
 
     }, [])
+
+    useEffect(() => { 
+        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        async function fetchData () {
+            try {
+                const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, {withCredentials : true});
+                await updateClient({ ...client, ...response.data, signedIn: true });
+                setFetch(true)
+                console.log('@@@@@@@@@@@@@@@@@@@@@@')
+                    navigate(`/profile/${props.userData.username}`)
+                // if (fetch) {
+                //     console.log('update client')
+                // }
+            }
+            catch { console.log('error update client')}
+        }
+
+
+        const notificationListener = async (notif: any) => {
+            toast.success(`${notif.receiver.username} Accepted you invitation to play`, {
+                position: toast.POSITION.TOP_RIGHT
+            });
+            fetchData();
+            // delay(1000)
+            // if (fetch) {
+            //     console.log('data update succssesfully')
+            //     navigate(`/profile/${props.userData.username}`)
+            // }
+            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+        }
+
+        socketa?.on('notificationAccepted', notificationListener);
+  
+          return () => {
+            socketa?.off('notificationAccepted');
+          };
+      }, [socketa]);
 
     const sendFriendRequest = async (user: User) => {
         const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data

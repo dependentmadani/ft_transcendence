@@ -1,10 +1,10 @@
 import './FriendProfile.css'
 import { useClient } from '@/context/clientContext';
-import MyPieChart from '@/components/Profile/PieChart/pieChart'
 import Friends from '../search/searchFriend';
 import React, { useState, useEffect } from 'react';
 import { useSetting } from '@/context/SettingContext';
 import SettingsComponent from './settings'
+import Statistic from '@/components/Profile/Me/static';
 import axios from 'axios';
 
 
@@ -71,23 +71,6 @@ function ProfileInfo (props: any) {
 }
 
 
-function Statistic() {
-
-    return (
-        <div className='statistic'>
-            <div id='title' >
-                {/* <img src="src/imgs/bg-title.png" alt="title" /> */}
-                <span>Statistic </span>
-            </div>
-            <div id='chart'>
-                <MyPieChart />
-            </div>
-        </div>
-    )
-}
-
-
-
 function FriendProfile (props: any) {
 
     console.log('profileFriend', props.userData)
@@ -133,9 +116,9 @@ function FriendProfile (props: any) {
                 </div>
                 <div className='profile-col-2'>
                     <Achivement />
-                    <Statistic />
+                    <Statistic gameData={props.userData[0].games} />
                 </div>
-                <SettingsComponent userId={props.userData[0].id} />
+                <SettingsComponent user={props.userData[0]}  />
             </div>
             {/* <div className='blur'  style={!popSettings ? { display: 'none' } : { display: 'block' }} ></div> */}
         </>
