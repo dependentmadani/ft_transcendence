@@ -86,7 +86,8 @@ export class AuthService {
           data: {
             username: 'akinator',
             email: 'ai@gmail.com',
-            isActive: true
+            isActive: true,
+            avatar: '/boot.jpg',
           }
         })
         await this.prisma.game.create({
@@ -235,7 +236,8 @@ export class AuthService {
           data: {
             username: 'akinator',
             email: 'ai@gmail.com',
-            isActive: true
+            isActive: true,
+            avatar: '/boot.jpg',
           }
         })
         await this.prisma.game.create({
@@ -372,8 +374,7 @@ export class AuthService {
     const user =
       await this.prisma.users.findUnique({
         where: {
-          email: userDto.email,
-          username: userDto?.username
+          email: userDto.email
         },
       });
 
@@ -503,7 +504,6 @@ export class AuthService {
     });
     if (verified)
       return true;
-    //     throw new UnauthorizedException('code entered is wrong, please retry again!');
 
     return false;
   }
@@ -525,7 +525,6 @@ export class AuthService {
   ): Promise<boolean> {
     const users = await this.prisma.users.update({
       where: {
-        id: user.id,
         email: user.email,
       },
       data: {
@@ -575,11 +574,11 @@ export class AuthService {
     const [at, rt] = await Promise.all([
       this.jwt.signAsync(payload, {
         secret: secretAt,
-        expiresIn: 60 * 15,
+        expiresIn: 1000 * 60 * 60 * 24,
       }),
       this.jwt.signAsync(payload, {
         secret: secretRt,
-        expiresIn: 60 * 60 * 24 * 7,
+        expiresIn: 1000 * 60 * 60 * 24 * 7,
       }),
     ]);
 
@@ -631,6 +630,10 @@ export class AuthService {
         where: {
           email: email,
         },
+        include: {
+          friends: true,
+          blocked: true,
+        }
       });
     return user;
   }

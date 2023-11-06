@@ -10,13 +10,11 @@ export class HistoryController {
 
     //Get all last 10 games score
     @Get()
-    @ApiBody({
-        description: 'no body is needed here'
-    })
     @ApiResponse({
         status: 200,
         description: 'return latest 10 games'
     })
+    @HttpCode(HttpStatus.OK)
     async getLatestGames(@Req() req: Request) {
         const user = req.user;
         return await this.history.getLatestGames(user['sub']);

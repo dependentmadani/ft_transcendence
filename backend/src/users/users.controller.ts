@@ -69,6 +69,7 @@ export class UsersController {
       await this.userService.findUserById(
         req.user['sub'],
         );
+        console.log('users', user)
         return user;
   }
 

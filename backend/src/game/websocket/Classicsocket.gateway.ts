@@ -2,9 +2,9 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server,Namespace } from 'socket.io';
 
-import direct_ball from "../SocketGame/ClassicPong/ClassicBall";
-import paddle_left from "../SocketGame/ClassicPong/ClassicPaddle1";
-import paddle_right from "../SocketGame/ClassicPong/ClassicPaddle2";
+import direct_ball from "../UtilsGame/ClassicPong/ClassicBall";
+import paddle_left from "../UtilsGame/ClassicPong/ClassicPaddle1";
+import paddle_right from "../UtilsGame/ClassicPong/ClassicPaddle2";
 import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
@@ -115,7 +115,6 @@ export class ClassicSocketGateway
           this.ball[this.room] = await new direct_ball;
           this.prev_room = this.room;
       }
-    
       this.pl1[this.room].canvas_height = this.canvas_height;
       this.pl2[this.room].canvas_height = this.canvas_height;
       this.pl1[this.room].paddle_y = this.canvas_height / 2;
@@ -235,19 +234,17 @@ async handlenewvalueroom(client, data)
         this.gameService.updateInfoGame(firstValue, false);
         this.gameService.updateInfoGame(secondValue, true);
       }
-
-      // console.log(`|${firstValue}|------------|${secondValue }}`)
-        this.histor1.my_score = this.ball[room_num].score_left 
-        this.histor1.opp_score  = this.ball[room_num].score_right;
-        this.histor1.opp_name = this.client_name.get(secondValue);
-        this.historyService.createResultGame(firstValue,this.histor1);
-        console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
-      
-        this.histor2.my_score = this.ball[room_num].score_right;
-        this.histor2.opp_score  = this.ball[room_num].score_left ;
-        this.histor2.opp_name = this.client_name.get(firstValue);
-        this.historyService.createResultGame(secondValue,this.histor2);
-        console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
+      this.histor1.my_score = this.ball[room_num].score_left 
+      this.histor1.opp_score  = this.ball[room_num].score_right;
+      this.histor1.opp_name = this.client_name.get(secondValue);
+      this.historyService.createResultGame(firstValue,this.histor1);
+      console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
+    
+      this.histor2.my_score = this.ball[room_num].score_right;
+      this.histor2.opp_score  = this.ball[room_num].score_left ;
+      this.histor2.opp_name = this.client_name.get(firstValue);
+      this.historyService.createResultGame(secondValue,this.histor2);
+      console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
       
     }
         clearInterval(this.interval[room_num]);
@@ -273,6 +270,23 @@ async handlenewvalueroom(client, data)
     
    this.server.to(room_num).emit("game_state", gameState);
   }
+  @SubscribeMessage('playerDisconnect')
+  handlePlayerDisconnect(client,data)
+  {
+    const clientId = data;
+    const room = this.getRoomByClientId(clientId);
+
+    console.log(`---1111---disconnect ${clientId}`)
+
+    if (room)
+    {
+      if (this.PosPlayers.get(clientId) == 1)
+        this.ball[room].score_r = this.ball[room].score_max;
+      else 
+        this.ball[room].score_l = this.ball[room].score_max;
+    }
+
+  }
   
 @SubscribeMessage('disconnect')
   handleDisconnect(client)
@@ -280,7 +294,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    console.log(`---3333---disconnect ${clientId}`)
 
     if (room)
     {

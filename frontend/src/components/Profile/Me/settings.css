@@ -1,0 +1,403 @@
+/* body {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+} */
+
+.settings-card > * {
+    overflow: hidden;
+    /* margin: 0;
+    padding: 0; */
+}
+
+.settings-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 205;
+    transform: translate(-50%, -60%); 
+	display: none;
+    /* background-color: #3e4aa0; */
+    background-color: rgb(49, 40, 86);
+    box-shadow: 0px 0px 10px 5px #108393;
+    /* display: flex; */
+    align-items: center;
+    border-radius: 12px;
+    margin: auto;
+    max-width: 95%;
+    max-height: 600px;
+}
+
+.change-image-container {
+    position: absolute;
+    bottom: 0; /* Adjust the bottom distance */
+    right: 0; /* Adjust the right distance */
+    background-color: #fff; /* Background color for the container */
+    border-radius: 15px 0 ; /* To make it a circle */
+    padding: 4px;
+    margin-bottom: -1px;
+    margin-right: -1px;
+}
+
+.change-image-container > img {
+    width: 30px; /* Adjust the width of the icon as needed */
+    height: 30px; /* Adjust the height of the icon as needed */
+    display: block;
+    margin: 0 auto;
+    cursor: pointer;
+}
+
+
+.change-image-container:hover {
+    scale: 1.05;
+    background-color: #2199a9;
+}
+
+/* slider toggle */
+
+.two-fact-section > .two-fa-switch {
+    width: 50%;
+    height: 15%;
+    /* background-color: yellowgreen; */
+    box-sizing: border-box;
+    padding: 5%;
+}
+
+.two-fa-switch > .switch {
+    display: inline-block;
+    width: 60px;
+    height: 24px;
+    margin-left: 10%;
+    border-radius: 50px;
+    background-color: rgb(189, 183, 183);
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.two-fa-switch > .switch::before {
+    position: absolute;
+
+    content: '';
+    background-color: #eee;
+    aspect-ratio: 4/4;
+    height: 76%;
+    /* object-fit: contain; */
+    border-radius: 50%;
+    left: 4px;
+    top: 12%;
+    transition: 0.3s;
+}
+
+.two-fa-switch > input {
+    display: none;
+}
+
+.two-fa-switch > input:checked + .switch::before {
+    transform: translateX(36px);
+}
+
+.two-fa-switch > span {
+    font-size: 24px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: rgb(229, 224, 224);
+    display: inline-block;
+    position: absolute;
+    top:  auto;
+    margin-left: 10px;
+}
+
+.two-fa-switch > input:checked + .switch {
+    background-color: rgb(81, 226, 245);
+}
+
+.container-qrcode {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5% auto;
+    /* background-color: pink; */
+}
+
+.two-fact-section > .submit-data {
+    margin: auto;
+    height: 12%;
+    width: 30%;
+    border-radius: 7px;
+    background-color: rgb(77, 63, 168);
+    border: none;
+    box-shadow: inset 0px 0px 10px 2px #108393;
+
+}
+
+.submit-data > p {
+    margin: auto;
+    font-weight: 550;
+    color: #1ac4db;
+}
+
+
+.container-qrcode > .qr-space {
+    height: 82%;
+    aspect-ratio: 1 /1;
+    background-color: rgb(236, 231, 231);
+    border: 2px solid #108393;
+    border-radius: 8px;
+    margin: 4% auto;
+}
+
+.container-qrcode > .sms-input {
+    height: 22%;
+    width: 43%;
+    border-radius: 9px;
+    /* background-color: rgb(182, 177, 177); */
+    margin: auto;
+    margin-left: 20px;
+}
+
+
+/*  Desktop style */
+
+@media (min-width: 600px) {
+    .settings-card {
+        width: 650px;
+        height: 370px;
+        flex-direction: row;
+    }
+    .image-section {
+        width: 45%;
+        height: 89%;
+        /* background-color: aqua; */
+        box-sizing: border-box;
+        margin: auto 2.5%;
+        margin-right: 1.5%;
+    }
+    .image-frame {
+        height: 80%;
+        aspect-ratio: 1 /1;
+        background-color: #5a69d8;
+        border-radius: 7%;
+        margin: 2% auto;
+        border: 2px solid #108393;
+        position: relative;
+    }
+
+    /* .username-frame {
+        height: 11%;
+        width: 65%;
+        background-color: rgb(182, 177, 177);
+        margin: 3% auto;
+        margin-top: 4%;
+        border-radius: 12px;
+    } */
+    .username-frame {
+        height: 11%;
+        width: 65%;
+        /* background-color: rgb(182, 177, 177); */
+        margin: 2% auto;
+        margin-top: 4%;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        /* padding: 10px; */
+        box-sizing: border-box;
+    }
+    
+
+
+    /*...*/ 
+    .two-fact-section {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        height: 90%;
+        /* background-color: rgb(43, 240, 174); */
+    }
+    
+    .container-mail {
+        height: 12%;
+        width: 84%;
+        margin: 5% auto 3%;
+        margin-left: 10%;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .two-fa-switch {
+        margin: 0;
+    }
+    .container-qrcode {
+        width: 89%;
+    }
+    .container-qrcode .sms-input {
+        width: 37%;
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+/* Media query for mobile screens */
+@media (max-width: 600px) and (orientation: portrait) {
+    .settings-card {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        /* align-items: center; */
+        justify-content: center;
+        /* margin: auto; */
+    }
+    .image-section {
+        width: 95%;
+        height: 55%;
+        /* background-color: aqua; */
+        /* display: flex;
+        flex-direction: column; */
+        box-sizing: border-box;
+        /* margin:  auto; */
+        margin-bottom: 0.5%;
+    }
+    .image-frame {
+        max-height: 69%;
+        /* max-width: 310px; */
+        aspect-ratio: 1 /1;
+        background-color: #5a69d8;
+        border-radius: 15px;
+        margin: 7% auto 2%;
+        border: 2px solid #108393;
+        position: relative;
+    }
+    .username-frame {
+        height: 12%;
+        width: 66%;
+        background-color: rgb(182, 177, 177);
+        margin: 3% auto;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+    }
+    .two-fact-section {
+        display: flex;
+        flex-direction: column;
+        width: 95%;
+        height: 45%;
+        /* margin-top: -3%; */
+        /* background-color: rgb(43, 240, 174); */
+    }
+    .container-mail {
+        height: 15%;
+        width: 80%;
+        background-color: rgb(182, 177, 177);
+        margin: 3% auto;
+        border-radius: 11px;
+        display: flex;
+        align-items: center;
+    }
+    .two-fact-section .two-fa-switch {
+        /* margin-bottom: 3%; */
+        width: 100%;
+        height: 10%;
+        padding: 0;
+        /* background-color: #5a69d8; */
+    }
+    .container-qrcode {
+        width: 80%;
+        height: 50%;
+        display: flex;
+        padding: 0;
+        /* margin: auto; */
+        justify-content:  space-between;
+        align-items: center;
+    }
+    .container-qrcode > .qr-space {
+        height: 95%;
+        aspect-ratio: 1 /1;
+        background-color: rgb(236, 231, 231);
+        border-radius: 8px;
+        border: 2px solid #108393;
+        margin: 0;
+    }
+    .container-qrcode > .sms-input {
+        margin: 0;
+        height: 25%;
+        display: flex;
+        align-items: center;
+    }
+    .image-frame > .change-image-container {
+        margin-bottom: 0px;
+        margin-right: -1px;
+    }
+
+}
+
+#new-username {
+    border: none;
+    background-color: rgb(227, 223, 223);
+    /* background-color: transparent;  */
+    padding: 5px;
+    margin: 0;
+    /* border-radius: 12px; */
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgb(60, 59, 59);
+}
+#mail-for-qr {
+    border: none;
+    /* background-color: transparent; 
+     */
+     background-color: rgb(227, 223, 223);
+
+    padding: 5px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 600;
+    color: rgb(60, 59, 59);
+}
+
+#sms-code {
+    border: none;
+    background-color: rgb(227, 223, 223);
+    /* background-color: transparent;  */
+    padding: 5px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(60, 59, 59);
+}
+
+
+/* .image-frame > .user-img {
+    width: 100%;
+	aspect-ratio: 4/4;
+	object-fit: cover;
+
+} */
+
+.image-section > .image-frame > img {
+    width: 100%;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border-radius: 7%;
+}
+
+.qr-space > img {
+    width: 100%;
+    object-fit: contain;
+}

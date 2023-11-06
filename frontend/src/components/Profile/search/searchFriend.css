@@ -1,0 +1,31 @@
+#no_friend {
+	position: absolute;
+	top: 50%;
+	transform: translate(0%, -50%); 
+	width: 20%;
+	max-width: 100px;
+	height: auto;
+	aspect-ratio: 4/4;
+}
+
+#Loding {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	width: 20%;
+	max-width: 100px;
+	height: auto;
+	aspect-ratio: 4/4;
+}
+
+#no-users {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	font-size: clamp(15px, 3.5vw, 40px);
+	font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+
+}

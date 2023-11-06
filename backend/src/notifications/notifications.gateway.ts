@@ -1,6 +1,6 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket } from '@nestjs/websockets';
 import { NotificationsService } from './notifications.service';
-import { NotificationDto, NotificationBody, FriendDto } from './dto/create-notification.dto';
+import { NotificationDto, NotificationBody } from './dto/create-notification.dto';
 import { JwtPayload } from 'src/auth/types';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
@@ -90,40 +90,40 @@ export class NotificationsGateway implements OnGatewayConnection {
     
   // }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('sendNotification')
-  async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
-        @Req() req: Request) {
-      // console.log('socketMap:', this.socketMap);
-      // console.log('type of client id:', typeof(client.id));
-      if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
-        throw new UnauthorizedException('something wrong with body');
-      }
-      const notif = await this.notificationsService.create(createNotificationDto, req.user['sub'], client.id);
-      for (let i = 0; i < this.socketMap.get(req.user['sub']).length; ++i) {
-        this.socketMap.get(notif.receiverId)[i].emit('receiveNotification',notif);
-      }
-  }
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('sendNotification')
+  // async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
+  //       @Req() req: Request) {
+  //     // console.log('socketMap:', this.socketMap);
+  //     // console.log('type of client id:', typeof(client.id));
+  //     if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
+  //       throw new UnauthorizedException('something wrong with body');
+  //     }
+  //     const notif = await this.notificationsService.create(createNotificationDto, req.user['sub'], client.id);
+  //     for (let i = 0; i < this.socketMap.get(req.user['sub']).length; ++i) {
+  //       this.socketMap.get(notif.receiverId)[i].emit('receiveNotification',notif);
+  //     }
+  // }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('acceptNotification')
-  async acceptFriend(@MessageBody() notifBody: FriendDto, @Req() req: Request) {
-    let notif = await this.notificationsService.acceptFriend(notifBody.receiverId, notifBody.senderId, notifBody.notifId);
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('acceptNotification')
+  // async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
+  //   let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
     
-    for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
-      this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
-        receiver: notif.receiverUser.username,
-        // title: notif.title,
-        status: 'accepted',
-      });
-    }
-  }
+  //   for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
+  //     this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
+  //       receiver: notif.receiverUser.username,
+  //       // title: notif.title,
+  //       status: 'accepted',
+  //     });
+  //   }
+  // }
 
-  @UseGuards(WsGuard)
-  @SubscribeMessage('refuseNotification')
-  async refuseFriend(@MessageBody() notifBody: FriendDto, @Req() req: Request) {
-    let notif = await this.notificationsService.refureFriend(notifBody, req.user['sub']);
-  }
+  // @UseGuards(WsGuard)
+  // @SubscribeMessage('refuseNotification')
+  // async refuseFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
+  //   let notif = await this.notificationsService.refureFriend(notifBody, req.user['sub']);
+  // }
 
   ////////////////////////////////////
   handleConnection(client: Socket): void {
@@ -143,8 +143,26 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleNotification(@MessageBody() data: any): void {
     const { notif } = data;
     // Send the message to the recipient's socket
-    console.log('Yooooooooo', notif)
+    console.log('Yooooooooo', notif.receiverUser.id)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
-    this.server.to(this.userSocketMap[notif.sender.id]).emit('receiveNotification', notif);
+    this.server.to(this.userSocketMap[notif.receiverUser.id]).emit('receiveNotification', notif);
+  }
+
+  // @SubscribeMessage('removeNotification')
+  // handleRemoveNotification(@MessageBody() rec: any): void {
+  //   // const { rec } = data;
+  //   // Send the message to the recipient's socket
+  //   console.log('Yooooooooo', rec)
+  //   // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
+  //   this.server.to(this.userSocketMap[rec.receiverUser.id]).emit('removingNotification');
+  // }
+
+  @SubscribeMessage('acceptNotification')
+  handleAcceptedNotification(@MessageBody() data: any): void {
+    const { notif } = data;
+    // Send the message to the recipient's socket
+    console.log('Pooooooooo', notif)
+    // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
+    this.server.to(this.userSocketMap[notif.sender.id]).emit('notificationAccepted', notif);
   }
 }

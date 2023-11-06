@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Req, Res, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { RoomService } from './room.service';
 import { Room, Users } from '@prisma/client'
 import { Public } from "src/decorator";
@@ -65,8 +65,14 @@ export class RoomController {
     @UseInterceptors(FileInterceptor('roomAvatar', storage))
     createRoom(@Body('roomName') roomName: string,
                 @UploadedFile() file: Express.Multer.File,
-                @Body('roomType') roomType: string) {
-        return this.roomService.createRoom(roomName, file.filename, roomType)
+                @Body('roomType') roomType: string,
+                @Body('roomPass') roomPass: string) {
+        return this.roomService.createRoom(roomName, file.filename, roomType, roomPass)
+    }
+
+    @Post('pass/:id')
+    async checkRoomAccess(@Param('id', ParseIntPipe) roomId: number, @Body('roomPass') roomPass: string): Promise<boolean> {
+        return this.roomService.checkRoomAccess(roomId, roomPass)
     }
 
     @Patch('/:roomId')
@@ -74,8 +80,14 @@ export class RoomController {
     async updateRoom(@Param('roomId', ParseIntPipe) roomId: number,
                     @Body('roomName') roomName: string,
                     @UploadedFile() file,
-                    @Body('roomType') roomType: string) {
-        return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType)
+                    @Body('roomType') roomType: string,
+                    @Body('roomPass') roomPass: string) {
+        return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType, roomPass)
+    }
+
+    @Put('/last-message/:id')
+    async updateLastMessage(@Param('id', ParseIntPipe) id: number, @Body('content') content: string) {
+        return await this.roomService.updateLastMessage(id, content)
     }
 
     @Delete()

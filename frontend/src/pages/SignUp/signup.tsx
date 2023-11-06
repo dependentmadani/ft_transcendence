@@ -1,127 +1,140 @@
-import { useEffect, useState } from 'react'
-import './signup.css';
+import { useEffect, useState } from 'react';
+import './SignUp.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, } from 'react-router-dom';
+import { useClient } from '@/context/clientContext';
+import { ToastContainer, toast } from 'react-toastify';
 
-function InfoUpdate() {
-    
-    let fileUploaded: File;
-    const navigate = useNavigate();
-    const [userId, setUserId] = useState();
-    const [username, setUsername] = useState("");
-    const [avatar, setAvatar] = useState("");
-    const [disable, setDisable] = useState(true);
-    const [errorMessage, setErrorMessage] = useState("");
-    const [errorMessageFile, setErrorMessageFile] = useState("")
 
-    useEffect(() => {
-        fetch(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, {
-            method: 'GET',
-            credentials: 'include'
-          })
-           .then((res) => res.json())
-           .then((data) => {
-                setUserId(data['id']);
-                setAvatar(data['avatar']);
-           })
-     }, []);
-
-    function handleChangeAvatar(file: FileList | null) {
-        if (file) {
-            if (file[0].size > 200000) {
-                setErrorMessageFile("Image size is limited to 20 kb!")
-                return ;
-            }
-            fileUploaded = file[0];
-            setErrorMessageFile("");
-            const fileRef= file[0] || ""
-            const fileType = fileRef.type
-            const reader = new FileReader()
-            reader.readAsBinaryString(fileRef)
-            reader.onload=(ev: any) => {
-                setAvatar(`data:${fileType};base64,${btoa(ev.target.result)}`)
-            }
-            axios({
-                method: "POST",
-                withCredentials: true,
-                url: `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
-                headers: {'Content-Type':'multipart/form-data'},
-                data: {
-                    avatar: fileUploaded,
-                    username: username,
-                },
-            });
-        }
+function SetInfo() {
+  const [fileUploaded, setFileUploaded] = useState<File | null>(null);
+  const [userId, setUserId] = useState<number | null>(null);
+  const [username, setUsername] = useState<string>('');
+  const [avatar, setAvatar] = useState<string>('/src/imgs/user-img.png');
+  const {client, updateClient} = useClient();
+  const [fetchData, setFetchData] = useState<boolean>(false);
+  const navigate = useNavigate();
+  // console.log('signup')
+  
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, 
+          { withCredentials: true }
+        );
+        setUserId(response.data.id);
+        setAvatar(response.data.avatar);
+        setUsername(response.data.username);
+        if (fetchData)
+          await updateClient({ ...client, ...response.data, signedIn: true });
+        if (response.data.signedUp)
+          navigate('/')
+        // console.log('response.data : ', response.data);
+      } catch (error) {
+        console.error('Error fetching data: ', error);
+      }
     }
-    console.log(avatar)
+  
+    fetchUserData();
+  }, [fetchData]);
 
-    function handleChangeUsername(event: any) {
+  const handleChangeAvatar = (file: FileList | null) => {
+    if (file && file.length > 0) {
+      const fileRef = file[0];
+      const reader = new FileReader();
 
-        fetch(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`, {
-            method: 'PATCH',
-            headers: { 'Content-Type':'application/json' },
-            credentials: 'include',
-            body: JSON.stringify( { username: event.target.value } ) 
-            })
-           .then((res) => {
-                if (!res.ok) {
-                    if (event.target.value && event.target.value.length > 0) {
-                        setErrorMessage("username already taken");
-                    }
-                    setDisable(true)
-                }
-                else {
-                    setDisable(false)
-                    setErrorMessage("");
-                }
-            })
-        setUsername(event.target.value)
+      reader.readAsDataURL(fileRef);
+      reader.onload = (ev: any) => {
+        setAvatar(ev.target.result);
+        setFileUploaded(fileRef);
+      };
     }
+  };
 
-    function handleSubmit() {
-        
-        //need to add axios to update the avatar here.
-        // axios.get(`http://${import.meta.env.VITE_ADDRESS}:5173/`);
-        navigate('/');
+  const handleChangeUsername = (name: string) => {
+    setUsername(name);
+  };
+
+  const handleSubmit = async () => {
+    console.log('uuuuuuuuuuuuuuuuu')
+    try {
+      await axios.patch(
+        `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`,
+        {
+          username: username,
+        },
+        {
+          withCredentials: true,
+          headers: { 'Content-Type': 'application/json' },
+        }  
+      )
+      if (fileUploaded) {
+        const gg = await axios.post(
+          `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
+          {
+            avatar: fileUploaded,
+          },
+          {
+            withCredentials: true,
+            headers: { 'Content-Type': 'multipart/form-data' },
+          }
+        );
+        console.log('dataupdate : ' , gg.data)
+      }
+      setFetchData(true);
+    } catch (error) {
+        toast.warn("Username Used !", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      console.error('Error submitting data:', error);
     }
+  };
 
-    return (
-        <>
-            <h1 id='signup-header'>Please Enter Your Information</h1>
-            <form className='signup-form' onSubmit={handleSubmit}>
-                <div className='updateAvatar'>
-                    <img src={avatar} className='img-avatar'/>
-                </div>
-                <div className='change-avatar-button'>
-                    <input type="file" accept="image/png, image/jpeg, image/jpg" onChange={(e) => handleChangeAvatar(e.target.files)}/>
-                    {errorMessageFile && <div className="error"> {errorMessageFile} </div>}
-                </div>
-                <div className="form-example">
-                    <label htmlFor="name">Enter a username: </label>
-                    <input type="text" name="username" id="name" value={username} onChange={handleChangeUsername}  required />
-                        {errorMessage && <div className="error"> {errorMessage} </div>}
-                </div>
-                <div className="form-submit-button">
-                    <input id='submit-button' disabled={disable} type="submit" value="Next ➝" />
-                </div>
-            </form>
-        </>
-    )
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      // console.log(`hlwa {${event}} `)
+      event.preventDefault();
+      if (username !== '')
+        handleSubmit();
+      else {
+        toast.warn("Empty Username !", {
+          position: toast.POSITION.TOP_LEFT
+        });
+      }
+    }
+  };
+  // ムハンマド
+  return (
+    <div className='main-signup'>
+      <span id='signup-header'>
+        <span>Please </span> Enter Your <br /> Information
+      </span>
+      <form className='signup-form'>
+        <div className='updateAvatar'>
+          <img src={avatar} className='img-avatar' alt='User Avatar' />
+          <input
+            id='file'
+            type='file'
+            accept='image/png, image/jpeg, image/jpg'
+            onChange={(e) => handleChangeAvatar(e.target.files)}
+          />
+          <label htmlFor='file' className='choose-img'>
+            <img src='/src/imgs/change-img.png' alt='Upload'  />
+          </label>
+        </div>
+        <input
+          type='text'
+          name='username'
+          id='name'
+          value={username}
+          onKeyDown={handleKeyDown}
+          onChange={(e) => handleChangeUsername(e.target.value)}
+          required
+        />
+        <input id='submit-button' type='button' value='Next ➝' onClick={handleSubmit} />
+      </form>
+    </div>
+  );
 }
 
-
-export const Signup = () => {
-
-    return (
-        <>
-            <div id='col-1'>
-                <div className='leftside'>
-                    <InfoUpdate />
-                </div>
-            </div>
-            <div id='col-2'>
-                <div className='rightside'></div>
-            </div>
-        </>
-    );
-}
+export default SetInfo;

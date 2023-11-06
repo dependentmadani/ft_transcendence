@@ -27,6 +27,9 @@ import { ApiBody, ApiResponse } from '@nestjs/swagger';
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
 
+const oneDay = 1000 * 60 * 60 * 24;
+const oneWeek= 1000 * 60 * 60 * 24 * 7;
+
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -75,9 +78,7 @@ export class AuthController {
     const tokens =
       await this.authService.signupLocal(dto);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 1000,
-      ), // expires in 1 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -85,10 +86,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 7 * 1000,
-        ), // expires in 7 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -106,9 +104,7 @@ export class AuthController {
     const tokens =
       await this.authService.signinLocal(dto);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 1000,
-      ), // expires in 1 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -116,10 +112,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-          60 * 60 * 24 * 7 * 1000,
-          ), // expires in 7 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -145,9 +138,7 @@ export class AuthController {
     const tokens =
       await this.authService.signinGoogle(req);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 1000,
-      ), // expires in 1 days
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -155,10 +146,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-          60 * 60 * 24 * 7 * 1000,
-        ), // expires in 7 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
@@ -273,18 +261,22 @@ export class AuthController {
     );
   }
 
-  @Post('2fa/disable')
+  @Get('2fa/disable')
   @HttpCode(HttpStatus.OK)
   async disable2fa(@Req() req: Request) {
+    console.log('11111111111111111')
+
     const user: Users =
       await this.authService.returnUser(
         req.user['email'],
       );
+    console.log('222222222222222222',user.username)
     if (await this.authService.disable2fa(user))
       return 'Disabled successfuly';
-    throw new UnauthorizedException(
-      'weird error',
-    );
+    return "Error in disabling the 2fa"
+    // throw new UnauthorizedException(
+    //   'weird error',
+    // );
   }
 
   @Public()
@@ -308,9 +300,7 @@ export class AuthController {
       );
     console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
-      expires: new Date(
-        new Date().getTime() + 60 * 60 * 24 * 1000,
-      ), // expires in 1 day
+      maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
@@ -318,10 +308,7 @@ export class AuthController {
       'refresh_token',
       tokens.refresh_token,
       {
-        expires: new Date(
-          new Date().getTime() +
-            60 * 60 * 24 * 7 * 1000,
-        ), // expires in 7 days
+        maxAge: oneWeek,
         httpOnly: true, // for security
         secure: true,
       },
