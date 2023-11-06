@@ -19,7 +19,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         start.addEventListener('click',()=> {
             start.style.display = 'none';
             play_start++;
-            // console.log(`start\\\\\\${play_start}`)
+            // //console.log(`start\\\\\\${play_start}`)
         })
 
         switchMusic.addEventListener('change', () => {
@@ -27,12 +27,12 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         });
         switchSound.addEventListener('change', () => {
             SoundValue = switchSound.checked;
-            // console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // //console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
 
-            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // //console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
 
         let  img = new Image();
@@ -58,7 +58,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         {
             if (event.keyCode === 40) 
             {
-                // console.log("down")
+                // //console.log("down")
                 if( pl2.paddle_y + speed_paddle + pl2.paddle_h<= canvas.height)
                 {
                     
@@ -68,7 +68,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             }
             else if (event.keyCode === 38)
             {
-                // console.log("up")
+                // //console.log("up")
                 if( pl2.paddle_y >= speed_paddle)
                 {
                     pl2.paddle_y-=speed_paddle;
@@ -207,7 +207,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.direction_y = (this.y - (pl1.paddle_y + pl1.paddle_h/2)) / pl1.paddle_h/2; 
                 // this.flag_paddle = 0;
                 this.speed++
-                // console.log(`this.x: ${this.x}| this.y: ${this.y}| padle1_y: ${pl1.paddle_y} `)
+                // //console.log(`this.x: ${this.x}| this.y: ${this.y}| padle1_y: ${pl1.paddle_y} `)
             }
             else if (this.x + this.ball_size +this.speed > canvas.width -  pl2.paddle_w && this.y + this.ball_size >= pl2.paddle_y && this.y - this.ball_size <= pl2.paddle_y + pl2.paddle_h)
             {
@@ -218,7 +218,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.direction_y = (this.y - (pl2.paddle_y + pl2.paddle_h/2)) / pl2.paddle_h/2;
                 // this.flag_paddle = 0;
                 this.speed++
-                // console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
+                // //console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
 
             } 
                 else if (this.x < this.ball_size || this.x > canvas.width-this.ball_size)

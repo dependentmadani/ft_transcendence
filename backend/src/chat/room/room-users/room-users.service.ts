@@ -79,7 +79,7 @@ export class RoomUsersService {
                 }
             })
 
-            console.log(admin)
+            //console.log(admin)
             if (admin.length !== 0)
                 return true
             return false
@@ -158,7 +158,7 @@ export class RoomUsersService {
     }
 
     async createRoomUsers(roomId: number, userId: number, userUsername: string, role: string, allowed: boolean) {
-        // console.log('Too')
+        // //console.log('Too')
         try {
             const roomUser = await this.prisma.roomUsers.findMany({
                 where: {
@@ -170,7 +170,7 @@ export class RoomUsersService {
             })
             // It works but at what cost
             if (roomUser.length === 0) {
-                // console.log('yoooo')
+                // //console.log('yoooo')
                 return await this.prisma.roomUsers.create({
                     data: {
                         roomId: roomId,
@@ -198,7 +198,7 @@ export class RoomUsersService {
                 }
             })
             // It works but at what cost
-            // console.log('YOOOOOOOO')
+            // //console.log('YOOOOOOOO')
             if (roomUser.length === 1) {
                 return await this.prisma.roomUsers.update({
                     where: {
@@ -226,7 +226,7 @@ export class RoomUsersService {
                 }
             })
             // It works but at what cost
-            // console.log('YOOOOOOOO')
+            // //console.log('YOOOOOOOO')
             if (roomUser.length === 1) {
                 return await this.prisma.roomUsers.update({
                     where: {
@@ -277,7 +277,7 @@ export class RoomUsersService {
             }
         })
         // It works but at what cost
-        // console.log('HAIYA', roomUsers, roomId, userId)
+        // //console.log('HAIYA', roomUsers, roomId, userId)
         if (roomUsers.length === 1) {
             return await this.prisma.roomUsers.deleteMany({
                 where: {

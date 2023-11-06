@@ -54,7 +54,7 @@ export class MessageService {
     }
 
     async createChatMessage(msgChatId: number, MessageSenId: number, textContent: string, type: string) : Promise<Message> {
-        // console.log(message.chatId)
+        // //console.log(message.chatId)
         try {
             const message = await this.prisma.message.create({ 
                 data: {
@@ -73,7 +73,7 @@ export class MessageService {
     }
 
     async createRoomMessage(msgRoomId: number, MessageSenId: number, textContent: string, type: string) : Promise<Message> {
-        // console.log(message.chatId)
+        // //console.log(message.chatId)
         try {
             const message = await this.prisma.message.create({ 
                 data: {

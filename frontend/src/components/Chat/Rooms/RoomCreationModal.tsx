@@ -38,52 +38,99 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
 
     // Creating the new Room
     const uploadImage = async () => {
-        if (roomName && roomAvatar) {
+        if (roomName.length && roomAvatar != null && roomType.length) {
             
-            try {
-                let formData = new FormData();
-
-                formData.append('roomName', roomName);
-                formData.append('roomAvatar', roomAvatar);
-                formData.append('roomType', roomType)
-                formData.append('roomPass', roomPass)
-                
-                const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room`, formData, {
-                    withCredentials: true,
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                });
-                
-                // chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
-
-                if (response.data) {
-                    const roomId: number = response.data.id
+            if (roomType === 'Protected') {
+                if (roomPass) {
                     try {
-                        await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
-                            roomId: roomId,
-                            userId: chatData._mainUser.id,
-                            userUsername: chatData._mainUser.username,
-                            role: 'OWNER',
-                            allowed: roomType === 'Protected' ? false : true,
-                        }, {
-                            withCredentials: true
+                        let formData = new FormData();
+
+                        formData.append('roomName', roomName);
+                        formData.append('roomAvatar', roomAvatar);
+                        formData.append('roomType', roomType)
+                        formData.append('roomPass', roomPass)
+                        
+                        const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room`, formData, {
+                            withCredentials: true,
+                            headers: { 'Content-Type': 'multipart/form-data' },
                         });
+                        
+                        // chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
+
+                        if (response.data) {
+                            const roomId: number = response.data.id
+                            try {
+                                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                                    roomId: roomId,
+                                    userId: chatData._mainUser.id,
+                                    userUsername: chatData._mainUser.username,
+                                    role: 'OWNER',
+                                    allowed: roomType === 'Protected' ? false : true,
+                                }, {
+                                    withCredentials: true
+                                });
+                            }
+                            catch (error) {
+                                //console.log(error);
+                            }
+                        }
                     }
                     catch (error) {
-                        console.log(error);
+                        //console.log(error);
                     }
+                    window.location.reload()
                 }
             }
-            catch (error) {
-                console.log(error);
+            else if (roomType === 'Public' || roomType === 'Private') {
+                try {
+                    let formData = new FormData();
+
+                        formData.append('roomName', roomName);
+                        formData.append('roomAvatar', roomAvatar);
+                        formData.append('roomType', roomType)
+                        formData.append('roomPass', roomPass)
+                        
+                        const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room`, formData, {
+                            withCredentials: true,
+                            headers: { 'Content-Type': 'multipart/form-data' },
+                        });
+                        
+                        // chatData?._socket?.emit('createRoom', {room: response.data, owner: chatData._mainUser.id})
+
+                        if (response.data) {
+                            const roomId: number = response.data.id
+                            try {
+                                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                                    roomId: roomId,
+                                    userId: chatData._mainUser.id,
+                                    userUsername: chatData._mainUser.username,
+                                    role: 'OWNER',
+                                    allowed: roomType === 'Protected' ? false : true,
+                                }, {
+                                    withCredentials: true
+                                });
+                            }
+                            catch (error) {
+                                //console.log(error);
+                            }
+                        }
+                    }
+                    catch (error) {
+                        //console.log(error);
+                    }
+                    window.location.reload()
             }
-            window.location.reload()
         }
+        setRoomName('')
+        setRoomType('')
+        setRoomPass('')
+        setRoomAvatar(null)
     };
 
 
     // Setting Room type
-    const handleOptionChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setRoomType(event.target.value);
+    const handleOptionChange = (type: string) => {
+        setRoomType(type);
     };
     
 
@@ -105,15 +152,15 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                     </div>
                     <div className='roomType'>
                         <span>
-                            <input type="radio" value="Public" checked={roomType === 'Public'} onChange={handleOptionChange} />
+                            <input type="radio" value="Public" checked={roomType === 'Public'} onChange={() => handleOptionChange('Public')} />
                             public
                         </span>
                         <span>
-                            <input type="radio" value="Private" checked={roomType === 'Private'} onChange={handleOptionChange} />
+                            <input type="radio" value="Private" checked={roomType === 'Private'} onChange={() => handleOptionChange('Private')} />
                             private
                         </span>
                         <span>
-                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={handleOptionChange} />
+                            <input type="radio" value="Protected" checked={roomType === 'Protected'} onChange={() => handleOptionChange('Protected')} />
                             protected
                         </span>
                     </div>

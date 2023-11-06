@@ -72,7 +72,11 @@ axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true }
 useEffect(() => {
   if (flag.current === false && Userdata?.id)
   {
-    ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
+    ping_pong(canvas.current,(left:any) => {setLeftBalls(left)
+      // console.log(`${left}-----LEFT----------|`)
+    },(right:any)=>{setRightBalls(right)
+      // console.log(`${right}------RIGHT---------|`)
+    },
       Userdata.id,
       (prl1:any) =>{setProfileID1(prl1);},
       (prl2:any) =>{setProfileID2(prl2);}
@@ -156,7 +160,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
-                  <div key={element} style={index < leftballs ? { backgroundColor: 'cyan' } : {}}></div>
+                        <div key={element} style={5 - index <= rightballs ? { backgroundColor: 'cyan' } : {}}></div>
                 ))}
               </div>
             </div>

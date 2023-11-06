@@ -18,20 +18,20 @@ export const Chat = ({ chatData, messages }: any) => {
   useEffect(() => {
     const checkAllow = async () => {
 
-      console.log('##############')
+      //console.log('##############')
       if (chatData?._chat?.type === 'Room') {
-      console.log('~~~~~~~~~~~~~~~~~~~~')
+      //console.log('~~~~~~~~~~~~~~~~~~~~')
 
         const allowed = (await axios.get(`http://localhost:8000/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
         if (allowed) {
-          console.log('666666666666666666')
+          //console.log('666666666666666666')
           // setShow(false);
           // setTset(true)
           // setShowForm(false);
           setIsAllowed(true)
         }
         else {
-          console.log('1111111111111111111')
+          //console.log('1111111111111111111')
           // setTset(false)
           // setShow(true);
 
@@ -40,7 +40,7 @@ export const Chat = ({ chatData, messages }: any) => {
         }
       }
       else {
-        console.log('daz mn hna')
+        //console.log('daz mn hna')
         setIsAllowed(true)
       }
     }
@@ -52,15 +52,15 @@ export const Chat = ({ chatData, messages }: any) => {
 
   // const openForm = () => {
   //   // if (showForm === false)
-  //   //   console.log('-----------------showForm : ', showForm)  
+  //   //   //console.log('-----------------showForm : ', showForm)  
   //   setTset(!test)
 
   //   // else
   //     // setShowForm(false)
   // };
-  // console.log('showForm : ', showForm);
+  // //console.log('showForm : ', showForm);
 
-  console.log('ISALLOWED', isAllowed)
+  //console.log('ISALLOWED', isAllowed)
 
   return (
     <div id='Conversation' className={`chat`}>

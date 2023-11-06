@@ -9,7 +9,7 @@ import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
 
-console.log(`HELLO FROM SCRIPT CLASSIC___________RANDOM`);
+//console.log(`HELLO FROM SCRIPT CLASSIC___________RANDOM`);
 @WebSocketGateway({
   namespace: '/ClassicRandom',
   cors: {
@@ -20,7 +20,7 @@ console.log(`HELLO FROM SCRIPT CLASSIC___________RANDOM`);
 
 export class ClassicSocketGateway
 {
-  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+  constructor(private historyService: HistoryService,private histor1:historyDto) {}
 
   @WebSocketServer() server: Server;
 
@@ -62,9 +62,9 @@ export class ClassicSocketGateway
       this.name = await user[1];
       this.client_name.set(this.client_id,this.name);
       
-      console.log(`|${this.client_name}|------------|${this.client_id}|`)
+      //console.log(`|${this.client_name}|------------|${this.client_id}|`)
 
-      // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
+      // //console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if(!this.PosPlayers.has(this.client_id))
       {
 
@@ -82,7 +82,7 @@ export class ClassicSocketGateway
         this.PosPlayers.set(this.client_id, 2);
         client.emit('playerId', 2 , this.room);
 
-      // console.log(`ALREADY EXIST------111----||||${ this.room}`);
+      // //console.log(`ALREADY EXIST------111----||||${ this.room}`);
     }
     else
     {
@@ -107,7 +107,7 @@ export class ClassicSocketGateway
       }
     }
       
-      console.log(`Player ${this.client_id} joined room ${this.room}`);
+      //console.log(`Player ${this.client_id} joined room ${this.room}`);
  
     if (this.prev_room != this.room)
     {
@@ -143,7 +143,7 @@ async handlenewvalueroom(client, data)
         let  data_room = Data[2];
         this.room = await data_room;
 
-        // console.log(`${grade}|-----------|${move}`)
+        // //console.log(`${grade}|-----------|${move}`)
         
         if (grade % 2 != 0) 
         {
@@ -177,7 +177,7 @@ async handlenewvalueroom(client, data)
         this.ball[room_num].p_left = this.pl1[room_num].paddle_y;
         this.ball[room_num].p_right = this.pl2[room_num].paddle_y;
         const gameState = {
-          // console.log(`|----------|${room_num}|`);
+          // //console.log(`|----------|${room_num}|`);
           room: { id: room_num },
           profileID1:{},
           profileID2:{},
@@ -224,29 +224,12 @@ async handlenewvalueroom(client, data)
             let roomArray = Array.from(roomSet);
             let firstValue  = roomArray[0];
             let secondValue = roomArray[1]; 
-      
-      if(this.ball[room_num].score_left > this.ball[room_num].score_right)
-      {
-        this.gameService.updateInfoGame(firstValue, true);
-        this.gameService.updateInfoGame(secondValue , false);
-      }
-      else
-      {
-        this.gameService.updateInfoGame(firstValue, false);
-        this.gameService.updateInfoGame(secondValue, true);
-      }
       this.histor1.my_score = this.ball[room_num].score_left 
       this.histor1.opp_score  = this.ball[room_num].score_right;
       this.histor1.opp_name = this.client_name.get(secondValue);
       this.historyService.createResultGame(firstValue,this.histor1);
       console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
-    
-      this.histor2.my_score = this.ball[room_num].score_right;
-      this.histor2.opp_score  = this.ball[room_num].score_left ;
-      this.histor2.opp_name = this.client_name.get(firstValue);
-      this.historyService.createResultGame(secondValue,this.histor2);
-      console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
-      
+  
     }
         clearInterval(this.interval[room_num]);
 
@@ -265,7 +248,7 @@ async handlenewvalueroom(client, data)
             }
           }
         }
-        // console.log(`${sett.values()}`);
+        // //console.log(`${sett.values()}`);
         this.rooms.delete(room_num);
     }
     
@@ -277,7 +260,7 @@ async handlenewvalueroom(client, data)
     const clientId = data;
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    //console.log(`---1111---disconnect ${clientId}`)
 
     if (room)
     {
@@ -295,7 +278,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---3333---disconnect ${clientId}`)
+    //console.log(`---3333---disconnect ${clientId}`)
 
     if (room)
     {

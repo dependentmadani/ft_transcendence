@@ -37,6 +37,7 @@ export class UsersService {
         include: {
           friends: true,
           blocked: true,
+          games: true
         }
       });
     return user;
@@ -98,7 +99,7 @@ export class UsersService {
       if (obj.oppUserId === akinator.id) {
         if (obj.myScore > obj.oppScore) {
           result.ai_crusher = true;
-          console.log('result', result);
+          //console.log('result', result);
           return true;
         }
       }
@@ -168,6 +169,9 @@ export class UsersService {
         email : {
           not: users.email
         }
+      },
+      include: {
+        games: true,
       }
     });
     return user;
@@ -188,6 +192,9 @@ export class UsersService {
               startsWith: username,
               mode: 'insensitive',
             }
+          },
+          include: {
+            games: true
           }
         }
       }
@@ -317,7 +324,7 @@ export class UsersService {
             id: userId,
           }
         },
-        blocked: {
+        blockedBy: {
           connect: {
             id: userId,
           }
@@ -438,7 +445,7 @@ export class UsersService {
           },
         },
         );
-      console.log('user information: ', user)
+      // //console.log('user information: ', user)
         
       return user;
     } catch {

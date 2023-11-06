@@ -69,7 +69,7 @@ export class UsersController {
       await this.userService.findUserById(
         req.user['sub'],
         );
-        // console.log('users', user)
+        //console.log('users', user)
         return user;
   }
 
@@ -93,11 +93,12 @@ export class UsersController {
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
-    @Req() req:Request,
-    @Res() res:Response) {
+    @Req() req:Request) {
+    //console.log('the request reach here');
     const user = await this.userService.findUserById(req.user['sub']);
     const blockedFriend = await this.userService.blockFriend(user.id, friendId);
-    return res.send(blockedFriend);
+    return blockedFriend
+    // return res.send(blockedFriend);
   }
 
   @Post('unblock-friend/:id')
@@ -192,7 +193,7 @@ export class UsersController {
     @UploadedFile() file,
   ) {
     if (!file) {
-      console.log(process.cwd());
+      //console.log(process.cwd());
       throw new UnauthorizedException(
         'Did not upload successfully',
         );
@@ -210,7 +211,7 @@ export class UsersController {
     @Req() req: Request,
     @Body() username: UserModify,
   ) {
-    console.log('daz mn hna');
+    //console.log('daz mn hna');
     const user: Users =
       await this.authService.returnUser(
         req.user['email'],

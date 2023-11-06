@@ -50,7 +50,7 @@ export class AuthController {
       return userInfo.signedUp;
 
     } catch(err) {
-      console.log('the user is not available');
+      //console.log('the user is not available');
       return false;
     }
   }
@@ -294,7 +294,7 @@ export class AuthController {
     await this.authService.fortyTwo(
       req.user['users'],
       );
-    console.log('user info', tokens);
+    // //console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
       maxAge: oneDay,
       httpOnly: true, // for security

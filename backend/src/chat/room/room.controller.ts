@@ -13,7 +13,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 //     destination:
 //     `${process.cwd()}/frontend/public/uploadAvatar/`,
 //     filename: (req, file, cb) => {
-//       console.log(`${process.cwd()}/frontend/public/uploadAvatar/`)
+//       //console.log(`${process.cwd()}/frontend/public/uploadAvatar/`)
 //       if (!path) return;
 //       const filename: string =
 //         path

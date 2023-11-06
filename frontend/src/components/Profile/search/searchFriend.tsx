@@ -9,15 +9,15 @@ function Friends_list(props:any) {
     let friends;
     // const {client} = useClient();
     const navigate = useNavigate();
-        console.log('hna : ', props.friendData)
-        console.log('target : ', props.target)
-    // console.log('********', client)
+        //console.log('hna : ', props.friendsData)
+        //console.log('target : ', props.target)
+    // //console.log('********', client)
 
-	if (!props.friendsData)
+	if (!props.friendsData.length)
 		return (<span id='no-users'> No friends .... </span>)
 
     if (!props.target) {
-        console.log('natija 1: ')
+        //console.log('natija 1: ')
         friends =	props.friendsData.map(friend => {
 
             let statusColor = '';
@@ -39,7 +39,7 @@ function Friends_list(props:any) {
         })
     }
     else {
-        console.log('natija 2: ')
+        //console.log('natija 2: ')
         friends =	props.friendsData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
         .map(friend => {
 
@@ -77,9 +77,9 @@ function Friends (props:any) {
     const my_search = document.querySelector('.search-input') as HTMLInputElement
     const input = document.getElementById('search');
 
-    console.log(my_search)
+    //console.log(my_search)
     const search_open = () => {
-        console.log('searchOpen : ', searchOpen)
+        //console.log('searchOpen : ', searchOpen)
         if (!searchOpen) {
             setIconSearch('/src/imgs/cancel-red.png');
             my_search.focus()
@@ -96,13 +96,13 @@ function Friends (props:any) {
     const handleKey: KeyboardEventHandler<HTMLInputElement> = (event) => {
         if (event.key === 'Enter') {
             const _input = document.querySelector('.search-input') as HTMLInputElement
-            console.log(_input.value)
+            //console.log(_input.value)
             setTarget(_input.value.trim());
 			// getFriends(_input.value);
         }
     }
 
-    console.log('friends : ', props.friendsData)
+    //console.log('friends : ', props.friendsData)
 
     return (
         <div className='user-friends'>

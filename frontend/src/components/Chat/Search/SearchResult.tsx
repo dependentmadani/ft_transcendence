@@ -1,11 +1,12 @@
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
-
+import { useShow } from "@/context/ShowFormContext";
 
 
 export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }: any) => {
 
     const searchResultsRef = useRef<HTMLDivElement>(null);
+    const [show, setShow] = useShow();
 
 
     const createChat = async (user: User) => {
@@ -20,11 +21,12 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
                 }, { withCredentials: true })).data
             }
             catch (err) {
-                console.log(`Couldn't create new Chat: `, err)
+                //console.log(`Couldn't create new Chat: `, err)
             }
         }
 
         onValueChange(chat)
+        setShow('false');
     }
 
 

@@ -12,7 +12,7 @@ import { useSetting } from '@/context/SettingContext';
 function Badges() {
 
     const handleclick = () => {
-        console.log('profile_user')
+        //console.log('profile_user')
     }
 
   return (
@@ -173,7 +173,7 @@ function Statistic() {
 
 function MyProfile () {
 
-    console.log('MyProfile ')
+    //console.log('MyProfile ')
     const {client, updateClient} = useClient();
     const [listFriend, setListFriend] = useState();
     const [popSettings, setPopSettings] = useSetting();
@@ -192,7 +192,7 @@ function MyProfile () {
 
 
     useEffect(() => {
-        console.log('befor : ', popSettings)
+        //console.log('befor : ', popSettings)
         const settings_card = document.querySelector('.settings-card') as HTMLElement
         
         if (!popSettings)
@@ -200,11 +200,11 @@ function MyProfile () {
         else
             settings_card.style.display = 'flex'
 
-        console.log('after : ', popSettings)
+        //console.log('after : ', popSettings)
     }, [popSettings]);
 
 
-    console.log('-----------------------------------------', client)
+    //console.log('-----------------------------------------', client)
     return (
         <>
             <div className='profile'>

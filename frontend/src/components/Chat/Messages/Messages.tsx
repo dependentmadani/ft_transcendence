@@ -17,7 +17,7 @@ export const Messages = ({ chatData, messages }: any) => {
           res.data[0].role === 'BANNED' || res.data[0].role === 'MUTED' ? setIsAllowed(false) : setIsAllowed(true)
         }
         catch (err) {
-          console.log(err)
+          //console.log(err)
         }
       }
       else
@@ -52,7 +52,7 @@ export const Messages = ({ chatData, messages }: any) => {
   }, [chatData?._chat?.chat?.id])
 
 
-  // console.log('MESSAGES', chatData?._chat)
+  // //console.log('MESSAGES', chatData?._chat)
   return (
     <div className={ `messages  ${isAllowed === false && 'not-allowed'}` }>
       { 

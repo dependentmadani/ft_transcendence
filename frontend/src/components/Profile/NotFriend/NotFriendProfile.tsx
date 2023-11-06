@@ -39,7 +39,7 @@ function ProfileInfo (props: any) {
             }, {
             withCredentials: true
             })
-            console.log('WE TRYNNA ADD MR ', user.username, res)
+            //console.log('WE TRYNNA ADD MR ', user.username, res)
             socketa.emit('notification', { notif: res.data });
     }
 
@@ -73,7 +73,7 @@ function ProfileInfo (props: any) {
 
 function NotFriendProfile (props: any) {
 
-  console.log('profile : ', props.userData)
+  //console.log('profile : ', props.userData)
 
 
     return (

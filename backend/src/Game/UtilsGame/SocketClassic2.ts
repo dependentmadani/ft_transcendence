@@ -26,7 +26,7 @@
 // let jojo = 0;
 // let map1 = new Map();
 
-// console.log(`HELLO FROM SCRIPT 77777777`);
+// //console.log(`HELLO FROM SCRIPT 77777777`);
 // io.on("connection", connect_client);
 
 // function connect_client(socket) {
@@ -41,7 +41,7 @@
         
 //         for (let i =0;i < arr.length;i++)
 //         {
-//             console.log(`|----------|${arr[i]}|`);
+//             //console.log(`|----------|${arr[i]}|`);
 //             if (arr[i] == token)
 //             {
 //               count++;
@@ -73,20 +73,20 @@
 //         {
 //             map1.set(room, client_num);
 //             jojo = 1;
-//             console.log(`JOJO VALUE 11111  ${jojo}`)
+//             //console.log(`JOJO VALUE 11111  ${jojo}`)
 //             socket.emit('playerId', players.get(socket.id), room,jojo);
 //         }
 //         else
 //         {
 //             jojo = 2;
-//             console.log(`JOJO VALUE 22222 ${jojo}`)
+//             //console.log(`JOJO VALUE 22222 ${jojo}`)
 //             socket.emit('playerId', players.get(socket.id), room,jojo);
 //         }
 
 
 //         // socket.emit('playerId', players.get(socket.id), room,jojo);1
-//         console.log(`Player ${client_num} joined room ${room}`);
-//         console.log(`GRADEPLAYER---${jojo} joined room ${room}`);
+//         //console.log(`Player ${client_num} joined room ${room}`);
+//         //console.log(`GRADEPLAYER---${jojo} joined room ${room}`);
 //         if (prev_room != room)
 //         {
 //             pl1[room] = await new paddle_left;
@@ -132,10 +132,10 @@
 //         flag_room++;
 
 //         // let arr = [...map.values()];
-//         // console.log(`------------|||||||>>${arr.includes(room)}`);
+//         // //console.log(`------------|||||||>>${arr.includes(room)}`);
         
 
-//         // console.log(`${ROOM_NUM}|im herrrre---|${room}---------|${flag_room} `);
+//         // //console.log(`${ROOM_NUM}|im herrrre---|${room}---------|${flag_room} `);
 //         // if (ROOM_NUM <= room && flag_room % 2 == 0)
 //         // {
 //             // Check if there are two players in the room to start the game
@@ -147,7 +147,7 @@
         
 //     function startGameIfNeeded(room_num)
 //     {
-//         // console.log(`|----------|${count}|`);
+//         // //console.log(`|----------|${count}|`);
 //         if (pass && count == 2 )
 //         {
 //             count = 0;
@@ -203,11 +203,11 @@
 
 
 //     socket.on('disconnect', () => {
-//         console.log('A player disconnected');
+//         //console.log('A player disconnected');
 //         if (db[room].ball_x !== null && db[room].ball_y !== null) {
-//             console.log("STILL IN THE GAME");
+//             //console.log("STILL IN THE GAME");
 //         } else {
-//             console.log("Benguerir STILL NOT in THE GAME");
+//             //console.log("Benguerir STILL NOT in THE GAME");
 //             db[room].reset_game();
 //         }
 //         players.delete(socket.id);

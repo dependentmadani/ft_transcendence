@@ -13,7 +13,7 @@ export const Input = ({ chatData, isAllowed }: any) => {
   const currentChat = chatData?._chat
   
 
-  // console.log(`disableInput = [${disableInput}]`);
+  // //console.log(`disableInput = [${disableInput}]`);
   // Creating new message eather for chats or rooms
   const createNewMessage = async (inputText: string) => {
     try {
@@ -38,7 +38,7 @@ export const Input = ({ chatData, isAllowed }: any) => {
 
       }
       
-      // console.log('Message', _message.data)
+      // //console.log('Message', _message.data)
       await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/${chatData._chat.type}/last-message/${chatData?._chat?.id}`, {
         'content': _message?.data.textContent,
       }, {  withCredentials: true })
@@ -47,7 +47,7 @@ export const Input = ({ chatData, isAllowed }: any) => {
     }
     catch (err)
     {
-      console.log(`Couldn't create new Message`, err)
+      //console.log(`Couldn't create new Message`, err)
     }
   }
 
@@ -85,7 +85,7 @@ export const Input = ({ chatData, isAllowed }: any) => {
   //     if (chatData?._chat && chatData?._chat?.type === 'Room') {
   //       // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
   //       const allowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData?._mainUser.id}`, { withCredentials: true })).data
-  //       console.log('Is he allowed', allowed, isAllowed)
+  //       //console.log('Is he allowed', allowed, isAllowed)
   //       if (!allowed || !isAllowed)
   //         setDisableInput(true)
   //       else
@@ -99,18 +99,18 @@ export const Input = ({ chatData, isAllowed }: any) => {
   // }, [ isAllowed ])
 
   // useEffect(() => {
-  //   console.log('Zzzzzzzzzzzzzzzzzzzzzz, ', show, `[${disableInput}]`)
+  //   //console.log('Zzzzzzzzzzzzzzzzzzzzzz, ', show, `[${disableInput}]`)
   //   if (chatData._chat === undefined )
   //   {
-  //     console.log('...................... ')
+  //     //console.log('...................... ')
   //     setDisableInput(true)
   //   }
   //   else
   //     setDisableInput(false)
   // }, [ isAllowed ])
 
-  // console.log('input disabled', disableInput, isAllowed)
-  console.log('-----> : ', show)
+  // //console.log('input disabled', disableInput, isAllowed)
+  //console.log('-----> : ', show)
 
   // const checkDisable = () => (show === 'l3washr' || (show === 'true' && !isAllowed)) ? true : false;
 

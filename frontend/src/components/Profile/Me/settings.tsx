@@ -47,8 +47,8 @@ const SettingsComponent: React.FC = () => {
 
     const changeUsername = (name: string) => {
         setUsername(name);
-        console.log(`Username: ${username}`)
-        console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
+        //console.log(`Username: ${username}`)
+        //console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
     };
     
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -57,7 +57,7 @@ const SettingsComponent: React.FC = () => {
       toast.promise(
         (async () => {
           try {
-            console.log(`mail: ${email}|`);
+            //console.log(`mail: ${email}|`);
             const response = await axios.post(
               `http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/setup`,
               { email },
@@ -89,7 +89,7 @@ const SettingsComponent: React.FC = () => {
         toast.promise(
             (async () => {
               try {
-                console.log(`mail: ${email}|`);
+                //console.log(`mail: ${email}|`);
                 const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/verify`,
                 { code: smsCode },
                 { withCredentials: true }
@@ -122,7 +122,7 @@ const SettingsComponent: React.FC = () => {
 
         const informTwoFactorState = async () => {
             try {
-              console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
+              //console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
                 if (!twoFactorEnabled && smsCode)
                 {
                     await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
@@ -133,7 +133,7 @@ const SettingsComponent: React.FC = () => {
                     });
                 }
             } catch (error) {
-              console.log('error in disbale of 2fa : ',error);
+              //console.log('error in disbale of 2fa : ',error);
             }
         }
 
@@ -175,7 +175,7 @@ const SettingsComponent: React.FC = () => {
               await delay(1000);
               const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
               await updateClient({ ...client, ...response.data, signedIn: true });
-              console.log(client)
+              //console.log(client)
               setPopSettings(false);
             } catch (error) {
               await delay(1000);
@@ -200,7 +200,7 @@ const SettingsComponent: React.FC = () => {
   const handleKeyDown = (event) => {
         if (event.key === 'Enter' && twoFactorEnabled) {
             handleEmailSubmit();
-            console.log(`QrCode: ${qrCode}`);
+            //console.log(`QrCode: ${qrCode}`);
         }
   };
     
@@ -208,11 +208,11 @@ const SettingsComponent: React.FC = () => {
   const handleKeyDown2 = (event) => {
       if (event.key === 'Enter' && twoFactorEnabled) {
           handleSmsCodeSubmit();
-          console.log(`QrCode: ${qrCode}`);
+          //console.log(`QrCode: ${qrCode}`);
       }
   };
 
-  console.log('client.twoEnabled : ', client.twoEnabled)
+  //console.log('client.twoEnabled : ', client.twoEnabled)
 
     return (
     <div className="settings-card">

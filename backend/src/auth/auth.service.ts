@@ -224,7 +224,7 @@ export class AuthService {
         hashRt: null,
       },
     });
-    console.log(cookies);
+    // //console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
@@ -374,8 +374,7 @@ export class AuthService {
     const user =
       await this.prisma.users.findUnique({
         where: {
-          email: userDto.email,
-          username: userDto?.username
+          email: userDto.email
         },
       });
 
@@ -401,7 +400,7 @@ export class AuthService {
   }
 
   async fortyTwo(profile: any) {
-    // console.log(profile);
+    // //console.log(profile);
     const userDto: AuthDto = {
       username: profile.username,
       email: profile.email,
@@ -554,7 +553,7 @@ export class AuthService {
           isActive: state,
         },
       });
-    console.log(user);
+    // //console.log(user);
   }
 
   async signToken(
@@ -658,7 +657,7 @@ export class AuthService {
 
   // async redirectToFortyTwo(dto: any, strategy: FortyTwoStrategy){
   //         // to authenticate the 42 user, get it from auth controller
-  //         console.log(strategy);
+  //         //console.log(strategy);
   //         // strategy.validate()
 
   //     }

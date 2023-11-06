@@ -9,7 +9,7 @@ import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
 
-console.log(`HELLO FROM SCRIPT Match________Random`);
+//console.log(`HELLO FROM SCRIPT Match________Random`);
 
 @WebSocketGateway({
   namespace: '/MatchRandom',
@@ -43,7 +43,7 @@ export class MatchSocketGateway
   private name:string;
   private client_name =  new Map<number,string>;
 
-  constructor(private gameService: GameService, private historyService: HistoryService,private histor1:historyDto,private histor2:historyDto) {}
+  constructor(private historyService: HistoryService,private histor1:historyDto) {}
 
   @SubscribeMessage('canvas')
   async handleCanvas(client, data)
@@ -60,15 +60,15 @@ export class MatchSocketGateway
     this.name = await user[1];
     this.client_name.set(this.client_id,this.name);
       
-      // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
+      // //console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if (this.canvas_height && this.canvas_width)
       {
         if(!this.PosPlayers.has(this.client_id))
         {
           if(this.count <= 2)
           {
-          // console.log(`${this.jojo}----${this.room}--------|${this.client_id}|`)
-          // console.log(`${this.rooms.has(this.room)} ||ALREADY EXIST------111----|||| ${ this.pass}`);
+          // //console.log(`${this.jojo}----${this.room}--------|${this.client_id}|`)
+          // //console.log(`${this.rooms.has(this.room)} ||ALREADY EXIST------111----|||| ${ this.pass}`);
           if (this.rooms.has(this.room) && !this.pass) 
           {
             this.pass = true;
@@ -79,7 +79,7 @@ export class MatchSocketGateway
             this.PosPlayers.set(this.client_id, 2);
             client.emit('playerId', 2 , this.room);
           
-            // console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------111----||||${ this.room}`);
+            // //console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------111----||||${ this.room}`);
         }
         else 
         {
@@ -93,7 +93,7 @@ export class MatchSocketGateway
           this.profileID1 = this.client_id;
           client.emit('playerId', 1 , this.room);
 
-          // console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------22222----||||${ this.room}`);
+          // //console.log(`${this.rooms.has(this.room)} |ALREADY EXIST------22222----||||${ this.room}`);
         }
         client.join(this.room);
         if (this.profileID1 && this.profileID2)
@@ -104,7 +104,7 @@ export class MatchSocketGateway
         }
     }
 
-    console.log(`Player ${this.client_id} joined room ${this.room}`);
+    //console.log(`Player ${this.client_id} joined room ${this.room}`);
     // if (this.pl1[this.room] && this.pl2[this.room])
     // {
       if (this.prev_room != this.room)
@@ -185,7 +185,7 @@ async handlenewvalueroom(client, data)
           this.ball[room_num].p_left = this.pl1[room_num].paddle_y;
           this.ball[room_num].p_right = this.pl2[room_num].paddle_y;
           const gameState = {
-          // console.log(`|----------|${room_num}|`);
+          // //console.log(`|----------|${room_num}|`);
           room: { id: room_num },
           profileID1:{},
           profileID2:{},
@@ -225,7 +225,7 @@ async handlenewvalueroom(client, data)
         gameState.sound.sound_wall = 1;
         this.ball[room_num].sound_wall = 0;
     }
-      // console.log(`${  gameState.ball.x}|----JOJO${room_num}-------|${  gameState.ball.y}`)
+      // //console.log(`${  gameState.ball.x}|----JOJO${room_num}-------|${  gameState.ball.y}`)
     if (this.ball[room_num].score_left >= this.ball[room_num].score_max || this.ball[room_num].score_right >= this.ball[room_num].max_score)
     {
       const roomSet = this.rooms.get(room_num);
@@ -235,29 +235,10 @@ async handlenewvalueroom(client, data)
           let roomArray = Array.from(roomSet);
           let firstValue  = roomArray[0];
           let secondValue = roomArray[1]; 
-    
-        if(this.ball[room_num].score_left > this.ball[room_num].score_right)
-        {
-          this.gameService.updateInfoGame(firstValue, true);
-          this.gameService.updateInfoGame(secondValue , false);
-        }
-        else
-        {
-          this.gameService.updateInfoGame(firstValue, false);
-          this.gameService.updateInfoGame(secondValue, true);
-        }
         this.histor1.my_score = this.ball[room_num].score_left 
         this.histor1.opp_score  = this.ball[room_num].score_right;
         this.histor1.opp_name = this.client_name.get(secondValue);
         this.historyService.createResultGame(firstValue,this.histor1);
-        console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
-      
-        this.histor2.my_score = this.ball[room_num].score_right;
-        this.histor2.opp_score  = this.ball[room_num].score_left ;
-        this.histor2.opp_name = this.client_name.get(firstValue);
-        this.historyService.createResultGame(secondValue,this.histor2);
-        console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
-    
     }
       clearInterval(this.interval[room_num]);
 
@@ -274,7 +255,7 @@ async handlenewvalueroom(client, data)
             }
           }
         }
-        // console.log(`============${sett}`);
+        // //console.log(`============${sett}`);
         this.rooms.delete(room_num);
     }
    this.server.to(room_num).emit("game_state", gameState);
@@ -286,7 +267,7 @@ async handlenewvalueroom(client, data)
     const clientId = data;
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    //console.log(`---1111---disconnect ${clientId}`)
 
     if (room)
     {
@@ -303,7 +284,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    //console.log(`---1111---disconnect ${clientId}`)
 
     if (room)
     {

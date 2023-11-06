@@ -52,7 +52,7 @@ export default class  direct_ball
             this.height_paddle = this.canvas_height*20/100;
             this.width_paddle = this.canvas_width*1.5/100;
             this.ball_size = this.canvas_width*2/100;
-            // console.log(`--|${this.num}|-------------|${this.num}|-----------`)
+            // //console.log(`--|${this.num}|-------------|${this.num}|-----------`)
             this.check_colision();
             this.ball_paddle_colision();
 
@@ -84,10 +84,10 @@ export default class  direct_ball
                 this.sound_wall++;
               
             
-                // console.log(`--|${this.canvas_height}|-------------|${this.y}|-----------`)
+                // //console.log(`--|${this.canvas_height}|-------------|${this.y}|-----------`)
                 // this.speed++;
             }
-            // console.log(`2__##${this.width_paddle}########################${this.height_paddle}#######`)
+            // //console.log(`2__##${this.width_paddle}########################${this.height_paddle}#######`)
         }
         ball_paddle_colision()
         {
@@ -121,7 +121,7 @@ export default class  direct_ball
         initial_direction()
         {
             // this.flag++;
-            // console.log(`|++++++++++|${this.flag}|++++++++++|`);
+            // //console.log(`|++++++++++|${this.flag}|++++++++++|`);
             this.num = Math.floor(Math.random() * 4);
             if(this.num == 0)
             {

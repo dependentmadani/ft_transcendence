@@ -92,7 +92,7 @@ function NavBarOne() {
 
     useEffect(() => {
 
-            console.log('hhamie')
+            //console.log('hhamie')
         toggleMenu();
       }, [isMenuOpen, client.signedIn]);
 
