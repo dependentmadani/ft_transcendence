@@ -7,46 +7,78 @@ import axios from 'axios';
 import SettingsComponent from './settings'
 import { useSetting } from '@/context/SettingContext';
 
+interface HistoryEntry {
+    id: number;
+    myUser: {
+      id: number;
+      username: string;
+      avatar: string;
+    };
+    oppUser: {
+      id: number;
+      username: string;
+      avatar: string;
+    };
+    myScore: number;
+    oppScore: number;
+};
 
-
-function Badges() {
-
-    const handleclick = () => {
-        console.log('profile_user')
+function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
+    if (!historyEntry) {
+      return null;
     }
-
-  return (
-    <div className="badge-history">
-      <div className="players">
-        <img id="player" src="/src/imgs/example.jpg" alt="user" />
-        <img id="vs-img" src="/src/imgs/vs-.png" alt="VS" />
-        <img id="player" src="/src/imgs/example.jpg" alt="user-vs" onClick={handleclick} />
-        <div id="comma">
-          <img src="/src/imgs/comma.png" alt="comma" />
-          <img src="/src/imgs/comma.png" alt="comma" />
+  
+    const handleclick = () => {
+      console.log('profile_user');
+    }
+  
+    return (
+      <div className="badge-history">
+        <div className="players">
+          <img id="player" src={historyEntry.myUser.avatar} alt={historyEntry.myUser.username} />
+          <img id="vs-img" src="/src/imgs/vs-.png" alt="VS" />
+          <img id="player" src={historyEntry.oppUser.avatar} alt={historyEntry.oppUser.username} onClick={handleclick} />
+          <div id="comma">
+            <img src="/src/imgs/comma.png" alt="comma" />
+            <img src="/src/imgs/comma.png" alt="comma" />
+          </div>
+        </div>
+        <div className="score-match">
+          <div className="score">
+            <span>{historyEntry.myScore}</span>
+            <span>{historyEntry.oppScore}</span>
+          </div>
         </div>
       </div>
-      <div className="score-match">
-        <div className="score">
-          <span>5</span>
-          <span>3</span>
-        </div>
-      </div>
-    </div>
-  );
-}
+    );
+  }
 
 function History () {
+
+    const [historyData, setHistoryData] = useState([]);
+
+    useEffect( () => {
+
+        async function getHistory() {
+            try {
+                const response = await axios.get(`http://localhost:8000/history`, {withCredentials: true});
+                setHistoryData(response.data);
+                // console.log("HISTORY ***__*** ", response.data);
+            } catch (error) {
+                console.error("Error fetching history data:", error);
+            }
+        };
+        getHistory();
+    }, []);
     return (
         <div className='history'>
             <div id='title' >
                 <span>History </span>
             </div>
             <div className='my-history'>
-                
-                <Badges />
-                <Badges />
-                <Badges />
+                {historyData && historyData.map((entry, index) => (
+                    <Badges key={index} historyEntry={entry} />
+                ))}
                 {/* <Badges />
                 <Badges />
                 <Badges /> */}
@@ -67,7 +99,7 @@ const Achieves = () => {
             try {
                 const response = await axios.get(`http://localhost:8000/users/achievements`, {withCredentials: true});
                 setBadge(response.data);
-                console.log("badge !!!!! ", response.data);
+                // console.log("badge !!!!! ", response.data);
             } catch (error) {
                 console.error("Error fetching achievements data:", error);
             }

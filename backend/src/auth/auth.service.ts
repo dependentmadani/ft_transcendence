@@ -81,21 +81,25 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
-      if (this.aiUserCreated === false) {
-        const user = await this.prisma.users.create({
-          data: {
-            username: 'akinator',
-            email: 'ai@gmail.com',
-            isActive: true,
-            avatar: '/boot.jpg',
-          }
-        })
-        await this.prisma.game.create({
-          data: {
-            userId: user.id,
-          }
-        });
-        this.aiUserCreated = true;
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log("the bot is alreay created");
       }
       const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
       if (usernameTaken) {
@@ -231,21 +235,25 @@ export class AuthService {
     //need to hash the password for security reasons
 
     try {
-      if (this.aiUserCreated === false) {
-        const user = await this.prisma.users.create({
-          data: {
-            username: 'akinator',
-            email: 'ai@gmail.com',
-            isActive: true,
-            avatar: '/boot.jpg',
-          }
-        })
-        await this.prisma.game.create({
-          data: {
-            userId: user.id,
-          }
-        });
-        this.aiUserCreated = true;
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log('the bot is already created!')
       }
       const usernameAvailable = await this.prisma.users.findUnique({
         where: {

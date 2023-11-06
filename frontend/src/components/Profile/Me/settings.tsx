@@ -125,7 +125,7 @@ const SettingsComponent: React.FC = () => {
               console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
                 if (!twoFactorEnabled && smsCode)
                 {
-                    await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
+                    await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
                     { withCredentials: true },
                     );
                     toast.info("Disabled 2FA !", {
