@@ -34,11 +34,7 @@ export const Chat = ({ state, chatData, messages }: any) => {
               setIsAllowed(true);
             }
             else {
-              console.log('waaaaa haaaamiiiiiiiiiiiiid', chatData?._chat?.protection);
-              console.log('isAllowed : ', isAllowed)
-
               if (chatData?._chat?.protection === 'Public') {
-                console.log('666666666666666666');
                 const allowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
                 if (!allowed && state === true) {
                   setIsAllowed(true);
@@ -54,18 +50,9 @@ export const Chat = ({ state, chatData, messages }: any) => {
                     {
                         withCredentials: true,
                     });
-                    console.log('-----------checker----------', ret);
-                  // setShow(false);
-                  // setTset(true)
-                  // setShowForm(false);
                   }
                 }
                 else {
-                  console.log('1111111111111111111');
-                  // setTset(false)
-                  // setShow(true);
-        
-                  // setShowForm(true)
                   setIsAllowed(false)
                   setBlocked(false);
               }
@@ -73,7 +60,6 @@ export const Chat = ({ state, chatData, messages }: any) => {
           }
       }
       else {
-        console.log('daz mn hna')
         setIsAllowed(true)
       }
     }
@@ -83,27 +69,13 @@ export const Chat = ({ state, chatData, messages }: any) => {
 
   useEffect(() => {
     chatData._socket?.on('lockingRoom', () => {
-      console.log('ggggggggggggggggggg-----', rightBar)
       setIsAllowed(false)
       setBlocked(true);
       setRightBar(false);
-      console.log('ggggggggggggggggggg----- new', rightBar)
     })
   }, [ chatData._socket ]) 
   
 
-  
-  // const openForm = () => {
-  //   // if (showForm === false)
-  //   //   console.log('-----------------showForm : ', showForm)  
-  //   setTset(!test)
-
-  //   // else
-  //     // setShowForm(false)
-  // };
-  // console.log('showForm : ', showForm);
-
-  console.log('ISALLOWED', isAllowed)
 
   return (
     <div id='Conversation' className={`chat`}>

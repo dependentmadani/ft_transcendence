@@ -37,7 +37,6 @@ export const Rightbar = ({ chatData }: any) => {
   }, [ chatData, rightBar ])
 
 
-  console.log('Right bar allow', rightBar)
   
   
   return (

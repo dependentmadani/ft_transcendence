@@ -78,7 +78,6 @@ const ListNotification = () => {
                     
                     
                     // Only My notifs and pendending status stay
-                    // console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
                     if (newNotif.status === false && newNotif.receiver.id === mainUser.id && newNotif.type === 'FRIEND')
                         return newNotif
                     return null
@@ -97,7 +96,6 @@ const ListNotification = () => {
 
     useEffect(() => {
         socketa?.on('receiveNotification', async (notif: any) => {
-            console.log('Notiiiiiiiiiiiiiif', notif)
             const sender = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${notif.senderId}`, {withCredentials: true})).data;
                     
             const newNotif: Notifs = {
@@ -118,13 +116,9 @@ const ListNotification = () => {
                 toast.info(`${newNotif.receiver.username} invites you to play ${newNotif.type} PongGame`, {
                     position: toast.POSITION.TOP_RIGHT,
                     onClick: () => {
-                        console.log('newnotify : ' ,newNotif)
-                        console.log('notif : ',notif)
                         setGame({playerID1: newNotif.sender.id, playerID2: newNotif.receiver.id, mode: newNotif.mode})
                         socketa?.emit('acceptNotification', { notif: newNotif });
-                        console.log('////////////////////')
                         navigate('/game/invite')
-                        console.log('!!!!!!!!!!!!!!!!!!!!!!')
                     }
                 });
             }
@@ -160,7 +154,6 @@ const ListNotification = () => {
             );
     
             const data = await response.json();
-            console.log('NEW FRIENDS', data);
             setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
         }
         // console.log('Da type', notif.type === 'GAME')
@@ -183,7 +176,6 @@ const ListNotification = () => {
         
         // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
         const data = await response.json();
-        console.log('NOTIFICATION UPDATED', data);
 
     }
 
@@ -193,10 +185,9 @@ const ListNotification = () => {
 
         // Removing the notificaiton
         try {
-            console.log('Notif', notif)
             // if (notif.type === 'FRIEND')
-                const res = await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
-                console.log('res', res.data)
+                await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
+                
         }
         catch (err) {
             console.log(`Coudn't delete notification: `, err)

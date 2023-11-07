@@ -24,7 +24,6 @@ export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
                     'roomPass': pass,
                     }, { withCredentials: true })
                     if (res.data === true) {
-                        console.log("*****************&&&&&&&&&****************")
                         setIsAllowed(true);
                         const userAvailable = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.id}/${chatData._mainUser.id}`,{withCredentials: true})
                         if (userAvailable.data) {
@@ -45,7 +44,6 @@ export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
                             {
                                 withCredentials: true,
                             });
-                            console.log('/*/*/*/*/*/*/*', res);
                             setRightBar(true);
                         }
                     }

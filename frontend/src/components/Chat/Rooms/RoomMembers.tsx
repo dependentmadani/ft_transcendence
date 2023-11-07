@@ -14,7 +14,6 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
     const addMemberListener = (user: any) => {
-        console.log('add user', user)
         if (roomMembers.find(u => u.userId === user.userId) === undefined)
             setRoomMembers([...roomMembers, user])
     }
@@ -28,7 +27,6 @@ export const RoomMembers = ({ chatData }: any) => {
     }, [chatData._socket, addMemberListener])
 
     const removeMemberListener = (user: any) => {
-        console.log('remove user', user)
         if (roomMembers.find(u => u.userId === user.userId) !== undefined)
             setRoomMembers(prevMembers => prevMembers.filter(member => member.userId !== user.userId))
     }
@@ -94,7 +92,6 @@ export const RoomMembers = ({ chatData }: any) => {
             }, {
                 withCredentials: true,
             });
-            console.log('HA LUSER', user)
             chatData?._socket?.emit('updateMemberRole', user)
         } catch (error) {
             console.log(error);

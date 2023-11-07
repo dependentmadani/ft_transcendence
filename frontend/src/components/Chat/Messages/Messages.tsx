@@ -36,7 +36,6 @@ export const Messages = ({ chatData, messages, isOk }: any) => {
     const checkAllow = async () => {
 
       if (chatData?._chat?.type === 'room') {
-        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         const allwd = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${chatData.mainUser.id}`, { withCredentials: true })
         if (allwd.data[0].allowed !== true)
           setIsAllowed(false)
@@ -52,7 +51,7 @@ export const Messages = ({ chatData, messages, isOk }: any) => {
   }, [chatData?._chat?.chat?.id])
 
 
-  // console.log('MESSAGES', chatData?._chat)
+  
   return (
     <div className={ `messages  ${(isAllowed === false) && 'not-allowed'}` }>
       { 

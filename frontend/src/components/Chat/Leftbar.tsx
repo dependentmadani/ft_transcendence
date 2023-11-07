@@ -1,7 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Chats } from "./Chats/Chats";
 import { Search } from './Search/Search';
-import axios from "axios";
 
 
 export  const Leftbar = ({ onValueChange, chatData }: any) => {
