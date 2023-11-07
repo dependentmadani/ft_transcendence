@@ -81,21 +81,26 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
-      if (this.aiUserCreated === false) {
-        const user = await this.prisma.users.create({
-          data: {
-            username: 'akinator',
-            email: 'ai@gmail.com',
-            isActive: true,
-            avatar: '/boot.jpg',
-          }
-        })
-        await this.prisma.game.create({
-          data: {
-            userId: user.id,
-          }
-        });
-        this.aiUserCreated = true;
+      console.log('nadi canadi', dto)
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log('bot already created');
       }
       const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
       if (usernameTaken) {
@@ -224,28 +229,32 @@ export class AuthService {
         hashRt: null,
       },
     });
-    // //console.log(cookies);
+    // console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
     //need to hash the password for security reasons
 
     try {
-      if (this.aiUserCreated === false) {
-        const user = await this.prisma.users.create({
-          data: {
-            username: 'akinator',
-            email: 'ai@gmail.com',
-            isActive: true,
-            avatar: '/boot.jpg',
-          }
-        })
-        await this.prisma.game.create({
-          data: {
-            userId: user.id,
-          }
-        });
-        this.aiUserCreated = true;
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log('the bot is already created');
       }
       const usernameAvailable = await this.prisma.users.findUnique({
         where: {
@@ -400,7 +409,7 @@ export class AuthService {
   }
 
   async fortyTwo(profile: any) {
-    // //console.log(profile);
+    // console.log(profile);
     const userDto: AuthDto = {
       username: profile.username,
       email: profile.email,
@@ -553,7 +562,7 @@ export class AuthService {
           isActive: state,
         },
       });
-    // //console.log(user);
+    // console.log(user);
   }
 
   async signToken(
@@ -657,7 +666,7 @@ export class AuthService {
 
   // async redirectToFortyTwo(dto: any, strategy: FortyTwoStrategy){
   //         // to authenticate the 42 user, get it from auth controller
-  //         //console.log(strategy);
+  //         console.log(strategy);
   //         // strategy.validate()
 
   //     }

@@ -27,7 +27,7 @@ export class HistoryService {
 
             return latest;
         } catch(error) {
-            //console.log(`Something wrong happend with database ${error}`);
+            console.log(`Something wrong happend with database ${error}`);
         }
 
     }
@@ -60,7 +60,7 @@ export class HistoryService {
             }
             return 'The history game added successfully';
         } catch (err) {
-            //console.log(`Something wrong happend with database ${err}`);
+            console.log(`Something wrong happend with database ${err}`);
         }
     }
 

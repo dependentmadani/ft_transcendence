@@ -55,7 +55,7 @@ export class RoomUsersController {
             const _room: Room = await this.roomService.getOneRoom(room.roomId);
 
             // Check if user is not banned or muted
-            //console.log('Hado roles', room.role)
+            // console.log('Hado roles', room.role)
             if (room.role !== 'BANNED' && room.role !== 'MUTED')
                 return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
             return null
@@ -72,7 +72,7 @@ export class RoomUsersController {
             return dateB - dateA;
         });
 
-        // //console.log('Contacts', contacts);
+        // console.log('Contacts', contacts);
         // const filteredContacts: any = sortedContacts.filter((contact) => contact !== null);
     //     setChats(filteredChatsData)
         return sortedContacts

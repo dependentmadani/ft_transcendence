@@ -24,7 +24,7 @@ const InviteGame = () => {
     // check data of ids of players
     const [_game] = useGame();
 
-    //console.log('game :::::::::: ', _game)
+    console.log('game :::::::::: ', _game)
 
     if (_game.mode === 'classic')
         return <InviteClassic ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
@@ -35,7 +35,7 @@ const InviteGame = () => {
 
 function selectSection(section: string): JSX.Element {
 
-    //console.log(section)
+    console.log(section)
 
     if (section === '/profile/:username' || section === '/profile')
         return <Profile  />;

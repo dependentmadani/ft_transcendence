@@ -124,7 +124,7 @@ export class NotificationsService {
 
   async updateNotification(id: number): Promise<Notifications> {
     try {
-      //console.log('IIIIOOOOOIII')
+      console.log('IIIIOOOOOIII')
       const notif = await this.prisma.notifications.findUnique({
         where: {
           id: id
@@ -271,7 +271,7 @@ export class NotificationsService {
   ///////////////////////////////////
 
   async create(createNotificationDto: NotificationDto, userId: number, socketId: string) {
-    // //console.log('the user id is:', createNotificationDto);
+    // console.log('the user id is:', createNotificationDto);
     const receiverInfo = await this.prisma.users.findUnique({
       where: {
         username: createNotificationDto.receiverName

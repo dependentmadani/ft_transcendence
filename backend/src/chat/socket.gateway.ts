@@ -8,11 +8,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   server: Server;
 
   handleConnection(client: Socket) {
-    //console.log(`${client.id} connected..`)
+    console.log(`${client.id} connected..`)
   }
 
   handleDisconnect(client: Socket) {
-    //console.log(`${client.id} disconnected..`)
+    console.log(`${client.id} disconnected..`)
   }
 
   @SubscribeMessage('message')

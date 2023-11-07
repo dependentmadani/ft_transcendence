@@ -11,13 +11,13 @@ export default function Home(props:any) {
     const  navigate = useNavigate();
 
 
-    //console.log('home')
-    //console.log(client)
+    console.log('home')
+    console.log(client)
     
 
     const handelStart = () => {
 
-        //console.log('################')
+        console.log('################')
         if (!client.signedIn)
             navigate('/login');
         else

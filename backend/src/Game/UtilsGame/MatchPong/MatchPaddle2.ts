@@ -14,7 +14,7 @@ export default class paddle_right
         if(this.y+this.speed + this.height_paddle >= this.canvas_height)
             this.y  = this.canvas_height - (this.height_paddle + this.speed);
         this.y += this.speed;
-        // //console.log(` ${this.canvas_height}this.y ${this.y}`)
+        // console.log(` ${this.canvas_height}this.y ${this.y}`)
     }
     get cnv_h(){
         return this.canvas_height;

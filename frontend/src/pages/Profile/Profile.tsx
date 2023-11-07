@@ -13,7 +13,7 @@ function Profile() {
   const [profile, setProfile] = useState<string | null>(null);
   const username = useParams().username !== undefined ? useParams().username : null;
 
-  //console.log('username : ', username)
+  console.log('username : ', username)
   useEffect(() => {
     async function getUsers() {
       if (username === client.username)
@@ -21,13 +21,13 @@ function Profile() {
       if (username) {
         try {
           const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, { withCredentials: true });
-          //console.log(res.data);
+          console.log(res.data);
           if (res.data.length) {
             setData(res.data);
             setProfile('Friend');
           } else {
               const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, { withCredentials: true });
-              //console.log(res.data);
+              console.log(res.data);
               if (res.data.length) {
                 setData(res.data);
                 setProfile('NotFriend');
@@ -47,7 +47,7 @@ function Profile() {
     getUsers();
   }, [username]);
 
-  //console.log('profile: ', profile);
+  console.log('profile: ', profile);
 
   return (
     <>

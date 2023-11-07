@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 function Login () {
 
-  //console.log('login')
+  console.log('login')
 
 
   const request42 = () => {
@@ -11,7 +11,7 @@ function Login () {
   };
 
   const requestGoogle = () => {
-    // //console.log('gmaile')
+    // console.log('gmaile')
       window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
   };
 

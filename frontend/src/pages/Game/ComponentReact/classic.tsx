@@ -1,11 +1,10 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ReactSVG } from "react-svg";
+
 
 interface User
 {
@@ -13,7 +12,6 @@ interface User
   username: string,
   avatar: string,
 }
-
 
 export default function ClassicGame()
 {
@@ -74,13 +72,7 @@ useEffect(() => {
   useEffect(() => {
     if (flag.current === false && Userdata?.id)
     {
-      ping_pong(canvas.current,(left:any) => {
-        const updatedBallColors = leftballs.map((color, index) => (index < left ? 'purple' : 'gray'));
-        setLeftBalls(updatedBallColors);
-      },(right:any)=>{
-          const updatedBallColors = rightballs.map((color, index) => (4 - index < right ? 'purple' : 'gray'));
-          setRightBalls(updatedBallColors);
-        },
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
         Userdata.id,
         (prl1:any) =>{setProfileID1(prl1);},
         (prl2:any) =>{setProfileID2(prl2);}
@@ -88,7 +80,7 @@ useEffect(() => {
       flag.current = true 
     }
   },  [leftballs,rightballs, Userdata?.id,ProfileID1,ProfileID2])
-// //console.log(`PROID1 ${ProfileID1}--------|PROID2${ProfileID2}`)
+// console.log(`PROID1 ${ProfileID1}--------|PROID2${ProfileID2}`)
 
 
 const updateCanvasWidth = () => {

@@ -53,9 +53,10 @@
 .player-stats > * > span {
     color: rgb(237, 241, 219);
     font-weight: 700;
-    font-size: clamp(15px, .9vw, 30px);
+    font-size: clamp(15px, .9vw, 22px);
     display: block;
-    font-family: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    /* font-family: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; */
+    font-family: Orbitron;
 }
 
 .player-stats > * {
@@ -84,6 +85,11 @@
     width: auto;
     aspect-ratio: 4/4;
     object-fit: cover;
+    cursor: pointer;
+}
+
+.img-frame > img:hover +  .player-stats {
+    scale: 1.5;
 }
 
 .img-frame::before {
@@ -105,15 +111,16 @@
     background-color: rgb(233, 53, 53);
 }
 
-@media (max-width: 400px) {
-    .status {
-        display: none;
-    }
+
+@media (max-width: 600px) {
     .match-played {
         display: none;
     }
     .wins {
       display: none;
+    }
+    .leaderboard-rank {
+        margin-right: 6%;
     }
 }
 
@@ -146,4 +153,10 @@
     color: aqua;
     border-radius: 8px;
     margin-right: 5%;
+}
+
+.akinator-bot {
+    /* margin-bottom: 3%; */
+    background-color: #108393;
+    box-shadow: 0px 0px 10px 5px rgb(0, 80, 125);
 }

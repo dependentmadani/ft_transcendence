@@ -14,7 +14,7 @@ function SetInfo() {
   const {client, updateClient} = useClient();
   const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
-  // //console.log('signup')
+  // console.log('signup')
   
   useEffect(() => {
     async function fetchUserData() {
@@ -29,7 +29,7 @@ function SetInfo() {
           await updateClient({ ...client, ...response.data, signedIn: true });
         if (response.data.signedUp)
           navigate('/')
-        // //console.log('response.data : ', response.data);
+        // console.log('response.data : ', response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -56,7 +56,7 @@ function SetInfo() {
   };
 
   const handleSubmit = async () => {
-    //console.log('uuuuuuuuuuuuuuuuu')
+    console.log('uuuuuuuuuuuuuuuuu')
     try {
       await axios.patch(
         `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`,
@@ -79,7 +79,7 @@ function SetInfo() {
             headers: { 'Content-Type': 'multipart/form-data' },
           }
         );
-        //console.log('dataupdate : ' , gg.data)
+        console.log('dataupdate : ' , gg.data)
       }
       setFetchData(true);
     } catch (error) {
@@ -92,7 +92,7 @@ function SetInfo() {
 
   const handleKeyDown = (event) => {
     if (event.key === 'Enter') {
-      // //console.log(`hlwa {${event}} `)
+      // console.log(`hlwa {${event}} `)
       event.preventDefault();
       if (username !== '')
         handleSubmit();

@@ -18,11 +18,11 @@ function GetRouteElement(props:any) {
 
     const defaultList = ['/', '/home', '/about', '/team'];
     const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
-    //console.log(props.tag)
-    // //console.log(client.signedIn)
-    // //console.log(defaultList.includes(props.tag), list.includes(props.tag))
+    console.log(props.tag)
+    // console.log(client.signedIn)
+    // console.log(defaultList.includes(props.tag), list.includes(props.tag))
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
-        //console.log('**********************')
+        console.log('**********************')
         if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
             return <DefaultSection section={props.tag} />;
         else if (!client.signedIn && list.includes(props.tag))

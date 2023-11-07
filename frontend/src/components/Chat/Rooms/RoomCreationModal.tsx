@@ -71,12 +71,12 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                 });
                             }
                             catch (error) {
-                                //console.log(error);
+                                console.log(error);
                             }
                         }
                     }
                     catch (error) {
-                        //console.log(error);
+                        console.log(error);
                     }
                     window.location.reload()
                 }
@@ -111,12 +111,12 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                 });
                             }
                             catch (error) {
-                                //console.log(error);
+                                console.log(error);
                             }
                         }
                     }
                     catch (error) {
-                        //console.log(error);
+                        console.log(error);
                     }
                     window.location.reload()
             }

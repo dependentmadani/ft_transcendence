@@ -19,7 +19,7 @@ export interface socketMetaPayload {
 // }})
 
 
-@WebSocketGateway({ namespace: 'notification', cors: { origin: "http://localhost:5173" } })
+@WebSocketGateway({ namespace: 'notification', cors: { origin: "*" } })
 export class NotificationsGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
@@ -94,8 +94,8 @@ export class NotificationsGateway implements OnGatewayConnection {
   // @SubscribeMessage('sendNotification')
   // async create(@ConnectedSocket() client: Socket ,@MessageBody() createNotificationDto: NotificationDto,
   //       @Req() req: Request) {
-  //     // //console.log('socketMap:', this.socketMap);
-  //     // //console.log('type of client id:', typeof(client.id));
+  //     // console.log('socketMap:', this.socketMap);
+  //     // console.log('type of client id:', typeof(client.id));
   //     if (!createNotificationDto || !createNotificationDto.title || !createNotificationDto.type) {
   //       throw new UnauthorizedException('something wrong with body');
   //     }
@@ -129,12 +129,12 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleConnection(client: Socket): void {
 
     client.on('someEvent', (userId: number) => {
-      //console.log('Received data from client:', userId);
+      // console.log('Received data from client:', userId);
 
       // Send a message back to the client
       // client.emit('messageFromServer', 'Hello from the server!');
       this.userSocketMap[userId] = client.id;
-      //console.log('notification map of users', this.userSocketMap);
+      // console.log('notification map of users', this.userSocketMap);
     });
     // const userId = this.getUserIdSomehow(client);
   }
@@ -143,7 +143,7 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleNotification(@MessageBody() data: any): void {
     const { notif } = data;
     // Send the message to the recipient's socket
-    //console.log('Yooooooooo', notif.receiverUser.id)
+    // console.log('Yooooooooo', notif.receiverUser.id)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
     this.server.to(this.userSocketMap[notif.receiverUser.id]).emit('receiveNotification', notif);
   }
@@ -152,7 +152,7 @@ export class NotificationsGateway implements OnGatewayConnection {
   // handleRemoveNotification(@MessageBody() rec: any): void {
   //   // const { rec } = data;
   //   // Send the message to the recipient's socket
-  //   //console.log('Yooooooooo', rec)
+  //   console.log('Yooooooooo', rec)
   //   // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
   //   this.server.to(this.userSocketMap[rec.receiverUser.id]).emit('removingNotification');
   // }
@@ -161,8 +161,9 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleAcceptedNotification(@MessageBody() data: any): void {
     const { notif } = data;
     // Send the message to the recipient's socket
-    //console.log('Pooooooooo', notif)
+    // console.log('Pooooooooo', notif)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
     this.server.to(this.userSocketMap[notif.sender.id]).emit('notificationAccepted', notif);
+    // this.server.to(this.userSocketMap[notif.receiver.id]).emit('notificationAccepted', notif);
   }
 }

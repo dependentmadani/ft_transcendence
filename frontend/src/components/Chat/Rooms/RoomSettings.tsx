@@ -25,7 +25,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
             // else if (currentRoom.protection === 'Protected')
             // {
                 const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
-                //console.log('is user admin', isAdmin);
+                console.log('is user admin', isAdmin);
                 if (isAdmin)
                     setCurrentUserIsAdmin(true)
             // }
@@ -60,7 +60,7 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                 
             }
             catch (error) {
-                //console.log(error);
+                console.log(error);
             }
             window.location.reload()
         }

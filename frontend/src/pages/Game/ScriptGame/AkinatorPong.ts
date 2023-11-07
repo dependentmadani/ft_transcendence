@@ -1,5 +1,8 @@
+import axios from "axios";
+
 
 export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
+
     if(canvas)
     {
         var ctx:any = canvas.getContext('2d');
@@ -19,7 +22,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         start.addEventListener('click',()=> {
             start.style.display = 'none';
             play_start++;
-            // //console.log(`start\\\\\\${play_start}`)
+            // console.log(`start\\\\\\${play_start}`)
         })
 
         switchMusic.addEventListener('change', () => {
@@ -27,12 +30,30 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         });
         switchSound.addEventListener('change', () => {
             SoundValue = switchSound.checked;
-            // //console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
+
+        async function addHistory() {
+            try {
+                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+                {
+                opp_name: `akinator`,
+                opp_score: 5,
+                my_score: sc.right_score,
+                },
+                {withCredentials: true}
+                )
+                console.log('res : ', res)
+            }catch (err) {
+                console.log('Error Fetcing data : ', err)
+            }
+        }
+        
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
-
-            // //console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            if(play_start)
+                addHistory();
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
 
         let  img = new Image();
@@ -58,7 +79,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         {
             if (event.keyCode === 40) 
             {
-                // //console.log("down")
+                // console.log("down")
                 if( pl2.paddle_y + speed_paddle + pl2.paddle_h<= canvas.height)
                 {
                     
@@ -68,7 +89,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             }
             else if (event.keyCode === 38)
             {
-                // //console.log("up")
+                // console.log("up")
                 if( pl2.paddle_y >= speed_paddle)
                 {
                     pl2.paddle_y-=speed_paddle;
@@ -207,7 +228,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.direction_y = (this.y - (pl1.paddle_y + pl1.paddle_h/2)) / pl1.paddle_h/2; 
                 // this.flag_paddle = 0;
                 this.speed++
-                // //console.log(`this.x: ${this.x}| this.y: ${this.y}| padle1_y: ${pl1.paddle_y} `)
+                // console.log(`this.x: ${this.x}| this.y: ${this.y}| padle1_y: ${pl1.paddle_y} `)
             }
             else if (this.x + this.ball_size +this.speed > canvas.width -  pl2.paddle_w && this.y + this.ball_size >= pl2.paddle_y && this.y - this.ball_size <= pl2.paddle_y + pl2.paddle_h)
             {
@@ -218,7 +239,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 this.direction_y = (this.y - (pl2.paddle_y + pl2.paddle_h/2)) / pl2.paddle_h/2;
                 // this.flag_paddle = 0;
                 this.speed++
-                // //console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
+                // console.log(`this.x: ${this.x}| this.y: ${this.y}| padle2_y: ${pl2.paddle_y} pladle2_y: ${pl2.paddle_x} `)
 
             } 
                 else if (this.x < this.ball_size || this.x > canvas.width-this.ball_size)
@@ -412,7 +433,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                SoundValue = false;
                sc.left_score = 5;
             }
-            if(MusicValue)
+            if(MusicValue && (sc.score_left < 5 && sc.score_right < 5))
                 music.play();
             else
                 music.pause();
@@ -428,11 +449,15 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             {
                 ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
                 stopAnimation();
+            //     MusicValue = false;
+            //    SoundValue = false;
             }
             else if(sc.right_score == 5)
             {
                 ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
                 stopAnimation();
+                // MusicValue = false;
+                // SoundValue = false;
             }
 
         }
@@ -444,7 +469,8 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         const fps = 60
         const msPerFrame = 1000 / fps
         let frames = 0
-        function animate() {
+        function animate()
+        {
             animationId = requestAnimationFrame(animate)
             const msNow = performance.now()
             const msPassed = msNow - (msPrev)

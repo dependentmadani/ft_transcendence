@@ -42,7 +42,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
-            // //console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+            // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
         }).catch((error)=>{  
             console.error('Error fetching user data for ProfileID1', error);
         })
@@ -52,7 +52,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             play_start++;
             
             socket.emit("youcan start",client_id,UserName,profileID1,profileID2);
-            // //console.log(`start\\\\\\${client_id}`)
+            // console.log(`start\\\\\\${client_id}`)
         })
         
         switchMusic.addEventListener('change', () =>
@@ -63,21 +63,21 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         switchSound.addEventListener('change', () => 
         {
             SoundValue = switchSound.checked;
-            // //console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
         
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
             socket.emit("playerDisconnect",client_id);
-            // //console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
         
         socket.on('connect',()=>
         {
-            // //console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
+            // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
             document.addEventListener("mousemove", handleMouseMove);
             
-            //console.log(client_id)
+            console.log(client_id)
         })
         let player:number;
         let clientRoom:number = 0;
@@ -95,16 +95,16 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
      
         function handleMouseMove(event: MouseEvent)
         {
-            // //console.log(`this id of the player:${player}`);
+            // console.log(`this id of the player:${player}`);
             
             if (event.clientY > prev_right_y)
             {
-                // //console.log("down_RIGHT");
+                // console.log("down_RIGHT");
                 socket.emit("move_paddle", "down",player, clientRoom);
             }
             else if (event.clientY < prev_right_y)
             {
-                // //console.log("up_Right");
+                // console.log("up_Right");
                 socket.emit("move_paddle", "up",player, clientRoom);
             }
             prev_right_y = event.clientY;
@@ -114,7 +114,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         // {
         //     // profileID1(prfl1);
         //     // profileID2(prfl2);
-        //     // //console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
+        //     // console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         // })
         
         class paddle_left
@@ -322,7 +322,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let stop = 0;
 
 socket.on('disconnect', () => {
-    //console.log("Disconnected from the server");
+    console.log("Disconnected from the server");
 
     stopAnimation();
   
@@ -335,7 +335,7 @@ socket.on('disconnect', () => {
         socket.on("game_state",(gameState)=>
         {
             const room = gameState.room.id;
-            // //console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
+            // console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
             if (room === clientRoom)
             {
                 pl1.paddle_y = gameState.paddles.left
@@ -367,7 +367,7 @@ socket.on('disconnect', () => {
                 MusicValue = false;
                SoundValue = false;
             }
-            if(MusicValue)
+            if(MusicValue  && (sc.score_left < 5 && sc.score_right < 5))
                 music.play();
             else
                 music.pause();
@@ -408,10 +408,10 @@ socket.on('disconnect', () => {
         }
 
         //   setInterval(() => {
-        //     //console.log(frames)
+        //     console.log(frames)
         //     frames=0
         //   }, 1000)
-        // //console.log("hello world!")
+        // console.log("hello world!")
     }
 }
 
@@ -472,16 +472,16 @@ socket.on('disconnect', () => {
 //         switchSound.addEventListener('change', () => 
 //         {
 //             SoundValue = switchSound.checked;
-//             //console.log(`||||||||| switch |||||||||${SoundValue}`)
+//             console.log(`||||||||| switch |||||||||${SoundValue}`)
 //         });
         
 //         socket.on('connect',() =>
 //         {
-//             //console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
+//             console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
 //             document.addEventListener("mousemove", handleMouseMove);
 //             socket.emit("canvas",canvas.width, canvas.height,Token);
             
-//             //console.log(socket.id)
+//             console.log(socket.id)
 //         })
 //         socket.on("playerId",(play,data,grd) =>
 //         {
@@ -489,7 +489,7 @@ socket.on('disconnect', () => {
 //             clientRoom = data;
 //             grade = grd;
             
-//             //console.log(`99999999999999999${data}`)
+//             console.log(`99999999999999999${data}`)
 //             if(max_room < clientRoom)
 //                 max_room = clientRoom;
 //             socket.emit("new value room", clientRoom);
@@ -503,7 +503,7 @@ socket.on('disconnect', () => {
             
 //             // if(play_start && verfyToken(Token))
 //             socket.emit("youcan start", socket.id);
-//             // //console.log(`start\\\\\\${play_start}`)
+//             // console.log(`start\\\\\\${play_start}`)
 //         })
         
 //         let player:number;
@@ -514,16 +514,16 @@ socket.on('disconnect', () => {
 //         function handleMouseMove(event: MouseEvent)
 //         {
            
-//             //console.log(`this id of the player:${player}`);
+//             console.log(`this id of the player:${player}`);
             
 //             if (event.clientY > prev_right_y)
 //             {
-//                 //console.log("down_RIGHT");
+//                 console.log("down_RIGHT");
 //                 socket.emit("move_paddle_right", "down",player, clientRoom,grade);
 //             }
 //             else if (event.clientY < prev_right_y)
 //             {
-//                 //console.log("up_Right");
+//                 console.log("up_Right");
 //                 socket.emit("move_paddle_right", "up",player, clientRoom,grade);
 //             }
 //             prev_right_y = event.clientY;
@@ -597,7 +597,7 @@ socket.on('disconnect', () => {
 //         // socket.on("ball_position",(pos_x,pos_y)=>{
 //         //     bl.ball_x = pos_x;
 //         //     bl.ball_y = pos_y;
-//         //     // //console.log(`ball_pos_x: ${bl.ball_x} ball_pos_y: ${bl.ball_y}`);
+//         //     // console.log(`ball_pos_x: ${bl.ball_x} ball_pos_y: ${bl.ball_y}`);
 //         // })
 
 
@@ -695,14 +695,14 @@ socket.on('disconnect', () => {
 //                     {
 //                          if(this.score_left == 5)
 //                          {
-//                             //console.log("hello mother fucker ------111")
+//                             console.log("hello mother fucker ------111")
 //                             ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
 //                             // const ttWidth = ctx.measureText("YOU WIN").width;
 //                             // this.write_txt("YOU WIN",(canvas.width/4 - ttWidth/2), canvas.height/5)
 //                         }
 //                         else
 //                         {
-//                             //console.log("hello mother fucker ------2222")
+//                             console.log("hello mother fucker ------2222")
 //                             ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
 //                             // const ttWidth = ctx.measureText("YOU LOSE").width;
 //                             // this.write_txt("YOU LOSE",(canvas.width/4 - ttWidth/2), canvas.height/5)
@@ -712,14 +712,14 @@ socket.on('disconnect', () => {
 //                     {
 //                         if (this.score_right == 5)
 //                         {
-//                             //console.log("hello mother fucker -----3333")
+//                             console.log("hello mother fucker -----3333")
 //                             ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
 //                             // const ttWidth = ctx.measureText("YOU WIN").width ;
 //                             // this.write_txt("YOU WIN",(3*canvas.width/4 - ttWidth/2), canvas.height/5)
 //                         }
 //                         else
 //                         {
-//                             //console.log("hello mother fucker -----4444")
+//                             console.log("hello mother fucker -----4444")
 //                             ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
 //                             // const ttWidth = ctx.measureText("YOU LOSE").width ;
 //                             // this.write_txt("YOU LOSE",(3*canvas.width/4 - ttWidth/2), canvas.height/5)
@@ -768,7 +768,7 @@ socket.on('disconnect', () => {
 //             // socket.on("player1 disconect",(msg)=>
 //             // {
 //             //     // stop++;
-//             //     //console.log(`msg----------------------|`);
+//             //     console.log(`msg----------------------|`);
 //             //     if (msg === "WIN")
 //             //         ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
 //             //     else
@@ -778,7 +778,7 @@ socket.on('disconnect', () => {
 //             // socket.on("player2 disconect",(msg)=>
 //             // {
 //             //     // stop++;
-//             //     //console.log(`msg----------------------|`);
+//             //     console.log(`msg----------------------|`);
 //             //     if (msg === "WIN")
 //             //         ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
 //             //     else
@@ -801,8 +801,8 @@ socket.on('disconnect', () => {
 //                 bl.ball_y = gameState.ball.y
 //                 bl.sound_paddle = gameState.sound.sound_paddle;
 //                 bl.sound_walls = gameState.sound.sound_wall;
-//                 // //console.log(`${SoundValue}|---1111----|${ bl.sound_paddle}|`);
-//                 // //console.log(`${SoundValue}|--2222-----|${ bl.sound_paddle}|`);
+//                 // console.log(`${SoundValue}|---1111----|${ bl.sound_paddle}|`);
+//                 // console.log(`${SoundValue}|--2222-----|${ bl.sound_paddle}|`);
 //                 if(SoundValue && bl.sound_walls)
 //                 {
 //                     ball_sound.play();
@@ -838,7 +838,7 @@ socket.on('disconnect', () => {
 //             requestAnimationFrame(animate)
 //             const msNow = performance.now()
 //             const msPassed = msNow - (msPrev)
-//             // //console.log(`start\\${Token}\\\\${verfyToken(Token)}`)
+//             // console.log(`start\\${Token}\\\\${verfyToken(Token)}`)
 //             if (msPassed < msPerFrame)
 //                 return;
             
@@ -851,9 +851,9 @@ socket.on('disconnect', () => {
 //         }
 
 //         //   setInterval(() => {
-//         //     //console.log(frames)
+//         //     console.log(frames)
 //         //     frames=0
 //         //   }, 1000)
-//         // //console.log("hello world!")
+//         // console.log("hello world!")
 //     }
 // }

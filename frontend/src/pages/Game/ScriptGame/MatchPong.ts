@@ -14,7 +14,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
         let UserName:string;
-
+        
         let music = new Audio();
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
@@ -24,6 +24,10 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let img = new Image();
         let img_win = new Image();
         let img_lose = new Image();
+        let player: number  = 0;
+        let clientRoom:number = 0;
+        let max_room:number = 0;
+        let prev_right_y:number = 0;
         
         img_lose.src = "/src/assets/img/lose.jpg";
         img_win.src = "/src/assets/img/win.jpg";
@@ -40,7 +44,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
-            // //console.log(`1~~~~~~~~~~~|${res.data?.username}`)
+            // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
         }).catch((error)=>{  
             console.error('Error fetching user data for ProfileID1', error);
         })
@@ -50,7 +54,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             play_start++;
             
             socket.emit("youcan start",client_id,UserName);
-            // //console.log(`start\\\\\\${client_id}`)
+            // console.log(`start\\\\\\${client_id}`)
         })
         
         switchMusic.addEventListener('change', () =>
@@ -61,49 +65,47 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         switchSound.addEventListener('change', () => 
         {
             SoundValue = switchSound.checked;
-            // //console.log(`||||||||| switch |||||||||${SoundValue}`)
+            // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
         
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
             socket.emit("playerDisconnect",client_id);
-            // //console.log(`||||||||| EXIT |||||||||${ExitValue}`)
+            // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
         
         socket.on('connect',()=>
         {
-            // //console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
-            document .addEventListener("mousemove", handleMouseMove);
+            // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
+                document.addEventListener("mousemove", handleMouseMove);
             
-            //console.log(client_id)
+            console.log(client_id)
         })
-        let player:number;
-        let clientRoom:number = 0;
-        let max_room:number = 0;
-        let prev_right_y:number = 0;
 
         socket.on("playerId",(play,data) =>
         {
-            player = play;
+            player = play; 
             clientRoom = data;
             if(max_room < clientRoom)
-                max_room = clientRoom;
-            socket.emit("new value room", clientRoom);
-        })
-     
+            max_room = clientRoom;
+        socket.emit("new value room", clientRoom);
+    })
+        
+    // function handleMouseMove(event: MouseEvent)
+    // {
+
+        
         function handleMouseMove(event: MouseEvent)
         {
-            // //console.log(`this id of the player:${player}`);
-            
+            let currentPlayer = player;
             if (event.clientY > prev_right_y)
             {
-                // //console.log("down_RIGHT");
-                socket.emit("move_paddle", "down",player, clientRoom);
+                socket.emit("move_paddle", "down", currentPlayer, clientRoom);
             }
             else if (event.clientY < prev_right_y)
             {
-                // //console.log("up_Right");
-                socket.emit("move_paddle", "up",player, clientRoom);
+                
+                socket.emit("move_paddle", "up", currentPlayer, clientRoom);
             }
             prev_right_y = event.clientY;
         }
@@ -112,7 +114,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         {
             profileID1(prfl1);
             profileID2(prfl2);
-            // //console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
+            // console.log(`${prfl1}|------PROFILE-------|${prfl2}`)
         })
         
         class paddle_left
@@ -259,9 +261,10 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                     this.score_left = l;
                     this.score_right = r;
                 })
-
+                // console.log('left : [', this.left_score, '] | right : [', this.right_score, ']')
                 if(this.score_left == 5 || this.score_right == 5)
                 {
+                    document.removeEventListener("mousemove", handleMouseMove);
                     if (player % 2 != 0)
                     {
                         stopAnimation();
@@ -320,7 +323,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let stop = 0;
 
 socket.on('disconnect', () => {
-    //console.log("Disconnected from the server");
+    console.log("Disconnected from the server");
 
     stopAnimation();
   
@@ -333,17 +336,15 @@ socket.on('disconnect', () => {
         socket.on("game_state",(gameState)=>
         {
             const room = gameState.room.id;
-            // //console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
+            // console.log(`BALL-----${gameState.room.id}-----------------|${room}`);
             if (room === clientRoom)
             {
                 pl1.paddle_y = gameState.paddles.left
                 pl2.paddle_y = gameState.paddles.right
                 sc.score_left = gameState.scores.player1
                 leftCallback(sc.score_left);
-             
                 sc.score_right = gameState.scores.player2
                 rightCallback(sc.score_right);
-                // console.log(`${sc.score_left}---------------| ${sc.score_right}`)
                 bl.ball_x = gameState.ball.x
                 bl.ball_y = gameState.ball.y
                 bl.sound_paddle = gameState.sound.sound_paddle;
@@ -367,7 +368,7 @@ socket.on('disconnect', () => {
                 MusicValue = false;
                SoundValue = false;
             }
-            if(MusicValue)
+            if(MusicValue && (sc.score_left < 5 && sc.score_right < 5))
                 music.play();
             else
                 music.pause();
@@ -408,10 +409,10 @@ socket.on('disconnect', () => {
         }
 
         //   setInterval(() => {
-        //     //console.log(frames)
+        //     console.log(frames)
         //     frames=0
         //   }, 1000)
-        // //console.log("hello world!")
+        // console.log("hello world!")
     }
 }
 

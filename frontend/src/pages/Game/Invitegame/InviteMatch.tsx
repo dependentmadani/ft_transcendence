@@ -65,10 +65,10 @@ const InviteMatch: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
 }, [ProfileID1,Userdata?.id]);
 
 useEffect(() => {
-    setUser2({ id:2, username: "Waiting ...", avatar: "/src/assets/img/jenny.png" });
+  setUser2({ id:2, username: "Waiting ...", avatar: "/src/imgs/svg/waiting.svg" });
   if (ProfileID2)
   {
-  axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
+    axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
       .then((response) => {
         setUser2(response.data);
       })
@@ -195,7 +195,7 @@ useEffect(() => {
               <span id='state' > {soundOn ? 'On' : 'Off'} </span>
             </div>
         </div>
-        <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
+        <button id="ExitGame" className='buttonExit' onClick={goback}>
           <img src="/src/imgs/svg/exit.svg" alt="exit"  />
           <span className ="EXIT"> Exit</span>
         </button> 

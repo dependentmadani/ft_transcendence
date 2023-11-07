@@ -27,7 +27,7 @@ export const RoomInfos = ({ chatData }: any) => {
                 withCredentials: true,
             });
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         }
         window.location.reload()
     }

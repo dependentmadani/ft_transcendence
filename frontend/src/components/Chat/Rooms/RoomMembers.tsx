@@ -13,7 +13,7 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
     const addMemberListener = (user: any) => {
-        //console.log('add user', user)
+        console.log('add user', user)
         if (roomMembers.find(u => u.userId === user.userId) === undefined)
             setRoomMembers([...roomMembers, user])
     }
@@ -27,7 +27,7 @@ export const RoomMembers = ({ chatData }: any) => {
     }, [chatData._socket, addMemberListener])
 
     const removeMemberListener = (user: any) => {
-        //console.log('remove user', user)
+        console.log('remove user', user)
         if (roomMembers.find(u => u.userId === user.userId) !== undefined)
             setRoomMembers(prevMembers => prevMembers.filter(member => member.userId !== user.userId))
     }
@@ -54,7 +54,7 @@ export const RoomMembers = ({ chatData }: any) => {
                 setMainUserRole((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data)
             }
             catch (err) {
-                //console.log('Something went wrong :<', err)
+                console.log('Something went wrong :<', err)
             }
         }
         
@@ -81,7 +81,7 @@ export const RoomMembers = ({ chatData }: any) => {
             chatData?._socket?.emit('sortContacts')
                 
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         }
     }
 
@@ -92,10 +92,10 @@ export const RoomMembers = ({ chatData }: any) => {
             }, {
                 withCredentials: true,
             });
-            //console.log('HA LUSER', user)
+            console.log('HA LUSER', user)
             chatData?._socket?.emit('updateMemberRole', user)
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         }
     }
 
@@ -108,7 +108,7 @@ export const RoomMembers = ({ chatData }: any) => {
             });
             chatData?._socket?.emit('updateMemberRole', user)
         } catch (error) {
-            //console.log(error);
+            console.log(error);
         }
     }
 

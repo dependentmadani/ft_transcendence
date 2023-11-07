@@ -11,7 +11,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
     const currentRoom = chatData?._chat
 
     const sendInvite = async (invitedUser: User) => {
-        // //console.log('joinina assi ', invitedUser.id, currentRoom.id)
+        // console.log('joinina assi ', invitedUser.id, currentRoom.id)
 
         // try {
             //     const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/invitations`, {
@@ -22,12 +22,12 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                     //         withCredentials: true,
                     //     });
                     
-                    //     //console.log('rah mzyaaan', response.data)
+                    //     console.log('rah mzyaaan', response.data)
                     // }
                     // catch (error) {
-                        //     //console.log(error);
+                        //     console.log(error);
                         // }
-                        // //console.log('data to room', currentRoom, invitedUser)
+                        // console.log('data to room', currentRoom, invitedUser)
                         
         const allow = (currentRoom.protection === 'Protected') ? false : true
         try {
@@ -46,7 +46,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
             chatData?._socket?.emit('sortContacts')
         }
         catch (error) {
-            //console.log(error);
+            console.log(error);
         }
     }
 

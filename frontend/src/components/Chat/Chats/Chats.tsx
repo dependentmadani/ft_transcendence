@@ -75,7 +75,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     //     const mainUser: User = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
     //     let chats: Chat[] = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat/${mainUser?.id}`, {withCredentials: true})).data
     //     // setChats(response.data) 
-    //     // //console.log('Chats ', chats)
+    //     // console.log('Chats ', chats)
 
     //     const newChatsData = await Promise.all(
     //       chats.map(async (chat: Chat) => {
@@ -109,7 +109,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     //     setChats(filteredChatsData)
     //   }
     //   catch (err) {
-    //     //console.log('No chats')
+    //     console.log('No chats')
     //   }
     // }
 
@@ -131,7 +131,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     })
   }, [ chatData._socket ]) 
 
-  //console.log('Contacts', contacts)
+  console.log('Contacts', contacts)
   
   // useEffect(() => {
   //   const fetchRooms = async () => {
@@ -172,14 +172,14 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   //       setRooms(filteredRoomsData);
   //     }
   //     catch (err) {
-  //       //console.log('No rooms')
+  //       console.log('No rooms')
   //     }
   //   }
 
   //   fetchRooms()
   // }, [])
 
-  // //console.log('Rooms', rooms)
+  // console.log('Rooms', rooms)
   
   // useEffect(() => {
   //     // const fetchChatUsers = async () => {
@@ -217,7 +217,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   //     //       setNewChats(filteredChatsData);
   //     //     }
   //     //     catch (err) {
-  //     //       //console.log('Error fetching users for chats: ', err);
+  //     //       console.log('Error fetching users for chats: ', err);
   //     //     }
   //     //   };
         
@@ -254,7 +254,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
   //       //     setNewRooms(filteredRoomsData);
   //       //   }
   //       //   catch (err) {
-  //       //     //console.log('Error fetching users for rooms: ', err);
+  //       //     console.log('Error fetching users for rooms: ', err);
   //       //   }
   //       // };
 
@@ -318,7 +318,7 @@ export  const Chats = ({ onValueChange, chatData }: any) => {
     // }
 
     // const leaveRoomListener = (roomId: number, owner: number) => {
-    //   //console.log('l akh m3ana>', roomId, owner)
+    //   console.log('l akh m3ana>', roomId, owner)
     //   if (newRooms.find(r => r.id === roomId) !== undefined && chatData?.mainUser?.id === owner) {
     //     setNewRooms(prevMembers => prevMembers.filter(r => r.id !== roomId))
     //   }

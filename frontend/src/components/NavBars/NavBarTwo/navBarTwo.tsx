@@ -48,7 +48,7 @@ const ListNotification = () => {
             setNotifications(res.data)
           }
           catch (err) {
-            //console.log('No Notifications')
+            console.log('No Notifications')
           }
         }
 
@@ -78,7 +78,7 @@ const ListNotification = () => {
                     
                     
                     // Only My notifs and pendending status stay
-                    // //console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
+                    // console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
                     if (newNotif.status === false && newNotif.receiver.id === mainUser.id && newNotif.type === 'FRIEND')
                         return newNotif
                     return null
@@ -88,7 +88,7 @@ const ListNotification = () => {
                 setNewNotifications(filteredNotificationsData);
             }
             catch (err) {
-              //console.log('Error fetching users for chats: ', err);
+              console.log('Error fetching users for chats: ', err);
             }
         }
 
@@ -97,7 +97,7 @@ const ListNotification = () => {
 
     useEffect(() => {
         socketa?.on('receiveNotification', async (notif: any) => {
-            //console.log('Notiiiiiiiiiiiiiif', notif)
+            console.log('Notiiiiiiiiiiiiiif', notif)
             const sender = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${notif.senderId}`, {withCredentials: true})).data;
                     
             const newNotif: Notifs = {
@@ -118,13 +118,13 @@ const ListNotification = () => {
                 toast.info(`${newNotif.receiver.username} invites you to play ${newNotif.type} PongGame`, {
                     position: toast.POSITION.TOP_RIGHT,
                     onClick: () => {
-                        //console.log('newnotify : ' ,newNotif)
-                        //console.log('notif : ',notif)
+                        console.log('newnotify : ' ,newNotif)
+                        console.log('notif : ',notif)
                         setGame({playerID1: newNotif.sender.id, playerID2: newNotif.receiver.id, mode: newNotif.mode})
                         socketa?.emit('acceptNotification', { notif: newNotif });
-                        //console.log('////////////////////')
+                        console.log('////////////////////')
                         navigate('/game/invite')
-                        //console.log('!!!!!!!!!!!!!!!!!!!!!!')
+                        console.log('!!!!!!!!!!!!!!!!!!!!!!')
                     }
                 });
             }
@@ -160,19 +160,11 @@ const ListNotification = () => {
             );
     
             const data = await response.json();
-            //console.log('NEW FRIENDS', data);
+            console.log('NEW FRIENDS', data);
             setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
             socketa?.emit('acceptNotification', { notif: notif });
         }
-        // //console.log('Da type', notif.type === 'GAME')
-        // else if (notif.type === 'GAME') { // Handling Game invitaion
-        //     socketa?.emit('acceptNotification', { notif: notif });
- 
-        // //     // Redirect Invitation receiver (res.data.receiverId) here
-        // }
 
-        // Updating state of notification
-        // const requestOptions = 
         const response = await fetch(
             `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
             {
@@ -182,9 +174,8 @@ const ListNotification = () => {
         );
 
         
-        // const r = await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`, { withCredentials: true })
         const data = await response.json();
-        //console.log('NOTIFICATION UPDATED', data);
+        console.log('NOTIFICATION UPDATED', data);
 
     }
 
@@ -194,20 +185,20 @@ const ListNotification = () => {
 
         // Removing the notificaiton
         try {
-            //console.log('Notif', notif)
+            console.log('Notif', notif)
             // if (notif.type === 'FRIEND')
                 const res = await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
-                //console.log('res', res.data)
+                console.log('res', res.data)
         }
         catch (err) {
-            //console.log(`Coudn't delete notification: `, err)
+            console.log(`Coudn't delete notification: `, err)
         }
 
         // socketa?.emit('removeNotification', 4)
         setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
     }
 
-    // //console.log('Notifs', notifications, newNotifications)
+    // console.log('Notifs', notifications, newNotifications)
 
     
 

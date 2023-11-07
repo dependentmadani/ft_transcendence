@@ -20,13 +20,13 @@ function  Sign(props:any) {
 
   useEffect(() => {
     async function fetchData() {
-      //console.log('fetch ')
+      console.log('fetch ')
       try {
         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true });
 
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
 
-        //console.log('response data is:',response.data)
+        console.log('response data is:',response.data)
         await updateClient({ ...client, ...response.data, signedIn: true });
         
         if (response.data.signedUp && !response.data.twoEnabled) 
@@ -63,7 +63,7 @@ function  Sign(props:any) {
 
   }
 
-  //console.log('======= : ', props.tag)
+  console.log('======= : ', props.tag)
 
     return (
       <>

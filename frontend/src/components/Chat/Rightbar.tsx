@@ -26,7 +26,7 @@ export const Rightbar = ({ chatData }: any) => {
 
   }, [ chatData ])
 
-  //console.log('Right bar allow', isAllowed)
+  console.log('Right bar allow', isAllowed)
   
   
   return (

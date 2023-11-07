@@ -81,13 +81,7 @@ useEffect(() => {
   useEffect(() => {
     if (flag.current === false && Userdata?.id)
     {
-      ping_pong(canvas.current,(left:any) => {
-        const updatedBallColors = leftballs.map((color, index) => (index < left ? 'purple' : 'gray'));
-        setLeftBalls(updatedBallColors);
-      },(right:any)=>{
-          const updatedBallColors = rightballs.map((color, index) => (4 - index < right ? 'purple' : 'gray'));
-          setRightBalls(updatedBallColors);
-        },
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);},
         Userdata.id,
         ProfileID1,
         ProfileID2
@@ -151,40 +145,16 @@ useEffect(() => {
     return (
       
       <div className='game-mode'>
-          {/* <div >
-          </div> */}
         <div className='game-dimension'>
           <div id='players'>
               <div id="profile1"> 
                   <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
-                    {/* <span className='profile1id'>{user1?.username}  </span> */}
                   <div className='profile1id' > {user1?.username}</div>
-                  <div className="BallScore1">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    {/* {leftballs.map((color, index) => (
-                      <div key={ball1${index}} className={pl1 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                    ))} */}
-                  </div>
               </div>
                     <img className= "players-vs" src="/src/assets/img/vs.png"/>
               <div id="profile2">
                 <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
-                {/* <span className='profile2id'> {user2?.username}</span> */}
                 <div className='profile2id'>  {user2?.username} </div>
-                <div className="BallScore2">
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
-                  {/* {rightballs.map((color, index) => (
-                    <div key={ball2${index}} className={pl2 ball${index + 1}} style={{ backgroundColor: color }}></div>
-                  ))} */}
-                </div>
               </div>
           </div>
           <div className='dimension-canvas'>

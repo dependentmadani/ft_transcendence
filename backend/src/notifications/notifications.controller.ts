@@ -48,20 +48,20 @@ export class NotificationController {
                             @Body('receiverId', ParseIntPipe) receiverId: number,
                             @Body('senderId', ParseIntPipe) senderId: number,
                             @Body('mode') mode: string) : Promise<Notifications> {
-        return this.notificationService.createNotification(type, read, receiverId, senderId, mode)
+        return await this.notificationService.createNotification(type, read, receiverId, senderId, mode)
     }
 
     @Put('/accept-friend')
     async friendAcception(@Body('senderId', ParseIntPipe) senderId: number,
                                 @Body('receiverId', ParseIntPipe) receiverId: number,
                                 @Body('id', ParseIntPipe) notifId: number) {
-        //console.log('------------------------------')
-        return this.notificationService.acceptFriend(senderId, receiverId, notifId)
+        console.log('------------------------------')
+        return await this.notificationService.acceptFriend(senderId, receiverId, notifId)
     }
 
     @Put('/:id')
     async updateNotification(@Param('id', ParseIntPipe) id: number) {
-        //console.log('uui')
+        console.log('uui')
         return await this.notificationService.updateNotification(id)
     }
 

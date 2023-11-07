@@ -21,7 +21,7 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
                 }, { withCredentials: true })).data
             }
             catch (err) {
-                //console.log(`Couldn't create new Chat: `, err)
+                console.log(`Couldn't create new Chat: `, err)
             }
         }
 

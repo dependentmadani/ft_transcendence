@@ -27,6 +27,7 @@ function NavBarOne() {
             console.error('Error logout: ', error);
         }
         updateClient(new Client);
+        localStorage.removeItem(import.meta.env.VITE_CLIENT_STORAGE_KEY)
         navigate('/')
     }
 
@@ -92,7 +93,7 @@ function NavBarOne() {
 
     useEffect(() => {
 
-            //console.log('hhamie')
+            console.log('hhamie')
         toggleMenu();
       }, [isMenuOpen, client.signedIn]);
 

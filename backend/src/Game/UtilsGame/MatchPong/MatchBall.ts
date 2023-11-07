@@ -82,16 +82,16 @@ export default class  direct_ball
             this.direction_y*=-1;
             this.sound_wall++;
             
-            // //console.log(`--|${this.canvas_height}|-------------|${this.y}|-----------`)
+            // console.log(`--|${this.canvas_height}|-------------|${this.y}|-----------`)
             // this.speed++;
         }
-        // //console.log(`2__##${this.width_paddle}########################${this.height_paddle}#######`)
+        // console.log(`2__##${this.width_paddle}########################${this.height_paddle}#######`)
     }
     ball_paddle_colision()
     {
         if (this.x - this.ball_size/2 < this.width_paddle && this.y + this.ball_size/2 >= this.p_left && this.y  <= this.p_left + this.height_paddle)
         {
-            // //console.log(`1__####${0}#####/#################${this.x}#######`)
+            // console.log(`1__####${0}#####/#################${this.x}#######`)
             this.x =  this.width_paddle + this.ball_size/2;
             this.direction_x *= -1;
             this.direction_y = (this.y - (this.p_left + this.height_paddle/2)) / this.height_paddle/2;
@@ -102,7 +102,7 @@ export default class  direct_ball
         }
         else if (this.x + (this.ball_size/2+this.width_paddle) > this.canvas_width  && this.y +this.ball_size/2 >= this.p_right && this.y  <= this.p_right + this.height_paddle)
         {
-            // //console.log(`2__##${this.x}######${this.x}#############${this.y}##########${this.x}#######`)
+            // console.log(`2__##${this.x}######${this.x}#############${this.y}##########${this.x}#######`)
             this.x = (this.canvas_width - this.width_paddle) - this.ball_size/2;
             this.direction_x *= -1;
             this.direction_y = (this.y - (this.p_right + this.height_paddle/2)) / this.height_paddle/2;
@@ -114,13 +114,13 @@ export default class  direct_ball
         }
         else if(this.x <= 0)
         {
-            // //console.log("SCOREEEEEEEEEEEEEEE LEFT")
+            // console.log("SCOREEEEEEEEEEEEEEE LEFT")
             this.score_right++;
         }
         else if(this.x >= this.canvas_width)
         {
             this.score_left++;
-            // //console.log("SCOREEEEEEEEEEEEEEE RIGHT");
+            // console.log("SCOREEEEEEEEEEEEEEE RIGHT");
         }
     }
             
