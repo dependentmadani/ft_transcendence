@@ -10,8 +10,8 @@ export  const Leftbar = ({ onValueChange, chatData }: any) => {
   const [category, setCategory] = useState("Your Chats");
 
 
-  function ButtonCategoryStyle({title, onClick}) {
-    return <button className="button-chat-onclick" onClick={onClick}>
+  function ButtonCategoryStyle({title, id, onClick}) {
+    return <button className="button-chat-onclick" id={id} onClick={onClick}>
       {title}
     </button>
   }
@@ -22,8 +22,8 @@ export  const Leftbar = ({ onValueChange, chatData }: any) => {
           <div>
             <div>
               {
-                categories.map((cat) => {
-                  return <ButtonCategoryStyle title={cat} onClick={() => setCategory(cat)} />
+                categories.map((cat, index) => {
+                  return <ButtonCategoryStyle id={index} title={cat} onClick={() => setCategory(cat)} />
                 })
               }
             </div>

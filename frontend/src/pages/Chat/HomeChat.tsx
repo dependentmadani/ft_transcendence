@@ -10,17 +10,6 @@ import {ShowProvider } from '@/context/ShowFormContext';
 import './style.css'
 import { RightBarProvider } from "@/context/RightBarContext";
 
-// interface User {
-//   id: number,
-// }
-
-// interface Message {
-//   messageId: number,
-//   textContent: string,
-//   msgRoomId: number,
-//   msgChatId: number,
-//   type: string,
-// }
 
 export const HomeChat = () => {
 
@@ -38,8 +27,6 @@ export const HomeChat = () => {
 
     const fetchMainUser = async () => {
       setMainUser((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data)
-      // let chats: Chat[] = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-contacts/1/2`, {withCredentials: true})).data
-      // console.log('Chats', chats)
     }
     
     const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`);
@@ -74,14 +61,6 @@ export const HomeChat = () => {
   const handleSelectedChat = async (chat: any) => {
     setSelectedChat(chat)
     chatData._chat = chat
-
-    console.log('chat', chat)
-    
-    // const receiverId = chat.chat.chatUsers[0] === mainUser?.id ? chat.chat.chatUsers[1] : chat.chat.chatUsers[0];
-    // const receiver = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${chat.name}`, {withCredentials: true})).data[0];
-    // console.log('receiver', receiver)
-    // setSelectedReceiver(receiver)
-    // chatData._receiver = receiver
   }
 
   
@@ -89,14 +68,8 @@ export const HomeChat = () => {
     const fetchMessages = async () => {
       try {
         if (chatData?._chat?.type) {
-          // let msg: Message[]
-          console.log('selected chat', chatData?._chat?.type)
-          // if (selectedChat.type === 'chat')
-          //   setMessages((await axios.get(`http://localhost:8000/message/${selectedChat?.type}/${selectedChat?.chat?.chatId}`, {withCredentials: true})).data)
-          // else if (selectedChat.type === 'room')
           const msssg = (await axios.get(`http://localhost:8000/message/${chatData?._chat?.type}/${chatData?._chat?.id}`, { withCredentials: true })).data
           setMessages(msssg)
-          console.log('msmsmsmsmsmsms', msssg)
           }
       } 
       catch (err) {
@@ -111,7 +84,6 @@ export const HomeChat = () => {
 
 
   const messageListener = (message: any) => {
-    console.log('Yoo', message)
     if (message.type === 'Chat' && (chatData?._chat?.id === message.msgChatId) && messages.find(m => m.messageId === message.messageId) === undefined)
       setMessages([...messages, message])
     else if (message.type === 'Room' && (chatData?._chat?.id === message.msgRoomId) && messages.find(m => m.messageId === message.messageId) === undefined)
@@ -144,8 +116,6 @@ export const HomeChat = () => {
  
 
   
-
-  console.log('fchkeel hadchiiii',chatData, selectedChat, showChat)
 
   return (
     <ShowProvider>

@@ -116,10 +116,13 @@ export class RoomUsersService {
                     ]
                 }
             })
-            return roomUser[0].role
+            if (roomUser[0].role)
+                return roomUser[0].role
+            return '';
         }
         catch (err) {
             console.error(`Couldn't find users in this room: ${err}`)
+            return '';
         }
     }
 

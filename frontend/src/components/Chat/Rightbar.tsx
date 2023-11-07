@@ -21,8 +21,9 @@ export const Rightbar = ({ chatData }: any) => {
         }
         else {
           const allwd = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData._chat.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
-          if (allwd !== true)
+          if (allwd !== true) {
             setIsAllowed(false)
+          }
           else
             setIsAllowed(true)
         }
@@ -35,7 +36,8 @@ export const Rightbar = ({ chatData }: any) => {
 
   }, [ chatData, rightBar ])
 
-  console.log('Right bar allow', isAllowed)
+
+  console.log('Right bar allow', rightBar)
   
   
   return (

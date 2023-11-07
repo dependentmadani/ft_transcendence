@@ -4,7 +4,7 @@ import axios from "axios"
 
 
 
-export const Messages = ({ chatData, messages }: any) => {
+export const Messages = ({ chatData, messages, isOk }: any) => {
 
 
   useEffect(() => {
@@ -54,9 +54,9 @@ export const Messages = ({ chatData, messages }: any) => {
 
   // console.log('MESSAGES', chatData?._chat)
   return (
-    <div className={ `messages  ${isAllowed === false && 'not-allowed'}` }>
+    <div className={ `messages  ${(isAllowed === false) && 'not-allowed'}` }>
       { 
-        isAllowed && messages?.map((message: Message, index:number) => (
+        isAllowed && isOk && messages?.map((message: Message, index:number) => (
           <Message key={ index } currentMessage={ message } />
         ))
       }

@@ -2,6 +2,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 import { Chat } from "./Chat";
 import { useShow } from "@/context/ShowFormContext";
+import { useRightBar } from "@/context/RightBarContext";
 
 // interface User {
 //   roomId: number,
@@ -65,7 +66,8 @@ export  const Chats = ({ category, onValueChange, chatData }: any) => {
   const [rooms, setRooms] = useState<roomUsers[]>([])
   const [contacts, setContacts] = useState<Contact[] | null>()
   const [show, setShow] = useShow();
-
+  const [rightBar, setRightBar] = useRightBar();
+ 
 // 
 
 
@@ -140,6 +142,14 @@ export  const Chats = ({ category, onValueChange, chatData }: any) => {
         setContacts((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-rooms`, {withCredentials: true})).data)
       }
     })
+
+    // chatData._socket?.on('lockingRoom', () => {
+    //   // console.log('ggggggggggggggggggg', rightBar)
+    //   // setShow('false')
+    //   setRightBar(false)
+    //   console.log('right bar value:', rightBar)
+    //   // console.log('ggggggggggggggggggg new', rightBar)
+    // })
   }, [ chatData._socket ]) 
 
   console.log('Contacts', contacts)

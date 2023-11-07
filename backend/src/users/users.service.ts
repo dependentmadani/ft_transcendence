@@ -277,19 +277,6 @@ export class UsersService {
     if (isHeBlocked) {
       throw new UnauthorizedException('friend already blocked! :(');
     }
-    const areTheyFriends = await this.prisma.users.findFirst({
-      where: {
-        id: userId,
-        friends: {
-          some: {
-            id: friendId
-          }
-        }
-      }
-    });
-    if (!areTheyFriends) {
-      throw new UnauthorizedException("Not a friend to block!");
-    }
     const blockUser = await this.prisma.users.update({
       where: {
         id: userId,

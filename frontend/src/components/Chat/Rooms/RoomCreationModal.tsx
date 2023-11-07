@@ -65,7 +65,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                     userId: chatData._mainUser.id,
                                     userUsername: chatData._mainUser.username,
                                     role: 'OWNER',
-                                    allowed: roomType === 'Protected' ? false : true,
+                                    allowed: true,
                                 }, {
                                     withCredentials: true
                                 });
@@ -105,7 +105,7 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                     userId: chatData._mainUser.id,
                                     userUsername: chatData._mainUser.username,
                                     role: 'OWNER',
-                                    allowed: roomType === 'Protected' ? false : true,
+                                    allowed: true,
                                 }, {
                                     withCredentials: true
                                 });

@@ -1346,6 +1346,12 @@ body {
   border-radius: 25px;
 }
 
+.button-chat-onclick {
+  display: inline-block;
+  background-color: #bcbedb;
+  cursor: pointer;
+}
+
 @media screen and (max-width: 600px) {
 
   /* .search {
@@ -1443,6 +1449,5 @@ body {
     .messageContent > p {
       padding: 5px 10px !important;
     }
-
 
 }
