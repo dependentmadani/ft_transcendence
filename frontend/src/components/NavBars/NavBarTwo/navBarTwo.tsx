@@ -101,7 +101,7 @@ const ListNotification = () => {
 
     useEffect(() => {
         socketa?.on('receiveNotification', async (notif: any) => {
-            console.log('Notiiiiiiiiiiiiiif', notif)
+            // console.log('Notiiiiiiiiiiiiiif', notif)
             const sender = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${notif.senderId}`, {withCredentials: true})).data;
                     
             const newNotif: Notifs = {
@@ -144,7 +144,7 @@ const ListNotification = () => {
     const handleAccept = async (notif: Notifs) => {
         setNewNotif(false);
 
-        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         if (notif.type === 'FRIEND') { // Handling friend request
             try {
                 const response = await axios.put(
@@ -163,7 +163,7 @@ const ListNotification = () => {
                 );
           
                 const data = response.data;
-                console.log('NEW FRIENDS', data);
+                // console.log('NEW FRIENDS', data);
                 setNewNotifications((prevMembers) => prevMembers.filter((n) => n.id !== notif.id));
                 socketa?.emit('acceptNotification', { notif: notif });
               } catch (error) {
@@ -182,7 +182,7 @@ const ListNotification = () => {
             );
         
             const data = response.data;
-            console.log('NOTIFICATION UPDATED', data);
+            // console.log('NOTIFICATION UPDATED', data);
           } catch (error) {
             // Handle any error that might occur during the request
             console.error('Error updating notification', error);
@@ -197,7 +197,7 @@ const ListNotification = () => {
 
         // Removing the notificaiton
         try {
-            console.log('Notif', notif)
+            // console.log('Notif', notif)
             // if (notif.type === 'FRIEND')
                 const res = await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
                 console.log('res', res.data)

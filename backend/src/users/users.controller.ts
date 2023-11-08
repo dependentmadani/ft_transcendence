@@ -106,7 +106,7 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
     @Req() req:Request) {
-    console.log('the request reach here');
+    // console.log('the request reach here');
     const user = await this.userService.findUserById(req.user['sub']);
     const blockedFriend = await this.userService.blockFriend(user.id, friendId);
     return blockedFriend
@@ -228,7 +228,7 @@ export class UsersController {
     @Req() req: Request,
     @Body() username: UserModify,
   ) {
-    console.log('daz mn hna');
+    // console.log('daz mn hna');
     const user: Users =
       await this.authService.returnUser(
         req.user['email'],

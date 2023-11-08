@@ -79,7 +79,7 @@ export class RoomUsersService {
                 }
             })
 
-            console.log(admin)
+            // console.log(admin)
             if (admin.length !== 0)
                 return true
             return false
@@ -136,7 +136,7 @@ export class RoomUsersService {
                     ]
                 }
             })
-            console.log('roomuser', roomUser)
+            // console.log('roomuser', roomUser)
             if (roomUser.length !== 1)
                 return false
             return roomUser[0].allowed

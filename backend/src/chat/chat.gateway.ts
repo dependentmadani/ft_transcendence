@@ -172,12 +172,12 @@ export class ChatGateway {
   handleConnection(client: Socket): void {
 
     client.on('someEvent', (userId: number) => {
-      console.log('Received data from client:', userId);
+      // console.log('Received data from client:', userId);
 
       // Send a message back to the client
       // client.emit('messageFromServer', 'Hello from the server!');
       this.userSocketMap[userId] = client.id;
-      console.log('map of users', this.userSocketMap);
+      // console.log('map of users', this.userSocketMap);
     });
     // const userId = this.getUserIdSomehow(client);
   }
@@ -283,8 +283,8 @@ export class ChatGateway {
 
     if (userIdToRemove) {
       this.userSocketMap.delete(userIdToRemove);
-      console.log(`User with ID ${userIdToRemove} disconnected`);
-      console.log('Updated map of users:', this.userSocketMap);
+      // console.log(`User with ID ${userIdToRemove} disconnected`);
+      // console.log('Updated map of users:', this.userSocketMap);
     }
   }
 

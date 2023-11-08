@@ -61,7 +61,7 @@ function Profile() {
     getUsers();
   }, [username, fetch]);
 
-  console.log('profile: ', profile);
+  // console.log('profile: ', profile);
 
   return (
     <>

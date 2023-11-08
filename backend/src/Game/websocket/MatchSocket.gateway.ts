@@ -157,7 +157,7 @@ async handlenewvalueroom(client, data)
 
         if (this.pl1[this.room] && this.pl2[this.room])
         {
-          console.log(`THISGRADE----------| ${grade}`)
+          // console.log(`THISGRADE----------| ${grade}`)
           if (grade % 2 != 0) 
           {
               if (move == "up")
@@ -309,7 +309,7 @@ handleDisconnect(client)
 const clientId = this.players.get(client.id);
 const room = this.getRoomByClientId(clientId);
 
-console.log(`---3333---disconnect ${clientId}`)
+// console.log(`---3333---disconnect ${clientId}`)
 const roomSet = this.rooms.get(room);
 // let roomArray = Array.from(roomSet);
 // console.log(`|------->>>>>>>>>>>| ${roomSet.size} |<<<<<<-------| ${this.pass}`);

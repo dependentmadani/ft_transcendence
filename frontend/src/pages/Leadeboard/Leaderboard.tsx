@@ -29,7 +29,7 @@ function Leaderboard() {
             const response = await axios.get(`http://localhost:8000/game/leaderboard`, {withCredentials: true});
             setAkinatorUser(response.data.find(user => user.username === "akinator"));
             setAkinatorRank(response.data.findIndex(user => user.username === "akinator"));
-            console.log("akinator  ---> ", akinatorUser);
+            // console.log("akinator  ---> ", akinatorUser);
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
@@ -39,7 +39,7 @@ function Leaderboard() {
     };
 
     useEffect(() => {
-        console.log(`leaderboard : ${leaderboard[0]}`)
+        // console.log(`leaderboard : ${leaderboard[0]}`)
 
     }, [leaderboard]) 
 
@@ -88,7 +88,7 @@ function Leaderboard() {
                     type="text"
                     placeholder="Search by username"
                     value={searchQuery}
-                    onChange={(e) => {setSearchQuery(e.target.value); console.log("Search For: ", searchQuery); }}
+                    onChange={(e) => {setSearchQuery(e.target.value); }}
                 />
             </div>
             { akinatorUser && (

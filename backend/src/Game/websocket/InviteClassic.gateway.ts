@@ -2,9 +2,9 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server,Namespace } from 'socket.io';
 
-import direct_ball from "../UtilsGame/ClassicPong/ClassicBall";
-import paddle_left from "../UtilsGame/ClassicPong/ClassicPaddle1";
-import paddle_right from "../UtilsGame/ClassicPong/ClassicPaddle2";
+import direct_ball from "../utilsGame/ClassicPong/ClassicBall";
+import paddle_left from "../utilsGame/ClassicPong/ClassicPaddle1";
+import paddle_right from "../utilsGame/ClassicPong/ClassicPaddle2";
 
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
@@ -63,7 +63,7 @@ export class InviteClassicSocketGateway
       this.adver = await user[3];
       this.client_name.set(this.client_id,this.name);
       
-      console.log(`|${this.name}|------YOUCAN------|${this.client_id}|`)
+      // console.log(`|${this.name}|------YOUCAN------|${this.client_id}|`)
 
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if(!this.PosPlayers.has(this.client_id))
@@ -326,7 +326,7 @@ async handlenewvalueroom(client, data)
     const clientId = data;
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    // console.log(`---1111---disconnect ${clientId}`)
 
     if (room)
     {
@@ -344,7 +344,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---3333---disconnect ${clientId}`)
+    // console.log(`---3333---disconnect ${clientId}`)
 
     if (room)
     {

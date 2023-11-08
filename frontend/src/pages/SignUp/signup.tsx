@@ -56,7 +56,7 @@ function SetInfo() {
   };
 
   const handleSubmit = async () => {
-    console.log('uuuuuuuuuuuuuuuuu')
+    // console.log('uuuuuuuuuuuuuuuuu')
     try {
       await axios.patch(
         `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}`,
@@ -79,7 +79,7 @@ function SetInfo() {
             headers: { 'Content-Type': 'multipart/form-data' },
           }
         );
-        console.log('dataupdate : ' , gg.data)
+        // console.log('dataupdate : ' , gg.data)
       }
       setFetchData(true);
     } catch (error) {

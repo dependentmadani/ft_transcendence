@@ -72,7 +72,7 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
         };
         getHistory();
     }, []);
-    console.log('---- : ', historyData)
+    // console.log('---- : ', historyData)
     return (
         <div className='history'>
             <div id='title' >
@@ -180,7 +180,7 @@ function ProfileInfo () {
 
 function MyProfile () {
 
-    console.log('MyProfile ')
+    // console.log('MyProfile ')
     const {client, updateClient} = useClient();
     const [listFriend, setListFriend] = useState();
     const [popSettings, setPopSettings] = useSetting();
@@ -192,7 +192,7 @@ function MyProfile () {
     	async function fetchData () {
 			try {
 				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true } );
-                console.log('res --- : ', response.data)
+                // console.log('res --- : ', response.data)
                 await updateClient({ ...client, ...response.data, signedIn: true });
                 setLoading(false)
             } catch (error) {
@@ -204,7 +204,7 @@ function MyProfile () {
 
 
     useEffect(() => {
-        console.log('befor : ', popSettings)
+        // console.log('befor : ', popSettings)
         const settings_card = document.querySelector('.settings-card') as HTMLElement
         
         if (settings_card) {
@@ -213,11 +213,11 @@ function MyProfile () {
             else
                 settings_card.style.display = 'flex'
         }
-        console.log('after : ', popSettings)
+        // console.log('after : ', popSettings)
     }, [popSettings]);
 
 
-    console.log('-----------------------------------------', client)
+    // console.log('-----------------------------------------', client)
     return (
         <>
             {loading ? <img id='Loding' src='/src/imgs/svg/eat.svg' /> : 

@@ -118,7 +118,7 @@ function ProfileInfo (props: any) {
 
 function FriendProfile (props: any) {
 
-    console.log('profileFriend', props.userData)
+    // console.log('profileFriend', props.userData)
     const [listFriend, setListFriend] = useState(null);
     const [popSettings, setPopSettings] = useSetting();
     // const {client, updateClient} = useClient();
@@ -136,10 +136,10 @@ function FriendProfile (props: any) {
         }
         fetchData();
     }, [props.userData[0].id])
-    console.log('00000 : ',props.userData)
+    // console.log('00000 : ',props.userData)
 
     useEffect(() => {
-        console.log('befor : ', popSettings)
+        // console.log('befor : ', popSettings)
         const settings_card = document.querySelector('.settings-friend') as HTMLElement
         
         if (!popSettings)
@@ -147,7 +147,7 @@ function FriendProfile (props: any) {
         else
             settings_card.style.display = 'flex'
 
-        console.log('after : ', popSettings)
+        // console.log('after : ', popSettings)
     }, [popSettings]);
 
 

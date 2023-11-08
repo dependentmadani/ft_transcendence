@@ -202,7 +202,7 @@ export class UsersService {
       }
     });
     const result = user.filter((user1) => ((!myUser.blocked.some((user2) => (user2.username === user1.username)) && !myUser.blockedBy.some((user2) => (user2.username === user1.username)))));
-    console.log('the result is', result)
+    // console.log('the result is', result)
     return result
   }
 

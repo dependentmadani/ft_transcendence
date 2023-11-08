@@ -43,7 +43,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                 },
                 {withCredentials: true}
                 )
-                console.log('res : ', res)
+                // console.log('res : ', res)
             }catch (err) {
                 console.log('Error Fetcing data : ', err)
             }

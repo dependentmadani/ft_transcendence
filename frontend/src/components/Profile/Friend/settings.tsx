@@ -20,13 +20,13 @@ const SettingsComponent: React.FC = (props:any) => {
   const [fetch, setFetch] = useFetch();
   // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     
-  console.log('userId : ', props.userData.id)
+  // console.log('userId : ', props.userData.id)
 
 
     async function blockChat () {
       try {
         const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${props.userData.id}`, {}, {withCredentials: true,});
-          console.log(`/profile/${props.userData.username}`);
+          // console.log(`/profile/${props.userData.username}`);
             // setPopSettings(false);
             setFetch(false)
             // navigate(`/profile/${props.userData.username}`)
@@ -40,7 +40,7 @@ const SettingsComponent: React.FC = (props:any) => {
     async function unfriend () {
       try {
         const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unfriend/${props.userData.id}`, {}, {withCredentials: true,});
-          console.log(`/profile/${props.userData.username}`);
+          // console.log(`/profile/${props.userData.username}`);
             // setPopSettings(false);
             setFetch(false)
             // navigate(`/profile/${props.userData.username}`)

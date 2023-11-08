@@ -40,14 +40,14 @@ export default function Akinator()
     {
       ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
       flag.current = true 
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      // console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
     }
   }
   
   async function addHistory(sure:boolean) {
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : ', rightballs)
+    // console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : ', rightballs)
     if ((leftballs === 5 || rightballs === 5 || sure) && start) {
-      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+      // console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
       try {
         const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
         {
@@ -57,10 +57,10 @@ export default function Akinator()
         },
         {withCredentials: true}
         )
-        console.log('res : ', res)
+        // console.log('res : ', res)
         setStart(false)
       }catch (err) {
-        console.log('Error Fetcing data : ', err)
+        // console.log('Error Fetcing data : ', err)
       }
     }
   }

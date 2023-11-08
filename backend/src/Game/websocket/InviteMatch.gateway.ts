@@ -1,8 +1,8 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server } from 'socket.io';
-import direct_ball from "../UtilsGame/MatchPong/MatchBall";
-import paddle_left from "../UtilsGame/MatchPong/MatchPaddle1";
-import paddle_right from "../UtilsGame/MatchPong/MatchPaddle2";
+import direct_ball from "../utilsGame/MatchPong/MatchBall";
+import paddle_left from "../utilsGame/MatchPong/MatchPaddle1";
+import paddle_right from "../utilsGame/MatchPong/MatchPaddle2";
 
 import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';

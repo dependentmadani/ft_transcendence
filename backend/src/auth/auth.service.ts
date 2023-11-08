@@ -81,7 +81,7 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
-      console.log('nadi canadi', dto)
+      // console.log('nadi canadi', dto)
       try {
         if (this.aiUserCreated === false) {
           const user = await this.prisma.users.create({

@@ -45,7 +45,7 @@ function ProfileInfo (props: any) {
     }, [])
 
     useEffect(() => { 
-        console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+        // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
         const notificationListener = async (notif: any) => {
             toast.success(`${notif.receiver.username} Accepted you invitation to play`, {
@@ -53,7 +53,7 @@ function ProfileInfo (props: any) {
             });
             setFetch(false);
             navigate(`/profile/${props.userData.username}`)
-            console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+            // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         }
 
         socketa?.on('notificationAccepted', notificationListener);
@@ -76,7 +76,7 @@ function ProfileInfo (props: any) {
             }, {
             withCredentials: true
             })
-            console.log('WE TRYNNA ADD MR ', user.username, res)
+            // console.log('WE TRYNNA ADD MR ', user.username, res)
             socketa.emit('notification', { notif: res.data });
     }
 
@@ -115,7 +115,7 @@ function NotFriendProfile (props: any) {
     // console.log('profile : ', props.userData)
 
     useEffect(() => {
-        console.log('befor : ', popSettings)
+        // console.log('befor : ', popSettings)
         // setPopSettings(false)
 
         const settings_card = document.querySelector('.settings-noFriend') as HTMLElement
@@ -125,7 +125,7 @@ function NotFriendProfile (props: any) {
         else
             settings_card.style.display = 'flex'
 
-        console.log('after : ', popSettings)
+        // console.log('after : ', popSettings)
 
     }, [popSettings]);
 

@@ -14,7 +14,7 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
     const addMemberListener = (user: any) => {
-        console.log('mal mok', user)
+        // console.log('mal mok', user)
         if (roomMembers.find(u => u.userId === user.userId) === undefined)
             setRoomMembers([...roomMembers, user])
     }

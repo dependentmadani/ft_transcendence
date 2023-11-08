@@ -20,15 +20,15 @@ const SettingsComponent: React.FC = (props:any) => {
   const [fetch, setFetch] = useFetch();
   // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     
-  console.log('userId : ', props.user.id)
-  console.log('chat : ', chat, ' blocked : ', blocked)
+  // console.log('userId : ', props.user.id)
+  // console.log('chat : ', chat, ' blocked : ', blocked)
 
 
   async function blockChat () {
     try {
-      console.log(')))))))))))))))))))))):')
+      // console.log(')))))))))))))))))))))):')
       const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${props.user.id}`, {}, {withCredentials: true,});
-      console.log(`/profile/${props.user.username}`);
+      // console.log(`/profile/${props.user.username}`);
       setFetch(false)
     
     } catch (error) {
@@ -38,9 +38,9 @@ const SettingsComponent: React.FC = (props:any) => {
 
   async function unblockChat () {
     try {
-      console.log('(((((((((((((((((((((((:')
+      // console.log('(((((((((((((((((((((((:')
       const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${props.user.id}`, {}, {withCredentials: true,});
-      console.log(`/profile/${props.user.username}`);
+      // console.log(`/profile/${props.user.username}`);
       setFetch(false)
     
     } catch (error) {
@@ -52,16 +52,16 @@ const SettingsComponent: React.FC = (props:any) => {
     useEffect (() => {
 
       const checkUser = () => {
-        console.log('blocked : ' , client.blocked)
+        // console.log('blocked : ' , client.blocked)
         const checker = client.blocked.filter(user => user.username === props.user.username);
-        console.log('checker : ', checker)
+        // console.log('checker : ', checker)
         if (checker.length)
           setBlocked(true);
       }
       
       checkUser()
       if (chat) {
-        console.log('------=====0----------')
+        // console.log('------=====0----------')
         if (!blocked)
           blockChat();
         else

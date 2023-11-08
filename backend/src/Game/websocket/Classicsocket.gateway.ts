@@ -2,9 +2,9 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server,Namespace } from 'socket.io';
 
-import direct_ball from "../UtilsGame/ClassicPong/ClassicBall";
-import paddle_left from "../UtilsGame/ClassicPong/ClassicPaddle1";
-import paddle_right from "../UtilsGame/ClassicPong/ClassicPaddle2";
+import direct_ball from "../utilsGame/ClassicPong/ClassicBall";
+import paddle_left from "../utilsGame/ClassicPong/ClassicPaddle1";
+import paddle_right from "../utilsGame/ClassicPong/ClassicPaddle2";
 import { GameService } from "../game.service"
 import { HistoryService } from '../history/history.service';
 import { historyDto } from "../history/dto/create-history.dto"
@@ -61,7 +61,7 @@ export class ClassicSocketGateway
       this.name = await user[1];
       this.client_name.set(this.client_id,this.name);
       
-      console.log(`|${this.name}|------------|${this.client_id}|`)
+      // console.log(`|${this.name}|------------|${this.client_id}|`)
 
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if(!this.PosPlayers.has(this.client_id))
@@ -162,7 +162,7 @@ async handlenewvalueroom(client, data)
  
       async startGameIfNeeded(room_num, client)
       {
-        console.log(`|>>>>>>>>>>>>>>| ${this.count}`);
+        // console.log(`|>>>>>>>>>>>>>>| ${this.count}`);
         if (this.pass && this.count == 2 )
         {
           this.count = 0;
@@ -296,7 +296,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
     
-    console.log(`---3333---disconnect ${clientId}`)
+    // console.log(`---3333---disconnect ${clientId}`)
     const roomSet = this.rooms.get(room);
     // let roomArray = Array.from(roomSet);
     // console.log(`|------->>>>>>>>>>>| ${roomSet.size} |<<<<<<-------| ${this.pass}`);

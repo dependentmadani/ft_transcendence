@@ -55,13 +55,13 @@ export class NotificationController {
     async friendAcception(@Body('senderId', ParseIntPipe) senderId: number,
                                 @Body('receiverId', ParseIntPipe) receiverId: number,
                                 @Body('id', ParseIntPipe) notifId: number) {
-        console.log('------------------------------')
+        // console.log('------------------------------')
         return await this.notificationService.acceptFriend(senderId, receiverId, notifId)
     }
 
     @Put('/:id')
     async updateNotification(@Param('id', ParseIntPipe) id: number) {
-        console.log('uui')
+        // console.log('uui')
         return await this.notificationService.updateNotification(id)
     }
 

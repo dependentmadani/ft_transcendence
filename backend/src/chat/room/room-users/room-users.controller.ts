@@ -55,7 +55,7 @@ export class RoomUsersController {
             const _room: Room = await this.roomService.getOneRoom(room.roomId);
 
             // Check if user is not banned or muted
-            console.log('room info', _room);
+            // console.log('room info', _room);
             if (room.role !== 'BANNED' && room.role !== 'MUTED')
                 return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
             return null
@@ -88,7 +88,7 @@ export class RoomUsersController {
 
             // Check if user is not banned or muted
             const _role = await this.roomUsersService.getRoomMemberRole(room.id, me)
-            console.log('Hado roles', _role)
+            // console.log('Hado roles', _role)
             if (_role !== 'BANNED' && _role !== 'MUTED' && room.roomType !== 'Private')
                 return { id: room.id, name: room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${room.id}`, latestMessageContent: room.latestMessageContent, latestMessageDate: room.latestMessageDate, type: 'Room', protection: room.roomType };
             return null

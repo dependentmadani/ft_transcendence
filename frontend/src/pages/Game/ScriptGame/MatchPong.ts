@@ -79,7 +79,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
                 document.addEventListener("mousemove", handleMouseMove);
             
-            console.log(client_id)
+            // console.log(client_id)
         })
 
         socket.on("playerId",(play,data) =>
