@@ -27,7 +27,7 @@ export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) 
   useEffect(() => {
 
     const getMain = async () => {
-      const res = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+      const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
       socketa?.emit('someEvent', res.data?.id);
     }
     getMain()

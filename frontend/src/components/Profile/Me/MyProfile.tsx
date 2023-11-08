@@ -64,7 +64,7 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
 
         async function getHistory() {
             try {
-                const response = await axios.get(`http://localhost:8000/history`, {withCredentials: true});
+                const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/history`, {withCredentials: true});
                 setHistoryData(response.data);
             } catch (error) {
                 console.error("Error fetching history data:", error);
@@ -113,7 +113,7 @@ const Achieves = () => {
 
         async function getAchievements() {
             try {
-                const response = await axios.get(`http://localhost:8000/users/achievements`, {withCredentials: true});
+                const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/achievements`, {withCredentials: true});
                 setBadge(response.data);
                 // console.log("badge !!!!! ", response.data);
             } catch (error) {
@@ -144,7 +144,7 @@ function ProfileInfo () {
     useEffect(() => {
         async function getrank() {
             try {
-                const res = await axios.get(`http://localhost:8000/game/leaderboard/${client.username}`, { withCredentials: true }  ) 
+                const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${client.username}`, { withCredentials: true }  ) 
                 // console.log('$$$$$$ : ', res)
                 setRank(res.data)
             }catch (err) {

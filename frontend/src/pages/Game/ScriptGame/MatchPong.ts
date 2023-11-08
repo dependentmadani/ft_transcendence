@@ -37,11 +37,11 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         music.src = "/src/assets/sounds/HAIKYUU OP 4 - ORCHESTRA.mp3";
         img.src = "/src/assets/img/tenis.jpg"
         
-        const socket = io('http://localhost:8000/MatchRandom');
+        const socket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/MatchRandom`);
         
         socket.emit("canvas",canvas.width, canvas.height);
         
-        axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+        axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
             // console.log(`1~~~~~~~~~~~|${res.data?.username}`)

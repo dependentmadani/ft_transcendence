@@ -5,7 +5,6 @@ import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/MatchPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { faL } from '@fortawesome/free-solid-svg-icons';
 import { useStart } from '@/context/startContext';
 import { useUrl } from '@/context/UrlContext';
 
@@ -41,7 +40,7 @@ const [user2, setUser2] = useState<User | null>(null);
 useEffect(() => {
 
   const getUserData = async () => {
-    const res = await axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+    const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
     setUserdata(res.data)
   }
   getUserData()
@@ -52,7 +51,7 @@ useEffect(() => {
       setUser1({ id: Userdata?.id, username: Userdata?.username, avatar: Userdata?.avatar });
   if (ProfileID1)
   {
-  axios.get(`http://localhost:8000/users/${ProfileID1}`, { withCredentials: true })
+  axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${ProfileID1}`, { withCredentials: true })
     .then((response) => {
       setUser1(response.data);
     })
@@ -66,7 +65,7 @@ useEffect(() => {
   setUser2({ id:2, username: "Waiting ...", avatar: "/src/imgs/svg/waiting.svg" });
 if (ProfileID2)
 {
-axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
+axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${ProfileID2}`, { withCredentials: true })
     .then((response) => {
       setUser2(response.data);
     })

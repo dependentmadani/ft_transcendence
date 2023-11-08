@@ -46,7 +46,7 @@ export class RoomUsersController {
             const _receiver: Users = await this.userService.findUserById(receiver);
 
             // Check if receiver is not blocked
-            if (this.userService.checkBlockedFriend(me, receiver))
+            if (!this.userService.checkBlockedFriend(me, receiver))
                 return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
             return null
         });

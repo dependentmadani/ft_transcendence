@@ -96,7 +96,7 @@ export default function MyPieChart(props:any) {
     },
     [setActiveIndex]
   );
-  console.log('wwwww : ' , props.gameData.wins)
+  // console.log('wwwww : ' , props.gameData.wins)
 
   // const data = [
   //   { name: "Wins", value: 12, color: "#00C49F"},

@@ -31,7 +31,7 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                         
         const allow = (currentRoom.protection === 'Protected') ? false : true
         try {
-            const memberExists =  (await axios.get(`http://localhost:8000/roomUsers/role/${chatData?._chat?.id}/${invitedUser.id}`, { withCredentials: true })).data
+            const memberExists =  (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.id}/${invitedUser.id}`, { withCredentials: true })).data
             if (!memberExists) {
                 const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                     roomId: currentRoom.id,

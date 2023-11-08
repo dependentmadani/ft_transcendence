@@ -76,7 +76,7 @@ export default function Akinator()
 
   useEffect(() => {
     const getUserData = async () => {
-      const res = await axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+      const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
       setUserdata(res.data)
     }
 

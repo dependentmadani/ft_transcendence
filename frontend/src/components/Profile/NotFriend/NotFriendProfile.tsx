@@ -18,6 +18,7 @@ function ProfileInfo (props: any) {
     const { client, updateClient}  = useClient();
     const [rank, setRank] = useState(0)
     const [fetch, setFetch] = useFetch();
+    const [bloccked, setBlocked] = useState(false);
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -32,7 +33,7 @@ function ProfileInfo (props: any) {
 
         async function getrank() {
             try {
-                const res = await axios.get(`http://localhost:8000/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
+                const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
                 // console.log('$$$$$$ : ', res)
                 setRank(res.data)
             }catch (err) {
@@ -46,6 +47,7 @@ function ProfileInfo (props: any) {
 
     useEffect(() => { 
         // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
+
 
         const notificationListener = async (notif: any) => {
             toast.success(`${notif.receiver.username} Accepted you invitation to play`, {
@@ -63,8 +65,28 @@ function ProfileInfo (props: any) {
           };
       }, [socketa]);
 
+      const checkUser = () => {
+        // console.log('blocked : ' , client.blocked)
+        console.log('-----', client.blocked.length)
+        console.log('-----', client.blocked)
+        if (!client.blocked.length)
+            return ;
+        const checker = client.blocked.filter((user1) => (user1.username === props.userData.username));
+        console.log('!!!!!!!!!!!!!! : ', checker)
+        // console.log('checker : ', checker)
+        if (checker.length) {
+            try {
+                axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${props.userData.id}`,{}, {withCredentials: true})
+            } catch {
+                console.log('failed unblocked ')
+            }
+        }
+          
+      }
+
     const sendFriendRequest = async (user: User) => {
-        const mainUser: User = await (await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})).data
+
+        const mainUser: User = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         
             const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
 
@@ -97,7 +119,7 @@ function ProfileInfo (props: any) {
                     <div className='profile-rank1'> {rank} </div>
                 </div>
                 <div className='profile-buttons'>
-                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => sendFriendRequest(props.userData)} />
+                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => {checkUser(); sendFriendRequest(props.userData)}} />
                     <ReactSVG src='/src/imgs/svg/play-game.svg' className="play-game" />
                 </div>
             </div>

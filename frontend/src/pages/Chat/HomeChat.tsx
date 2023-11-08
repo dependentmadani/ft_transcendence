@@ -44,7 +44,7 @@ export const HomeChat = () => {
   useEffect(() => {
 
     const getMain = async () => {
-      const res = await axios.get(`http://localhost:8000/users/me`, {withCredentials: true})
+      const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
       socket?.emit('someEvent', res.data?.id);
     }
     getMain()
@@ -72,7 +72,7 @@ export const HomeChat = () => {
     const fetchMessages = async () => {
       try {
         if (chatData?._chat?.type) {
-          const msssg = (await axios.get(`http://localhost:8000/message/${chatData?._chat?.type}/${chatData?._chat?.id}`, { withCredentials: true })).data
+          const msssg = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/message/${chatData?._chat?.type}/${chatData?._chat?.id}`, { withCredentials: true })).data
           setMessages(msssg)
           }
       } 

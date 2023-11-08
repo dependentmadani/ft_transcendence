@@ -36,7 +36,7 @@ function Achivement (props: any) {
 
         async function getAchievements() {
             try {
-                const response = await axios.get(`http://localhost:8000/users/achievements/${props.friendId}`, {withCredentials: true});
+                const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/achievements/${props.friendId}`, {withCredentials: true});
                 setBadge(response.data);
                 // console.log("badge !!!!! ", response.data);
             } catch (error) {
@@ -83,7 +83,7 @@ function ProfileInfo (props: any) {
 
         async function getrank() {
             try {
-                const res = await axios.get(`http://localhost:8000/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
+                const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
                 // console.log('$$$$$$ : ', res)
                 setRank(res.data)
             }catch (err) {

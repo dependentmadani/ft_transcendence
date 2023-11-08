@@ -53,6 +53,7 @@ const SettingsComponent: React.FC = (props:any) => {
 
 
     useEffect (() => {
+
       if (chat)
         blockChat();
       if (friend)

@@ -26,7 +26,7 @@ function Leaderboard() {
 
     const getLeaderboard = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/game/leaderboard`, {withCredentials: true});
+            const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard`, {withCredentials: true});
             setAkinatorUser(response.data.find(user => user.username === "akinator"));
             setAkinatorRank(response.data.findIndex(user => user.username === "akinator"));
             // console.log("akinator  ---> ", akinatorUser);
