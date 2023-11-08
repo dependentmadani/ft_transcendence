@@ -46,7 +46,7 @@ export const RoomInfos = ({ chatData }: any) => {
                 <div className="contactPlay2">
                     <div className="section2">
                         <FontAwesomeIcon className="info-icon" icon={faGear} onClick={openSettings} />
-                        <FontAwesomeIcon className="info-icon" icon={0 ? faBell : faBellSlash} />
+                        {/* <FontAwesomeIcon className="info-icon" icon={0 ? faBell : faBellSlash} /> */}
                         <a><FontAwesomeIcon className="info-icon" icon={faRightFromBracket} onClick={leaveRoom} /></a>
                     </div>
                 </div>

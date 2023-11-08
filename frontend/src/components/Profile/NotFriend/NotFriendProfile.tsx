@@ -1,24 +1,23 @@
 import './NotFriendProfile.css'
 import { useClient } from '@/context/clientContext';
-import MyPieChart from '@/components/Profile/PieChart/pieChart'
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { toast } from 'react-toastify';
-// import My from '@/imgs/add-friend.svg'
 import { ReactSVG } from "react-svg";
 import { useSocket } from '@/context/socketContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
+import { useFetch } from '@/context/fetchContext';
+import { useSetting } from '@/context/SettingContext';
+import SettingsComponent from './settings';
+
 
 function ProfileInfo (props: any) {
 
     const [baseImg, setBaseImg] = useState(props.userData.avatar);
     const {socketa} = useSocket();
     const { client, updateClient}  = useClient();
-    const [fetch, setFetch] = useState<boolean>(false)
-
-    // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    const [rank, setRank] = useState(0)
+    const [fetch, setFetch] = useFetch();
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -31,35 +30,29 @@ function ProfileInfo (props: any) {
         else
             statu.style.background = '#15a3e9'
 
+        async function getrank() {
+            try {
+                const res = await axios.get(`http://localhost:8000/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
+                // console.log('$$$$$$ : ', res)
+                setRank(res.data)
+            }catch (err) {
+                console.log('Error to get data')
+            }
+        }
+
+        getrank();
+
     }, [])
 
     useEffect(() => { 
         console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
-        async function fetchData () {
-            try {
-                const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, {withCredentials : true});
-                await updateClient({ ...client, ...response.data, signedIn: true });
-                setFetch(true)
-                console.log('@@@@@@@@@@@@@@@@@@@@@@')
-                    navigate(`/profile/${props.userData.username}`)
-                // if (fetch) {
-                //     console.log('update client')
-                // }
-            }
-            catch { console.log('error update client')}
-        }
-
 
         const notificationListener = async (notif: any) => {
             toast.success(`${notif.receiver.username} Accepted you invitation to play`, {
                 position: toast.POSITION.TOP_RIGHT
             });
-            fetchData();
-            // delay(1000)
-            // if (fetch) {
-            //     console.log('data update succssesfully')
-            //     navigate(`/profile/${props.userData.username}`)
-            // }
+            setFetch(false);
+            navigate(`/profile/${props.userData.username}`)
             console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         }
 
@@ -95,13 +88,13 @@ function ProfileInfo (props: any) {
                       <span>{props.userData.userStatus}</span>
                       <div></div>
                     </div>
-                    <img src={baseImg} onError={() => {setBaseImg('/src/imgs/user-img.png')}}  alt="user-img" />
+                    <img src={baseImg} onError={() => {setBaseImg('/src/imgs/user-img.png')}} onClick={() => {navigate(`/profile/${props.userData.username}`)}} alt="user-img" />
                 </div>
             </div>
             <div className='profile-info1-right'>
                 <div className='profile-name-rank1'>
                     <div className='profile-name1'> {props.userData.username ? props.userData.username : 'hamid'} </div>
-                    <div className='profile-rank1'> 5 </div>
+                    <div className='profile-rank1'> {rank} </div>
                 </div>
                 <div className='profile-buttons'>
                     <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => sendFriendRequest(props.userData)} />
@@ -117,12 +110,30 @@ function ProfileInfo (props: any) {
 
 function NotFriendProfile (props: any) {
 
-  console.log('profile : ', props.userData)
+    const [popSettings, setPopSettings] = useSetting(false);
+    // const [fetch, setFetch] = useFetch();
+    // console.log('profile : ', props.userData)
 
+    useEffect(() => {
+        console.log('befor : ', popSettings)
+        // setPopSettings(false)
+
+        const settings_card = document.querySelector('.settings-noFriend') as HTMLElement
+        
+        if (!popSettings)
+            settings_card.style.display = 'none';
+        else
+            settings_card.style.display = 'flex'
+
+        console.log('after : ', popSettings)
+
+    }, [popSettings]);
 
     return (
         <div className='profile'>
+                <img id='settings'  src="/src/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
                 <ProfileInfo userData={props.userData[0]} />
+                <SettingsComponent user={props.userData[0]}  />
         </div>
     )
 }

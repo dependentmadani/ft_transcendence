@@ -9,6 +9,9 @@ import axios from 'axios';
 
 
 
+
+
+
 const Achieve = (props:any) => {
     return (
         <div className="achieve-card">
@@ -66,6 +69,7 @@ function Achivement (props: any) {
 
 function ProfileInfo (props: any) {
 
+    const [rank, setRank] = useState(0)
 
     useEffect(() => {
 
@@ -76,6 +80,18 @@ function ProfileInfo (props: any) {
             statu.style.background = 'red';
         else
             statu.style.background = '#15a3e9'
+
+        async function getrank() {
+            try {
+                const res = await axios.get(`http://localhost:8000/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
+                // console.log('$$$$$$ : ', res)
+                setRank(res.data)
+            }catch (err) {
+                console.log('Error to get data')
+            }
+        }
+
+        getrank();
 
     }, [])
 
@@ -92,7 +108,7 @@ function ProfileInfo (props: any) {
                 <div className='profile-name-rank'>
                     {/* <span className='profile-name'> Name </span> */}
                     <div className='profile-name'> {props.userData.username ? props.userData.username : 'hamid'} </div>
-                    <div className='profile-rank'> 5 </div>
+                    <div className='profile-rank'> {rank} </div>
                 </div>
             </div>
         </div>
@@ -102,18 +118,18 @@ function ProfileInfo (props: any) {
 
 function FriendProfile (props: any) {
 
-    console.log('profileFriend: **** ', props.userData)
+    console.log('profileFriend', props.userData)
     const [listFriend, setListFriend] = useState(null);
     const [popSettings, setPopSettings] = useSetting();
     // const {client, updateClient} = useClient();
 
+
     useEffect(() => {
+        setPopSettings(false)
         async function fetchData () {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friends/${props.userData[0].id}`, { withCredentials: true });
                 setListFriend(res.data);
-                // console.log('fetchDAta : ', res.data)
-                // updateClient({...client, ...res})
             } catch (error) {
                 console.error('Error fetching data: ', error);
             }
@@ -147,9 +163,8 @@ function FriendProfile (props: any) {
                     <Achivement friendId={props.userData[0].id} />
                     <Statistic gameData={props.userData[0].games} />
                 </div>
-                <SettingsComponent user={props.userData[0]}  />
+                <SettingsComponent userData={props.userData[0]}  />
             </div>
-            {/* <div className='blur'  style={!popSettings ? { display: 'none' } : { display: 'block' }} ></div> */}
         </>
     )
 }

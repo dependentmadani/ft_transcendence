@@ -1,12 +1,11 @@
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
-import { useShow } from "@/context/ShowFormContext";
+
 
 
 export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }: any) => {
 
     const searchResultsRef = useRef<HTMLDivElement>(null);
-    const [show, setShow] = useShow();
 
 
     const createChat = async (user: User) => {
@@ -26,7 +25,6 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
         }
 
         onValueChange(chat)
-        setShow('false');
     }
 
 

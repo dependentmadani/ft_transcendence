@@ -178,6 +178,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
+          <span>Welcome to Tennis Mode! This exciting variation of 2D Pong allows you and a friend to engage in a tennis-style match, controlling your paddles with the mouse.</span>
         </div>
         </div>
     <div className='game-setting'>

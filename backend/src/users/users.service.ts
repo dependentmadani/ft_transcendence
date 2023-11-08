@@ -177,6 +177,35 @@ export class UsersService {
     return user;
   }
 
+  async searchSpecificUser(username:string, users:Users) {
+    if (username === '') {
+      throw new UnauthorizedException('empty username not allowed');
+    }
+    const user = await this.prisma.users.findMany({
+      where: {
+        username: {
+          startsWith: username,
+          mode: 'insensitive',
+        },
+        email : {
+          not: users.email
+        }
+      }
+    });
+    const myUser = await this.prisma.users.findUnique({
+      where: {
+        email: users.email,
+      },
+      include: {
+        blocked: true,
+        blockedBy: true,
+      }
+    });
+    const result = user.filter((user1) => ((!myUser.blocked.some((user2) => (user2.username === user1.username)) && !myUser.blockedBy.some((user2) => (user2.username === user1.username)))));
+    console.log('the result is', result)
+    return result
+  }
+
   async searchFriendUser(username: string, users: Users) {
     if (username === '') {
       throw new UnauthorizedException('empty username not allowed');
@@ -295,19 +324,19 @@ export class UsersService {
     if (isHeBlocked) {
       throw new UnauthorizedException('friend already blocked! :(');
     }
-    const areTheyFriends = await this.prisma.users.findFirst({
-      where: {
-        id: userId,
-        friends: {
-          some: {
-            id: friendId
-          }
-        }
-      }
-    });
-    if (!areTheyFriends) {
-      throw new UnauthorizedException("Not a friend to block!");
-    }
+    // const areTheyFriends = await this.prisma.users.findFirst({
+    //   where: {
+    //     id: userId,
+    //     friends: {
+    //       some: {
+    //         id: friendId
+    //       }
+    //     }
+    //   }
+    // });
+    // if (!areTheyFriends) {
+    //   throw new UnauthorizedException("Not a friend to block!");
+    // }
     const blockUser = await this.prisma.users.update({
       where: {
         id: userId,
@@ -429,11 +458,6 @@ export class UsersService {
           some: {
             id: friendId
           }
-        },
-        blockedBy: {
-          some: {
-            id: friendId
-          }
         }
       }
     });
@@ -449,11 +473,6 @@ export class UsersService {
           disconnect: {
             id: friendId,
           }
-        },
-        blockedBy: {
-          disconnect: {
-            id: friendId
-          }
         }
       }
     });
@@ -464,11 +483,6 @@ export class UsersService {
       },
       data: {
         blockedBy: {
-          disconnect: {
-            id: userId,
-          }
-        },
-        blocked: {
           disconnect: {
             id: userId,
           }

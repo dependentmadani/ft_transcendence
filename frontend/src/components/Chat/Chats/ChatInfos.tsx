@@ -10,6 +10,7 @@ export const ChatInfos = ({ chatData }: any) => {
 
     
     const _receiver: User = chatData?._receiver
+    console.log('receiver info are as follow:', chatData);
 
     const [showForm, setShowForm] = useState(false);
 

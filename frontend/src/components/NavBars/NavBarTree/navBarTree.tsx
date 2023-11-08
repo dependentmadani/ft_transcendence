@@ -1,40 +1,20 @@
-
 import './navBarTree.css'
 import { useNavigate } from 'react-router-dom';
-import { useUrl } from '@/context/UrlContext';
 
 
 function NavBarTree () {
 
     const navigate = useNavigate()
-    const [myUrl, setMyUrl] = useUrl();
 
+    const goToHome = () => { navigate('/') }
 
+    const goToProfile = () => { navigate('/profile') }
 
-    const goToHome = () => { 
-        navigate('/');
-         setMyUrl(true);
-    }
+    const goToPlay = () => { navigate('/game') }
 
-    const goToProfile = () => { 
-        navigate('/profile');
-         setMyUrl(true);
-    }
+    const goToChat = () => { navigate('/chat') }
 
-    const goToPlay = () => { 
-        navigate('/game');
-         setMyUrl(true);
-    }
-
-    const goToChat = () => { 
-        navigate('/chat');
-         setMyUrl(true);
-    }
-
-    const goToLeader = () => { 
-        navigate('/leaderboard');
-         setMyUrl(true);
-    }
+    const goToLeader = () => { navigate('/leaderboard') }
 
     return (
         <>

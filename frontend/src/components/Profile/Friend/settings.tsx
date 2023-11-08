@@ -7,6 +7,7 @@ import { icon } from '@fortawesome/fontawesome-svg-core';
 import { useSetting } from '@/context/SettingContext';
 import axios, { Axios } from "axios";
 import { useNavigate } from 'react-router-dom';
+import { useFetch } from '@/context/fetchContext';
 
 
 const SettingsComponent: React.FC = (props:any) => {
@@ -16,24 +17,34 @@ const SettingsComponent: React.FC = (props:any) => {
   const [friend, setFriend] = useState<boolean>(false);
   const navigate = useNavigate(); 
   const [popSettings, setPopSettings] = useSetting();
+  const [fetch, setFetch] = useFetch();
   // const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     
-  console.log('userId : ', props.user.id)
+  console.log('userId : ', props.userData.id)
 
 
-    const blockChat = () => {
-      ;
+    async function blockChat () {
+      try {
+        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${props.userData.id}`, {}, {withCredentials: true,});
+          console.log(`/profile/${props.userData.username}`);
+            // setPopSettings(false);
+            setFetch(false)
+            // navigate(`/profile/${props.userData.username}`)
+            // console.log('(((((((((((((((((((((((:')
+      
+      } catch (error) {
+          console.error('Error fetching data: ', error);
+      }
     } 
 
     async function unfriend () {
       try {
-        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unfriend/${props.user.id}`, {}, {withCredentials: true,});
-          console.log(`/profile/${props.user.username}`);
-            // await updateClient({})
-            setPopSettings(false);
-            // await delay(1000);
-            navigate(`/profile/${props.user.username}`)
-            console.log('(((((((((((((((((((((((:')
+        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unfriend/${props.userData.id}`, {}, {withCredentials: true,});
+          console.log(`/profile/${props.userData.username}`);
+            // setPopSettings(false);
+            setFetch(false)
+            // navigate(`/profile/${props.userData.username}`)
+            // console.log('(((((((((((((((((((((((:')
       
       } catch (error) {
           console.error('Error fetching data: ', error);

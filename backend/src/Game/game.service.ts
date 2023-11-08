@@ -90,11 +90,16 @@ export class GameService {
                 }
             })
             const usernameSize = username.length;
-            const theRest = allPlayers.filter((players) => 
-                players.username.toLowerCase().includes(username, 0)
-            )
-            // console.log('something, ', allPlayers[0].username.substring(0, usernameSize))
-            return theRest;
+            var value = 0;
+            const theRest = allPlayers.map((players, index) => {
+                if (username === players.username) {
+                    value = index + 1;
+                    return value;
+                }
+            })
+            // const final = new Set(theRest);
+            // console.log('something, ', final)
+            return value;
         } catch (e) {
             console.log('something wrong with the leaderboard/username api');
         }

@@ -12,6 +12,7 @@ import Tennis from '@/pages/Game/ComponentReact/tennis';
 import { default as InviteTennis } from '@/pages/Game/Invitegame/InviteMatch';
 import InviteClassic from '@/pages/Game/Invitegame/InviteClassic';
 import { useGame } from '@/context/GameContext';
+import { FetchProvider } from '@/context/fetchContext';
 
 const Test = () => {
     return (<>
@@ -69,9 +70,9 @@ function Section (props:any) {
                 <div className='NavBarTree'>
                     <NavBarTree/>
                 </div>
-                <div className='select-section'>
-                    {selectSection(props.section)}
-                </div>
+                    <div className='select-section'>
+                        {selectSection(props.section)}
+                    </div>
             </div>
         </div>
     ) 

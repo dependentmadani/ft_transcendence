@@ -64,9 +64,17 @@
     overflow: hidden;
     border: solid 1px white;
     z-index: 250;
-    top: 50%;
+    top: 85%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+
+  .dimension-canvas > span {
+    position: absolute;
+    top: 5%;
+    left: 5%;
+    z-index: 250;
+    font-size: clamp(10px, 2vw, 2vh);
   }
 
   .game-setting {

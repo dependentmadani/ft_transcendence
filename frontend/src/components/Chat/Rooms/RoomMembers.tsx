@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell, faUserTie } from '@fortawesome/free-solid-svg-icons';
+import { useRightBar } from '@/context/RightBarContext';
 
 
 
@@ -13,7 +14,7 @@ export const RoomMembers = ({ chatData }: any) => {
 
 
     const addMemberListener = (user: any) => {
-        console.log('add user', user)
+        console.log('mal mok', user)
         if (roomMembers.find(u => u.userId === user.userId) === undefined)
             setRoomMembers([...roomMembers, user])
     }
@@ -27,7 +28,6 @@ export const RoomMembers = ({ chatData }: any) => {
     }, [chatData._socket, addMemberListener])
 
     const removeMemberListener = (user: any) => {
-        console.log('remove user', user)
         if (roomMembers.find(u => u.userId === user.userId) !== undefined)
             setRoomMembers(prevMembers => prevMembers.filter(member => member.userId !== user.userId))
     }
@@ -79,6 +79,7 @@ export const RoomMembers = ({ chatData }: any) => {
 
             chatData?._socket?.emit('removeRoomMembers', user)
             chatData?._socket?.emit('sortContacts')
+            chatData?._socket?.emit('lockRoom')
                 
         } catch (error) {
             console.log(error);
@@ -92,8 +93,10 @@ export const RoomMembers = ({ chatData }: any) => {
             }, {
                 withCredentials: true,
             });
-            console.log('HA LUSER', user)
             chatData?._socket?.emit('updateMemberRole', user)
+            if (role === "MUTED") {
+                chatData?._socket?.emit('lockRoom')
+            }
         } catch (error) {
             console.log(error);
         }
@@ -143,7 +146,7 @@ export const RoomMembers = ({ chatData }: any) => {
                                     
                                 <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
-                                    { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
+                                    {/* { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> } */}
                                     { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'ADMIN')} /> }
                                     <FontAwesomeIcon icon={faBan} className='kickMemberIcon' onClick={() => kickMember(user)} />
                                 </div>
@@ -153,7 +156,7 @@ export const RoomMembers = ({ chatData }: any) => {
                                     
                                 <div className="memberActions">
                                     { (user.role === 'MUTED') ? <FontAwesomeIcon icon={faBell} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faBellSlash} className='muteMemberIcon' onClick={() => muteBanMember(user, 'MUTED')} /> }
-                                    { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> }
+                                    {/* { (user.role === 'BANNED') ? <FontAwesomeIcon icon={faUserLarge} className='banMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserLargeSlash} className='banMemberIcon' onClick={() => muteBanMember(user, 'BANNED')} /> } */}
                                     { (user.role === 'ADMIN') ? <FontAwesomeIcon icon={faUser} className='muteMemberIcon' onClick={() => unMuteBanMember(user, 'MEMBER')} /> : <FontAwesomeIcon icon={faUserTie} className='muteMemberIcon' onClick={() => muteBanMember(user, 'ADMIN')} /> }
                                     <FontAwesomeIcon icon={faBan} className='kickMemberIcon' onClick={() => kickMember(user)} />
                                 </div>

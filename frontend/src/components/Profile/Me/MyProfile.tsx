@@ -72,7 +72,7 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
         };
         getHistory();
     }, []);
-    // console.log('---- : ', historyData)
+    console.log('---- : ', historyData)
     return (
         <div className='history'>
             <div id='title' >
@@ -107,6 +107,7 @@ const Achieve = (props:any) => {
 const Achieves = () => {
     
     const [badge, setBadge] = useState({});
+    let counter = 0;
 
     useEffect( () => {
 
@@ -138,7 +139,22 @@ const Achieves = () => {
 function ProfileInfo () {
 
     const {client} = useClient();
+    const [rank, setRank] = useState(0)
 
+    useEffect(() => {
+        async function getrank() {
+            try {
+                const res = await axios.get(`http://localhost:8000/game/leaderboard/${client.username}`, { withCredentials: true }  ) 
+                // console.log('$$$$$$ : ', res)
+                setRank(res.data)
+            }catch (err) {
+                console.log('Error to get data')
+            }
+        }
+
+        getrank()
+    }, [])
+    
     return (
         <div className='profile-info'>
             <div className='profile-info-left'>
@@ -147,7 +163,7 @@ function ProfileInfo () {
                 </div>
                 <div className='profile-name-rank'>
                     <div className='profile-name'> {client.username} </div>
-                    <div className='profile-rank'> 5 </div>
+                    <div className='profile-rank'> {rank} </div>
                 </div>
             </div>
             <div className='profile-info-right'>
@@ -171,6 +187,8 @@ function MyProfile () {
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
+
+        setPopSettings(false)
     	async function fetchData () {
 			try {
 				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true } );
@@ -182,7 +200,7 @@ function MyProfile () {
 			}
 		}
         fetchData();
-    }, [])
+    }, [loading])
 
 
     useEffect(() => {
@@ -195,11 +213,11 @@ function MyProfile () {
             else
                 settings_card.style.display = 'flex'
         }
-        // console.log('after : ', popSettings)
+        console.log('after : ', popSettings)
     }, [popSettings]);
 
 
-    // console.log('-----------------------------------------', client)
+    console.log('-----------------------------------------', client)
     return (
         <>
             {loading ? <img id='Loding' src='/src/imgs/svg/eat.svg' /> : 

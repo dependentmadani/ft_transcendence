@@ -50,9 +50,9 @@ function Leaderboard() {
         return (
             leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user, index) => {
                 if (user.username === "akinator")
-                    return <></>
+                    return ;
                 return (
-                    <div className="player-stats" key={user.id}>
+                    <div key={user.id} className="player-stats" key={user.id}>
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
                             <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} 
                                 onClick={ () => goProfile(user.username) } />

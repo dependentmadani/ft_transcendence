@@ -8,7 +8,8 @@ import { Socket } from 'socket.io-client';
 import { useSocket } from '@/context/socketContext';
 import { toast } from 'react-toastify';
 import { useGame } from '@/context/GameContext';
-import { useUrl } from '@/context/UrlContext';
+import { useFetch } from '@/context/fetchContext';
+import { useNotif } from '@/context/newNotif';
 
 interface Notifications {
     id: number,
@@ -38,7 +39,9 @@ const ListNotification = () => {
     const [notifications, setNotifications] = useState<Notifications[]>([])
     const [newNotifications, setNewNotifications] = useState<Notifs[]>([])
     const {socketa} = useSocket();
-  const [_game, setGame] = useGame();
+    const [_game, setGame] = useGame();
+    const [fetch, setFetch] = useFetch();
+    const [newNotif, setNewNotif] = useNotif();
     const navigate = useNavigate();
 
 
@@ -72,7 +75,7 @@ const ListNotification = () => {
                         status: notification.read,
                         avatar: senderResponse?.data?.avatar,
                         type: notification.type,
-                        content: senderResponse.data.username  + (notification.type === 'FRIEND' ? ' wants to connect with you' : ' wants to play with you'),
+                        content: ' wants to connect',
                         mode: notification.mode,
                     };
 
@@ -108,24 +111,21 @@ const ListNotification = () => {
                 status: notif.read,
                 avatar:notif.receiverUser.avatar,
                 type: notif.type,
-                content: notif.receiverUser.username  + (notif.type === 'FRIEND' ? ' wants to connect with you' : ' wants to play with you'),
+                content: ' wants to connect',
                 mode: notif.mode,
             };
 
-
-            if (newNotif.type === 'FRIEND')
+            if (newNotif.type === 'FRIEND') {
                 setNewNotifications([...newNotifications, newNotif]);
+                setNewNotif(true)
+            }
             else if (newNotif.type === 'GAME') {
                 toast.info(`${newNotif.receiver.username} invites you to play ${newNotif.type} PongGame`, {
                     position: toast.POSITION.TOP_RIGHT,
                     onClick: () => {
-                        console.log('newnotify : ' ,newNotif)
-                        console.log('notif : ',notif)
                         setGame({playerID1: newNotif.sender.id, playerID2: newNotif.receiver.id, mode: newNotif.mode})
                         socketa?.emit('acceptNotification', { notif: newNotif });
-                        console.log('////////////////////')
                         navigate('/game/invite')
-                        console.log('!!!!!!!!!!!!!!!!!!!!!!')
                     }
                 });
             }
@@ -142,47 +142,58 @@ const ListNotification = () => {
 
     // Handle friend request or Game invitaion function
     const handleAccept = async (notif: Notifs) => {
-        
+        setNewNotif(false);
+
+        console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         if (notif.type === 'FRIEND') { // Handling friend request
-            const response = await fetch(
-                `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/accept-friend`,
-                {
-                    method: 'PUT',
-                    body: JSON.stringify({
-                        senderId: notif.sender.id,
-                        receiverId: notif.receiver.id,
-                        id: notif.id,
-                    }),
+            try {
+                const response = await axios.put(
+                  `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/accept-friend`,
+                  {
+                    senderId: notif.sender.id,
+                    receiverId: notif.receiver.id,
+                    id: notif.id,
+                  },
+                  {
                     headers: {
-                        'Content-Type': 'application/json',
+                      'Content-Type': 'application/json',
                     },
-                    credentials: 'include',
-                }
-            );
-    
-            const data = await response.json();
-            console.log('NEW FRIENDS', data);
-            setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
-            socketa?.emit('acceptNotification', { notif: notif });
+                    withCredentials: true, // Include credentials for cross-origin requests
+                  }
+                );
+          
+                const data = response.data;
+                console.log('NEW FRIENDS', data);
+                setNewNotifications((prevMembers) => prevMembers.filter((n) => n.id !== notif.id));
+                socketa?.emit('acceptNotification', { notif: notif });
+              } catch (error) {
+                // Handle any error that might occur during the request
+                console.error('Error accepting friend request', error);
+              }
         }
 
-        const response = await fetch(
-            `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
-            {
-            method: 'PUT',
-            credentials: 'include', // Include credentials for cross-origin requests
-            }
-        );
-
+        try {
+            const response = await axios.put(
+              `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
+              null, // No request body needed for this request
+              {
+                withCredentials: true, // Include credentials for cross-origin requests
+              }
+            );
         
-        const data = await response.json();
-        console.log('NOTIFICATION UPDATED', data);
+            const data = response.data;
+            console.log('NOTIFICATION UPDATED', data);
+          } catch (error) {
+            // Handle any error that might occur during the request
+            console.error('Error updating notification', error);
+          }
 
     }
 
 
     // Handle Refuse of friend request or Game invitation
     const handleRefuse = async (notif: Notifs) => {
+        setNewNotif(false)
 
         // Removing the notificaiton
         try {
@@ -201,18 +212,17 @@ const ListNotification = () => {
 
     // console.log('Notifs', notifications, newNotifications)
 
-    
 
     return (
         <>
             {
                 newNotifications?.map((notification: any, index: number) => (
                     <div key={index} className='add-friend-notific' >
-                        <img src={ notification.avatar } alt="sender_avatar" />
+                        <img src={ notification.sender.avatar } alt="sender_avatar" />
                         <span id='notific-user' >{ notification.sender.username }</span>
                         <span id='notific-title'>{ notification.content }</span>
-                        <button id='accept' onClick={() => handleAccept(notification)} ></button>
-                        <button id='refuse' onClick={() => handleRefuse(notification)}></button>
+                        <img id='accept' src="/src/imgs/checked.png" alt="accept" onClick={() => handleAccept(notification)} />
+                        <img id='refuse' src="/src/imgs/cancel1.png" alt="refuse" onClick={() => handleRefuse(notification)} />
                     </div>
                 ))
             }
@@ -228,9 +238,9 @@ function NavBarTwo (props:any) {
     const targetRef = useRef(null);
     const NotificRef = useRef(null);
     const dropRef = useRef(null);
-  const [myUrl, setMyUrl] = useUrl();
-  const { client, updateClient }  = useClient();
+    const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [newNotif, setNewNotif] = useNotif();
     // const [orientation, setOrientation] = useState<number>(window.orientation);
     const [isNotificOpen, setIsNotificOpen] = useState(false);
     const [listItems, setListItems] = useState<JSX.Element>();
@@ -238,7 +248,7 @@ function NavBarTwo (props:any) {
 
     const openDrop =  document.querySelector('.drop-menu2') as HTMLElement;
     const openNotification =  document.querySelector('.drop-notification') as HTMLElement;
-    const newNotification =  document.getElementById('newNotificaion') as HTMLElement;
+    // const newNotification =  document.getElementById('newNotificaion') as HTMLElement;
 
 
     const handleLogout = async() => {
@@ -278,6 +288,7 @@ function NavBarTwo (props:any) {
                 openDrop.style.height = '50px'
             }
         }
+        setNewNotif(false);
     };
 
 
@@ -288,7 +299,7 @@ function NavBarTwo (props:any) {
         if (!isNotificOpen)
             openNotification.style.height = '0px';
         else {
-            newNotification.style.display = 'none'
+            setNewNotif(false)
             if (window.innerWidth >= 900)
                 openNotification.style.height = '200px';
             else
@@ -324,16 +335,23 @@ function NavBarTwo (props:any) {
       };
     }, [isNotificOpen, isMenuOpen]);
     
+
+    const handel= () => {
+        setIsNotificOpen(!isNotificOpen); 
+        setNewNotif(false);
+    }
+
+
     return ( 
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" onClick={() => {setMyUrl(true)}} />
+                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
                 </Link>
                 <div className='right-bar'>
                     <button  id='notificDrop'   >
-                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" ref={NotificRef} onClick={() => setIsNotificOpen(!isNotificOpen)}  />
-                        <div id='newNotificaion'></div>
+                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" ref={NotificRef} onClick={handel}  />
+                        <div id='newNotificaion' style={!newNotif ? {display: 'none' } : {display: 'block'}}  ></div>
                     </button>
                     <div className='drop-notification'  ref={targetRef}  >
                         <ListNotification />

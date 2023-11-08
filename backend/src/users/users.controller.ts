@@ -79,6 +79,11 @@ export class UsersController {
       return this.userService.getAchievements(user['sub']);
   }
 
+  @Get('achievements/:id')
+  async UserIdAchievements(@Param('id', ParseIntPipe) userId:number) {
+      return this.userService.getAchievements(userId);
+  }
+
   @Post('add-friend/:id')
   @HttpCode(HttpStatus.CREATED)
   async addFriend(@Param('id', ParseIntPipe) friendId: number,
@@ -131,6 +136,12 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   async searchAnyUser(@Param('username') username: string, @Req() req: Request) {
     return this.userService.searchUser(username, req.user);
+  }
+
+  @Get('nonBlockedGlobalSearch/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchNonBlockedUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchSpecificUser(username, req.user);
   }
 
   @Get('search/:username')

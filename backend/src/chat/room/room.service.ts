@@ -61,7 +61,7 @@ export class RoomService {
             where: { id: roomId }
         })
         if (room) {
-            // console.log('Pass ', roomPass, room.roomPass)
+            console.log('Pass ', roomPass, room.roomPass)
             const passCheck = await bcrypt.compare(roomPass, room.roomPass)
             if (passCheck)
                 return true

@@ -33,7 +33,6 @@ function Friends_list(props:any) {
                     <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
-                    <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
                 </div>
             )
         })

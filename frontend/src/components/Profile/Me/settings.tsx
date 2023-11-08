@@ -65,9 +65,11 @@ const SettingsComponent: React.FC = () => {
             );
             const qrCodeUrl = response.data;
             await delay(1000); 
+
             setQrCode(qrCodeUrl);
           } catch (error) {
             await delay(1000);
+            throw '';
           }
         })(),
         {

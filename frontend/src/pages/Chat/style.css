@@ -47,7 +47,22 @@ body {
 
 }
 
+.contact-types {
+  margin: 0 auto;
+  text-align: center;
+  padding: 5px;
+  border-bottom: solid 1px #535990;
+}
 
+.button-chat-onclick {
+  margin: 10px;
+  padding: 10px;
+  background-color: #838bc9;
+  border: none;
+  border-radius: 5px;
+  color: aliceblue;
+  cursor: pointer;
+}
 
 .contact-name {
   font-size: 1.4em;
@@ -346,7 +361,7 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #828ccb7d;
+  /* border-bottom: 1px solid #828ccb7d; */
 }
 
 .searchContainer {

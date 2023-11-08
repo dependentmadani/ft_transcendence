@@ -8,7 +8,7 @@ interface User {}
 
 export const RoomFormInvite = ({ chatData }: any) => {
 
-    const [searchResults, setSearchResults] = useState<User | null>([])
+    const [searchResults, setSearchResults] = useState<User[] | null>([])
     const [username, setUsername] = useState('')
 
 
@@ -17,6 +17,7 @@ export const RoomFormInvite = ({ chatData }: any) => {
     }, [username])
     
     const getResults = async () => {
+        
         if (username) {
             try {
                 const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, {withCredentials: true})
