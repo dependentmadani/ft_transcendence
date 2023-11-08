@@ -1,23 +1,23 @@
-import axios from 'axios';
-import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import io, { Socket } from 'socket.io-client';
-
+import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 interface Game {
-    playerID1: number,
-    playerID2: number,
-    mode: string
+  playerID1: number;
+  playerID2: number;
+  mode: string;
 }
 
+interface GameContextType {
+  game: Game;
+  setGame: React.Dispatch<React.SetStateAction<Game>>;
+}
 
-const GameContext = createContext<Game | null>(null);
+const GameContext = createContext<GameContextType | undefined>(undefined);
 
 export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [_game, setGame] = useState<Game>({ playerID1: 0, playerID2: 0, mode: 'null' });
-
+  const [game, setGame] = useState<Game>({ playerID1: 0, playerID2: 0, mode: 'null' });
 
   return (
-    <GameContext.Provider value={[ _game, setGame ]}>
+    <GameContext.Provider value={{ game, setGame }}>
       {children}
     </GameContext.Provider>
   );
@@ -26,7 +26,7 @@ export const GameProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 export const useGame = () => {
   const context = useContext(GameContext);
   if (!context) {
-    throw new Error('useProfile must be used within a ProfileProvider');
+    throw new Error('useGame must be used within a GameProvider');
   }
   return context;
 };

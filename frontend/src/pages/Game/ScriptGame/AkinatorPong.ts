@@ -35,7 +35,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
 
         async function addHistory() {
             try {
-                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+                await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
                 {
                 opp_name: `akinator`,
                 opp_score: 5,

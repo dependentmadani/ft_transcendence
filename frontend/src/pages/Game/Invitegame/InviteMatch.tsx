@@ -1,6 +1,5 @@
 import { useEffect, useRef,useState } from 'react'
 import '../ComponentReact/classic.css'
-import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/InviteMatchPong'
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +17,6 @@ type MyComponentProps = {
   ProfileID2: number;
 };
 
-// const MyComponent: React.FC<MyComponentProps> = ({ name, age }) => {
 const InviteMatch: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
 {
   const [musicOn, setMusicOn] = useState(true);
@@ -35,8 +33,6 @@ const InviteMatch: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
   
   const [leftballs, setLeftBalls] = useState<number>(0);
   const [rightballs, setRightBalls] = useState<number>(0);
-  // const [ProfileID1, setProfileID1] = useState(0);
-  // const [ProfileID2, setProfileID2] = useState(0);
   const [Userdata, setUserdata] = useState<User>()
 
   const [user1, setUser1] = useState<User | null>(null);
@@ -147,13 +143,11 @@ useEffect(() => {
     return (
       
       <div className='game-mode'>
-          {/* <div >
-          </div> */}
         <div className='game-dimension'>
           <div id='players'>
               <div id="profile1"> 
-                  <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
-                    {/* <span className='profile1id'>{user1?.username}  </span> */}
+                  <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                    target.src = '/src/imgs/user-img.png'; }} />
                   <div className='profile1id' > {user1?.username}</div>
                   <div className="BallScore1">
                     {score.map((element, index) => (
@@ -163,8 +157,8 @@ useEffect(() => {
               </div>
                     <img className= "players-vs" src="/src/assets/img/vs.png"/>
               <div id="profile2">
-                <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
-                {/* <span className='profile2id'> {user2?.username}</span> */}
+                <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                  target.src = '/src/imgs/user-img.png'; }} />
                 <div className='profile2id'>  {user2?.username} </div>
                 <div className="BallScore2">
                   {score.map((element, index) => (

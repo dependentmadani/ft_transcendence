@@ -4,12 +4,13 @@ import  { useEffect, useState, useRef } from 'react';
 import { useClient } from '@/context/clientContext';
 import Client from '@/components/ClientClass/client';
 import axios from 'axios';
-import { Socket } from 'socket.io-client';
+// import { Socket } from 'socket.io-client';
 import { useSocket } from '@/context/socketContext';
 import { toast } from 'react-toastify';
 import { useGame } from '@/context/GameContext';
-import { useFetch } from '@/context/fetchContext';
+// import { useFetch } from '@/context/fetchContext';
 import { useNotif } from '@/context/newNotif';
+import { useUrl } from '@/context/UrlContext';
 
 interface Notifications {
     id: number,
@@ -39,9 +40,8 @@ const ListNotification = () => {
     const [notifications, setNotifications] = useState<Notifications[]>([])
     const [newNotifications, setNewNotifications] = useState<Notifs[]>([])
     const {socketa} = useSocket();
-    const [_game, setGame] = useGame();
-    const [fetch, setFetch] = useFetch();
-    const [newNotif, setNewNotif] = useNotif();
+    const {setGame} = useGame();
+    const { setNewNotif}= useNotif();
     const navigate = useNavigate();
 
 
@@ -79,10 +79,6 @@ const ListNotification = () => {
                         mode: notification.mode,
                     };
 
-                    
-                    
-                    // Only My notifs and pendending status stay
-                    // console.log('psps', newNotif.status, newNotif.receiver.id, mainUser.id)
                     if (newNotif.status === false && newNotif.receiver.id === mainUser.id && newNotif.type === 'FRIEND')
                         return newNotif
                     return null
@@ -101,7 +97,7 @@ const ListNotification = () => {
 
     useEffect(() => {
         socketa?.on('receiveNotification', async (notif: any) => {
-            // console.log('Notiiiiiiiiiiiiiif', notif)
+
             const sender = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${notif.senderId}`, {withCredentials: true})).data;
                     
             const newNotif: Notifs = {
@@ -144,10 +140,9 @@ const ListNotification = () => {
     const handleAccept = async (notif: Notifs) => {
         setNewNotif(false);
 
-        // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
         if (notif.type === 'FRIEND') { // Handling friend request
             try {
-                const response = await axios.put(
+                 await axios.put(
                   `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/accept-friend`,
                   {
                     senderId: notif.sender.id,
@@ -162,7 +157,6 @@ const ListNotification = () => {
                   }
                 );
           
-                const data = response.data;
                 // console.log('NEW FRIENDS', data);
                 setNewNotifications((prevMembers) => prevMembers.filter((n) => n.id !== notif.id));
                 socketa?.emit('acceptNotification', { notif: notif });
@@ -173,7 +167,7 @@ const ListNotification = () => {
         }
 
         try {
-            const response = await axios.put(
+             await axios.put(
               `http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}`,
               null, // No request body needed for this request
               {
@@ -181,7 +175,6 @@ const ListNotification = () => {
               }
             );
         
-            const data = response.data;
             // console.log('NOTIFICATION UPDATED', data);
           } catch (error) {
             // Handle any error that might occur during the request
@@ -197,8 +190,6 @@ const ListNotification = () => {
 
         // Removing the notificaiton
         try {
-            // console.log('Notif', notif)
-            // if (notif.type === 'FRIEND')
                 const res = await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
                 console.log('res', res.data)
         }
@@ -206,11 +197,8 @@ const ListNotification = () => {
             console.log(`Coudn't delete notification: `, err)
         }
 
-        // socketa?.emit('removeNotification', 4)
         setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
     }
-
-    // console.log('Notifs', notifications, newNotifications)
 
 
     return (
@@ -231,24 +219,21 @@ const ListNotification = () => {
 }
 
 
-function NavBarTwo (props:any) {
-
-    // const target1Ref = useRef(null);
-    const MenuRef = useRef(null);
-    const targetRef = useRef(null);
-    const NotificRef = useRef(null);
-    const dropRef = useRef(null);
+function NavBarTwo () {
+    const targetRef = useRef<HTMLDivElement | null>(null);
+    const NotificRef = useRef<HTMLImageElement | null>(null);
+    const dropRef = useRef<HTMLUListElement | null>(null);
+    const MenuRef = useRef<HTMLImageElement | null>(null);
     const { client, updateClient }  = useClient();
+    const [, setMyUrl] = useUrl();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [newNotif, setNewNotif] = useNotif();
-    // const [orientation, setOrientation] = useState<number>(window.orientation);
+    const {newNotif, setNewNotif} = useNotif();
     const [isNotificOpen, setIsNotificOpen] = useState(false);
     const [listItems, setListItems] = useState<JSX.Element>();
     const navigate = useNavigate();
 
     const openDrop =  document.querySelector('.drop-menu2') as HTMLElement;
     const openNotification =  document.querySelector('.drop-notification') as HTMLElement;
-    // const newNotification =  document.getElementById('newNotificaion') as HTMLElement;
 
 
     const handleLogout = async() => {
@@ -317,13 +302,13 @@ function NavBarTwo (props:any) {
 
 
     useEffect(() => {
-      const handleClick = (event) => {
-        if ((targetRef.current && !targetRef.current.contains(event.target)) && 
-            (NotificRef.current && !NotificRef.current.contains(event.target))) {
+      const handleClick = (event: MouseEvent) => {
+        if ((targetRef.current && !targetRef.current.contains(event.target as Node)) && 
+            (NotificRef.current && !NotificRef.current.contains(event.target as Node))) {
             setIsNotificOpen(false);
         }
-        if ((dropRef.current && !dropRef.current.contains(event.target)) && 
-            (MenuRef.current && !MenuRef.current.contains(event.target))) {
+        if ((dropRef.current && !dropRef.current.contains(event.target as Node)) && 
+            (MenuRef.current && !MenuRef.current.contains(event.target as Node))) {
             setIsMenuOpen(false)
         }
       };
@@ -346,7 +331,7 @@ function NavBarTwo (props:any) {
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
+                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" onClick={() => {setMyUrl(true)}} />
                 </Link>
                 <div className='right-bar'>
                     <button  id='notificDrop'   >
@@ -357,7 +342,7 @@ function NavBarTwo (props:any) {
                         <ListNotification />
                     </div>
                     <button id='drop2'  > 
-                        <img className='user-img2' src={client.avatar} alt="user-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
+                        <img className='user-img2' src={client.avatar || '/src/imgs/user-img.png'} alt="user-img" ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
                     </button>
                 </div>
                 <ul className="drop-menu2" ref={dropRef} >

@@ -4,20 +4,17 @@ import { useClient } from '@/context/clientContext';
 import {  toast } from 'react-toastify';
 
 
-export default function Home(props:any) {
+export default function Home() {
 
 
-    const { client, updateClient }  = useClient();
+    const { client}  = useClient();
     const  navigate = useNavigate();
 
 
-    // console.log('home')
-    // console.log(client)
     
 
     const handelStart = () => {
 
-        // console.log('################')
         if (!client.signedIn)
             navigate('/login');
         else
@@ -28,9 +25,6 @@ export default function Home(props:any) {
     return (
             <main className='main-home' >
                 <div className="dscp-home">
-                    {/* <h1 style={divStyle}>UserName : {client.username}</h1>
-                    <button onClick={handleLogin} >Login</button>
-                    <button onClick={handleLogout} >Logout</button> */}
                     <div id='home-title' >
                         <span className="title1"> MSKOTA </span>
                         <span className="title2"> LET'S PLAY<br /> <span className="tab">PONG</span></span>

@@ -3,6 +3,7 @@ import {
   IsInt,
   IsDate,
   ValidateIf,
+  Length
 } from 'class-validator';
 
 export class users {
@@ -16,6 +17,7 @@ export class users {
   userId: number;
 
   @IsString()
+  @Length(1, 20)
   username: string;
 
   @IsString()
@@ -36,6 +38,7 @@ export class UserModify {
       !dto.avatar || (dto.username && dto.avatar),
   )
   @IsString()
+  @Length(1, 20)
   username?: string;
 
   @ValidateIf(

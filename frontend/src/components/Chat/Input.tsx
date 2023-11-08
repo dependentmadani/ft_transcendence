@@ -8,7 +8,7 @@ import { useShow } from "@/context/ShowFormContext"
 export const Input = ({ chatData, isAllowed }: any) => {
 
   const [inputText, setInputText] = useState('')
-  const [show, setShow] = useShow();
+  const [show] = useShow();
   const currentChat = chatData?._chat
   
 

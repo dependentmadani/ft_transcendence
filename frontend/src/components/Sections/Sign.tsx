@@ -1,11 +1,11 @@
 // import '/Login.css'
-import SignUp from '@/pages/SignUp/SignUp';
-import Login from '@/pages/Login/Login';
-import { Link, useNavigate} from "react-router-dom"
+import SignUp from '@/pages/SignUp/signup';
+import Login from '@/pages/Login/login';
+import { useNavigate} from "react-router-dom"
 import { useEffect } from 'react';
 import axios from "axios";
 import { useClient } from '@/context/clientContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import Login2FA from '@/pages/Login/login_2fa'
 
 

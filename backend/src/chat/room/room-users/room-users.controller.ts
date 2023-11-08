@@ -1,6 +1,5 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req } from '@nestjs/common';
 import { RoomUsersService } from './room-users.service';
-import { Public } from "src/decorator";
 import { ChatService } from 'src/chat/chat.service';
 import { Chat, Room, RoomUsers, Users } from '@prisma/client';
 import { RoomService } from '../room.service';
@@ -46,7 +45,8 @@ export class RoomUsersController {
             const _receiver: Users = await this.userService.findUserById(receiver);
 
             // Check if receiver is not blocked
-            if (!this.userService.checkBlockedFriend(me, receiver))
+            // console.log('000', this.userService.checkBlockedFriend(me, receiver), this.userService.checkBlockedFriend(receiver, me))
+            if (!(await this.userService.checkBlockedFriend(me, receiver)) && !(await this.userService.checkBlockedFriend(receiver, me)))
                 return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
             return null
         });
@@ -72,9 +72,6 @@ export class RoomUsersController {
             return dateB - dateA;
         });
 
-        // console.log('Contacts', contacts);
-        // const filteredContacts: any = sortedContacts.filter((contact) => contact !== null);
-    //     setChats(filteredChatsData)
         return sortedContacts
     }
 

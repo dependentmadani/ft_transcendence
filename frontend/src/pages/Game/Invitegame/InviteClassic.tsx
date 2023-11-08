@@ -1,6 +1,5 @@
 import { useEffect, useRef,useState } from 'react'
 import '../ComponentReact/classic.css'
-import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/InviteClassicPong'
 import { useNavigate } from 'react-router-dom';
@@ -25,10 +24,6 @@ const InviteClassic: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
   const [soundOn, setSoundOn] = useState(true);
   const navigate = useNavigate();
 
-  const goback = () => {
-    setMusicOn(false);
-    navigate('/game')
-  }
   const flag = useRef(false)
   const canvas = useRef(null)
   const [size, setSize] = useState<'small' | 'medium'>('medium');
@@ -148,12 +143,14 @@ useEffect(() => {
         <div className='game-dimension'>
           <div id='players'>
               <div id="profile1"> 
-                  <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
+                  <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                    target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
                   <div className='profile1id' > {user1?.username}</div>
               </div>
                     <img className= "players-vs" src="/src/assets/img/vs.png"/>
               <div id="profile2">
-                <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                  target.src = '/src/imgs/user-img.png'; }} />
                 <div className='profile2id'>  {user2?.username} </div>
               </div>
           </div>

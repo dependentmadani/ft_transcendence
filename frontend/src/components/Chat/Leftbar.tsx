@@ -5,15 +5,9 @@ import { Search } from './Search/Search';
 
 export  const Leftbar = ({ onValueChange, chatData }: any) => {
 
-  const categories = ["Your Chats", "Available Rooms"];
   const [category, setCategory] = useState("Your Chats");
 
 
-  function ButtonCategoryStyle({title, onClick}) {
-    return <button className="button-chat-onclick" onClick={onClick}>
-      {title}
-    </button>
-  }
 
   return (
     <div id='leftSideBar' className="leftSidebar">

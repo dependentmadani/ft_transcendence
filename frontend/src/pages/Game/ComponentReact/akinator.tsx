@@ -1,12 +1,11 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/AkinatorPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { useStart } from '@/context/startContext';
-import { useUrl } from '@/context/UrlContext';
+// import { useUrl } from '@/context/UrlContext';
 import Discripion from './description';
 
 
@@ -21,13 +20,8 @@ export default function Akinator()
   const [soundOn, setSoundOn] = useState(true);
   const [start, setStart] = useStart();
   const navigate = useNavigate();
-  const [myUrl, setMyUrl] = useUrl();
+  // const [myUrl, setMyUrl] = useUrl();
 
-
-  const goback = () => {
-    setMusicOn(false);
-    navigate('/game')
-  };
 
   const flag = useRef(false)
   const canvas = useRef(null)
@@ -41,17 +35,14 @@ export default function Akinator()
     if (flag.current === false)
     {
       ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
-      flag.current = true 
-      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+      flag.current = true
     }
   }
   
   async function addHistory(sure:boolean) {
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : ', rightballs)
     if ((leftballs === 5 || rightballs === 5 || sure) && start) {
-      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
       try {
-        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+        await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
         {
           opp_name: `akinator`,
           opp_score: sure ? 5 : leftballs,
@@ -59,10 +50,8 @@ export default function Akinator()
         },
         {withCredentials: true}
         )
-        console.log('res : ', res)
         setStart(false)
       }catch (err) {
-        console.log('Error Fetcing data : ', err)
       }
     }
   }
@@ -141,7 +130,7 @@ export default function Akinator()
 
 
   useEffect(() => {
-    const handleBeforeUnload = (event) => {
+    const handleBeforeUnload = () => {
       if (start) {
         addHistory(true) 
       }
@@ -161,7 +150,9 @@ export default function Akinator()
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src='/src/imgs/boot.jpg' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}   />
+                <img className='profile1Img' src='/src/imgs/boot.jpg' onError={(e) => { 
+                  const target = e.target as HTMLImageElement
+                  target.src = '/src/imgs/user-img.png'; }}   />
                 <div className='profile1id'> Akinator </div>
                 <div className="BallScore1">
                   {score.map((element, index) => (
@@ -173,7 +164,8 @@ export default function Akinator()
             </div>
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={Userdata?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+              <img className='profile2Img' src={Userdata?.avatar} onError={(e) => { const target = e.target as HTMLImageElement 
+                target.src = '/src/imgs/user-img.png'; }} />
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (

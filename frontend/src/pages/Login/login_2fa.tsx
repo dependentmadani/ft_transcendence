@@ -1,9 +1,9 @@
-import Reacr ,{ useEffect, useState } from 'react';
+import { useState } from 'react';
 import './login.css';
 import axios from 'axios';
 import { useNavigate, } from 'react-router-dom';
 import { useClient } from '@/context/clientContext';
-import { ToastContainer, toast } from 'react-toastify';
+import {  toast } from 'react-toastify';
 
 
 
@@ -11,8 +11,7 @@ const Login2FA: React.FC = () => {
 
 	
 	const [code, setcode] = useState<string>('');
-	const [fetchCode, setFetchCode] = useState<boolean>(false);
-	const {client, updateClient} = useClient();
+	const {client} = useClient();
 	const navigate = useNavigate();
 
 
@@ -22,7 +21,6 @@ const Login2FA: React.FC = () => {
 			{ code: code },
 			{ withCredentials: true }
 			);
-			// console.log('response.data : ', response.data);
 			if (!response.data) {
 				toast.error("Invalid Code !", {
 					position: toast.POSITION.TOP_LEFT
@@ -41,9 +39,8 @@ const Login2FA: React.FC = () => {
 	}
 
 
-	const handleKeyDown = (event) => {
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		if (event.key === 'Enter') {
-		//   console.log('hlwa')
 		  event.preventDefault();
 		  checkCode();
 		}
@@ -56,7 +53,7 @@ const Login2FA: React.FC = () => {
 		</span>
 		<form className='signup-form'>
 			<div className='updateAvatar'>
-				<img src={client.avatar} className='img-avatar' alt='User Avatar' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+			<img src={client.avatar || '/src/imgs/user-img.png'} className='img-avatar' alt='User Avatar'/>
 			</div>
 			<input
 				type='text'

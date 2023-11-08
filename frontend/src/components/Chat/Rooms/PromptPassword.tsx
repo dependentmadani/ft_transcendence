@@ -6,8 +6,8 @@ import { useRightBar } from "@/context/RightBarContext";
 export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
     const currentRoom: Contact = chatData?._chat
     const [pass, setPass] = useState('')
-    const [show, setShow] = useShow();
-    const [rightBar, setRightBar] = useRightBar();
+    const [, setShow] = useShow();
+    const [, setRightBar] = useRightBar();
 
 
     const checPassword = async () => {
@@ -34,7 +34,7 @@ export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
                             setRightBar(true);
                         }
                         else {
-                            const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                            await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                                 roomId: currentRoom.id,
                                 userId: chatData._mainUser.id,
                                 userUsername: chatData._mainUser.username,

@@ -1,37 +1,27 @@
-import { createBrowserRouter, Navigate, useParams } from "react-router-dom";
+import { createBrowserRouter, Navigate } from "react-router-dom";
 import DefaultSection from "@/components/Sections/defaultSection";
 import Sign from "@/components/Sections/Sign";
 import Section from "@/components/Sections/Section/Section";
 import { useClient } from "@/context/clientContext";
-import NotFriendProfile from  "@/components/Profile/NotFriend/NotFriendProfile"
-import FriendProfile from "@/components/Profile/Friend/FriendProfile"
 import { useUrl } from "./context/UrlContext";
 import { useEffect } from "react";
-// import { AuthLayout } from "./pages/layouts/AuthLayout";
-
-// import { Chattest } from "./pages/Chattest";
-
-// const navigate = useNavigate();
 
 
 function GetRouteElement(props:any) {
     
     const { client } = useClient();
-    const [myUrl, setMyUrl] = useUrl();
+    const [myUrl] = useUrl();
 
     const defaultList = ['/', '/home', '/about', '/team'];
     const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
-    // console.log(props.tag)
 
     useEffect(() => {
         if (myUrl) {
             location.reload();
         }
     }, [myUrl])
-    // console.log(client.signedIn)
-    // console.log(defaultList.includes(props.tag), list.includes(props.tag))
+    
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
-        // console.log('**********************')
         if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
             return <DefaultSection section={props.tag} />;
         else if (!client.signedIn && list.includes(props.tag))
@@ -69,73 +59,4 @@ export const router = createBrowserRouter([
         ],
     },
 ]);
-
-// export const router = createBrowserRouter([
-//     {
-//         // element: <AuthLayout />,
-//         children: [
-//             {   path: '/', 
-//                 element:  (client.signedIn && !client.signedUp) ? <Sign tag='signup' /> : 
-//                     <DefaultSection section='home' />
-//             },
-            
-//             {   path: '/home', 
-//                 element:  (client.signedIn && !client.signedUp) ? <Sign tag='signup' /> :  
-//                     <DefaultSection section='home' />
-//             },
-            
-//             {   path: '/about', 
-//                 element:  (client.signedIn && !client.signedUp) ? <Sign tag='signup' /> : 
-//                     <DefaultSection section='about' />
-//             },
-            
-//             {   path: '/team', 
-//                 element:  (client.signedIn && !client.signedUp) ? <Sign tag='signup' /> : 
-//                     <DefaultSection section='team' />
-//             },
-            
-//             {   path: '/login', 
-//                 element: 
-//                     !client.signedIn ? <Sign tag='login' /> : 
-//                     !client.signedUp ?  <Navigate to='/signup'  /> :
-//                     <Navigate to='/'  />
-//             },
-            
-//             {   path: '/signup', 
-//                 element:                
-//                     !client.signedIn ? <Sign tag='login' /> : 
-//                     !client.signedUp ?  <Navigate to='/signup'  /> :
-//                     <Navigate to='/'  />
-//             },
-            
-//             {   path: '/profile', 
-//                 element:  
-//                     !client.signedIn ? <Navigate to='/login'  /> : 
-//                     !client.signedUp ?  <Navigate to='/signup'  /> :
-//                     <Section section='profile' /> 
-//             },
-            
-//             {   path: '/chat', 
-//                 element:  
-//                     !client.signedIn ? <Navigate to='/login'  /> : 
-//                     !client.signedUp ?  <Navigate to='/signup'  /> :
-//                     <Section section='chat' /> 
-//             },
-            
-//             {   path: '/game', 
-//                 element:  
-//                     !client.signedIn ? <Navigate to='/login'  /> : 
-//                     !client.signedUp ?  <Navigate to='/signup'  /> :
-//                     <Section section='game' /> 
-//             },
-            
-//             // { path: '/game/akinator', element: <Akinator /> },
-//             // { path: '/game/ClassicGame', element: <ClassicGame /> },
-//             // { path: '/game/matchgame', element: <MatchGame /> },
-//             // { path: '/', element: <Lista /> },
-//         ]
-//     }
-// ])
-
-
 

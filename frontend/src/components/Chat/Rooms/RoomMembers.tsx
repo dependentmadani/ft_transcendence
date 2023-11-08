@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBriefcase, faUser, faBellSlash, faBan, faUserLargeSlash, faUserLarge, faBell, faUserTie } from '@fortawesome/free-solid-svg-icons';
-import { useRightBar } from '@/context/RightBarContext';
+import { faBriefcase, faUser, faBellSlash, faBan, faBell, faUserTie } from '@fortawesome/free-solid-svg-icons';
 
 
 

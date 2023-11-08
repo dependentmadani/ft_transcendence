@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import './SignUp.css';
+import './signup.css';
 import axios from 'axios';
 import { useNavigate, } from 'react-router-dom';
 import { useClient } from '@/context/clientContext';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 function SetInfo() {
@@ -14,7 +14,7 @@ function SetInfo() {
   const {client, updateClient} = useClient();
   const [fetchData, setFetchData] = useState<boolean>(false);
   const navigate = useNavigate();
-  // console.log('signup')
+
   
   useEffect(() => {
     async function fetchUserData() {
@@ -29,7 +29,6 @@ function SetInfo() {
           await updateClient({ ...client, ...response.data, signedIn: true });
         if (response.data.signedUp)
           navigate('/')
-        // console.log('response.data : ', response.data);
       } catch (error) {
         console.error('Error fetching data: ', error);
       }
@@ -69,7 +68,7 @@ function SetInfo() {
         }  
       )
       if (fileUploaded) {
-        const gg = await axios.post(
+        await axios.post(
           `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${userId}/infos`,
           {
             avatar: fileUploaded,
@@ -79,7 +78,6 @@ function SetInfo() {
             headers: { 'Content-Type': 'multipart/form-data' },
           }
         );
-        // console.log('dataupdate : ' , gg.data)
       }
       setFetchData(true);
     } catch (error) {
@@ -90,20 +88,19 @@ function SetInfo() {
     }
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'Enter') {
-      // console.log(`hlwa {${event}} `)
       event.preventDefault();
-      if (username !== '')
+      if (username !== '') {
         handleSubmit();
-      else {
+      } else {
         toast.warn("Empty Username !", {
           position: toast.POSITION.TOP_LEFT
         });
       }
     }
   };
-  // ムハンマド
+  
   return (
     <div className='main-signup'>
       <span id='signup-header'>

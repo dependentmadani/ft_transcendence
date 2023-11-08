@@ -6,11 +6,9 @@ import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
 
 const renderActiveShape = (props: any) => {
-  const RADIAN = Math.PI / 180;
   const {
     cx,
     cy,
-    midAngle,
     innerRadius,
     outerRadius,
     startAngle,
@@ -22,16 +20,6 @@ const renderActiveShape = (props: any) => {
     totalValue
     // nvalue
   } = props;
-  const lineP = ((outerRadius * 2) / 10);
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 5) * cos;
-  const sy = cy + (outerRadius + 5) * sin;
-  const mx = cx + (outerRadius + lineP) * cos;
-  const my = cy + (outerRadius + lineP) * sin;
-  const ex = mx + (cos >= 0 ? 1 : -1) * lineP / 2;
-  const ey = my;
-  const textAnchor = cos >= 0 ? "start" : "end";
 
   return (
     <g>
@@ -91,17 +79,11 @@ const renderActiveShape = (props: any) => {
 export default function MyPieChart(props:any) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
-    (_, index) => {
+    (_:any, index:number) => {
       setActiveIndex(index);
     },
     [setActiveIndex]
   );
-  // console.log('wwwww : ' , props.gameData.wins)
-
-  // const data = [
-  //   { name: "Wins", value: 12, color: "#00C49F"},
-  //   { name: "Loses", value: 10, color: "#F85B30" }
-  // ];
 
   const data = [
     { name: "Wins", value: props.gameData.wins, color: "#00C49F"},
@@ -116,7 +98,7 @@ export default function MyPieChart(props:any) {
       <PieChart>
         <Pie
           activeIndex={activeIndex}
-          activeShape={(props) =>renderActiveShape({...props, totalValue: totalValue})}
+          activeShape={(props:any) =>renderActiveShape({...props, totalValue: totalValue})}
           data={data}
           innerRadius="65%"
           outerRadius="82%"

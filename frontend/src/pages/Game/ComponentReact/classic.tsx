@@ -1,13 +1,11 @@
 import { useEffect, useRef,useState } from 'react'
 import './classic.css'
-import { IoMdExit} from "react-icons/io";
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ReactSVG } from "react-svg";
 import { useStart } from '@/context/startContext';
-import { useUrl } from '@/context/UrlContext';
+// import { useUrl } from '@/context/UrlContext';
 import Discripion from './description';
 
 interface User
@@ -24,8 +22,8 @@ export default function ClassicGame()
   const flag = useRef(false)
   const canvas = useRef(null)
   const [musicOn, setMusicOn] = useState(true);
-  const [start, setStart] = useStart();
-  const [myUrl, setMyUrl] = useUrl();
+  const [, setStart] = useStart();
+  // const [myUrl, setMyUrl] = useUrl();
   const [soundOn, setSoundOn] = useState(true);
   const [size, setSize] = useState<'small' | 'medium'>('medium');
   
@@ -36,7 +34,7 @@ export default function ClassicGame()
   const [Userdata, setUserdata] = useState<User>()
 
   const [user1, setUser1] = useState<User | null>(null);
-const [user2, setUser2] = useState<User | null>(null);
+  const [user2, setUser2] = useState<User | null>(null);
 
 
 
@@ -153,12 +151,14 @@ useEffect(() => {
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src={user1?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                  target.src = '/src/imgs/user-img.png'; }} />
                 <div className='profile1id' > {user1?.username}</div>
             </div>
             <img className= "players-vs" src="/src/imgs/vs5.png"/>
             <div id="profile2">
-              <img className='profile2Img' src={user2?.avatar} onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+              <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
+                target.src = '/src/imgs/user-img.png'; }} />
               <div className='profile2id'>  {user2?.username} </div>
             </div>
         </div>

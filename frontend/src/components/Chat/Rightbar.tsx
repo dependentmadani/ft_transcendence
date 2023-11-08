@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import { ChatInfos } from "./Chats/ChatInfos"
 import { RoomInfos } from "./Rooms/RoomInfos"
 import { useRightBar } from "@/context/RightBarContext";
+import { useRightBarChat } from "@/context/rightbarChat";
 import axios from "axios";
 
 export const Rightbar = ({ chatData }: any) => {
   
   const currentRoom: Contact = chatData?._chat
   const [isAllowed, setIsAllowed] = useState(true);
-  const [rightBar, setRightBar] = useRightBar();
+  const [rightBar] = useRightBar();
+  const [rightBarChat] = useRightBarChat();
 
   useEffect(() => {
 
@@ -38,10 +40,9 @@ export const Rightbar = ({ chatData }: any) => {
 
 
   
-  
   return (
     <div id='RightSidebar' className="rightSidebar">
-        { chatData && chatData?._chat?.type === 'Chat' && <ChatInfos chatData={ chatData } /> }
+        { rightBarChat && chatData && chatData?._chat?.type === 'Chat' && <ChatInfos chatData={ chatData } /> }
         { (isAllowed  || rightBar) && chatData && chatData?._chat?.type === 'Room' && <RoomInfos chatData={ chatData } /> }
     </div>
   )

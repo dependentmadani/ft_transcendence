@@ -18,27 +18,27 @@ interface User {
 export const GameInviteForm = ({ onClose, chatData }: any) => {
 
     const GameInviteRef = useRef<HTMLDivElement>(null);
-    const [loading, setLoading] = useState(false);
-    const [remainingTime, setRemainingTime] = useState(15)
+    // const [loading, setLoading] = useState(false);
+    // const [remainingTime, setRemainingTime] = useState(15)
     const { socketa } = useSocket();
-    const [_game, setGame] = useGame();
+    const { setGame } = useGame();
     const navigate = useNavigate();
-
+ 
     const mainUser: User =  chatData._mainUser
     const _receiver: User = chatData?._receiver
 
-    const startLoading = () => {
-        setLoading(true);
-        const interval = setInterval(() => {
-            setRemainingTime(prevTime => prevTime - 1);
-        }, 1000);
+    // const startLoading = () => {
+    //     setLoading(true);
+    //     const interval = setInterval(() => {
+    //         setRemainingTime(prevTime => prevTime - 1);
+    //     }, 1000);
 
-        setTimeout(() => {
-            setLoading(false);
-            clearInterval(interval);
-            setRemainingTime(15);
-        }, 15000);
-    };
+    //     setTimeout(() => {
+    //         setLoading(false);
+    //         clearInterval(interval);
+    //         setRemainingTime(15);
+    //     }, 15000);
+    // };
   
     // handling the opening and the closing of the form
     useEffect(() => {
@@ -64,7 +64,7 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
         navigate('/game/invite')
     }
     
-    useEffect(() => { 
+    useEffect(() => {
 
       socketa?.on('notificationAccepted', notificationListener);
 
@@ -76,7 +76,6 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
 
     const sendGameInvite = async (mode: string) => {
         try {
-            
                 const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {
                     'type': 'GAME',
                     'read': false,
@@ -86,8 +85,9 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
                 }, {
                     withCredentials: true
                 })
+                console.log('WE TRYNNA PLAY MR ', res.data)
 
-            socketa.emit('notification', { notif: res.data });
+            socketa?.emit('notification', { notif: res.data });
         }
         catch (err) {
             console.log(`coudn't create notification: `, err)
@@ -102,11 +102,11 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
                 <h2 className='change-room-name'>Choose a mode and notify { _receiver?.username } </h2>
                 <div className="roomFomrs">
                     <div className="modes">
-                        <a href='#' ><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} onClick={ () => sendGameInvite('classic') } />Classic Mode</a>
-                        <a href='#' ><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} onClick={ () => sendGameInvite('tennis') } />Tennis Mode</a>
+                        <a><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} onClick={ () => sendGameInvite('classic') } />Classic Mode</a>
+                        <a><FontAwesomeIcon className="info-icon" icon={faTableTennisPaddleBall} onClick={ () => sendGameInvite('tennis') } />Tennis Mode</a>
                     </div>
-                    <button className='send-game' onClick={startLoading} disabled={loading}>play</button>
-                    {loading && <div className="loading-animation">Waiting for { _receiver?.username } to accept... {remainingTime}s</div>}
+                    {/* <button className='send-game' onClick={startLoading} disabled={loading}>play</button>
+                    {loading && <div className="loading-animation">Waiting for { _receiver?.username } to accept... {remainingTime}s</div>} */}
                 </div>
             </div>
         </div>

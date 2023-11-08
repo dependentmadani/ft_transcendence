@@ -1,4 +1,4 @@
-import {io, Socket } from 'socket.io-client'
+import { Socket } from 'socket.io-client'
 
 
 
@@ -6,7 +6,7 @@ class Client {
     id: number;
     socket: Socket | null;
     username: string;
-    avatar: File | null;
+    avatar: string | null;
     createdAt: Date | null;
     userStatus: string;
     isActive: boolean;
@@ -20,7 +20,10 @@ class Client {
     signedIn: boolean;
     signedUp: boolean;
     search: string | null;
-  
+    blocked: [] | null;
+    friends: [] | null;
+    games: [] | null;
+   
     constructor() {
       this.socket = null;
       this.id = -1;
@@ -39,6 +42,9 @@ class Client {
       this.signedIn = false;
       this.signedUp = false;
       this.search  = 'null';
+      this.blocked = null;
+      this.friends = null;
+      this.games = null;
     }
     
     

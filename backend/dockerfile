@@ -14,9 +14,9 @@ RUN npx prisma generate
 RUN npm run build
 
 RUN npm rebuild bcrypt --update-binary
-# npm run start:dev
+
 EXPOSE 8000
 
 ENTRYPOINT [ "sh", "script_helper.sh" ]
 
-CMD [ "npm", "run", "start:dev" ]
+CMD [ "npm", "run", "start" ]

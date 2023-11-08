@@ -1,11 +1,14 @@
 import './classic.css'
-
+import { useStart } from '@/context/startContext';
 
 export default function  Discripion(props:any) {
 
+	const [start] = useStart();
+
+
 	if (props.mode === 'tennis') {
 		return(
-			<div className="discription-game">
+			<div className="discription-game" style={start ? {display: 'none'} : {display: 'block'}} >
 				<div className='discription-title' >Welcome to Tennis Mode!</div>
 				<br /> This exciting variation of 2D Pong allows you and a friend to engage in a tennis-style match, controlling your paddles with the mouse.
 				<br /> controlling your paddles with the mouse.<br />  
@@ -19,7 +22,7 @@ export default function  Discripion(props:any) {
 	}
 	else if (props.mode === 'classic') {
 		return(
-			<div className="discription-game">
+			<div className="discription-game" style={start ? {display: 'none'} : {display: 'block'}} >
 				<div className='discription-title' >Welcome to 2D Pong! </div>
 				<br /> This is a classic arcade game inspired by the original 1972 Pong. The objective is simple: prevent the ball from getting past your paddle while trying to outmaneuver your opponent.<br />
 				<ul>
@@ -32,7 +35,7 @@ export default function  Discripion(props:any) {
 	}
 	else if (props.mode === 'akinator') {
 		return(
-			<div className="discription-game">
+			<div className="discription-game" style={start ? {display: 'none'} : {display: 'block'}} >
 				<div className='discription-title' >Welcome to Akinator Training Mode!</div>
 				<br /> An engaging feature that allows you to hone your skills against Akinator, while experiencing an immersive Arabesque-themed environment.<br />  
 				<ul>

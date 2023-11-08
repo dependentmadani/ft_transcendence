@@ -4,20 +4,19 @@ import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
 import { useShow } from "@/context/ShowFormContext"
-import { Rightbar } from "../Rightbar"
 import { useRightBar } from "@/context/RightBarContext"
+import { useSocket } from '@/context/socketContext';
+import { useRightBarChat } from "@/context/rightbarChat";
 
 export const Chat = ({ state, chatData, messages }: any) => {
 
   const currentRoom: Contact = chatData?._chat
   const [isAllowed, setIsAllowed] = useState(false)
-  const [isRemoved, setIsRemoved] = useState(false)
-  // const [showForm, setShowForm] = useState(false);
-  // const [test, setTset] = useState(true);
-  const [rightBar, setRightBar] = useRightBar();
+  const [, setRightBar] = useRightBar();
+  const [, setRightBarChat] = useRightBarChat();
   const [blocked, setBlocked] = useState(false);
-
-  const [show, setShow] = useShow();
+  const [show] = useShow();
+  const {socketa} = useSocket();
 
 
   useEffect(() => {
@@ -39,8 +38,9 @@ export const Chat = ({ state, chatData, messages }: any) => {
                 if (!allowed && state === true) {
                   setIsAllowed(true);
                   setRightBar(true);
+                  
                   setBlocked(false);
-                  const ret = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                  await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
                         roomId: currentRoom.id,
                         userId: chatData._mainUser.id,
                         userUsername: chatData._mainUser.username,
@@ -61,6 +61,7 @@ export const Chat = ({ state, chatData, messages }: any) => {
       }
       else {
         setIsAllowed(true)
+        setRightBarChat(true);
       }
     }
 
@@ -74,8 +75,17 @@ export const Chat = ({ state, chatData, messages }: any) => {
       setRightBar(false);
     })
   }, [ chatData._socket ]) 
-  
 
+  useEffect(() => {
+    socketa?.on('lockingChat', () => {
+      setIsAllowed(false)
+      setBlocked(true);
+      setRightBarChat(false);
+      chatData?._socket?.emit('sortContacts')
+    })
+  }, [ socketa ])
+  
+ 
 
   return (
     <div id='Conversation' className={`chat`}>

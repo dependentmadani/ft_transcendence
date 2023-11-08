@@ -166,4 +166,15 @@ export class NotificationsGateway implements OnGatewayConnection {
     this.server.to(this.userSocketMap[notif.sender.id]).emit('notificationAccepted', notif);
     // this.server.to(this.userSocketMap[notif.receiver.id]).emit('notificationAccepted', notif);
   }
+
+  @SubscribeMessage('lockChat')
+  handleLockChat(@MessageBody() rec: any): void { 
+    // const { sender, rec, contact } = data;
+    // Send the message to the recipient's socket
+    // console.log('Sort', contact , ' for ', sender , ' and ', rec)
+    // console.log('chhhhhhhhhhhh', rec)
+    this.server.to(this.userSocketMap[rec]).emit('lockingChat', rec);
+    // this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
+  }
+
 }

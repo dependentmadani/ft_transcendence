@@ -1,8 +1,7 @@
 import './HomeGame.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-// import { newRoomRef } from './match';
-// export const RoomRef = newRoomRef;
+
 
 
 
@@ -43,17 +42,17 @@ export default function HomeGame() {
 
   return (
     <div className="GameHome">
-      <div className="style-mode">
+      <div className="style-mode" onClick={() => {navigate('/game/classic')}} >
         <span>Classic <br/>&nbsp;&nbsp;&nbsp;Mode</span>
-          <img  src='/src/imgs/classic.png' alt="Classic" onClick={() => {navigate('/game/classic')}} />
+          <img  src='/src/imgs/classic.png' alt="Classic"  />
       </div>
-      <div className="style-mode">
+      <div className="style-mode" onClick={() => {navigate('/game/tennis')}}>
         <span>Tennis <br/>&nbsp;&nbsp;&nbsp;Mode</span>
-          <img  src="/src/imgs/tennis.png" alt="MatchGame" onClick={() => {navigate('/game/tennis')}} />
+          <img  src="/src/imgs/tennis.png" alt="MatchGame"  />
       </div>
-      <div className="style-mode">
+      <div className="style-mode" onClick={() => {navigate('/game/akinator')}} >
           <span>Akinator <br/>&nbsp;&nbsp;&nbsp;Mode</span>
-          <img src='/src/imgs/akinator.png' alt="Akinator" onClick={() => {navigate('/game/akinator')}} />
+          <img src='/src/imgs/akinator.png' alt="Akinator"  />
       </div>
     </div>
   );
@@ -62,35 +61,4 @@ export default function HomeGame() {
 
 
 
-
-
-// import './HomeGame.css';
-// import { Link, useNavigate } from 'react-router-dom';
-
-// // import { newRoomRef } from './match';
-// // export const RoomRef = newRoomRef;
-
-
-
-// export default function HomeGame() {
-
-//   const navigate = useNavigate();
-
-//   return (
-//     <div className="GameHome">
-//       <div className="PongClassic">
-//         <span>Classic</span>
-//           <img  src='' alt="Classic" onClick={() => {navigate('/game/classic')}} />
-//       </div>
-//       <div className="PongTennis">
-//         <span>Tennis</span>
-//           <img  src="" alt="MatchGame" onClick={() => {navigate('/game/tennis')}} />
-//       </div>
-//       <div className="Akinator">
-//           Akinator
-//           <img src='src/imgs/akinator.png' alt="Akinator" onClick={() => {navigate('/game/akinator')}} />
-//       </div>
-//     </div>
-//   );
-// }
 

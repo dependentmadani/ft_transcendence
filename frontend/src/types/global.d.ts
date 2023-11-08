@@ -2,10 +2,32 @@ export {};
 
 declare global {
 
+  interface GameData {
+    wins: number;
+    gamesPlayed: number;
+  }
+
+
+  interface Badge {
+    first_server : boolean;
+    conqueror : boolean;
+    ai_crusher : boolean;
+    disciplined : boolean;
+    extrouvert : boolean;
+    failure : boolean;
+    challenger : boolean;
+  }
+
+
+
+
   interface User {
     id: number;
     username: string;
     avatar: string,
+    rank: number;
+    userStatus: string;
+    games: GameData;
   }
       
   interface Chat {

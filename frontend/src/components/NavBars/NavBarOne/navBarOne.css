@@ -13,10 +13,8 @@
 }
 
 .logo-img {
-    /* aspect-ratio: 4/4; */
     height: 100%;
     margin-left: 1rem;
-    /* background-color: chocolate; */
 }
 
 
@@ -24,9 +22,6 @@
     width: 40%;
     display: flex;
     justify-content: space-between;
-    /* background-color: salmon; */
-    /* font-size: clamp(5px, 5vw, 20px); */
-    /* font-size: larger; */
     font-size: clamp(20px, 1vw, 50px);
     font-weight: 900;
     margin-left: 2rem;
@@ -78,7 +73,6 @@
 
 #drop1:hover {
     scale: 1.05;
-    /* border: 3px solid lightskyblue ; */
 }
 
 
@@ -100,7 +94,6 @@
 }
 
 .drop-menu li {
-    /* background-color: black; */
     margin: auto;
 }
 
@@ -111,14 +104,12 @@
 
 
 .drop-menu li > a:hover {
-    /* padding: .5rem; */
     color: aquamarine;
 }
 
 
 .menu-ico {
-    /* fill: #06e8f8; */
-    /* color: #06e8f8; */
+
     display: none;
     font-size: 2rem;
     margin-right: 2rem;
@@ -140,7 +131,6 @@
     }
 
     .drop-menu {
-        /* display: flex; */
         width: 300px;
     }
     
@@ -164,9 +154,6 @@
 
 .list a:hover {
     border-bottom: .5vh solid #06e8f8; 
-    /* border-bottom: 2rem cadetblue; */
-    /* margin-bottom: 2rem; */
-    /* color: aquamarine; */
 }
 
 .list a:active {

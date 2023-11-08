@@ -12,7 +12,6 @@ function NavBarOne() {
     const { client, updateClient }  = useClient();
     const [listItems, setListItems] = useState<JSX.Element>();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    // const [orientation, setOrientation] = useState<number>(window.orientation);
     const navigate = useNavigate();
 
     
@@ -86,11 +85,6 @@ function NavBarOne() {
         }
     };
 
-    // const handleOrientationChange = () => { 
-    //     toggleMenu();
-    //     setOrientation(window.orientation);
-    // };
-
     useEffect(() => {
 
         toggleMenu();
@@ -110,7 +104,7 @@ function NavBarOne() {
                     {!client.signedIn ?
                         <div className='login' onClick={()=> {navigate('/login')}} > Get Started </div> :
                         <button id='drop1' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
-                            <img className='user-img' src={client.avatar} alt="user-img"  onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                            <img className='user-img' src={client.avatar || '/src/imgs/user-img.png'} alt="user-img" />
                         </button>
                     }
                     {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>

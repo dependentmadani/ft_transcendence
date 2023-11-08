@@ -1,14 +1,13 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
 
-// Define the possible profile states.
 type ProfileState = 'my_profile' | 'friend_profile' | 'not_friend';
 
-// interface ProfileContextType {
-//   profileState: ProfileState;
-//   setProfileState: (newState: ProfileState) => void;
-// }
+interface ProfileContextType {
+  profileState: ProfileState;
+  setProfileState: (newState: ProfileState) => void;
+}
 
-const ProfileContext = createContext<ProfileState | undefined>(undefined);
+const ProfileContext = createContext<ProfileContextType | undefined>(undefined);
 
 export const ProfileProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [profileState, setProfileState] = useState<ProfileState>('my_profile');

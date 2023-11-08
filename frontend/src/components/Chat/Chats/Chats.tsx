@@ -1,17 +1,13 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { useShow } from "@/context/ShowFormContext";
-import { useRightBar } from "@/context/RightBarContext";
 
 
 export  const Chats = ({ category, onValueChange, chatData }: any) => {
 
-  const [newRooms, setNewRooms] = useState<Room[]>([])
-  const [chats, setChats] = useState<Chat[]>([])
-  const [rooms, setRooms] = useState<roomUsers[]>([])
+  
   const [contacts, setContacts] = useState<Contact[] | null>()
-  const [show, setShow] = useShow();
-  const [rightBar, setRightBar] = useRightBar();
+  const [, setShow] = useShow();
  
 
 
@@ -24,7 +20,7 @@ export  const Chats = ({ category, onValueChange, chatData }: any) => {
       else {
         setContacts((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/all-rooms`, {withCredentials: true})).data)
       }
-      }
+    }
 
     chatData._socket?.on('sortingContacts', async () => {
       if (category === "Your Chats")

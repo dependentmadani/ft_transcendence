@@ -1,40 +1,31 @@
 import axios from 'axios';
 import React, { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import io, { Socket } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
-// Define the possible profile states.
-// interface ProfileContextType {
-//   profileState: ProfileState;
-//   setProfileState: (newState: ProfileState) => void;
-// }
-
-const SocketContext = createContext<Socket | null>(null);
+const SocketContext = createContext<{ socketa: Socket | undefined; setSocketa: React.Dispatch<React.SetStateAction<Socket | undefined>> } | undefined>(undefined);
 
 export const SocketProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [socketa, setSocketa] = useState<Socket>();
-
+  const [socketa, setSocketa] = useState<Socket | undefined>(undefined);
 
   useEffect(() => {
+    const _socket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`);
+    setSocketa(_socket);
 
-    const _socket: any = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/notification`);
-    setSocketa(_socket)
-    
     return () => {
-      socketa?.disconnect()
-    }
+      socketa?.disconnect();
+    };
   }, []);
 
   useEffect(() => {
-
     const getMain = async () => {
-      const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})
+      const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true });
       socketa?.emit('someEvent', res.data?.id);
-    }
-    getMain()
+    };
+    getMain();
 
     return () => {
       socketa?.off('someEvent');
-    }
+    };
   }, [socketa]);
 
   return (

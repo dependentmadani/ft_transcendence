@@ -33,7 +33,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
             UserName = res.data?.username;
             // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
         }).catch((error)=>{  
-            // console.error('Error fetching user data for ProfileID1', error);
+            console.error('Error fetching user data for ProfileID1', error);
         })
     
             // console.log(`1~~~~~~~~~FALWA          FALWAT~~|`)

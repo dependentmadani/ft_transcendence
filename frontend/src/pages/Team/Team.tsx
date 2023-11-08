@@ -57,7 +57,7 @@ function Badges() {
 
         return (
             <div key={badge.id} className='badge' >
-                <img src={badge.img} alt="person-img"  className='team-img' onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} /> 
+                <img src={badge.img} alt="person-img"  className='team-img' onError={() => {'/src/imgs/user-img.png'}} /> 
                 <div className='portfolio'>
                     <span>{badge.name}</span>
                     <div className='follow'>
@@ -104,7 +104,6 @@ const Tools = () => {
 
 function Team() {
 
-    const my_img:string = 'src/imgs/developers.png'
 
     return (
         <main className="main-dev" >    

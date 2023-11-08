@@ -1,20 +1,33 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import Client from '@/components/ClientClass/client';
 import { AES, enc } from 'crypto-js';
 
 const CLIENT_STORAGE_KEY = import.meta.env.VITE_CLIENT_STORAGE_KEY;
 const ENCRYPTION_KEY = import.meta.env.VITE_ENCRYPTION_KEY;
-const ClientContext = createContext<Client | undefined>(undefined);
 
-export const useClient = () => {
-  const client = useContext(ClientContext);
-
-  if (client === undefined) throw new Error('useClient must be used');
-
-  return client;
+// Define the type for your context value
+type ClientContextType = {
+  client: Client;
+  updateClient: (data: Client) => void;
 };
 
-export const ClientProvider = ({ children }) => {
+const ClientContext = createContext<ClientContextType | undefined>(undefined);
+
+export const useClient = () => {
+  const context = useContext(ClientContext);
+
+  if (!context) {
+    throw new Error('useClient must be used within a ClientProvider');
+  }
+
+  return context;
+};
+
+interface ClientProviderProps {
+  children: ReactNode;
+}
+
+export const ClientProvider: React.FC<ClientProviderProps> = ({ children }) => {
   const [client, setClient] = useState<Client>(() => {
     const encryptedData = localStorage.getItem(CLIENT_STORAGE_KEY);
 
@@ -38,7 +51,7 @@ export const ClientProvider = ({ children }) => {
     localStorage.setItem(CLIENT_STORAGE_KEY, encryptedData);
   }, [client]);
 
-  const updateClient = (data) => {
+  const updateClient = (data: Client) => {
     setClient(data);
   };
 

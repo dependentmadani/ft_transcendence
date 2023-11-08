@@ -10,7 +10,6 @@ export const ChatInfos = ({ chatData }: any) => {
 
     
     const _receiver: User = chatData?._receiver
-    // console.log('receiver info are as follow:', chatData);
 
     const [showForm, setShowForm] = useState(false);
 
@@ -31,7 +30,7 @@ export const ChatInfos = ({ chatData }: any) => {
                     </div>
                     <span>{ _receiver?.username }</span>
                     <div className="contactPlay1">
-                        <a href='#' ><FontAwesomeIcon className="info-icon" onClick={openForm} icon={faTableTennisPaddleBall} /></a>
+                        <a><FontAwesomeIcon className="info-icon" onClick={openForm} icon={faTableTennisPaddleBall} /></a>
                         <a href={`http://${import.meta.env.VITE_FRONT_ADDRESS}/profile/${_receiver?.username}`} ><FontAwesomeIcon className="info-icon" icon={faUser} /></a>
                     </div>
                 </div>

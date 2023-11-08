@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useEffect } from 'react';
 import {io} from 'socket.io-client'
 
 export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, client_id:number, profileID1:any, profileID2:any)

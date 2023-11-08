@@ -1,6 +1,6 @@
 import './NotFriendProfile.css'
 import { useClient } from '@/context/clientContext';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { ReactSVG } from "react-svg";
@@ -15,10 +15,10 @@ function ProfileInfo (props: any) {
 
     const [baseImg, setBaseImg] = useState(props.userData.avatar);
     const {socketa} = useSocket();
-    const { client, updateClient}  = useClient();
+    const { client}  = useClient();
     const [rank, setRank] = useState(0)
-    const [fetch, setFetch] = useFetch();
-    const [bloccked, setBlocked] = useState(false);
+    const {setFetch} = useFetch();
+    // const [bloccked, setBlocked] = useState(false);
     const navigate = useNavigate(); 
 
     useEffect(() => {
@@ -34,7 +34,6 @@ function ProfileInfo (props: any) {
         async function getrank() {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
-                // console.log('$$$$$$ : ', res)
                 setRank(res.data)
             }catch (err) {
                 console.log('Error to get data')
@@ -46,7 +45,6 @@ function ProfileInfo (props: any) {
     }, [])
 
     useEffect(() => { 
-        // console.log('^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^')
 
 
         const notificationListener = async (notif: any) => {
@@ -55,7 +53,6 @@ function ProfileInfo (props: any) {
             });
             setFetch(false);
             navigate(`/profile/${props.userData.username}`)
-            // console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
         }
 
         socketa?.on('notificationAccepted', notificationListener);
@@ -66,14 +63,10 @@ function ProfileInfo (props: any) {
       }, [socketa]);
 
       const checkUser = () => {
-        // console.log('blocked : ' , client.blocked)
-        console.log('-----', client.blocked.length)
-        console.log('-----', client.blocked)
-        if (!client.blocked.length)
+        if (!client.blocked?.length)
             return ;
-        const checker = client.blocked.filter((user1) => (user1.username === props.userData.username));
-        console.log('!!!!!!!!!!!!!! : ', checker)
-        // console.log('checker : ', checker)
+        const checker = client.blocked.filter((user:{username: string}) => (user.username === props.userData.username));
+        console.log('checker', checker)
         if (checker.length) {
             try {
                 axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${props.userData.id}`,{}, {withCredentials: true})
@@ -99,7 +92,7 @@ function ProfileInfo (props: any) {
             withCredentials: true
             })
             // console.log('WE TRYNNA ADD MR ', user.username, res)
-            socketa.emit('notification', { notif: res.data });
+            socketa?.emit('notification', { notif: res.data });
     }
 
     return (
@@ -132,13 +125,10 @@ function ProfileInfo (props: any) {
 
 function NotFriendProfile (props: any) {
 
-    const [popSettings, setPopSettings] = useSetting(false);
-    // const [fetch, setFetch] = useFetch();
-    // console.log('profile : ', props.userData)
+    const [popSettings, setPopSettings] = useSetting();
 
     useEffect(() => {
-        // console.log('befor : ', popSettings)
-        // setPopSettings(false)
+
 
         const settings_card = document.querySelector('.settings-noFriend') as HTMLElement
         
@@ -147,7 +137,6 @@ function NotFriendProfile (props: any) {
         else
             settings_card.style.display = 'flex'
 
-        // console.log('after : ', popSettings)
 
     }, [popSettings]);
 

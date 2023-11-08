@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBell, faBellSlash, faRightFromBracket, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faRightFromBracket, faGear } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { RoomSettings } from './RoomSettings';
 import axios from 'axios';

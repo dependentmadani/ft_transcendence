@@ -1,17 +1,13 @@
-import './Login.css'
+import './login.css'
 import {Link} from 'react-router-dom' 
 
 function Login () {
-
-  // console.log('login')
-
 
   const request42 = () => {
     window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
   };
 
   const requestGoogle = () => {
-    // console.log('gmaile')
       window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
   };
 

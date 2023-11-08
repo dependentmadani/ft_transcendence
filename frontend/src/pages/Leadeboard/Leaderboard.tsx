@@ -3,15 +3,7 @@ import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
 import './Leaderboard.css';
 
-interface User {
-    id: number;
-    avatar: string;
-    username: string;
-    gamesPlayed: number;
-    wins: number;
-    rank: number;
-    userStatus: string;
-}
+
 
 function Leaderboard() {
     const [leaderboard, setLeaderboard] = useState([]);
@@ -27,9 +19,8 @@ function Leaderboard() {
     const getLeaderboard = async () => {
         try {
             const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard`, {withCredentials: true});
-            setAkinatorUser(response.data.find(user => user.username === "akinator"));
-            setAkinatorRank(response.data.findIndex(user => user.username === "akinator"));
-            // console.log("akinator  ---> ", akinatorUser);
+            setAkinatorUser(response.data.find((user: { username: string }) => user.username === "akinator"));
+            setAkinatorRank(response.data.findIndex((user: { username: string })=> user.username === "akinator"));
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
@@ -38,23 +29,19 @@ function Leaderboard() {
         }
     };
 
-    useEffect(() => {
-        // console.log(`leaderboard : ${leaderboard[0]}`)
-
-    }, [leaderboard]) 
-
     const navigate = useNavigate();
     const goProfile = (username : string) => { navigate(`/profile/${username}`) }
 
     const userLeaderboard  = ( ) => {
         return (
-            leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user, index) => {
+            leaderboard.filter((user:User) => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user:User, index) => {
                 if (user.username === "akinator")
                     return ;
                 return (
-                    <div key={user.id} className="player-stats" key={user.id}>
+                    <div key={user.id} className="player-stats">
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
-                            <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} 
+                            <img src={user.avatar} alt="User image" onError={(e) => { const target = e.target as HTMLImageElement
+                                target.src = '/src/imgs/user-img.png'; }} 
                                 onClick={ () => goProfile(user.username) } />
                         </div>
                         <div className="status">
@@ -78,7 +65,6 @@ function Leaderboard() {
         ))
     } 
 
-    // console.log('----- : ', userLeaderboard())
 
     return (
         <div className="leaderboard-section">
@@ -94,7 +80,8 @@ function Leaderboard() {
             { akinatorUser && (
                 <div className="player-stats akinator-bot" key={akinatorUser.id}>
                     <div className={(akinatorUser.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
-                        <img src={akinatorUser.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                        <img src={akinatorUser.avatar} alt="User image" onError={(e) => { const target = e.target as HTMLImageElement
+                            target.src = '/src/imgs/user-img.png'; }} />
                     </div>
                     <div className="status">
                         <span>{akinatorUser.username}</span>

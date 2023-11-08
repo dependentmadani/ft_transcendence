@@ -1,10 +1,9 @@
 import React from 'react';
 import axios from "axios"
-import { useEffect, useState, useRef } from 'react'
-import './Settings.css';
+import { useEffect, useState } from 'react'
+import './settings.css';
 import { useClient } from '@/context/clientContext';
-import { ToastContainer, toast } from 'react-toastify';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+import { toast } from 'react-toastify';
 import { useSetting } from '@/context/SettingContext';
 
 
@@ -12,16 +11,16 @@ const SettingsComponent: React.FC = () => {
 
 	const {client, updateClient} = useClient();
     
-    const [avatar, setAvatar] = useState<string>(client.avatar);
+    const [avatar, setAvatar] = useState<any>(client.avatar);
     const [twoFactorEnabled, setTwoFactorEnabled] = useState(client.twoEnabled);   
     const [email, setEmail] = useState(client.twofaEmail);
     const [qrCode, setQrCode] = useState('');
     const [smsCode, setSmsCode] = useState('');
     const [username, setUsername] = useState<string>(client?.username);
     const [fileUpload, setFileUpload] = useState();
-    const [popSettings, setPopSettings] = useSetting();
+    const [, setPopSettings] = useSetting();
 
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    // const fileInputRef = useRef<HTMLInputElement | null>(null);
 
         
     const handleImageChange = () => {
@@ -29,13 +28,13 @@ const SettingsComponent: React.FC = () => {
         fileInput.type = 'file';
         fileInput.accept = 'image/*';
       
-        fileInput.addEventListener('change', (e) => {
-          const selectedFile = e.target.files[0];
+        fileInput.addEventListener('change', (e: any) => {
+          const selectedFile = e?.target?.files?.[0];
       
           if (selectedFile) {
             const reader = new FileReader();
             reader.onload = (e) => {
-              setAvatar(e.target.result);
+              setAvatar(e.target?.result as string);
             };
             setFileUpload(selectedFile);
             reader.readAsDataURL(selectedFile);
@@ -48,17 +47,14 @@ const SettingsComponent: React.FC = () => {
     const changeUsername = (name: string) => {
       if (name)
         setUsername(name);
-        // console.log(`Username: ${username}`)
-        // console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
     };
     
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+    const delay = (ms:number) => new Promise((resolve) => setTimeout(resolve, ms));
 
     const handleEmailSubmit = () => {
       toast.promise(
         (async () => {
           try {
-            // console.log(`mail: ${email}|`);
             const response = await axios.post(
               `http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/setup`,
               { email },
@@ -92,7 +88,6 @@ const SettingsComponent: React.FC = () => {
         toast.promise(
             (async () => {
               try {
-                // console.log(`mail: ${email}|`);
                 const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/verify`,
                 { code: smsCode },
                 { withCredentials: true }
@@ -125,7 +120,6 @@ const SettingsComponent: React.FC = () => {
 
         const informTwoFactorState = async () => {
             try {
-              // console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
                 if (!twoFactorEnabled && email)
                 {
                     await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
@@ -165,7 +159,7 @@ const SettingsComponent: React.FC = () => {
                   );
               }
               if (avatar != client.avatar) {
-                  const gg = await axios.post(
+                  await axios.post(
                   `http://${import.meta.env.VITE_BACK_ADDRESS}/users/${client.id}/infos`,
                   {avatar: fileUpload,},
                   {
@@ -178,7 +172,6 @@ const SettingsComponent: React.FC = () => {
               await delay(1000);
               const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
               await updateClient({ ...client, ...response.data, signedIn: true });
-              // console.log(client)
               setPopSettings(false);
             } catch (error) {
               await delay(1000);
@@ -200,29 +193,27 @@ const SettingsComponent: React.FC = () => {
   };
       
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
         if (event.key === 'Enter' && twoFactorEnabled) {
             handleEmailSubmit();
-            // console.log(`QrCode: ${qrCode}`);
         }
   };
     
 
-  const handleKeyDown2 = (event) => {
+  const handleKeyDown2 = (event: React.KeyboardEvent) => {
       if (event.key === 'Enter' && twoFactorEnabled) {
           handleSmsCodeSubmit();
-          // console.log(`QrCode: ${qrCode}`);
       }
   };
 
-  // console.log('client.twoEnabled : ', client.twoEnabled)
-  // console.log('twoEnabled : ', twoFactorEnabled)
 
     return (
     <div className="settings-card">
         <div className="image-section">
             <div className="image-frame">
-                <img src={avatar} alt="User Image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
+                <img src={avatar} alt="User Image" onError={(e) => { 
+                  const target = e.target as HTMLImageElement; 
+                  target.src = '/src/imgs/user-img.png'; }} />
                 <div className="change-image-container" onClick={handleImageChange}>
                     <img src="/src/imgs/change-img.png" alt="Image Icon" />
                 </div>

@@ -1,7 +1,7 @@
 import './MyProfile.css'
 import { useClient } from '@/context/clientContext';
 import Friends from '../search/searchFriend';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import SettingsComponent from './settings'
 import { useSetting } from '@/context/SettingContext';
@@ -24,6 +24,16 @@ interface HistoryEntry {
     oppScore: number;
 };
 
+const defaultBadge: Badge = {
+    first_server: false,
+    conqueror: false,
+    ai_crusher: false,
+    disciplined: false,
+    extrouvert: false,
+    failure: false,
+    challenger: false,
+  };
+
 function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
     if (!historyEntry) 
       return ;
@@ -31,7 +41,7 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
     const handleclick = () => {
       console.log('profile_user');
     }
-    // box-shadow: 0px 0px 8px 2px #39FF14;
+
   
     return (
       <div className="badge-history">
@@ -72,7 +82,6 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
         };
         getHistory();
     }, []);
-    // console.log('---- : ', historyData)
     return (
         <div className='history'>
             <div id='title' >
@@ -104,10 +113,12 @@ const Achieve = (props:any) => {
     )
 }
 
+
+
+
 const Achieves = () => {
     
-    const [badge, setBadge] = useState({});
-    let counter = 0;
+    const [badge, setBadge] = useState(defaultBadge);
 
     useEffect( () => {
 
@@ -115,7 +126,6 @@ const Achieves = () => {
             try {
                 const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/achievements`, {withCredentials: true});
                 setBadge(response.data);
-                // console.log("badge !!!!! ", response.data);
             } catch (error) {
                 console.error("Error fetching achievements data:", error);
             }
@@ -145,7 +155,6 @@ function ProfileInfo () {
         async function getrank() {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${client.username}`, { withCredentials: true }  ) 
-                // console.log('$$$$$$ : ', res)
                 setRank(res.data)
             }catch (err) {
                 console.log('Error to get data')
@@ -159,7 +168,7 @@ function ProfileInfo () {
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={client.avatar} alt="user-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }}  />                    
+                    <img src={client.avatar ? client.avatar : '/src/imgs/user-img.png'} alt="user-img"   />                    
                 </div>
                 <div className='profile-name-rank'>
                     <div className='profile-name'> {client.username} </div>
@@ -180,9 +189,7 @@ function ProfileInfo () {
 
 function MyProfile () {
 
-    // console.log('MyProfile ')
     const {client, updateClient} = useClient();
-    const [listFriend, setListFriend] = useState();
     const [popSettings, setPopSettings] = useSetting();
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -192,7 +199,6 @@ function MyProfile () {
     	async function fetchData () {
 			try {
 				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true } );
-                // console.log('res --- : ', response.data)
                 await updateClient({ ...client, ...response.data, signedIn: true });
                 setLoading(false)
             } catch (error) {
@@ -204,7 +210,6 @@ function MyProfile () {
 
 
     useEffect(() => {
-        // console.log('befor : ', popSettings)
         const settings_card = document.querySelector('.settings-card') as HTMLElement
         
         if (settings_card) {
@@ -213,11 +218,9 @@ function MyProfile () {
             else
                 settings_card.style.display = 'flex'
         }
-        // console.log('after : ', popSettings)
     }, [popSettings]);
 
 
-    // console.log('-----------------------------------------', client)
     return (
         <>
             {loading ? <img id='Loding' src='/src/imgs/svg/eat.svg' /> : 
