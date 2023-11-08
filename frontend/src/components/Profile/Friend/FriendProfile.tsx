@@ -46,8 +46,8 @@ function Achivement (props: any) {
             try {
                 const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/achievements/${props.friendId}`, {withCredentials: true});
                 setBadge(response.data);
-            } catch (error) {
-                console.error("Error fetching achievements data:", error);
+            } catch  {
+                // console.log("Error fetching achievements data:", error);
             }
         };
         getAchievements();
@@ -91,8 +91,8 @@ function ProfileInfo (props: any) {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
                 setRank(res.data)
-            }catch (err) {
-                console.log('Error to get data')
+            }catch  {
+                // console.log('Error to get data')
             }
         }
 
@@ -134,8 +134,8 @@ function FriendProfile (props: any) {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/friend-friends/${props.userData[0].id}`, { withCredentials: true });
                 setListFriend(res.data);
-            } catch (error) {
-                console.error('Error fetching data: ', error);
+            } catch  {
+                // console.log('Error fetching data: ', error);
             }
         }
         fetchData();

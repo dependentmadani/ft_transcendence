@@ -23,8 +23,8 @@ export const RoomFormInvite = ({ chatData }: any) => {
                 const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, {withCredentials: true})
                 setSearchResults(results.data)
             }
-            catch (err) {
-                setSearchResults(null)
+            catch  {
+                // setSearchResults(null)
             }
             setUsername('')
         }

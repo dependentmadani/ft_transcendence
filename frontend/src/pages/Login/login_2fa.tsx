@@ -34,7 +34,7 @@ const Login2FA: React.FC = () => {
 			}
 		
 		  } catch (error) {
-			console.error('Error fetching data: ', error);
+			// console.log('Error fetching data: ', error);
 		  }
 	}
 

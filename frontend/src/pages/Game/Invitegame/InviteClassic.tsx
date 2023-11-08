@@ -53,8 +53,8 @@ const InviteClassic: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
       .then((response) => {
         setUser1(response.data);
       })
-      .catch((error) => {
-        console.error('Error fetching user data for ProfileID1', error);
+      .catch(() => {
+        // console.log('Error fetching user data for ProfileID1', error);
       });
   }
 }, [ProfileID1,Userdata?.id]);
@@ -67,8 +67,8 @@ useEffect(() => {
       .then((response) => {
         setUser2(response.data);
       })
-      .catch((error) => {
-        console.error('Error fetching user data for ProfileID2', error);
+      .catch(() => {
+        // console.log('Error fetching user data for ProfileID2', error);
       });
   }
 }, [ProfileID2]);

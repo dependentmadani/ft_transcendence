@@ -41,9 +41,9 @@ export const Input = ({ chatData, isAllowed }: any) => {
 
       return _message?.data
     }
-    catch (err)
+    catch 
     {
-      console.log(`Couldn't create new Message`, err)
+      // console.log(`Couldn't create new Message`, err)
     }
   }
 

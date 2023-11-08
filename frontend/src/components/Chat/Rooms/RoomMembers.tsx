@@ -52,8 +52,8 @@ export const RoomMembers = ({ chatData }: any) => {
                 setRoomMembers((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/Room/${currentRoom.id}`, {withCredentials: true})).data)
                 setMainUserRole((await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data)
             }
-            catch (err) {
-                console.log('Something went wrong :<', err)
+            catch  {
+                // console.log('Something went wrong :<', err)
             }
         }
         
@@ -80,8 +80,8 @@ export const RoomMembers = ({ chatData }: any) => {
             chatData?._socket?.emit('sortContacts')
             chatData?._socket?.emit('lockRoom')
                 
-        } catch (error) {
-            console.log(error);
+        } catch  {
+            // console.log(error);
         }
     }
 
@@ -96,8 +96,8 @@ export const RoomMembers = ({ chatData }: any) => {
             if (role === "MUTED") {
                 chatData?._socket?.emit('lockRoom')
             }
-        } catch (error) {
-            console.log(error);
+        } catch  {
+            // console.log(error);
         }
     }
 
@@ -109,8 +109,8 @@ export const RoomMembers = ({ chatData }: any) => {
                 withCredentials: true,
             });
             chatData?._socket?.emit('updateMemberRole', user)
-        } catch (error) {
-            console.log(error);
+        } catch  {
+            // console.log(error);
         }
     }
 

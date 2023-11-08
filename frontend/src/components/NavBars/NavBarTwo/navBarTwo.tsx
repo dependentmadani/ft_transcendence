@@ -51,8 +51,8 @@ const ListNotification = () => {
             const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications`, {withCredentials: true})
             setNotifications(res.data)
           }
-          catch (err) {
-            console.log('No Notifications')
+          catch  {
+            // console.log('No Notifications')
           }
         }
 
@@ -87,8 +87,8 @@ const ListNotification = () => {
                 const filteredNotificationsData: any = newNotificationsData.filter((notification) => notification !== null);
                 setNewNotifications(filteredNotificationsData);
             }
-            catch (err) {
-              console.log('Error fetching users for chats: ', err);
+            catch  {
+            //   console.log('Error fetching users for chats: ', err);
             }
         }
 
@@ -160,9 +160,9 @@ const ListNotification = () => {
                 // console.log('NEW FRIENDS', data);
                 setNewNotifications((prevMembers) => prevMembers.filter((n) => n.id !== notif.id));
                 socketa?.emit('acceptNotification', { notif: notif });
-              } catch (error) {
+              } catch  {
                 // Handle any error that might occur during the request
-                console.error('Error accepting friend request', error);
+                // console.log('Error accepting friend request', error);
               }
         }
 
@@ -176,9 +176,9 @@ const ListNotification = () => {
             );
         
             // console.log('NOTIFICATION UPDATED', data);
-          } catch (error) {
+          } catch  {
             // Handle any error that might occur during the request
-            console.error('Error updating notification', error);
+            // console.log('Error updating notification', error);
           }
 
     }
@@ -193,8 +193,8 @@ const ListNotification = () => {
                 const res = await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/notifications/${notif.id}/${notif.sender.id}/${notif.receiver.id}`,  { withCredentials: true })
                 console.log('res', res.data)
         }
-        catch (err) {
-            console.log(`Coudn't delete notification: `, err)
+        catch  {
+            // console.log(`Coudn't delete notification: `, err)
         }
 
         setNewNotifications(prevMembers => prevMembers.filter(n => n.id !== notif.id));
@@ -241,8 +241,8 @@ function NavBarTwo () {
             await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
                 {withCredentials: true,}
             )
-        } catch (error) {
-            console.error('Error logout: ', error);
+        } catch  {
+            // console.log('Error logout: ', error);
         }
         updateClient(new Client);
         navigate('/')

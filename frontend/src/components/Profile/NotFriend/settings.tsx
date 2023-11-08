@@ -21,8 +21,8 @@ const SettingsComponent = (props:any) => {
       await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/block-friend/${props.user.id}`, {}, {withCredentials: true,});
       setFetch(false)
       socketa?.emit('lockChat', props.user.id)
-    } catch (error) {
-        console.error('Error fetching data: ', error);
+    } catch  {
+        // console.log('Error fetching data: ', error);
     }
   } 
 
@@ -31,8 +31,8 @@ const SettingsComponent = (props:any) => {
       await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${props.user.id}`, {}, {withCredentials: true,});
       setFetch(false)
     
-    } catch (error) {
-        console.error('Error fetching data: ', error);
+    } catch  {
+        // console.log('Error fetching data: ', error);
     }
   } 
 

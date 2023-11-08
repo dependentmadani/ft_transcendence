@@ -55,8 +55,8 @@ useEffect(() => {
     .then((response) => {
       setUser1(response.data);
     })
-    .catch((error) => {
-      console.error('Error fetching user data for ProfileID1', error);
+    .catch(() => {
+      // console.log('Error fetching user data for ProfileID1', error);
     });
 }
 }, [ProfileID1,Userdata?.id]);
@@ -69,8 +69,8 @@ axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true }
     .then((response) => {
       setUser2(response.data);
     })
-    .catch((error) => {
-      console.error('Error fetching user data for ProfileID2', error);
+    .catch(() => {
+      // console.log('Error fetching user data for ProfileID2', error);
     });
 }
 }, [ProfileID2]);

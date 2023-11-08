@@ -25,8 +25,6 @@ function  Sign(props:any) {
         await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logged_in`, { withCredentials: true });
 
         const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
-
-        // console.log('response data is:',response.data)
         await updateClient({ ...client, ...response.data, signedIn: true });
         
         if (response.data.signedUp && !response.data.twoEnabled) 
@@ -34,8 +32,9 @@ function  Sign(props:any) {
         else if (props.tag !== '2fa' && response.data.twoEnabled)
           navigate('/login_2fa')
 
-      } catch (error) {
-        console.error('Error fetching data: ', error);
+      }
+      catch (err) {
+        console.log('Error fetching data: ', err);
       }
     }
 

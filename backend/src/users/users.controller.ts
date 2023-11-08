@@ -65,12 +65,17 @@ export class UsersController {
   async getMe(
     @Req() req: Request,
     ): Promise<Users> {
-      const user: Users =
-      await this.userService.findUserById(
-        req.user['sub'],
-        );
-        // console.log('users', user)
+      try {
+        console.log('user', req.user['sub'])
+        const user: Users =
+        await this.userService.findUserById(
+          req.user['sub'],
+          );
         return user;
+      }
+      catch (err) {
+        console.log('error: ', err)
+      }
   }
 
   @Get('achievements')

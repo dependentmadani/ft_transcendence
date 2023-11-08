@@ -48,8 +48,8 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                 chatData?._socket?.emit('sortContacts')
             }
         }
-        catch (error) {
-            console.log(error);
+        catch  {
+            // console.log(error);
         }
     }
 

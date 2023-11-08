@@ -4,11 +4,15 @@ import {Link} from 'react-router-dom'
 function Login () {
 
   const request42 = () => {
-    window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
+    try {
+      window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/42`);
+    }catch {}
   };
 
   const requestGoogle = () => {
+    try {
       window.location.replace(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/google_auth`);
+    }catch {}
   };
 
   return (

@@ -76,8 +76,8 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
             try {
                 const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/history`, {withCredentials: true});
                 setHistoryData(response.data);
-            } catch (error) {
-                console.error("Error fetching history data:", error);
+            } catch  {
+                // console.log("Error fetching history data:", error);
             }
         };
         getHistory();
@@ -126,8 +126,8 @@ const Achieves = () => {
             try {
                 const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/achievements`, {withCredentials: true});
                 setBadge(response.data);
-            } catch (error) {
-                console.error("Error fetching achievements data:", error);
+            } catch  {
+                // console.log("Error fetching achievements data:", error);
             }
         };
         getAchievements();
@@ -156,8 +156,8 @@ function ProfileInfo () {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${client.username}`, { withCredentials: true }  ) 
                 setRank(res.data)
-            }catch (err) {
-                console.log('Error to get data')
+            }catch  {
+                // console.log('Error to get data')
             }
         }
 
@@ -201,8 +201,8 @@ function MyProfile () {
 				const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true } );
                 await updateClient({ ...client, ...response.data, signedIn: true });
                 setLoading(false)
-            } catch (error) {
-				console.error('Error fetching data: ', error);
+            } catch  {
+				// console.log('Error fetching data: ', error);
 			}
 		}
         fetchData();

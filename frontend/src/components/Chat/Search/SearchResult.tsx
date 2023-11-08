@@ -80,8 +80,8 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
                     recId: user.id,
                 }, { withCredentials: true })).data
             }
-            catch (err) {
-                console.log(`Couldn't create new Chat: `, err)
+            catch  {
+                // console.log(`Couldn't create new Chat: `, err)
             }
         }
 

@@ -24,7 +24,7 @@ function Leaderboard() {
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
-            console.error("Error fetching leaderboard data:", error);
+            // console.log("Error fetching leaderboard data:", error);
             setLoading(true);
         }
     };

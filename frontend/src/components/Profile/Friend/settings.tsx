@@ -18,8 +18,8 @@ const SettingsComponent = ({userData} :any) => {
           setFetch(false)
           socketa?.emit('lockChat', userData.id)
       
-      } catch (error) {
-          console.error('Error fetching data: ', error);
+      } catch  {
+          // console.log('Error fetching data: ', error);
       }
     } 
 
@@ -28,8 +28,8 @@ const SettingsComponent = ({userData} :any) => {
         await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unfriend/${userData.id}`, {}, {withCredentials: true,});
             setFetch(false)
       
-      } catch (error) {
-          console.error('Error fetching data: ', error);
+      } catch  {
+          // console.log('Error fetching data: ', error);
       }
     }
 

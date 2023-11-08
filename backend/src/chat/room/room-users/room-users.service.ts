@@ -14,7 +14,7 @@ export class RoomUsersService {
             return this.prisma.roomUsers.findMany()
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
         }
     }
 
@@ -25,7 +25,7 @@ export class RoomUsersService {
             })
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
         }
     }
 
@@ -44,7 +44,7 @@ export class RoomUsersService {
             })
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
         }
     }
 
@@ -60,7 +60,7 @@ export class RoomUsersService {
             })
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
         }
     }
 
@@ -85,7 +85,7 @@ export class RoomUsersService {
             return false
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
             return false
         }
     }
@@ -102,7 +102,7 @@ export class RoomUsersService {
             })
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
         }
     }
 
@@ -121,7 +121,7 @@ export class RoomUsersService {
             return '';
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
             return '';
         }
     }
@@ -142,7 +142,7 @@ export class RoomUsersService {
             return roomUser[0].allowed
         }
         catch (err) {
-            console.error(`Couldn't find users in this room: ${err}`)
+            console.log(`Couldn't find users in this room: ${err}`)
             return false
         }
     }
@@ -187,7 +187,7 @@ export class RoomUsersService {
             }
         }
         catch (err) {
-            console.error(`Couldn't create room users table: ${err}`)
+            console.log(`Couldn't create room users table: ${err}`)
         }
     }
 
@@ -215,7 +215,7 @@ export class RoomUsersService {
             }
         }
         catch (err) {
-            console.error(`Couldn't create room users table: ${err}`)
+            console.log(`Couldn't create room users table: ${err}`)
         }
     }
 
@@ -243,7 +243,7 @@ export class RoomUsersService {
             }
         }
         catch (err) {
-            console.error(`Couldn't create room users table: ${err}`)
+            console.log(`Couldn't create room users table: ${err}`)
         }
     }
 

@@ -64,7 +64,7 @@ const SettingsComponent: React.FC = () => {
             await delay(1000); 
 
             setQrCode(qrCodeUrl);
-          } catch (error) {
+          } catch  {
             await delay(1000);
             throw '';
           }
@@ -129,8 +129,8 @@ const SettingsComponent: React.FC = () => {
                       position: toast.POSITION.TOP_RIGHT
                     });
                 }
-            } catch (error) {
-              console.log('error in disbale of 2fa : ',error);
+            } catch  {
+              // console.log('error in disbale of 2fa : ',error);
             }
         }
 

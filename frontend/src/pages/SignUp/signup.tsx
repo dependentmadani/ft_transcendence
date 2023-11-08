@@ -29,8 +29,8 @@ function SetInfo() {
           await updateClient({ ...client, ...response.data, signedIn: true });
         if (response.data.signedUp)
           navigate('/')
-      } catch (error) {
-        console.error('Error fetching data: ', error);
+      } catch  {
+        // console.log('Error fetching data: ', error);
       }
     }
   
@@ -84,7 +84,7 @@ function SetInfo() {
         toast.warn("Username Used !", {
           position: toast.POSITION.TOP_LEFT
         });
-      console.error('Error submitting data:', error);
+      // console.log('Error submitting data:', error);
     }
   };
 

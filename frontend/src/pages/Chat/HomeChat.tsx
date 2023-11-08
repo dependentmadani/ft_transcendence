@@ -78,7 +78,7 @@ export const HomeChat = () => {
           }
       } 
       catch (err) {
-        console.log(`No message`)
+        // console.log(`No message`)
       }
     }
 

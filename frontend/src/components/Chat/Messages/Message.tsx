@@ -12,8 +12,8 @@ export const Message = ({ currentMessage }: any) => {
       try {
         setSender(await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${currentMessage?.MessageSenId}`, {withCredentials: true})).data)
       }
-      catch (err) {
-        console.log('No messages', err)
+      catch  {
+        // console.log('No messages', err)
       }
     }
 

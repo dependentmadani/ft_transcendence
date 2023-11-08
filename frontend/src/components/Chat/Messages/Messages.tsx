@@ -16,8 +16,8 @@ export const Messages = ({ chatData, messages, isOk }: any) => {
           
           res?.data[0]?.role === 'BANNED' || res?.data[0]?.role === 'MUTED' ? setIsAllowed(false) : setIsAllowed(true)
         }
-        catch (err) {
-          console.log(err)
+        catch  {
+          // console.log(err)
         }
       }
       else

@@ -35,8 +35,8 @@ function ProfileInfo (props: any) {
             try {
                 const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard/${props.userData.username}`, { withCredentials: true }  ) 
                 setRank(res.data)
-            }catch (err) {
-                console.log('Error to get data')
+            }catch  {
+                // console.log('Error to get data')
             }
         }
 
@@ -71,7 +71,7 @@ function ProfileInfo (props: any) {
             try {
                 axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/unblock-friend/${props.userData.id}`,{}, {withCredentials: true})
             } catch {
-                console.log('failed unblocked ')
+                // console.log('failed unblocked ')
             }
         }
           

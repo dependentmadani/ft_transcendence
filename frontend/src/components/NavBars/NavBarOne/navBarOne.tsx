@@ -22,8 +22,8 @@ function NavBarOne() {
             await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/logout`, 
                 {withCredentials: true,}
             )
-        } catch (error) {
-            console.error('Error logout: ', error);
+        } catch  {
+            // console.log('Error logout: ', error);
         }
         updateClient(new Client);
         localStorage.removeItem(import.meta.env.VITE_CLIENT_STORAGE_KEY)

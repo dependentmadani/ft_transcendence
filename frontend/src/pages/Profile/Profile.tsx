@@ -24,7 +24,7 @@ function Profile() {
           const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true });
           await updateClient({ ...client, ...res.data, signedIn: true });
         } catch {
-          console.log('Error : fetch data')
+          // console.log('Error : fetch data')
         }
         try {
           const res = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, { withCredentials: true })).data
@@ -46,7 +46,7 @@ function Profile() {
           }
           setFetch(true)
         } catch (error) {
-          console.error('Error fetching data: ', error);
+          // console.log('Error fetching data: ', error);
         }
       }
       else {

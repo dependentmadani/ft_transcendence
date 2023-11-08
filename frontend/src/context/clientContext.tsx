@@ -39,8 +39,8 @@ export const ClientProvider: React.FC<ClientProviderProps> = ({ children }) => {
       } else {
         return new Client();
       }
-    } catch (error) {
-      console.error('Error decrypting data:', error);
+    } catch  {
+      // console.log('Error decrypting data:', error);
       return new Client();
     }
   });

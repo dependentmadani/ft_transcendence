@@ -48,11 +48,14 @@ import { GameModule } from './Game/game.module'
   }],
   controllers: [HomeController]
 })
-export class AppModule implements NestModule{
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(IfNotAuthenticatedMiddleware)
-      .exclude({path:'/auth*', method: RequestMethod.ALL})
-      .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
-  }
+export class AppModule {
+  
 }
+// export class AppModule implements NestModule{
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(IfNotAuthenticatedMiddleware)
+//       .exclude({path:'/auth*', method: RequestMethod.ALL})
+//       .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
+//   }
+// }

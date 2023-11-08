@@ -26,8 +26,8 @@ export const RoomInfos = ({ chatData }: any) => {
             await axios.delete(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/${currentRoom.id}/${chatData._mainUser.id}`, {
                 withCredentials: true,
             });
-        } catch (error) {
-            console.log(error);
+        } catch  {
+            // console.log(error);
         }
         window.location.reload()
     }

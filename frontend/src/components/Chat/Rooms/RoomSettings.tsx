@@ -53,8 +53,8 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
                 });
                 
             }
-            catch (error) {
-                console.log(error);
+            catch  {
+                // console.log(error);
             }
             window.location.reload()
         }

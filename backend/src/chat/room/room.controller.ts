@@ -7,6 +7,7 @@ import * as path from 'path'
 import { Response } from 'express'
 import {v4 as uuidv4} from 'uuid'
 import { FileInterceptor } from '@nestjs/platform-express';
+import { roomCreationName } from './dto';
 
 // export const storage = {
 //   storage: diskStorage({
@@ -63,7 +64,7 @@ export class RoomController {
 
     @Post()
     @UseInterceptors(FileInterceptor('roomAvatar', storage))
-    createRoom(@Body('roomName') roomName: string,
+    createRoom(@Body('roomName') roomName: roomCreationName,
                 @UploadedFile() file: Express.Multer.File,
                 @Body('roomType') roomType: string,
                 @Body('roomPass') roomPass: string) {
@@ -78,7 +79,7 @@ export class RoomController {
     @Patch('/:roomId')
     @UseInterceptors(FileInterceptor('roomAvatar', storage))
     async updateRoom(@Param('roomId', ParseIntPipe) roomId: number,
-                    @Body('roomName') roomName: string,
+                    @Body('roomName') roomName: roomCreationName,
                     @UploadedFile() file,
                     @Body('roomType') roomType: string,
                     @Body('roomPass') roomPass: string) {

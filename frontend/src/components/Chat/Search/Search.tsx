@@ -21,7 +21,7 @@ export const Search = ({ onValueChange, chatData }: any) => {
         }
         catch {
           setSearchResults(null)
-          console.error(`Couldn't find any user`)
+          // console.log(`Couldn't find any user`)
         }
       }
       

@@ -2,6 +2,7 @@ import { ForbiddenException, Injectable, UnauthorizedException } from '@nestjs/c
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Room, Users } from '@prisma/client'
 import * as bcrypt from 'bcrypt';
+import { roomCreationName } from './dto';
 
 @Injectable()
 export class RoomService {
@@ -27,7 +28,7 @@ export class RoomService {
             })
         }
         catch (err) {
-            console.error(`Couldn't find any room with id: ${roomId} ${err}`)
+            console.log(`Couldn't find any room with id: ${roomId} ${err}`)
         }
     }
 
@@ -39,14 +40,14 @@ export class RoomService {
             return room.roomAvatar
         }
         catch (err) {
-            console.error(`Couldn't find any room with id: ${id} ${err}`)
+            console.log(`Couldn't find any room with id: ${id} ${err}`)
         }
     }
 
-    async createRoom(roomName: string, roomAvatar: string, roomType: string, roomPass: string) {
+    async createRoom(roomName: roomCreationName, roomAvatar: string, roomType: string, roomPass: string) {
         return await this.prisma.room.create({
             data: {
-                roomName: roomName,
+                roomName: roomName.roomName,
                 roomAvatar: roomAvatar,
                 roomType: roomType,
                 roomPass: await this.hashData(roomPass),
@@ -69,14 +70,14 @@ export class RoomService {
         return false
     }
 
-    async updateRoom(roomId: number, roomName: string, roomAvatar: string, roomType: string, roomPass: string) {
+    async updateRoom(roomId: number, roomName: roomCreationName, roomAvatar: string, roomType: string, roomPass: string) {
         try {
             return await this.prisma.room.update({
                 where: {
                     id: roomId,
                 },
                 data: { 
-                    roomName: roomName,
+                    roomName: roomName.roomName,
                     roomAvatar: roomAvatar,
                     roomType: roomType,
                     roomPass: await this.hashData(roomPass),
@@ -84,7 +85,7 @@ export class RoomService {
             });
         }
         catch {
-            console.error(`Couldn't create room with id ${roomId}`)
+            console.log(`Couldn't create room with id ${roomId}`)
         }
     }
 

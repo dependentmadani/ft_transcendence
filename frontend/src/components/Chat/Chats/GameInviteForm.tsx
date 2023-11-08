@@ -89,8 +89,8 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
 
             socketa?.emit('notification', { notif: res.data });
         }
-        catch (err) {
-            console.log(`coudn't create notification: `, err)
+        catch  {
+            // console.log(`coudn't create notification: `, err)
         }
     }
 

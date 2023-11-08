@@ -70,13 +70,13 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                     withCredentials: true
                                 });
                             }
-                            catch (error) {
-                                console.log(error);
+                            catch  {
+                                // console.log(error);
                             }
                         }
                     }
-                    catch (error) {
-                        console.log(error);
+                    catch  {
+                        // console.log(error);
                     }
                     window.location.reload()
                 }
@@ -110,13 +110,13 @@ export const RoomCreationModal = ({ onClose, chatData }: any) => {
                                     withCredentials: true
                                 });
                             }
-                            catch (error) {
-                                console.log(error);
+                            catch  {
+                                // console.log(error);
                             }
                         }
                     }
-                    catch (error) {
-                        console.log(error);
+                    catch  {
+                        // console.log(error);
                     }
                     window.location.reload()
             }

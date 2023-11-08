@@ -7,6 +7,7 @@ import { UserModify } from './dto/create-users.dto';
 import { Users } from '@prisma/client';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { error } from 'console';
 
 @Injectable()
 export class UsersService {
@@ -29,18 +30,23 @@ export class UsersService {
   async findUserById(
     userId: number,
   ): Promise<Users> {
-    const user =
-      await this.prisma.users.findUnique({
-        where: {
-          id: userId,
-        },
-        include: {
-          friends: true,
-          blocked: true,
-          games: true
-        }
-      });
-    return user;
+    try {
+      const user =
+        await this.prisma.users.findUnique({
+          where: {
+            id: userId,
+          },
+          include: {
+            friends: true,
+            blocked: true,
+            games: true
+          }
+        });
+      return user;
+    }
+    catch (err) {
+      console.log('error: ', err)
+    }
   }
 
   async getAchievements(userId: number) {
