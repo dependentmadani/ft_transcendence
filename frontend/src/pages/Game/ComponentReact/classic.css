@@ -69,14 +69,41 @@
     transform: translate(-50%, -50%);
   }
 
-  .dimension-canvas > span {
+  .discription-game {
     position: absolute;
+    /* display: flex; */
+    /* text-align: center; */
     top: 5%;
     left: 5%;
+    margin-right: 5%;
     z-index: 250;
     font-size: clamp(10px, 2vw, 2vh);
   }
 
+.discription-title {
+  font-family: 'Orbitron', sans-serif;
+  color: cyan;
+  font-weight: 600;;
+  /* margin: auto; */
+  /* text-align: center; */
+}
+
+.discription-game > ul {
+  text-align: left;
+  margin-top: 2%;
+  margin-left: 5%;
+}
+
+.discription-game > div  {
+  margin-top: 1%;
+  margin-bottom: 1%;
+  text-align: left;
+  margin-left: 5%;
+}
+
+.discription-game> ul >li {
+  list-style:  square;
+}
   .game-setting {
     position: absolute;
     /* background-color: violet; */
