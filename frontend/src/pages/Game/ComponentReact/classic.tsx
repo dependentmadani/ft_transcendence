@@ -6,6 +6,8 @@ import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ReactSVG } from "react-svg";
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
 
 interface User
 {
@@ -21,6 +23,8 @@ export default function ClassicGame()
   const flag = useRef(false)
   const canvas = useRef(null)
   const [musicOn, setMusicOn] = useState(true);
+  const [start, setStart] = useStart();
+  const [myUrl, setMyUrl] = useUrl();
   const [soundOn, setSoundOn] = useState(true);
   const [size, setSize] = useState<'small' | 'medium'>('medium');
   
@@ -32,6 +36,7 @@ export default function ClassicGame()
 
   const [user1, setUser1] = useState<User | null>(null);
 const [user2, setUser2] = useState<User | null>(null);
+
 
 
   useEffect(() => {
@@ -160,7 +165,7 @@ useEffect(() => {
           <div className='style-classic'>
             <canvas ref={canvas} id = "canvas1"   width='1000px' height='600px'  > </canvas>
           </div>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart'onClick={() => {setStart(true);}} >
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>

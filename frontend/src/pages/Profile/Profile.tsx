@@ -20,20 +20,23 @@ function Profile() {
         navigate('/profile')
       if (username) {
         try {
-          const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, { withCredentials: true });
-          console.log(res.data);
-          if (res.data.length) {
-            setData(res.data);
+          const res = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/search/${username}`, { withCredentials: true })).data
+          const check = res.filter(user => user.username === username)
+        
+          if (check.length) {
+            setData(check);
             setProfile('Friend');
           } else {
-              const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, { withCredentials: true });
-              console.log(res.data);
-              if (res.data.length) {
-                setData(res.data);
+              const res = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, { withCredentials: true })).data
+              const check =  res.filter(user => user.username === username);
+
+              if (check.length) {
+                setData(check);
                 setProfile('NotFriend');
+              } else {
+                setProfile('NotFound')
               }
           }
-
           
         } catch (error) {
           console.error('Error fetching data: ', error);
@@ -47,13 +50,13 @@ function Profile() {
     getUsers();
   }, [username]);
 
-  console.log('profile: ', profile);
-
   return (
     <>
       {profile === 'Me' && <MyProfile />}
+      {profile === 'NotFound' && <span className='no-users'> User Not Found .... </span>}
       {profile === 'Friend' && <FriendProfile userData={data} />}
       {profile === 'NotFriend' && <NotFriendProfile userData={data} />}
+
     </>
   );
 }

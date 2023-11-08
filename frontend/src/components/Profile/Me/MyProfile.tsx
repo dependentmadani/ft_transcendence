@@ -72,7 +72,7 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
         };
         getHistory();
     }, []);
-    console.log('---- : ', historyData)
+    // console.log('---- : ', historyData)
     return (
         <div className='history'>
             <div id='title' >
@@ -107,7 +107,6 @@ const Achieve = (props:any) => {
 const Achieves = () => {
     
     const [badge, setBadge] = useState({});
-    let counter = 0;
 
     useEffect( () => {
 
@@ -196,11 +195,11 @@ function MyProfile () {
             else
                 settings_card.style.display = 'flex'
         }
-        console.log('after : ', popSettings)
+        // console.log('after : ', popSettings)
     }, [popSettings]);
 
 
-    console.log('-----------------------------------------', client)
+    // console.log('-----------------------------------------', client)
     return (
         <>
             {loading ? <img id='Loding' src='/src/imgs/svg/eat.svg' /> : 

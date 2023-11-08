@@ -5,6 +5,9 @@ import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/MatchPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
 
 interface User
 {
@@ -19,6 +22,8 @@ export default function Tennis()
   const [soundOn, setSoundOn] = useState(true);
   const navigate = useNavigate();
 
+  const [myUrl, setMyUrl] = useUrl();
+  const [start, setStart] = useStart();
   const flag = useRef(false)
   const canvas = useRef(null)
   
@@ -32,7 +37,9 @@ export default function Tennis()
   const [user1, setUser1] = useState<User | null>(null);
 const [user2, setUser2] = useState<User | null>(null);
 
+
 useEffect(() => {
+
   const getUserData = async () => {
     const res = await axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
     setUserdata(res.data)
@@ -132,9 +139,11 @@ useEffect(() => {
   window.addEventListener('resize', updateCanvasWidth);
 
   return () => {
+    setStart(false)
     window.removeEventListener('resize', updateCanvasWidth);
   };
 }, [])
+
 
 const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
 
@@ -165,7 +174,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
         </div>
         <div className='dimension-canvas'>
           <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart' onClick={() => {setStart(true);}} >
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
@@ -185,7 +194,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
             <span id='state' > {soundOn ? 'On' : 'Off'} </span>
           </div>
       </div>
-      <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
+      <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false);navigate('/game')}}>
         <img src="/src/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 

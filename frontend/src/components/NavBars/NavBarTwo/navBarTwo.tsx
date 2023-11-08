@@ -8,6 +8,7 @@ import { Socket } from 'socket.io-client';
 import { useSocket } from '@/context/socketContext';
 import { toast } from 'react-toastify';
 import { useGame } from '@/context/GameContext';
+import { useUrl } from '@/context/UrlContext';
 
 interface Notifications {
     id: number,
@@ -37,7 +38,7 @@ const ListNotification = () => {
     const [notifications, setNotifications] = useState<Notifications[]>([])
     const [newNotifications, setNewNotifications] = useState<Notifs[]>([])
     const {socketa} = useSocket();
-    const [_game, setGame] = useGame();
+  const [_game, setGame] = useGame();
     const navigate = useNavigate();
 
 
@@ -227,7 +228,8 @@ function NavBarTwo (props:any) {
     const targetRef = useRef(null);
     const NotificRef = useRef(null);
     const dropRef = useRef(null);
-    const { client, updateClient }  = useClient();
+  const [myUrl, setMyUrl] = useUrl();
+  const { client, updateClient }  = useClient();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     // const [orientation, setOrientation] = useState<number>(window.orientation);
     const [isNotificOpen, setIsNotificOpen] = useState(false);
@@ -326,7 +328,7 @@ function NavBarTwo (props:any) {
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" />
+                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" onClick={() => {setMyUrl(true)}} />
                 </Link>
                 <div className='right-bar'>
                     <button  id='notificDrop'   >

@@ -10,35 +10,25 @@ import "react-toastify/dist/ReactToastify.css";
 import { GameProvider } from './context/GameContext';
 import { SettingProvider } from './context/SettingContext';
 import { SocketProvider } from './context/socketContext';
+import { StartProvider } from './context/startContext';
+import { ScoreProvider, UrlProvider, useUrl } from './context/UrlContext';
 
 // const CLIENT_STORAGE_KEY = import.meta.env.VITE_CLIENT_STORAGE_KEY;
 
 const MyComponent = () => {
+
   
-  // useEffect(() => {
-  //   let isRefreshing = false;
-    
-  //   const unmountApp = () => {
-  //     if (isRefreshing) {
-  //       console.log('clear Item')  
-  //       localStorage.removeItem(CLIENT_STORAGE_KEY);
-  //     }
-  //   };
-    
-  //   // Set the flag when the page is first loaded
-  //   window.onload = () => { isRefreshing = false; };
+  useEffect(() => {
 
-  //   // Check for refresh on 'beforeunload' event
-  //   window.addEventListener('beforeunload', unmountApp);
-  //   // Detect page refresh
-  //   window.addEventListener('unload', () => { isRefreshing = true; });
+    function reload() {
+      location.reload();
+    }
 
-  //   // Remove the event listeners when the component unmounts
-  //   return () => {
-  //     window.removeEventListener('beforeunload', unmountApp);
-  //     window.removeEventListener('unload', unmountApp);
-  //   };
-  // }, []);
+    window.addEventListener('popstate', reload);
+    return () => {
+      window.addEventListener('popstate', reload);
+    };
+  }, []);
 
   return (
     <React.StrictMode>
@@ -47,8 +37,14 @@ const MyComponent = () => {
           <GameProvider>
             <SettingProvider>
               <SocketProvider>
-                <RouterProvider router={router} />
-                <ToastContainer />
+
+                <StartProvider> 
+                  <UrlProvider>
+                      <RouterProvider router={router} />
+                      <ToastContainer />
+                  </UrlProvider>
+                </StartProvider>
+              
               </SocketProvider>
             </SettingProvider>
           </GameProvider>

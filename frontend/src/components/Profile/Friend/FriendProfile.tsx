@@ -9,10 +9,40 @@ import axios from 'axios';
 
 
 
+const Achieve = (props:any) => {
+    return (
+        <div className="achieve-card">
+            <div className={props.change ? "achieve-icon akinator-img" : "achieve-icon"}>
+                <img src={props.achieveImg} height={props.height} alt="" />
+            </div>
+            <div className="achieve-data">
+                <p className="description">
+                    {props.achieveTitle}
+                    <span> {props.achieveDiscription}</span>
+                </p>
+            </div>
+        </div>
+    )
+}
 
 
+function Achivement (props: any) {
+    const [badge, setBadge] = useState({});
 
-function Achivement () {
+    useEffect( () => {
+
+        async function getAchievements() {
+            try {
+                const response = await axios.get(`http://localhost:8000/users/achievements/${props.friendId}`, {withCredentials: true});
+                setBadge(response.data);
+                // console.log("badge !!!!! ", response.data);
+            } catch (error) {
+                console.error("Error fetching achievements data:", error);
+            }
+        };
+        getAchievements();
+    }, []);
+
     return (
     <div className='achivement'>
         <div id='title' >
@@ -20,15 +50,14 @@ function Achivement () {
             <span>Achivements</span>
         </div>
         <div className='achivements'>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
-            <div className='achive'></div>
+            {!(badge.first_server || badge.conqueror || badge.ai_crusher  || badge.disciplined || badge.extrouvert || badge.failure || badge.challenger) && <span className='no-users no-achieve'> No Achievements .... </span>}
+            { badge.first_server && <Achieve achieveImg='/src/imgs/achievement-icons/firstserv.png' achieveTitle='First Serve!' achieveDiscription='Win your first game' />}
+            { badge.conqueror && <Achieve achieveImg='/src/imgs/achievement-icons/Conqueror.png' achieveTitle='Conqueror!' achieveDiscription='Win 3 games in a row' /> }
+            { badge.ai_crusher && <Achieve achieveImg='/src/imgs/akinator1.png' change={true} achieveTitle='Akinator Victory!' achieveDiscription='Beat AI bot' /> }
+            { badge.disciplined  && <Achieve achieveImg='/src/imgs/achievement-icons/Practice.png' achieveTitle='Disciplined!' achieveDiscription='Play 5 practice games' /> }
+            { badge.extrouvert && <Achieve achieveImg='/src/imgs/achievement-icons/social.png' achieveTitle='Extrouvert!' achieveDiscription='Have min of 5 friend' /> }
+            { badge.failure && <Achieve achieveImg='/src/imgs/achievement-icons/failure.png' achieveTitle='You Failed!' achieveDiscription='You lost 5 games' /> }
+            { badge.challenger && <Achieve achieveImg='/src/imgs/achievement-icons/challenger.png' achieveTitle='Challenger!' achieveDiscription='Play against 3 opponents' /> }
         </div>
     </div>
     )
@@ -73,7 +102,7 @@ function ProfileInfo (props: any) {
 
 function FriendProfile (props: any) {
 
-    console.log('profileFriend', props.userData)
+    console.log('profileFriend: **** ', props.userData)
     const [listFriend, setListFriend] = useState(null);
     const [popSettings, setPopSettings] = useSetting();
     // const {client, updateClient} = useClient();
@@ -115,7 +144,7 @@ function FriendProfile (props: any) {
                     {listFriend && <Friends friendsData={listFriend} /> }
                 </div>
                 <div className='profile-col-2'>
-                    <Achivement />
+                    <Achivement friendId={props.userData[0].id} />
                     <Statistic gameData={props.userData[0].games} />
                 </div>
                 <SettingsComponent user={props.userData[0]}  />

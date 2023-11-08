@@ -5,6 +5,8 @@ import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/AkinatorPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
 
 interface User {
   username: string,
@@ -15,7 +17,10 @@ export default function Akinator()
 {
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
+  const [start, setStart] = useStart();
   const navigate = useNavigate();
+  const [myUrl, setMyUrl] = useUrl();
+
 
   const goback = () => {
     setMusicOn(false);
@@ -40,8 +45,8 @@ export default function Akinator()
   }
   
   async function addHistory(sure:boolean) {
-    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-    if (leftballs === 5 || rightballs === 5 || sure) {
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : ', rightballs)
+    if ((leftballs === 5 || rightballs === 5 || sure) && start) {
       console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
       try {
         const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
@@ -53,6 +58,7 @@ export default function Akinator()
         {withCredentials: true}
         )
         console.log('res : ', res)
+        setStart(false)
       }catch (err) {
         console.log('Error Fetcing data : ', err)
       }
@@ -78,33 +84,6 @@ export default function Akinator()
   
   }, [])
 
-
-  useEffect(() => {
-    
-    const beforeUnloadHandler = async (event) => {
-      // You can display a confirmation message or perform actions here.
-      // For example:
-      console.log('event.preventDefault() :', event.preventDefault())
-      const confirmationMessage = 'You will lose . Are you sure you want to leave?';
-      event.returnValue = confirmationMessage; // For modern browsers
-      const userDecision = window.confirm(confirmationMessage);
-      if (!userDecision) {
-        event.preventDefault();
-      }
-      else {
-        // leftballs = 5;
-        await addHistory(true); // Replace with your database action
-      }
-      // return confirmationMessage; // For older browsers
-    };
-
-    window.addEventListener('beforeunload', beforeUnloadHandler);
-
-    return () => {
-      // Remove the event listener when the component unmounts
-      window.removeEventListener('beforeunload', beforeUnloadHandler);
-    };
-  }, [])
 
   const updateCanvasWidth = () => {
 
@@ -158,6 +137,21 @@ export default function Akinator()
     };
   }, [])
 
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (start) {
+        addHistory(true) 
+      }
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [start]); // Add start to the dependency array
+  
   const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
 
   return (
@@ -188,7 +182,7 @@ export default function Akinator()
         </div>
         <div className='dimension-canvas'>
           <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart' onClick={() => {setStart(true);}}>
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
@@ -208,7 +202,7 @@ export default function Akinator()
             <span id='state' > {soundOn ? 'On' : 'Off'} </span>
           </div>
       </div>
-      <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
+      <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false); navigate('/game')}}>
         <img src="/src/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 

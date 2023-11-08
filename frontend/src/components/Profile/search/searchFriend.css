@@ -35,6 +35,10 @@
 	
 }
 
+.akinator-img {
+	background-color: #dddbdc;
+}
+
 .akinator-img > img {
 	height: 80%;
 	/* background-color: rgb(40, 225, 139); */
