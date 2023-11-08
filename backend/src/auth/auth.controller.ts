@@ -261,7 +261,7 @@ export class AuthController {
     );
   }
 
-  @Post('2fa/disable')
+  @Get('2fa/disable')
   @HttpCode(HttpStatus.OK)
   async disable2fa(@Req() req: Request) {
     const user: Users =
@@ -294,7 +294,7 @@ export class AuthController {
     await this.authService.fortyTwo(
       req.user['users'],
       );
-    console.log('user info', tokens);
+    // console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
       maxAge: oneDay,
       httpOnly: true, // for security

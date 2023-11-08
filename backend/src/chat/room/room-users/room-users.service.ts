@@ -79,7 +79,7 @@ export class RoomUsersService {
                 }
             })
 
-            console.log(admin)
+            // console.log(admin)
             if (admin.length !== 0)
                 return true
             return false
@@ -116,10 +116,13 @@ export class RoomUsersService {
                     ]
                 }
             })
-            return roomUser[0].role
+            if (roomUser[0].role)
+                return roomUser[0].role
+            return '';
         }
         catch (err) {
             console.error(`Couldn't find users in this room: ${err}`)
+            return '';
         }
     }
 
@@ -133,6 +136,7 @@ export class RoomUsersService {
                     ]
                 }
             })
+            // console.log('roomuser', roomUser)
             if (roomUser.length !== 1)
                 return false
             return roomUser[0].allowed

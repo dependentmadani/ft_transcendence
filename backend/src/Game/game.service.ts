@@ -75,4 +75,33 @@ export class GameService {
             console.log('something wrong with catching leaderboard content')
         }
     }
+
+    async playerPosition(username: string) {
+        try {
+
+            const allPlayers = await this.prisma.users.findMany({
+                orderBy: {
+                    games: {
+                        score: 'desc'
+                    }
+                },
+                include: {
+                    games: true
+                }
+            })
+            const usernameSize = username.length;
+            var value = 0;
+            const theRest = allPlayers.map((players, index) => {
+                if (username === players.username) {
+                    value = index + 1;
+                    return value;
+                }
+            })
+            // const final = new Set(theRest);
+            // console.log('something, ', final)
+            return value;
+        } catch (e) {
+            console.log('something wrong with the leaderboard/username api');
+        }
+    }
 }

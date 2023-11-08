@@ -1,6 +1,7 @@
-.settings-friend {
+.settings-noFriend {
     display: none;
-    width: 120px;
+    overflow: hidden;
+    width: 60px;
     height: 40px;
     background-color: aqua;
     position: absolute;
@@ -11,15 +12,16 @@
     background-color: rgba(43, 43, 58, .85); 
 }
 
-.settings-friend > img {
+.settings-noFriend > img {
     height: 70%;
     margin: auto;
 }
 
-.settings-friend > img:hover {
+.settings-noFriend > img:hover {
     scale: 1.1;
+    cursor: pointer;
 }
 
-.settings-friend > img:active {
+.settings-noFriend > img:active {
     scale: .95;
 }

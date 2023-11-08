@@ -1,6 +1,7 @@
+import { useShow } from '@/context/ShowFormContext';
 import axios from 'axios';
 import { useEffect, useRef } from 'react';
-import { useShow } from "@/context/ShowFormContext";
+
 
 
 export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }: any) => {
@@ -13,6 +14,7 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
         
         let chat = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/one-contact/${chatData._mainUser.id}/${user.id}`, {withCredentials: true})).data
         
+        console.log('data', chatData,' | ', user, " | ", chat)
         if (!chat) {
             try {
                 chat = (await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/chat`, {
@@ -26,7 +28,7 @@ export const SearchResult = ({ onClose, searchResults, onValueChange, chatData }
         }
 
         onValueChange(chat)
-        setShow('false');
+        setShow('true');
     }
 
 

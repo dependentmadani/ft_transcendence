@@ -5,6 +5,10 @@ import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/AkinatorPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
+import Discripion from './description';
+
 
 interface User {
   username: string,
@@ -15,7 +19,10 @@ export default function Akinator()
 {
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
+  const [start, setStart] = useStart();
   const navigate = useNavigate();
+  const [myUrl, setMyUrl] = useUrl();
+
 
   const goback = () => {
     setMusicOn(false);
@@ -30,39 +37,40 @@ export default function Akinator()
   const [rightballs, setRightBalls] = useState<number>(0);
 
   
-  useEffect(() => {
+  function fetchData() {
+    if (flag.current === false)
+    {
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
+      flag.current = true 
+      console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+    }
+  }
   
-    async function fetchData() {
-      if (flag.current === false)
-      {
-        ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);})
-        flag.current = true 
-        console.log('@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@')
+  async function addHistory(sure:boolean) {
+    console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% : ', rightballs)
+    if ((leftballs === 5 || rightballs === 5 || sure) && start) {
+      console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
+      try {
+        const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+        {
+          opp_name: `akinator`,
+          opp_score: sure ? 5 : leftballs,
+          my_score: rightballs,
+        },
+        {withCredentials: true}
+        )
+        console.log('res : ', res)
+        setStart(false)
+      }catch (err) {
+        console.log('Error Fetcing data : ', err)
       }
     }
-    
-    async function addHistory() {
-      console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-      if (leftballs === 5 || rightballs === 5) {
-        console.log('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&')
-        try {
-          const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
-          {
-            opp_name: `akinator`,
-            opp_score: leftballs,
-            my_score: rightballs,
-          },
-          {withCredentials: true}
-          )
-          console.log('res : ', res)
-        }catch (err) {
-          console.log('Error Fetcing data : ', err)
-        }
-      }
-    }
+  }
+
+  useEffect(() => {
 
     fetchData();
-    addHistory();
+    addHistory(false);
   },  [leftballs, rightballs])
 
 
@@ -75,7 +83,9 @@ export default function Akinator()
     }
 
     getUserData()
+  
   }, [])
+
 
   const updateCanvasWidth = () => {
 
@@ -129,12 +139,25 @@ export default function Akinator()
     };
   }, [])
 
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (start) {
+        addHistory(true) 
+      }
+    };
+  
+    window.addEventListener('beforeunload', handleBeforeUnload);
+  
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, [start]); // Add start to the dependency array
+  
   const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
 
   return (
     <div className='game-mode'>
-        {/* <div >
-        </div> */}
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
@@ -154,17 +177,18 @@ export default function Akinator()
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
-                  <div key={element} style={index < rightballs ? { backgroundColor: 'cyan' } : {}}></div>
+                  <div key={element} style={5 - index <= rightballs ? { backgroundColor: 'cyan' } : {}}></div>
                 ))}
               </div>
             </div>
         </div>
         <div className='dimension-canvas'>
           <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart' onClick={() => {setStart(true);}}>
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
+          <Discripion mode='akinator' />
         </div>
         </div>
     <div className='game-setting'>
@@ -181,7 +205,7 @@ export default function Akinator()
             <span id='state' > {soundOn ? 'On' : 'Off'} </span>
           </div>
       </div>
-      <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
+      <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false); navigate('/game')}}>
         <img src="/src/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 

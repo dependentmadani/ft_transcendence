@@ -12,6 +12,7 @@ import Tennis from '@/pages/Game/ComponentReact/tennis';
 import { default as InviteTennis } from '@/pages/Game/Invitegame/InviteMatch';
 import InviteClassic from '@/pages/Game/Invitegame/InviteClassic';
 import { useGame } from '@/context/GameContext';
+import { FetchProvider } from '@/context/fetchContext';
 
 const Test = () => {
     return (<>
@@ -24,7 +25,7 @@ const InviteGame = () => {
     // check data of ids of players
     const [_game] = useGame();
 
-    console.log('game :::::::::: ', _game)
+    // console.log('game :::::::::: ', _game)
 
     if (_game.mode === 'classic')
         return <InviteClassic ProfileID1={_game.playerID1} ProfileID2={_game.playerID2} />
@@ -35,7 +36,7 @@ const InviteGame = () => {
 
 function selectSection(section: string): JSX.Element {
 
-    console.log(section)
+    // console.log(section)
 
     if (section === '/profile/:username' || section === '/profile')
         return <Profile  />;
@@ -69,9 +70,9 @@ function Section (props:any) {
                 <div className='NavBarTree'>
                     <NavBarTree/>
                 </div>
-                <div className='select-section'>
-                    {selectSection(props.section)}
-                </div>
+                    <div className='select-section'>
+                        {selectSection(props.section)}
+                    </div>
             </div>
         </div>
     ) 

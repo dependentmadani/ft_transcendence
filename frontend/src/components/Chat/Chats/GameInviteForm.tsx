@@ -86,7 +86,6 @@ export const GameInviteForm = ({ onClose, chatData }: any) => {
                 }, {
                     withCredentials: true
                 })
-                console.log('WE TRYNNA PLAY MR ', res.data)
 
             socketa.emit('notification', { notif: res.data });
         }

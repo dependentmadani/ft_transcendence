@@ -26,10 +26,10 @@ function Leaderboard() {
 
     const getLeaderboard = async () => {
         try {
-            const response = await axios.get(`http://localhost:8000/game/leaderboard`, {withCredentials: true});
+            const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/game/leaderboard`, {withCredentials: true});
             setAkinatorUser(response.data.find(user => user.username === "akinator"));
             setAkinatorRank(response.data.findIndex(user => user.username === "akinator"));
-            console.log("akinator  ---> ", akinatorUser);
+            // console.log("akinator  ---> ", akinatorUser);
             setLeaderboard(response.data);
             setLoading(false);
         } catch (error) {
@@ -39,7 +39,7 @@ function Leaderboard() {
     };
 
     useEffect(() => {
-        console.log(`leaderboard : ${leaderboard[0]}`)
+        // console.log(`leaderboard : ${leaderboard[0]}`)
 
     }, [leaderboard]) 
 
@@ -50,9 +50,9 @@ function Leaderboard() {
         return (
             leaderboard.filter(user => user.username.toLowerCase().includes(searchQuery.toLowerCase())).map((user, index) => {
                 if (user.username === "akinator")
-                    return <></>
+                    return ;
                 return (
-                    <div className="player-stats" key={user.id}>
+                    <div key={user.id} className="player-stats" key={user.id}>
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
                             <img src={user.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} 
                                 onClick={ () => goProfile(user.username) } />
@@ -88,14 +88,13 @@ function Leaderboard() {
                     type="text"
                     placeholder="Search by username"
                     value={searchQuery}
-                    onChange={(e) => {setSearchQuery(e.target.value); console.log("Search For: ", searchQuery); }}
+                    onChange={(e) => {setSearchQuery(e.target.value); }}
                 />
             </div>
             { akinatorUser && (
                 <div className="player-stats akinator-bot" key={akinatorUser.id}>
                     <div className={(akinatorUser.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
-                        <img src={akinatorUser.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} 
-                            onClick={ () => goProfile(akinatorUser.username) } />
+                        <img src={akinatorUser.avatar} alt="User image" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} />
                     </div>
                     <div className="status">
                         <span>{akinatorUser.username}</span>
@@ -116,7 +115,7 @@ function Leaderboard() {
             )}
             {loading ? (
                 <img id='Loding' src='/src/imgs/svg/eat.svg' />
-            ) : userLeaderboard().length ? userLeaderboard() : <span id='no-users'> No Users .... </span>} 
+            ) : userLeaderboard().length ? userLeaderboard() : <span className='no-users'> No Users .... </span>} 
         </div>
     );
 }

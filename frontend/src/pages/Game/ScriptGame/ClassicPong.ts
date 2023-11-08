@@ -25,11 +25,11 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         paddle_sound.src = "/src/assets/sounds/Pop.ogg";
         
         
-        const socket = io('http://localhost:8000/ClassicRandom');
+        const socket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/ClassicRandom`);
         
         socket.emit("canvas",canvas.width, canvas.height);
 
-        axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+        axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
             // console.log(`1~~~~~~~~~~~|${res.data?.username}`)

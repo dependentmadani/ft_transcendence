@@ -6,6 +6,9 @@ import { ping_pong} from '../ScriptGame/ClassicPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ReactSVG } from "react-svg";
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
+import Discripion from './description';
 
 interface User
 {
@@ -21,6 +24,8 @@ export default function ClassicGame()
   const flag = useRef(false)
   const canvas = useRef(null)
   const [musicOn, setMusicOn] = useState(true);
+  const [start, setStart] = useStart();
+  const [myUrl, setMyUrl] = useUrl();
   const [soundOn, setSoundOn] = useState(true);
   const [size, setSize] = useState<'small' | 'medium'>('medium');
   
@@ -32,6 +37,7 @@ export default function ClassicGame()
 
   const [user1, setUser1] = useState<User | null>(null);
 const [user2, setUser2] = useState<User | null>(null);
+
 
 
   useEffect(() => {
@@ -74,13 +80,7 @@ useEffect(() => {
   useEffect(() => {
     if (flag.current === false && Userdata?.id)
     {
-      ping_pong(canvas.current,(left:any) => {
-        const updatedBallColors = leftballs.map((color, index) => (index < left ? 'purple' : 'gray'));
-        setLeftBalls(updatedBallColors);
-      },(right:any)=>{
-          const updatedBallColors = rightballs.map((color, index) => (4 - index < right ? 'purple' : 'gray'));
-          setRightBalls(updatedBallColors);
-        },
+      ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
         Userdata.id,
         (prl1:any) =>{setProfileID1(prl1);},
         (prl2:any) =>{setProfileID2(prl2);}
@@ -166,10 +166,11 @@ useEffect(() => {
           <div className='style-classic'>
             <canvas ref={canvas} id = "canvas1"   width='1000px' height='600px'  > </canvas>
           </div>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart'onClick={() => {setStart(true);}} >
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
+          <Discripion mode='classic' />
         </div>
         </div>
     <div className='game-setting'>

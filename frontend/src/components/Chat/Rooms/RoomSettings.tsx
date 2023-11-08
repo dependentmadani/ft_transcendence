@@ -20,15 +20,9 @@ export const RoomSettings = ({ chatData, onClose }: any) => {
     
     useEffect(() => {
         const isCurrentUserAdmin = async () => {
-            // if (currentRoom.protection === 'Public' || currentRoom.protection === 'Private')
-            //     setCurrentUserIsAdmin(true)
-            // else if (currentRoom.protection === 'Protected')
-            // {
                 const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
-                console.log('is user admin', isAdmin);
                 if (isAdmin)
                     setCurrentUserIsAdmin(true)
-            // }
         }
 
         isCurrentUserAdmin()

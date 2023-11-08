@@ -4,6 +4,7 @@ import { CreateRoom } from "../Rooms/CreateRoom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SearchResult } from "./SearchResult";
+import { useShow } from "@/context/ShowFormContext";
 
 interface User {}
 
@@ -16,7 +17,7 @@ export const Search = ({ onValueChange, chatData }: any) => {
     if (username.trim() !== '') {
       const getResults = async () => {
         try {
-          const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/globalSearch/${username}`, {withCredentials: true})
+          const results = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/nonBlockedGlobalSearch/${username}`, {withCredentials: true})
           setSearchResults(results.data)
         }
         catch {

@@ -31,19 +31,22 @@ export const SearchInviteResults = ({ chatData, searchResults }: any) => {
                         
         const allow = (currentRoom.protection === 'Protected') ? false : true
         try {
-            await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
-                roomId: currentRoom.id,
-                userId: invitedUser.id,
-                userUsername: invitedUser.username,
-                role: 'MEMBER',
-                allowed: allow,
-            },
-            {
-                withCredentials: true,
-            });
-            chatData?._socket?.emit('roomMembers', invitedUser.id)
-            chatData?._socket?.emit('createRoom', {room: currentRoom, owner: invitedUser.id})
-            chatData?._socket?.emit('sortContacts')
+            const memberExists =  (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.id}/${invitedUser.id}`, { withCredentials: true })).data
+            if (!memberExists) {
+                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                    roomId: currentRoom.id,
+                    userId: invitedUser.id,
+                    userUsername: invitedUser.username,
+                    role: 'MEMBER',
+                    allowed: allow,
+                },
+                {
+                    withCredentials: true,
+                });
+                chatData?._socket?.emit('roomMembers', res.data)
+                chatData?._socket?.emit('createRoom', {room: currentRoom, owner: invitedUser.id})
+                chatData?._socket?.emit('sortContacts')
+            }
         }
         catch (error) {
             console.log(error);

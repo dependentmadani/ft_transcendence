@@ -9,15 +9,15 @@ function Friends_list(props:any) {
     let friends;
     // const {client} = useClient();
     const navigate = useNavigate();
-        console.log('hna : ', props.friendsData)
-        console.log('target : ', props.target)
+        // console.log('hna : ', props.friendsData)
+        // console.log('target : ', props.target)
     // console.log('********', client)
 
 	if (!props.friendsData.length)
-		return (<span id='no-users'> No friends .... </span>)
+		return (<span className='no-users'> No friends .... </span>)
 
     if (!props.target) {
-        console.log('natija 1: ')
+        // console.log('natija 1: ')
         friends =	props.friendsData.map(friend => {
 
             let statusColor = '';
@@ -33,13 +33,12 @@ function Friends_list(props:any) {
                     <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { e.target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
-                    <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
                 </div>
             )
         })
     }
     else {
-        console.log('natija 2: ')
+        // console.log('natija 2: ')
         friends =	props.friendsData.filter(friend => friend.username.toLowerCase().startsWith(props.target.toLowerCase()))
         .map(friend => {
 
@@ -77,9 +76,9 @@ function Friends (props:any) {
     const my_search = document.querySelector('.search-input') as HTMLInputElement
     const input = document.getElementById('search');
 
-    console.log(my_search)
+    // console.log(my_search)
     const search_open = () => {
-        console.log('searchOpen : ', searchOpen)
+        // console.log('searchOpen : ', searchOpen)
         if (!searchOpen) {
             setIconSearch('/src/imgs/cancel-red.png');
             my_search.focus()
@@ -96,13 +95,13 @@ function Friends (props:any) {
     const handleKey: KeyboardEventHandler<HTMLInputElement> = (event) => {
         if (event.key === 'Enter') {
             const _input = document.querySelector('.search-input') as HTMLInputElement
-            console.log(_input.value)
+            // console.log(_input.value)
             setTarget(_input.value.trim());
 			// getFriends(_input.value);
         }
     }
 
-    console.log('friends : ', props.friendsData)
+    // console.log('friends : ', props.friendsData)
 
     return (
         <div className='user-friends'>

@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom'
 
 function Login () {
 
-  console.log('login')
+  // console.log('login')
 
 
   const request42 = () => {

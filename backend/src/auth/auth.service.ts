@@ -81,6 +81,7 @@ export class AuthService {
   ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
+      // console.log('nadi canadi', dto)
       try {
         if (this.aiUserCreated === false) {
           const user = await this.prisma.users.create({
@@ -99,7 +100,7 @@ export class AuthService {
           this.aiUserCreated = true;
         }
       } catch {
-        console.log("the bot is alreay created");
+        console.log('bot already created');
       }
       const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
       if (usernameTaken) {
@@ -228,7 +229,7 @@ export class AuthService {
         hashRt: null,
       },
     });
-    console.log(cookies);
+    // console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
@@ -253,7 +254,7 @@ export class AuthService {
           this.aiUserCreated = true;
         }
       } catch {
-        console.log('the bot is already created!')
+        console.log('the bot is already created');
       }
       const usernameAvailable = await this.prisma.users.findUnique({
         where: {
@@ -561,7 +562,7 @@ export class AuthService {
           isActive: state,
         },
       });
-    console.log(user);
+    // console.log(user);
   }
 
   async signToken(

@@ -17,7 +17,7 @@ const SettingsComponent: React.FC = () => {
     const [email, setEmail] = useState(client.twofaEmail);
     const [qrCode, setQrCode] = useState('');
     const [smsCode, setSmsCode] = useState('');
-    const [username, setUsername] = useState<string>(client.username);
+    const [username, setUsername] = useState<string>(client?.username);
     const [fileUpload, setFileUpload] = useState();
     const [popSettings, setPopSettings] = useSetting();
 
@@ -46,9 +46,10 @@ const SettingsComponent: React.FC = () => {
       };
 
     const changeUsername = (name: string) => {
+      if (name)
         setUsername(name);
-        console.log(`Username: ${username}`)
-        console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
+        // console.log(`Username: ${username}`)
+        // console.log(`daba twoFactorEnabled: ${twoFactorEnabled}`)
     };
     
     const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -57,7 +58,7 @@ const SettingsComponent: React.FC = () => {
       toast.promise(
         (async () => {
           try {
-            console.log(`mail: ${email}|`);
+            // console.log(`mail: ${email}|`);
             const response = await axios.post(
               `http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/setup`,
               { email },
@@ -65,9 +66,11 @@ const SettingsComponent: React.FC = () => {
             );
             const qrCodeUrl = response.data;
             await delay(1000); 
+
             setQrCode(qrCodeUrl);
           } catch (error) {
             await delay(1000);
+            throw '';
           }
         })(),
         {
@@ -89,7 +92,7 @@ const SettingsComponent: React.FC = () => {
         toast.promise(
             (async () => {
               try {
-                console.log(`mail: ${email}|`);
+                // console.log(`mail: ${email}|`);
                 const response = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/verify`,
                 { code: smsCode },
                 { withCredentials: true }
@@ -122,10 +125,10 @@ const SettingsComponent: React.FC = () => {
 
         const informTwoFactorState = async () => {
             try {
-              console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
-                if (!twoFactorEnabled && smsCode)
+              // console.log( `twoFactorEnabled : [${twoFactorEnabled}], smsCode : [${smsCode}]`)
+                if (!twoFactorEnabled && email)
                 {
-                    await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
+                    await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/2fa/disable`,
                     { withCredentials: true },
                     );
                     toast.info("Disabled 2FA !", {
@@ -175,7 +178,7 @@ const SettingsComponent: React.FC = () => {
               await delay(1000);
               const response = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/auth/me`, { withCredentials: true });
               await updateClient({ ...client, ...response.data, signedIn: true });
-              console.log(client)
+              // console.log(client)
               setPopSettings(false);
             } catch (error) {
               await delay(1000);
@@ -200,7 +203,7 @@ const SettingsComponent: React.FC = () => {
   const handleKeyDown = (event) => {
         if (event.key === 'Enter' && twoFactorEnabled) {
             handleEmailSubmit();
-            console.log(`QrCode: ${qrCode}`);
+            // console.log(`QrCode: ${qrCode}`);
         }
   };
     
@@ -208,11 +211,12 @@ const SettingsComponent: React.FC = () => {
   const handleKeyDown2 = (event) => {
       if (event.key === 'Enter' && twoFactorEnabled) {
           handleSmsCodeSubmit();
-          console.log(`QrCode: ${qrCode}`);
+          // console.log(`QrCode: ${qrCode}`);
       }
   };
 
-  console.log('client.twoEnabled : ', client.twoEnabled)
+  // console.log('client.twoEnabled : ', client.twoEnabled)
+  // console.log('twoEnabled : ', twoFactorEnabled)
 
     return (
     <div className="settings-card">
@@ -226,7 +230,7 @@ const SettingsComponent: React.FC = () => {
             <div className="username-frame">
                 <input type="text"
                     id="new-username" placeholder="New username " autoComplete='off'
-                    value={username}
+                    value={username || ''}
                     onChange={(e) => changeUsername(e.target.value)}
                      />
             </div>
@@ -242,14 +246,14 @@ const SettingsComponent: React.FC = () => {
             </div>
         <div className="container-mail">
             <input type="text" id="mail-for-qr" placeholder="Enter mail for QR code"  autoComplete='off'
-                     value={email} onKeyDown={handleKeyDown} onChange={(e) => setEmail(e.target.value)}
-                     disabled={twoFactorEnabled ? !twoFactorEnabled : twoFactorEnabled} />
+                     value={email || ''} onKeyDown={handleKeyDown} onChange={(e) => setEmail(e.target.value)}
+                     disabled={!twoFactorEnabled ? true : false} />
         </div>
         <div className="container-qrcode">
             <div className="sms-input">
                 <input type="text" id="sms-code" placeholder="Enter code"  autoComplete='off'
-                    value={smsCode} onKeyDown={handleKeyDown2} onChange={ (e) => setSmsCode(e.target.value)}
-                      disabled={twoFactorEnabled ? !twoFactorEnabled : twoFactorEnabled} 
+                    value={smsCode || ''} onKeyDown={handleKeyDown2} onChange={ (e) => setSmsCode(e.target.value)}
+                      disabled={!twoFactorEnabled ? true : false} 
                 />
             </div>
             <div className="qr-space">

@@ -1,5 +1,8 @@
+import axios from "axios";
+
 
 export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
+
     if(canvas)
     {
         var ctx:any = canvas.getContext('2d');
@@ -29,9 +32,27 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             SoundValue = switchSound.checked;
             // console.log(`||||||||| switch |||||||||${SoundValue}`)
         });
+
+        async function addHistory() {
+            try {
+                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/history/add-result`,
+                {
+                opp_name: `akinator`,
+                opp_score: 5,
+                my_score: sc.right_score,
+                },
+                {withCredentials: true}
+                )
+                // console.log('res : ', res)
+            }catch (err) {
+                console.log('Error Fetcing data : ', err)
+            }
+        }
+        
         ExitGame.addEventListener('click', () => {
             ExitValue = ExitGame.id;
-
+            if(play_start)
+                addHistory();
             // console.log(`||||||||| EXIT |||||||||${ExitValue}`)
         });
 
@@ -412,7 +433,7 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
                SoundValue = false;
                sc.left_score = 5;
             }
-            if(MusicValue)
+            if(MusicValue && (sc.score_left < 5 && sc.score_right < 5))
                 music.play();
             else
                 music.pause();
@@ -428,11 +449,13 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
             {
                 ctx.drawImage(img_lose, 0, 0, canvas.width, canvas.height);
                 stopAnimation();
+       
             }
             else if(sc.right_score == 5)
             {
                 ctx.drawImage(img_win, 0, 0, canvas.width, canvas.height);
                 stopAnimation();
+        
             }
 
         }
@@ -444,7 +467,8 @@ export function ping_pong(canvas : any,leftCallback:any , rightCallback:any) {
         const fps = 60
         const msPerFrame = 1000 / fps
         let frames = 0
-        function animate() {
+        function animate()
+        {
             animationId = requestAnimationFrame(animate)
             const msNow = performance.now()
             const msPassed = msNow - (msPrev)

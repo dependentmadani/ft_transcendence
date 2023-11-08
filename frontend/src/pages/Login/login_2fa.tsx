@@ -22,7 +22,7 @@ const Login2FA: React.FC = () => {
 			{ code: code },
 			{ withCredentials: true }
 			);
-			console.log('response.data : ', response.data);
+			// console.log('response.data : ', response.data);
 			if (!response.data) {
 				toast.error("Invalid Code !", {
 					position: toast.POSITION.TOP_LEFT
@@ -43,7 +43,7 @@ const Login2FA: React.FC = () => {
 
 	const handleKeyDown = (event) => {
 		if (event.key === 'Enter') {
-		  console.log('hlwa')
+		//   console.log('hlwa')
 		  event.preventDefault();
 		  checkCode();
 		}

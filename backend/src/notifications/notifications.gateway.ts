@@ -19,7 +19,7 @@ export interface socketMetaPayload {
 // }})
 
 
-@WebSocketGateway({ namespace: 'notification', cors: { origin: "http://localhost:5173" } })
+@WebSocketGateway({ namespace: 'notification', cors: { origin: "*" } })
 export class NotificationsGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
@@ -129,12 +129,12 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleConnection(client: Socket): void {
 
     client.on('someEvent', (userId: number) => {
-      console.log('Received data from client:', userId);
+      // console.log('Received data from client:', userId);
 
       // Send a message back to the client
       // client.emit('messageFromServer', 'Hello from the server!');
       this.userSocketMap[userId] = client.id;
-      console.log('notification map of users', this.userSocketMap);
+      // console.log('notification map of users', this.userSocketMap);
     });
     // const userId = this.getUserIdSomehow(client);
   }
@@ -143,7 +143,7 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleNotification(@MessageBody() data: any): void {
     const { notif } = data;
     // Send the message to the recipient's socket
-    console.log('Yooooooooo', notif.receiverUser.id)
+    // console.log('Yooooooooo', notif.receiverUser.id)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
     this.server.to(this.userSocketMap[notif.receiverUser.id]).emit('receiveNotification', notif);
   }
@@ -161,8 +161,19 @@ export class NotificationsGateway implements OnGatewayConnection {
   handleAcceptedNotification(@MessageBody() data: any): void {
     const { notif } = data;
     // Send the message to the recipient's socket
-    console.log('Pooooooooo', notif)
+    // console.log('Pooooooooo', notif)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
     this.server.to(this.userSocketMap[notif.sender.id]).emit('notificationAccepted', notif);
+    // this.server.to(this.userSocketMap[notif.receiver.id]).emit('notificationAccepted', notif);
+  }
+
+  @SubscribeMessage('lockChat')
+  handleLockChat(rec: any): void { 
+    // const { sender, rec, contact } = data;
+    // Send the message to the recipient's socket
+    // console.log('Sort', contact , ' for ', sender , ' and ', rec)
+    console.log('chhhhhhhhhhhh', rec)
+    // this.server.to(this.userSocketMap[rec]).emit('lockingChat', rec);
+    // this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
   }
 }

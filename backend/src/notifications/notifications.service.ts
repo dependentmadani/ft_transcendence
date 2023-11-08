@@ -124,7 +124,7 @@ export class NotificationsService {
 
   async updateNotification(id: number): Promise<Notifications> {
     try {
-      console.log('IIIIOOOOOIII')
+      // console.log('IIIIOOOOOIII')
       const notif = await this.prisma.notifications.findUnique({
         where: {
           id: id

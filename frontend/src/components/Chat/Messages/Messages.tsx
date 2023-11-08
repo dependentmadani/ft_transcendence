@@ -4,7 +4,7 @@ import axios from "axios"
 
 
 
-export const Messages = ({ chatData, messages }: any) => {
+export const Messages = ({ chatData, messages, isOk }: any) => {
 
 
   useEffect(() => {
@@ -12,9 +12,9 @@ export const Messages = ({ chatData, messages }: any) => {
 
       if (chatData?._chat?.type === 'Room') {
         try {
-          const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${chatData.mainUser.id}`, { withCredentials: true })
+          const res = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })
           
-          res.data[0].role === 'BANNED' || res.data[0].role === 'MUTED' ? setIsAllowed(false) : setIsAllowed(true)
+          res?.data[0]?.role === 'BANNED' || res?.data[0]?.role === 'MUTED' ? setIsAllowed(false) : setIsAllowed(true)
         }
         catch (err) {
           console.log(err)
@@ -36,7 +36,6 @@ export const Messages = ({ chatData, messages }: any) => {
     const checkAllow = async () => {
 
       if (chatData?._chat?.type === 'room') {
-        // const _MAIN_USER_ = await (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, {withCredentials: true})).data
         const allwd = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.chat?.id}/${chatData.mainUser.id}`, { withCredentials: true })
         if (allwd.data[0].allowed !== true)
           setIsAllowed(false)
@@ -52,11 +51,11 @@ export const Messages = ({ chatData, messages }: any) => {
   }, [chatData?._chat?.chat?.id])
 
 
-  // console.log('MESSAGES', chatData?._chat)
+  
   return (
-    <div className={ `messages  ${isAllowed === false && 'not-allowed'}` }>
+    <div className={ `messages  ${(isAllowed === false) && 'not-allowed'}` }>
       { 
-        isAllowed && messages?.map((message: Message, index:number) => (
+        isAllowed && isOk && messages?.map((message: Message, index:number) => (
           <Message key={ index } currentMessage={ message } />
         ))
       }

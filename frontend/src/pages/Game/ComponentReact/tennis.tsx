@@ -5,7 +5,10 @@ import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/MatchPong'
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { useStart } from '@/context/startContext';
+import { useUrl } from '@/context/UrlContext';
+import Discripion from './description';
 interface User
 {
   id:number,
@@ -19,12 +22,14 @@ export default function Tennis()
   const [soundOn, setSoundOn] = useState(true);
   const navigate = useNavigate();
 
+  const [myUrl, setMyUrl] = useUrl();
+  const [start, setStart] = useStart();
   const flag = useRef(false)
   const canvas = useRef(null)
   
   const [size, setSize] = useState<'small' | 'medium'>('medium');
-  const [leftballs, setLeftBalls] = useState<number>(0);
-  const [rightballs, setRightBalls] = useState<number>(0);
+  const [leftballs, setLeftBalls] = useState(0);
+  const [rightballs, setRightBalls] = useState(0);
   const [ProfileID1, setProfileID1] = useState(0);
   const [ProfileID2, setProfileID2] = useState(0);
   const [Userdata, setUserdata] = useState<User>()
@@ -32,7 +37,9 @@ export default function Tennis()
   const [user1, setUser1] = useState<User | null>(null);
 const [user2, setUser2] = useState<User | null>(null);
 
+
 useEffect(() => {
+
   const getUserData = async () => {
     const res = await axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
     setUserdata(res.data)
@@ -72,13 +79,15 @@ axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true }
 useEffect(() => {
   if (flag.current === false && Userdata?.id)
   {
-    ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right)},
+    ping_pong(canvas.current,(left:any) => {setLeftBalls(left);},(right:any)=>{setRightBalls(right);},
       Userdata.id,
       (prl1:any) =>{setProfileID1(prl1);},
       (prl2:any) =>{setProfileID2(prl2);}
     )
     flag.current = true 
   }
+
+// console.log('leftball : ', leftballs, ' | rightball : ', rightballs);
 },  [leftballs,rightballs, Userdata?.id,ProfileID1,ProfileID2])
 
 
@@ -130,9 +139,11 @@ useEffect(() => {
   window.addEventListener('resize', updateCanvasWidth);
 
   return () => {
+    setStart(false)
     window.removeEventListener('resize', updateCanvasWidth);
   };
 }, [])
+
 
 const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
 
@@ -146,7 +157,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
                 <div className='profile1id' > {user1?.username}</div>
                 <div className="BallScore1">
                   {score.map((element, index) => (
-                    <div key={element} style={index < rightballs ? { backgroundColor: 'cyan' } : {}}></div>
+                    <div key={element} style={index < leftballs ? { backgroundColor: 'cyan' } : {}}></div>
                   ))}
                 </div>
             </div>
@@ -163,12 +174,13 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
         </div>
         <div className='dimension-canvas'>
           <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-          <button id="ButtonStart" className='ButtonStart'>
+          <button id="ButtonStart" className='ButtonStart' onClick={() => {setStart(true);}} >
             <span className='startplus'>Start</span>
             <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
           </button>
+          <Discripion mode='tennis' />
         </div>
-        </div>
+      </div>
     <div className='game-setting'>
       <span id='setting-title' > Settings </span>
       <div id = "box">
@@ -183,7 +195,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
             <span id='state' > {soundOn ? 'On' : 'Off'} </span>
           </div>
       </div>
-      <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
+      <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false);navigate('/game')}}>
         <img src="/src/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 

@@ -21,7 +21,7 @@ export class RoomUsersController {
         return this.roomUsersService.getRoomUsers(roomId)
     }
 
-    @Get('user/:userId/:')
+    @Get('user/:userId')
     async getUserRooms(@Param('userId', ParseIntPipe) userId: number) {
         return await this.roomUsersService.getUserRooms(userId)
     }
@@ -46,7 +46,8 @@ export class RoomUsersController {
             const _receiver: Users = await this.userService.findUserById(receiver);
 
             // Check if receiver is not blocked
-            if (this.userService.checkBlockedFriend(me, receiver))
+            // console.log('000', this.userService.checkBlockedFriend(me, receiver), this.userService.checkBlockedFriend(receiver, me))
+            if (!(await this.userService.checkBlockedFriend(me, receiver)) && !(await this.userService.checkBlockedFriend(receiver, me)))
                 return { id: chat.chatId, name: _receiver.username, avatar: _receiver.avatar, latestMessageContent: chat.latestMessageContent, latestMessageDate: chat.latestMessageDate, type: 'Chat' };
             return null
         });
@@ -55,7 +56,7 @@ export class RoomUsersController {
             const _room: Room = await this.roomService.getOneRoom(room.roomId);
 
             // Check if user is not banned or muted
-            console.log('Hado roles', room.role)
+            // console.log('room info', _room);
             if (room.role !== 'BANNED' && room.role !== 'MUTED')
                 return { id: room.roomId, name: _room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${_room.id}`, latestMessageContent: _room.latestMessageContent, latestMessageDate: _room.latestMessageDate, type: 'Room', protection: _room.roomType };
             return null
@@ -75,6 +76,34 @@ export class RoomUsersController {
         // console.log('Contacts', contacts);
         // const filteredContacts: any = sortedContacts.filter((contact) => contact !== null);
     //     setChats(filteredChatsData)
+        return sortedContacts
+    }
+
+    @Get('all-rooms')
+    async getAllRooms(@Req() req: Request) {
+
+        const me = req.user['sub']
+        const rooms: Room[] = await this.roomService.getRooms()
+        
+        const roomPromises = rooms.map(async room => {
+
+            // Check if user is not banned or muted
+            const _role = await this.roomUsersService.getRoomMemberRole(room.id, me)
+            // console.log('Hado roles', _role)
+            if (_role !== 'BANNED' && _role !== 'MUTED' && room.roomType !== 'Private')
+                return { id: room.id, name: room.roomName, avatar: `http://localhost:8000/room/roomAvatar/${room.id}`, latestMessageContent: room.latestMessageContent, latestMessageDate: room.latestMessageDate, type: 'Room', protection: room.roomType };
+            return null
+        }); 
+        
+        const roomResults = await Promise.all(roomPromises);
+        
+        const contacts: any = roomResults.filter((contact) => contact !== null);
+        const sortedContacts = contacts.sort((a, b) => {
+            const dateA = new Date(a.latestMessageDate).getTime();
+            const dateB = new Date(b.latestMessageDate).getTime();
+            return dateB - dateA;
+        });
+
         return sortedContacts
     }
 

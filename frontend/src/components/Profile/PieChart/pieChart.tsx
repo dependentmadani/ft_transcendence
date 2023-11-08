@@ -2,11 +2,7 @@ import "./pie.css";
 import  { useCallback, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
-const data = [
-  { name: "Wins", value: 12, color: "#00C49F"},
-  { name: "Loses", value: 10, color: "#F85B30" },
-  { name: "Ties", value: 0, color: "#00c8fe" }
-];
+
 
 
 const renderActiveShape = (props: any) => {
@@ -23,7 +19,8 @@ const renderActiveShape = (props: any) => {
     payload,
     percent,
     value,
-    nvalue
+    totalValue
+    // nvalue
   } = props;
   const lineP = ((outerRadius * 2) / 10);
   const sin = Math.sin(-RADIAN * midAngle);
@@ -40,7 +37,7 @@ const renderActiveShape = (props: any) => {
     <g>
       <text 
         x={cx} 
-        y={cy - 10}  
+        y={cy}  
         textAnchor="middle" 
         dominantBaseline="middle" 
         fill={fill}
@@ -49,16 +46,26 @@ const renderActiveShape = (props: any) => {
           fontWeight:`bold` }}>
         {`${payload.name} : ${value}`}
       </text>
-            <text
-              x={cx - 40}
-              y={cy}
-              dy={15}
-              fill="#d3d3d3"
-              fontWeight="bold"
-              fontSize="13px"
-            >
-              {`Rate (${(percent * 100).toFixed(2)}%)`}
-            </text>
+      <text
+        x={cx - 40}
+        y={cy + 20}
+        dy={15}
+        fill="#d3d3d3"
+        fontWeight="bold"
+        fontSize="13px"
+      >
+        {`Rate (${(percent * 100).toFixed(2)}%)`}
+      </text>
+      <text
+        x={cx - 50}
+        y={cy - 50}
+        dy={15}
+        fill="#ffffff"
+        fontWeight="bold"
+        fontSize="1.2rem"
+      >
+        {`Games : ${totalValue}`}
+      </text>
       <Sector
         cx={cx}
         cy={cy}
@@ -81,7 +88,7 @@ const renderActiveShape = (props: any) => {
   );
 };
 
-export default function MyPieChart() {
+export default function MyPieChart(props:any) {
   const [activeIndex, setActiveIndex] = useState(0);
   const onPieEnter = useCallback(
     (_, index) => {
@@ -89,7 +96,19 @@ export default function MyPieChart() {
     },
     [setActiveIndex]
   );
+  // console.log('wwwww : ' , props.gameData.wins)
 
+  // const data = [
+  //   { name: "Wins", value: 12, color: "#00C49F"},
+  //   { name: "Loses", value: 10, color: "#F85B30" }
+  // ];
+
+  const data = [
+    { name: "Wins", value: props.gameData.wins, color: "#00C49F"},
+    { name: "Loses", value: props.gameData.loses, color: "#F85B30" }
+  ];
+
+  const totalValue = data.reduce((total, item) => total + item.value, 0);
 
   return (
     <div className="hlwa">
@@ -97,7 +116,7 @@ export default function MyPieChart() {
       <PieChart>
         <Pie
           activeIndex={activeIndex}
-          activeShape={renderActiveShape}
+          activeShape={(props) =>renderActiveShape({...props, totalValue: totalValue})}
           data={data}
           innerRadius="65%"
           outerRadius="82%"

@@ -4,68 +4,97 @@ import { PromptPassword } from "../Rooms/PromptPassword"
 import axios from "axios"
 import { Messages } from "../Messages/Messages"
 import { useShow } from "@/context/ShowFormContext"
+import { Rightbar } from "../Rightbar"
+import { useRightBar } from "@/context/RightBarContext"
+import { useSocket } from '@/context/socketContext';
 
-export const Chat = ({ chatData, messages }: any) => {
+export const Chat = ({ state, chatData, messages }: any) => {
 
-  const [isAllowed, setIsAllowed] = useState(true)
+  const currentRoom: Contact = chatData?._chat
+  const [isAllowed, setIsAllowed] = useState(false)
+  const [isRemoved, setIsRemoved] = useState(false)
   // const [showForm, setShowForm] = useState(false);
   // const [test, setTset] = useState(true);
+  const [rightBar, setRightBar] = useRightBar();
+  const [blocked, setBlocked] = useState(false);
+  const {       } = useSocket();
+
   const [show, setShow] = useShow();
 
-  // const [test, setTest] = useState(false);
 
-  
   useEffect(() => {
     const checkAllow = async () => {
 
-      console.log('##############')
       if (chatData?._chat?.type === 'Room') {
-      console.log('~~~~~~~~~~~~~~~~~~~~')
-
-        const allowed = (await axios.get(`http://localhost:8000/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
-        if (allowed) {
-          console.log('666666666666666666')
-          // setShow(false);
-          // setTset(true)
-          // setShowForm(false);
-          setIsAllowed(true)
-        }
-        else {
-          console.log('1111111111111111111')
-          // setTset(false)
-          // setShow(true);
-
-          // setShowForm(true)
-          setIsAllowed(false)
-        }
+          const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
+          if (isAdmin) {
+            setIsAllowed(true);
+          }
+          else {
+            const firstAllow = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
+            if (firstAllow) {
+              setIsAllowed(true);
+            }
+            else {
+              if (chatData?._chat?.protection === 'Public') {
+                const allowed = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
+                if (!allowed && state === true) {
+                  setIsAllowed(true);
+                  setRightBar(true);
+                  setBlocked(false);
+                  const ret = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                        roomId: currentRoom.id,
+                        userId: chatData._mainUser.id,
+                        userUsername: chatData._mainUser.username,
+                        role: 'MEMBER',
+                        allowed: true,
+                    },
+                    {
+                        withCredentials: true,
+                    });
+                  }
+                }
+                else {
+                  setIsAllowed(false)
+                  setBlocked(false);
+              }
+            }
+          }
       }
       else {
-        console.log('daz mn hna')
         setIsAllowed(true)
       }
     }
 
     checkAllow()
-  }, [ chatData, show])
+  }, [ chatData, show ])
+
+  useEffect(() => {
+    socketa?.on('lockingRoom', () => {
+      setIsAllowed(false)
+      setBlocked(true);
+      setRightBar(false);
+    })
+  }, [ socketa ])
+  
+  useEffect(() => {
+    chatData._socket?.on('lockingChat', (rec: number) => {
+      console.log('reccccccccc', rec)
+      console.log("chatData: [>", chatData);
+      if (chatData._sender.id === rec) {
+        setIsAllowed(false)
+        setBlocked(true);
+        setRightBar(false);
+      }
+    })
+  }, [ chatData._socket ]) 
   
 
 
-  // const openForm = () => {
-  //   // if (showForm === false)
-  //   //   console.log('-----------------showForm : ', showForm)  
-  //   setTset(!test)
-
-  //   // else
-  //     // setShowForm(false)
-  // };
-  // console.log('showForm : ', showForm);
-
-  console.log('ISALLOWED', isAllowed)
-
   return (
     <div id='Conversation' className={`chat`}>
-      {show === 'true' && !isAllowed && < PromptPassword setIsAllowed={setIsAllowed}  chatData={chatData} /> }
-      <Messages chatData={chatData} messages={ messages } />
+      {show === 'true' && !isAllowed && !blocked && < PromptPassword setIsAllowed={setIsAllowed}  chatData={chatData}/> }
+      <Messages chatData={chatData} messages={ messages } isOk={ isAllowed } />
       <Input chatData={ chatData } isAllowed={ isAllowed } />
     </div>
   )

@@ -93,9 +93,10 @@
     height: 100%;
     aspect-ratio: 4/4;
     border-radius: 5px;
-    background-color: black;
+    background-color: gainsboro;
     z-index: 10;
     object-fit: cover;
+    border: 1px solid gray;
     
 }
 
@@ -119,7 +120,8 @@
     bottom: 4%;
     width: 60%;
     /* max-width: 100px; */
-    padding: 0 .5rem;
+    font-family:  'Orbitron', sans-serif;
+    padding: 0 .2rem;
     text-align: center;
     text-overflow: ellipsis;
     color: rgb(33, 55, 135);
@@ -129,12 +131,11 @@
 #accept {
     position: absolute;
     width: 18px;
-    height: 14px;
+    height: 18px;
     right: 4%;
-    top: 10%;
-    border-radius: 2px;
-    border: 1.5px ridge black;
-    background-color: rgb(35, 242, 125);
+    top: 6%;
+    border: none;
+    background-color: transparent;
     cursor: pointer;
 }
 
@@ -143,14 +144,15 @@
 #refuse {
     position: absolute;
     width: 18px;
-    height: 14px;
+    height: 18px;
     right: 4%;
-    bottom: 10%;
-    border-radius: 2px;
+    bottom: 6%;
+    border: none;
     cursor: pointer;
-    border: 1.5px ridge black;
-    background-color: red;
+    background-color: transparent;
 }
+
+
 
 #accept:hover, 
 #refuse:hover {

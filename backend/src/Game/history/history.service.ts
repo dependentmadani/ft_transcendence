@@ -50,6 +50,14 @@ export class HistoryService {
                     oppScore: body.opp_score
                 }
             });
+            await this.prisma.history.create({
+                data: {
+                    myUserId: oppUser?.id,
+                    oppUserId: userId,
+                    myScore: body.opp_score,
+                    oppScore: body.my_score
+                }
+            });
             if (newGameAdded.myScore > newGameAdded.oppScore) {
                 await this.game.updateInfoGame(newGameAdded.myUserId, true);
                 await this.game.updateInfoGame(newGameAdded.oppUserId, false);

@@ -5,6 +5,8 @@ import Section from "@/components/Sections/Section/Section";
 import { useClient } from "@/context/clientContext";
 import NotFriendProfile from  "@/components/Profile/NotFriend/NotFriendProfile"
 import FriendProfile from "@/components/Profile/Friend/FriendProfile"
+import { useUrl } from "./context/UrlContext";
+import { useEffect } from "react";
 // import { AuthLayout } from "./pages/layouts/AuthLayout";
 
 // import { Chattest } from "./pages/Chattest";
@@ -15,14 +17,21 @@ import FriendProfile from "@/components/Profile/Friend/FriendProfile"
 function GetRouteElement(props:any) {
     
     const { client } = useClient();
+    const [myUrl, setMyUrl] = useUrl();
 
     const defaultList = ['/', '/home', '/about', '/team'];
     const list = ['/login', '/login_2fa', '/signup' , '/profile', '/profile/:username', '/chat', '/game', '/leaderboard', '/game/akinator' , '/game/classic', '/game/tennis', '/game/invite']
-    console.log(props.tag)
+    // console.log(props.tag)
+
+    useEffect(() => {
+        if (myUrl) {
+            location.reload();
+        }
+    }, [myUrl])
     // console.log(client.signedIn)
     // console.log(defaultList.includes(props.tag), list.includes(props.tag))
     if (defaultList.includes(props.tag) || list.includes(props.tag)) {
-        console.log('**********************')
+        // console.log('**********************')
         if ((!client.signedIn || client.signedIn) && defaultList.includes(props.tag))
             return <DefaultSection section={props.tag} />;
         else if (!client.signedIn && list.includes(props.tag))

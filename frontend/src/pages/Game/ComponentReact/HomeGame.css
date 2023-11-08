@@ -60,7 +60,7 @@ body
 .style-mode > span {
   font-weight: 600;
   font-family: 'Orbitron', sans-serif;
-  font-size: clamp(10px, 3.3vw, 55px);
+  font-size: clamp(30px, 3.3vw, 4vh);
   color: aqua;
   margin-top: 10%;
   padding-left: 2%;
@@ -70,7 +70,7 @@ body
 
 @media (orientation: portrait) {
   .style-mode > span {
-    font-size: clamp(10px, 4vh, 55px);
+    font-size: clamp(25px, 4vh, 4vw);
 
   }
 }

@@ -1,30 +1,56 @@
 import axios from "axios";
 import { useState } from "react";
 import { useShow } from "@/context/ShowFormContext";
+import { useRightBar } from "@/context/RightBarContext";
 
 export const PromptPassword = ({ chatData, setIsAllowed }: any) => {
-
+    const currentRoom: Contact = chatData?._chat
     const [pass, setPass] = useState('')
     const [show, setShow] = useShow();
-
+    const [rightBar, setRightBar] = useRightBar();
 
 
     const checPassword = async () => {
         if (pass.trim() !== '') {
             const isAllowd = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-allowed/${chatData?._chat?.id}/${chatData._mainUser.id}`, { withCredentials: true })).data
             if (isAllowd !== true) {
-                const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room/pass/${chatData?._chat?.id}`, {
-                'roomPass': pass,
-                }, { withCredentials: true })
-                if (res.data === true) {
-                    await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/allow/${chatData?._chat?.id}/${chatData._mainUser.id}`, {
-                    'allowed': true,
+                const isAdmin = (await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/is-admin/${currentRoom.id}/${chatData._mainUser.id}`, {withCredentials: true})).data
+                if (isAdmin) {
+                    setIsAllowed(true);
+                    setRightBar(true);
+                }
+                else {
+                    const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/room/pass/${chatData?._chat?.id}`, {
+                    'roomPass': pass,
                     }, { withCredentials: true })
-                    setIsAllowed(true)
+                    if (res.data === true) {
+                        setIsAllowed(true);
+                        const userAvailable = await axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/role/${chatData?._chat?.id}/${chatData._mainUser.id}`,{withCredentials: true})
+                        if (userAvailable.data) {
+                            await axios.put(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers/allow/${chatData?._chat?.id}/${chatData._mainUser.id}`, {
+                                'allowed': true,
+                                }, { withCredentials: true })
+                            setIsAllowed(true);
+                            setRightBar(true);
+                        }
+                        else {
+                            const res = await axios.post(`http://${import.meta.env.VITE_BACK_ADDRESS}/roomUsers`, {
+                                roomId: currentRoom.id,
+                                userId: chatData._mainUser.id,
+                                userUsername: chatData._mainUser.username,
+                                role: 'MEMBER',
+                                allowed: true,
+                            },
+                            {
+                                withCredentials: true,
+                            });
+                            setRightBar(true);
+                        }
+                    }
                 }
             }
             else {
-                setIsAllowed(true)
+                setIsAllowed(true);
             }
 
         }

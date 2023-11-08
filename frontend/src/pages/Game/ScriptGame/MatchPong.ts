@@ -14,7 +14,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let paddle_sound = new Audio();
         let ball_sound = new Audio();
         let UserName:string;
-
+        
         let music = new Audio();
         let MusicValue:boolean = true;
         let SoundValue:boolean = true;
@@ -24,6 +24,10 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         let img = new Image();
         let img_win = new Image();
         let img_lose = new Image();
+        let player: number  = 0;
+        let clientRoom:number = 0;
+        let max_room:number = 0;
+        let prev_right_y:number = 0;
         
         img_lose.src = "/src/assets/img/lose.jpg";
         img_win.src = "/src/assets/img/win.jpg";
@@ -33,11 +37,11 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         music.src = "/src/assets/sounds/HAIKYUU OP 4 - ORCHESTRA.mp3";
         img.src = "/src/assets/img/tenis.jpg"
         
-        const socket = io('http://localhost:8000/MatchRandom');
+        const socket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/MatchRandom`);
         
         socket.emit("canvas",canvas.width, canvas.height);
         
-        axios.get(`http://localhost:8000/users/me`, { withCredentials: true })
+        axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
             // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
@@ -73,37 +77,35 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         socket.on('connect',()=>
         {
             // console.log(`canvas_width ${canvas.width} canvas_height ${canvas.height}` );
-            document .addEventListener("mousemove", handleMouseMove);
+                document.addEventListener("mousemove", handleMouseMove);
             
-            console.log(client_id)
+            // console.log(client_id)
         })
-        let player:number;
-        let clientRoom:number = 0;
-        let max_room:number = 0;
-        let prev_right_y:number = 0;
 
         socket.on("playerId",(play,data) =>
         {
-            player = play;
+            player = play; 
             clientRoom = data;
             if(max_room < clientRoom)
-                max_room = clientRoom;
-            socket.emit("new value room", clientRoom);
-        })
-     
+            max_room = clientRoom;
+        socket.emit("new value room", clientRoom);
+    })
+        
+    // function handleMouseMove(event: MouseEvent)
+    // {
+
+        
         function handleMouseMove(event: MouseEvent)
         {
-            // console.log(`this id of the player:${player}`);
-            
+            let currentPlayer = player;
             if (event.clientY > prev_right_y)
             {
-                // console.log("down_RIGHT");
-                socket.emit("move_paddle", "down",player, clientRoom);
+                socket.emit("move_paddle", "down", currentPlayer, clientRoom);
             }
             else if (event.clientY < prev_right_y)
             {
-                // console.log("up_Right");
-                socket.emit("move_paddle", "up",player, clientRoom);
+                
+                socket.emit("move_paddle", "up", currentPlayer, clientRoom);
             }
             prev_right_y = event.clientY;
         }
@@ -259,9 +261,10 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                     this.score_left = l;
                     this.score_right = r;
                 })
-
+                // console.log('left : [', this.left_score, '] | right : [', this.right_score, ']')
                 if(this.score_left == 5 || this.score_right == 5)
                 {
+                    document.removeEventListener("mousemove", handleMouseMove);
                     if (player % 2 != 0)
                     {
                         stopAnimation();
@@ -365,7 +368,7 @@ socket.on('disconnect', () => {
                 MusicValue = false;
                SoundValue = false;
             }
-            if(MusicValue)
+            if(MusicValue && (sc.score_left < 5 && sc.score_right < 5))
                 music.play();
             else
                 music.pause();
