@@ -32,7 +32,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         .then((res)=>{
             UserName = res.data?.username;
             // console.log(`1~~~~~~~~~~~|${res.data?.username}`)
-        }).catch((error)=>{  
+        }).catch(()=>{  
             // console.log('Error fetching user data for ProfileID1', error);
         })
             
