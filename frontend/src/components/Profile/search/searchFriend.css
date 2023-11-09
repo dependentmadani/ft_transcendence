@@ -1,0 +1,45 @@
+#no_friend {
+	position: absolute;
+	top: 50%;
+	transform: translate(0%, -50%); 
+	width: 20%;
+	max-width: 100px;
+	height: auto;
+	aspect-ratio: 4/4;
+}
+
+#Loding {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	width: 20%;
+	max-width: 100px;
+	height: auto;
+	aspect-ratio: 4/4;
+}
+
+.no-users {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%); 
+	font-size: clamp(15px, 3vw, 2vh);
+	font-weight: 700;
+    font-family: 'Orbitron', sans-serif;
+	
+}
+
+.no-achieve {
+	font-size: clamp(15px, 2vw, 1.8vh);
+	
+}
+
+.akinator-img {
+	background-color: #dddbdc;
+}
+
+.akinator-img > img {
+	height: 80%;
+	/* background-color: rgb(40, 225, 139); */
+}

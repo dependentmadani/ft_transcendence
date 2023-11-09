@@ -17,17 +17,17 @@ export class MessageController {
     //     return this.messageService.getOneMessage(messageId)
     // }
 
-    @Get('chat/:chatId')
+    @Get('Chat/:chatId')
     async getChatMessages(@Param('chatId', ParseIntPipe) chatId) : Promise<Message[]> {
         return this.messageService.getChatMessages(chatId)
     }
 
-    @Get('room/:id')
+    @Get('Room/:id')
     async getRoomMessages(@Param('id', ParseIntPipe) roomId) : Promise<Message[]> {
         return this.messageService.getRoomMessages(roomId)
     }
 
-    @Post('chat')
+    @Post('Chat')
     async createChatMessage(@Body("msgChatId", ParseIntPipe) msgChatId: number,
                         @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
                         @Body('textContent') textContent: string,
@@ -35,7 +35,7 @@ export class MessageController {
         return this.messageService.createChatMessage(msgChatId, MessageSenId, textContent, type)
     }
 
-    @Post('room')
+    @Post('Room')
     async createRoomMessage(@Body("msgRoomId", ParseIntPipe) msgRoomId: number,
                         @Body("MessageSenId", ParseIntPipe) MessageSenId: number,
                         @Body('textContent') textContent: string,

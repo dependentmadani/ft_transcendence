@@ -19,16 +19,27 @@ export class GameService {
     }
 
 
-    async updateInfoGame(userId: number, win_state: boolean){
+    async updateInfoGame(userId: number, win_state: boolean) {
         try {
             const game = await this.prisma.game.findUnique({
                 where: {
                     userId: userId,
                 }
             });
-            let win = game.wins, lose = game.loses, played = game.gamesPlayed;
+            var win = game.wins, lose = game.loses, played = game.gamesPlayed;
             win_state == true ? win++ : lose++;
             played += 1;
+            if (win_state == true) {
+                let score = game.score + 15;
+                const user = await this.prisma.game.update({
+                    where: {
+                        userId: userId,
+                    },
+                    data: {
+                        score: score,
+                    }
+                })
+            }
             const updatedGames = await this.prisma.game.update({
                 where: {
                     userId: userId,
@@ -42,52 +53,55 @@ export class GameService {
 
             return updatedGames;
         } catch(e) {
-            console.log(`Something wrong with database! ?????? ${e}`)
+            console.log('Something wrong with database!')
+        }
+    }
+
+    async leaderboard() {
+        try {
+            const leaderUsers = await this.prisma.users.findMany({
+                orderBy: {
+                    games: {
+                        score: 'desc'
+                    }
+                },
+                take: 30,
+                include: {
+                    games: true,
+                }
+            })
+            return leaderUsers;
+        } catch(e) {
+            console.log('something wrong with catching leaderboard content')
+        }
+    }
+
+    async playerPosition(username: string) {
+        try {
+
+            const allPlayers = await this.prisma.users.findMany({
+                orderBy: {
+                    games: {
+                        score: 'desc'
+                    }
+                },
+                include: {
+                    games: true
+                }
+            })
+            const usernameSize = username.length;
+            var value = 0;
+            const theRest = allPlayers.map((players, index) => {
+                if (username === players.username) {
+                    value = index + 1;
+                    return value;
+                }
+            })
+            // const final = new Set(theRest);
+            // console.log('something, ', final)
+            return value;
+        } catch (e) {
+            console.log('something wrong with the leaderboard/username api');
         }
     }
 }
-
-
-// async updateInfoGame(userId: number, win_state: boolean)
-// {
-//     try {
-//         const game = await this.prisma.game.findUnique({
-//             where: {
-//                 userId: userId,
-//             }
-//         });
-
-//         if (game) {
-//             let win = game.wins || 0;
-//             let lose = game.loses || 0;
-//             let played = game.gamesPlayed || 0;
-
-//             if (win_state) {
-//                 win++;
-//             } else {
-//                 lose++;
-//             }
-            
-//             played += 1;
-
-//             const updatedGames = await this.prisma.game.update({
-//                 where: {
-//                     userId: userId,
-//                 },
-//                 data: {
-//                     gamesPlayed: played,
-//                     wins: win,
-//                     loses: lose,
-//                 }
-//             });
-
-//             return updatedGames;
-//         } else {
-//             // Handle the case when the user does not exist in the database
-//             console.log(`User with userId ${userId} does not exist in the database.`);
-//         }
-//     } catch(e) {
-//         console.log(`Something wrong with the database: ${e}`);
-//     }
-// }
-// }

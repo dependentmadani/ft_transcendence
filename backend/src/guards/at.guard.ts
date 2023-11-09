@@ -2,6 +2,7 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { NotAllowedUserException } from 'src/exception/NotAuthUser.exception';
 
 
 
@@ -19,10 +20,13 @@ export class AtGuard extends AuthGuard('jwt') {
       context.getClass(),
     ]);
 
-    if (isPublic) return true;
-
     const token = request.cookies['token'];
-
+    
+    if (isPublic && !token) return true;
+    if (!token) {
+      console.log('all seem to be good');
+      throw new NotAllowedUserException();
+    }
     // Validate the token using the JWT authentication strategy
     request.headers.authorization = `Bearer ${token}`;
     return super.canActivate(context);

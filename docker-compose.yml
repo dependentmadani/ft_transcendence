@@ -1,31 +1,5 @@
 version: '3.8'
 
-volumes:
-  db_volume:
-    driver: local
-    name: db_volume
-    driver_opts:
-      type: none
-      o: bind
-      device: /tmp/data/database
-
-  backend_volume:
-    driver: local
-    name: backend_volume
-    driver_opts:
-      type: none
-      o: bind
-      device: /tmp/data/backend
-
-  # frontend_volume:
-  #   driver: local
-  #   name: frontend_volume
-  #   driver_opts:
-  #     type: none
-  #     o: bind
-  #     device: /tmp/data/frontend
-      # device: $HOME/goinfre/data/frontend
-
 networks:
   hadnetwork:
 
@@ -35,13 +9,9 @@ services:
     restart: always
     env_file:
       - .env
-    ports:
-      - 5432:5432
-    # networks:
-    #   - hadnetwork
-    # volumes:
-    #   - db_volume:/var/lib/postgresql/data
-    
+    networks:
+      - hadnetwork
+
   backend:
     build:
       context: ./backend
@@ -54,24 +24,20 @@ services:
       - db
     networks:
       - hadnetwork
-    volumes:
-      - backend_volume:/app
   
-  # frontend:
-  #   build:
-  #     context: ./frontend
-  #     dockerfile: Dockerfile
-  #   container_name: pingpongFrontend
-  #   ports:
-  #     - 5173:5173
-  #   restart: always
-  #   depends_on:
-  #     - db
-  #     - backend
-  #   networks:
-  #     - hadnetwork
-  #   volumes:
-  #     - frontend_volume:/app
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pingpongFrontend
+    ports:
+      - 5173:5173
+    restart: always
+    depends_on:
+      - db
+      - backend
+    networks:
+      - hadnetwork
 
   pgadmin:
     container_name: pgadmin4_container
@@ -86,17 +52,3 @@ services:
       - 5050:80
     networks:
       - hadnetwork
-    # volumes:
-    #   - db_volume:/var/lib/postgresql/data
-
-  # test-db:
-  #   image: postgres:13
-  #   ports:
-  #     - 5435:5432
-  #   restart: always
-  #   environment:
-  #     POSTGRES_USER: hamid
-  #     POSTGRES_PASSWORD: example
-  #     POSTGRES_DB: nest
-  #   networks:
-  #     - hadnetwork

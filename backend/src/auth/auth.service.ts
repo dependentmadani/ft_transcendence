@@ -13,18 +13,21 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
-import { Tokens, CheckUser } from './types';
+import { Tokens } from './types';
 import { Users, userStatus } from '@prisma/client';
 import * as speakeasy from 'speakeasy';
 import * as qrcode from 'qrcode';
 
 @Injectable({})
 export class AuthService {
+  private aiUserCreated : boolean;
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
     private config: ConfigService,
-  ) {}
+  ) {
+    this.aiUserCreated = false;
+  }
 
   async hashData(data: string) {
     return await bcrypt.hash(data, 10);
@@ -75,9 +78,55 @@ export class AuthService {
   async signupGoogle(
     dto: AuthDto,
     avatar?: string,
-  ): Promise<CheckUser> {
+  ): Promise<Tokens> {
     //need to hash the password for security reasons
     try {
+      // console.log('nadi canadi', dto)
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log('bot already created');
+      }
+      const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
+      if (usernameTaken) {
+        const users =
+        await this.prisma.users.create({
+          data: {
+            email: dto.email,
+            avatar: avatar,
+            userStatus: "ONLINE"
+          },
+        });
+        await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
+        });
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+        return token;
+      }
       const users =
         await this.prisma.users.create({
           data: {
@@ -87,21 +136,23 @@ export class AuthService {
             userStatus: "ONLINE"
           },
         });
+      await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
+        });
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+        return token;
       //the password need to be deleted so it cannot be reached by interder
-      const token = await this.signToken(
-        users.id,
-        users.email,
-      );
-      await this.updateRtHashed(
-        users.id,
-        token.refresh_token,
-      );
-      const checkUser = {
-        token: token,
-        state: true,
-      };
+      
 
-      return checkUser;
     } catch (error) {
       if (
         error instanceof
@@ -178,12 +229,64 @@ export class AuthService {
         hashRt: null,
       },
     });
+    // console.log(cookies);
   }
 
   async signup42(dto: AuthDto, profile?: any) {
     //need to hash the password for security reasons
 
     try {
+      try {
+        if (this.aiUserCreated === false) {
+          const user = await this.prisma.users.create({
+            data: {
+              username: 'akinator',
+              email: 'ai@gmail.com',
+              isActive: true,
+              avatar: '/boot.jpg',
+            }
+          })
+          await this.prisma.game.create({
+            data: {
+              userId: user.id,
+            }
+          });
+          this.aiUserCreated = true;
+        }
+      } catch {
+        console.log('the bot is already created');
+      }
+      const usernameAvailable = await this.prisma.users.findUnique({
+        where: {
+          username: dto.username,
+        }
+      });
+      if (usernameAvailable) {
+        const users =
+          await this.prisma.users.create({
+            data: {
+              email: dto.email,
+              avatar: profile.avatar,
+              userStatus: "ONLINE",
+            },
+          });
+        await this.prisma.game.create({
+            data: {
+              userId: users.id,
+            }
+          });
+        //the password need to be deleted so it cannot be reached by interder
+        const token = await this.signToken(
+          users.id,
+          users.email,
+        );
+        await this.updateRtHashed(
+          users.id,
+          token.refresh_token,
+        );
+
+        return token;
+      }
       const users =
         await this.prisma.users.create({
           data: {
@@ -192,6 +295,11 @@ export class AuthService {
             avatar: profile.avatar,
             userStatus: "ONLINE",
           },
+        });
+      await this.prisma.game.create({
+          data: {
+            userId: users.id,
+          }
         });
       //the password need to be deleted so it cannot be reached by interder
       const token = await this.signToken(
@@ -254,7 +362,6 @@ export class AuthService {
 
   async signinGoogle(req: Request) {
     const userInfo = req.user;
-    console.log('user info', req.user);
     if (!userInfo)
       throw new ForbiddenException(
         'user info not found',
@@ -263,7 +370,7 @@ export class AuthService {
       username: userInfo['users'].username,
       email: userInfo['users'].email,
     };
-    const available = await this.findUser(
+    const available = await this.findUserByEmail(
       userDto.username,
       userDto.email,
     );
@@ -293,16 +400,12 @@ export class AuthService {
       user.id,
       user.email,
     );
-
     await this.updateRtHashed(
       user.id,
       token.refresh_token,
     );
-    const checkUser = {
-      token: token,
-      state: false,
-    };
-    return checkUser;
+
+    return token;
   }
 
   async fortyTwo(profile: any) {
@@ -311,7 +414,7 @@ export class AuthService {
       username: profile.username,
       email: profile.email,
     };
-    const available = await this.findUser(
+    const available = await this.findUserByEmail(
       profile.username,
       profile.email,
     );
@@ -408,8 +511,8 @@ export class AuthService {
       encoding: 'base32',
       token: body.code,
     });
-    if (verified) return true;
-    //     throw new UnauthorizedException('code entered is wrong, please retry again!');
+    if (verified)
+      return true;
 
     return false;
   }
@@ -459,7 +562,7 @@ export class AuthService {
           isActive: state,
         },
       });
-    console.log('hlwa : ', user);
+    // console.log(user);
   }
 
   async signToken(
@@ -495,7 +598,7 @@ export class AuthService {
     };
   }
 
-  async findUser(
+  async findUserByEmail(
     username: string,
     email: string,
   ): Promise<boolean> {
@@ -503,6 +606,23 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: email,
+        },
+      });
+
+    if (!user) {
+      return false;
+    }
+    return true;
+  }
+
+  async findUserByUsername(
+    username: string,
+    email: string,
+  ): Promise<boolean> {
+    const user =
+      await this.prisma.users.findUnique({
+        where: {
+          username: username,
         },
       });
 
@@ -522,6 +642,7 @@ export class AuthService {
         },
         include: {
           friends: true,
+          blocked: true,
         }
       });
     return user;

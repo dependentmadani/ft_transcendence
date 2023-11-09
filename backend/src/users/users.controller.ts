@@ -16,6 +16,7 @@ import {
   UnauthorizedException,
   UploadedFile,
   UseInterceptors,
+  UseFilters,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { Authenticated } from 'src/decorator/authenticated.decorator';
@@ -28,6 +29,7 @@ import { diskStorage } from 'multer';
 import { v4 as uuidv4 } from 'uuid';
 import * as path from 'path';
 import { join } from 'path';
+import { Public } from 'src/decorator';
 
 export const storage = {
   storage: diskStorage({
@@ -61,20 +63,35 @@ export class UsersController {
     return this.userService.findAllUsers();
   }
 
+  @Public()
   @Get('me')
   async getMe(
     @Req() req: Request,
-    ): Promise<Users> {
-      const user: Users =
-      await this.userService.findUserById(
-        req.user['sub'],
-        );
+    ) {
+      try {
+        if (!req.user) {
+          return "";
+        }
+        const user: Users =
+        await this.userService.findUserById(
+          req.user['sub'],
+          );
         return user;
+      }
+      catch (err) {
+        console.log('error: ', err)
+      }
   }
 
   @Get('achievements')
   async UserAchievements(@Req() req: Request) {
-    
+      const user = req.user;
+      return this.userService.getAchievements(user['sub']);
+  }
+
+  @Get('achievements/:id')
+  async UserIdAchievements(@Param('id', ParseIntPipe) userId:number) {
+      return this.userService.getAchievements(userId);
   }
 
   @Post('add-friend/:id')
@@ -84,18 +101,25 @@ export class UsersController {
     @Res() res: Response)  {
       const user = await this.userService.findUserById(req.user['sub']);
       const friend = await this.userService.addFriend(user.id, friendId);
-      // return res.send(friend);
       return friend
-    }
+  }
+
+  @Post('unfriend/:id')
+  @HttpCode(HttpStatus.OK)
+  async unFriendFriend(@Param('id', ParseIntPipe) friendId: number,
+    @Req() req: Request) {
+      const user = await this.userService.findUserById(req.user['sub']);
+      return await this.userService.unfriend(user.id, friendId);
+  }
 
   @Post('block-friend/:id')
   @HttpCode(HttpStatus.OK)
   async blockFriend(@Param('id', ParseIntPipe) friendId: number,
-    @Req() req:Request,
-    @Res() res:Response) {
+    @Req() req:Request) {
+    // console.log('the request reach here');
     const user = await this.userService.findUserById(req.user['sub']);
     const blockedFriend = await this.userService.blockFriend(user.id, friendId);
-    return res.send(blockedFriend);
+    return blockedFriend
   }
 
   @Post('unblock-friend/:id')
@@ -122,6 +146,12 @@ export class UsersController {
   @HttpCode(HttpStatus.OK)
   async searchAnyUser(@Param('username') username: string, @Req() req: Request) {
     return this.userService.searchUser(username, req.user);
+  }
+
+  @Get('nonBlockedGlobalSearch/:username')
+  @HttpCode(HttpStatus.OK)
+  async searchNonBlockedUser(@Param('username') username: string, @Req() req: Request) {
+    return this.userService.searchSpecificUser(username, req.user);
   }
 
   @Get('search/:username')
@@ -208,7 +238,7 @@ export class UsersController {
     @Req() req: Request,
     @Body() username: UserModify,
   ) {
-    console.log('daz mn hna');
+    // console.log('daz mn hna');
     const user: Users =
       await this.authService.returnUser(
         req.user['email'],

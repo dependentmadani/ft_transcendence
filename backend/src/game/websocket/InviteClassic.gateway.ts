@@ -2,23 +2,27 @@
 import { SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server,Namespace } from 'socket.io';
 
-import direct_ball from "../SocketGame/ClassicPong/ClassicBall";
-import paddle_left from "../SocketGame/ClassicPong/ClassicPaddle1";
-import paddle_right from "../SocketGame/ClassicPong/ClassicPaddle2";
+import direct_ball from "../utilsGame/ClassicPong/ClassicBall";
+import paddle_left from "../utilsGame/ClassicPong/ClassicPaddle1";
+import paddle_right from "../utilsGame/ClassicPong/ClassicPaddle2";
 
-// console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
-// @WebSocketGateway({
-//   namespace: '/ClassicInvite',
-//   cors: {
-//         origin: ["http://localhost:5173"]
-//         }
-// })
+import { HistoryService } from '../history/history.service';
+import { historyDto } from "../history/dto/create-history.dto"
+
+console.log(`HELLO FROM SCRIPT CLASSIC___________INVITE`);
+@WebSocketGateway({
+  namespace: '/ClassicInvite',
+  cors: {
+        origin: ["http://localhost:5173"]
+        }
+})
 
 export class InviteClassicSocketGateway
 {
+  constructor(private historyService: HistoryService,private histor1:historyDto) {}
+
   @WebSocketServer() server: Server;
 
-  // private players = new Map();
   private canvas_width;
   private canvas_height;
   private pl1 = [];
@@ -32,71 +36,136 @@ export class InviteClassicSocketGateway
   private pass = true;
   private count = 0;
   private client_id = 0;
-  private profileID1 = 0;
-  private profileID2 = 0
+  private profileID1:number = 0;
+  private profileID2:number = 0
   private players = new Map< number ,number>()
-  private PosPlayers = new Map< number ,number>()
-
+  private PosPlayers = new Map< number ,number>();
+  private name:string;
+  private client_name =  new Map<number,string>;
+  private prfl = 0;
+  private adver =0;
 
   @SubscribeMessage('canvas')
   async handleCanvas(client, data)
   {
-     const cnv_x = await data[0];
-     const cnv_y = await data[1];
+    const cnv_x = await data[0];
+    const cnv_y = await data[1];
     this.canvas_width =   await cnv_x;
     this.canvas_height =  await cnv_y;
     
   }
   @SubscribeMessage('youcan start')
-  async handleyoucanstart(client, sock_id)
+  async handleyoucanstart(client, user)
   {
-      this.client_id = sock_id;
+      this.client_id = await user[0];
+      this.name = await user[1];
+      this.prfl = await user[2];
+      this.adver = await user[3];
+      this.client_name.set(this.client_id,this.name);
       
-      // console.log(`------------|${this.client_id}|`)
+      // console.log(`|${this.name}|------YOUCAN------|${this.client_id}|`)
 
       // console.log(`>>>>>>>>>>>>>>>>>${this.PosPlayers.has(this.client_id)}`);
       if(!this.PosPlayers.has(this.client_id))
       {
 
+
   if(this.count <= 2)
    {
+
+      if (this.count <= 2)
+      {
+        if (this.client_id === this.prfl)
+        {
+          this.ROOM_NUM++;
+          this.room = this.ROOM_NUM;
     
-      if (this.rooms.has(this.room) && !this.pass) 
-      {
-        this.pass = true;
-        this.profileID2 = this.client_id;
-        this.count++;
-        this.rooms.get(this.room).add(this.client_id);
-        this.players.set(client.id, this.client_id);
-        this.PosPlayers.set(this.client_id, 2);
-        client.emit('playerId', 2 , this.room);
-
-      // console.log(`ALREADY EXIST------111----||||${ this.room}`);
-    }
-    else
-    {
-      this.ROOM_NUM++;
-      this.room = this.ROOM_NUM;
-      this.pass = false;
-      this.count++;
-      this.rooms.set(this.room, new Set([this.client_id]));
-      this.players.set(client.id, this.client_id);
-      this.PosPlayers.set(this.client_id, 1);
-      this.profileID1 = this.client_id;
-      client.emit('playerId', 1 , this.room);
-
+          this.rooms.set(this.room, new Set([this.client_id]));
+          this.rooms.get(this.room).add(this.adver);
+          client.emit('playerId', 1, this.room);
+          console.log(`Player ${this.client_id} joined room ${this.room}`);
+          this.profileID1 = this.client_id;
+          this.players.set(client.id, this.client_id);
+          this.PosPlayers.set(this.client_id, 1);
+          client.join(this.room);
+        } 
+        else if (this.client_id === this.adver)
+        {
+          await this.waitForRoomCreation();
+          let key = this.findKeyByValue(this.rooms, this.client_id);
+          if (key)
+          {
+            const roomSet = this.rooms.get(key);
+            let roomArray = Array.from(roomSet);
+    
+            this.profileID2 = this.client_id;
+            if (roomArray.length === 2 && this.PosPlayers.has(roomArray[0])) this.count += 2;
+    
+            client.emit('playerId', 2, key);
+            this.players.set(client.id, this.client_id);
+            this.PosPlayers.set(this.client_id, 2);
+            console.log(`Player ${this.client_id} joined room ${key}`);
+            client.join(key);
+          }
+        }
       }
-      client.join(this.room);
+    // }
+      // if(this.client_id == this.prfl)
+      // {
+      //   this.ROOM_NUM++;
+      //   this.room = this.ROOM_NUM;
+        
+      //   this.rooms.set(this.room, new Set([this.client_id]));
+      //   this.rooms.get(this.room).add(this.adver);
+      //   client.emit('playerId', 1 , this.room);
+      //   console.log(`Player ${this.client_id} joined room ${this.room}`);
+      //   this.profileID1 = this.client_id;
+      //   this.players.set(client.id, this.client_id);
+      //   this.PosPlayers.set(this.client_id, 1);
+      //   client.join(this.room);
+      // }
+      // // if(this.PosPlayers.has(this.prfl))
+      // // {
+      //   let keys = this.findKeyByValue(this.rooms, this.prfl);
+      //   // console.log(`${this.profileID2} ------111111-| ${this.PosPlayers.get(this.client_id)}| ---|||| ${ keys}`)
+      //   if ((this.client_id == this.adver))
+      //   {
+      //     while (!this.rooms.has(keys))
+
+      //     {
+      //       console.log(`${this.profileID2} ------22222-| ${this.PosPlayers.get(this.client_id)}| ---|||| ${ keys}`)
+      //       await new Promise(resolve => setTimeout(resolve, 1000));
+      //     }
+      //     let key = this.findKeyByValue(this.rooms, this.client_id);
+      //     if(key)
+      //     {
+      //       const roomSet = this.rooms.get(key);
+      //       let roomArray = Array.from(roomSet);
+          
+      //     this.profileID2 = this.client_id;
+      //     if(roomArray.length == 2 && this.PosPlayers.has(roomArray[0]))
+      //           this.count+= 2;
+        
+      //     client.emit('playerId', 2 , key);
+      //     this.players.set(client.id, this.client_id);
+      //     this.PosPlayers.set(this.client_id, 2);
+      //     console.log(`Player ${this.client_id} joined room ${key}`);
+      //     client.join(key);
+      //     }
+      //   }
+      // }
+      // else
+      // {
+
+      // }
+    
       if (this.profileID1 && this.profileID2)
-      {
-        this.server.to(this.room).emit('ProfilesID', this.profileID1, this.profileID2);
-  
+      {  
         this.profileID1 = 0;
         this.profileID2 = 0;
       }
     }
       
-      console.log(`Player ${this.client_id} joined room ${this.room}`);
  
     if (this.prev_room != this.room)
     {
@@ -104,8 +173,7 @@ export class InviteClassicSocketGateway
           this.pl2[this.room] = await new paddle_right;
           this.ball[this.room] = await new direct_ball;
           this.prev_room = this.room;
-      }
-    
+    }
       this.pl1[this.room].canvas_height = this.canvas_height;
       this.pl2[this.room].canvas_height = this.canvas_height;
       this.pl1[this.room].paddle_y = this.canvas_height / 2;
@@ -116,8 +184,6 @@ export class InviteClassicSocketGateway
       this.ball[this.room].cnv_h = this.canvas_height;
       this.ball[this.room].ball_x = this.canvas_width / 2;
       this.ball[this.room].ball_y = this.canvas_height / 2;
-    
-    // }
   }
 }
 @SubscribeMessage('new value room')
@@ -136,21 +202,25 @@ async handlenewvalueroom(client, data)
         this.room = await data_room;
 
         // console.log(`${grade}|-----------|${move}`)
-        
-        if (grade % 2 != 0) 
+        if(this.room)
+        {
+          if (grade % 2 != 0) 
         {
             if (move == "up")
-            this. pl1[this.room].move_up();
+              this. pl1[this.room].move_up();
             else if (move == "down")
-            this.pl1[this.room].move_down();
+              this.pl1[this.room].move_down();
         }
         else if(grade % 2 == 0)
         {
             if (move ==  "up")
-            this. pl2[this.room].move_up();
+              this. pl2[this.room].move_up();
             else if (move ==  "down")
-            this.pl2[this.room].move_down();
+              this.pl2[this.room].move_down();
         }
+
+        }
+  
     }
 
  
@@ -208,6 +278,25 @@ async handlenewvalueroom(client, data)
     }
     if (this.ball[room_num].score_left >= this.ball[room_num].score_max || this.ball[room_num].score_right >= this.ball[room_num].max_score)
     {
+
+      const roomSet = this.rooms.get(room_num);
+     
+        if (roomSet)
+        {
+            let roomArray = Array.from(roomSet);
+            let firstValue  = roomArray[0];
+            let secondValue = roomArray[1]; 
+      
+            this.histor1.my_score = this.ball[room_num].score_left 
+            this.histor1.opp_score  = this.ball[room_num].score_right;
+            this.histor1.opp_name = this.client_name.get(secondValue);
+            this.historyService.createResultGame(firstValue,this.histor1);
+            // console.log(` ${firstValue}---------1111---|${this.histor1.my_score }|----111--------|${this.histor1.opp_score}|----1111-------| ${this.histor1.opp_name}`)
+          
+    
+            // console.log(`${secondValue}|-----------222---|${this.histor2.my_score }|------222------|${this.histor2.opp_score}|-----2222------| ${this.histor2.opp_name}`)
+      
+    }
         clearInterval(this.interval[room_num]);
 
         const clientId = this.players.get(client); 
@@ -225,13 +314,29 @@ async handlenewvalueroom(client, data)
             }
           }
         }
-        console.log(`============${sett.values()}`);
+        // console.log(`${sett.values()}`);
         this.rooms.delete(room_num);
     }
     
    this.server.to(room_num).emit("game_state", gameState);
   }
-  
+  @SubscribeMessage('playerDisconnect')
+  handlePlayerDisconnect(client,data)
+  {
+    const clientId = data;
+    const room = this.getRoomByClientId(clientId);
+
+    // console.log(`---1111---disconnect ${clientId}`)
+
+    if (room)
+    {
+      if (this.PosPlayers.get(clientId) == 1)
+        this.ball[room].score_r = this.ball[room].score_max;
+      else 
+        this.ball[room].score_l = this.ball[room].score_max;
+    }
+
+  }
   
 @SubscribeMessage('disconnect')
   handleDisconnect(client)
@@ -239,7 +344,7 @@ async handlenewvalueroom(client, data)
     const clientId = this.players.get(client.id);
     const room = this.getRoomByClientId(clientId);
 
-    console.log(`---1111---disconnect ${clientId}`)
+    // console.log(`---3333---disconnect ${clientId}`)
 
     if (room)
     {
@@ -262,5 +367,24 @@ async handlenewvalueroom(client, data)
      }
    }
  }
+ findKeyByValue = (map, value) => {
+  for (let [key, set] of map.entries()) {
+    if (set.has(value)) {
+      return key;
+    }
+  }
+  return null;
+};
+async waitForRoomCreation() {
+  return new Promise((resolve) => {
+    const interval = setInterval(() => {
+      let key = this.findKeyByValue(this.rooms, this.prfl);
+      if (key) {
+        clearInterval(interval);
+        resolve(void 0);
+      }
+    }, 1000); 
+  });
+}
 
 }

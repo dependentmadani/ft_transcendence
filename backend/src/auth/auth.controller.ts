@@ -22,12 +22,13 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleGuard, RtGuard } from 'src/guards';
 import { GetUser, Public } from 'src/decorator';
 import { Users } from '@prisma/client';
+import { ApiBody, ApiResponse } from '@nestjs/swagger';
 
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
 
 const oneDay = 1000 * 60 * 60 * 24;
-const oneWeek = 1000 * 60 * 60 * 24 * 7;
+const oneWeek= 1000 * 60 * 60 * 24 * 7;
 
 @Controller('auth')
 export class AuthController {
@@ -36,9 +37,13 @@ export class AuthController {
     private config: ConfigService,
   ) {}
 
+  @Public()
   @Get('logged_in')
-  loggedIn() {
-    return true;
+  loggedIn(@Req() req: Request) {
+    if (req.user) {
+      return true;
+    }
+    return false;
   }
 
   @Get('signed_up')
@@ -54,12 +59,16 @@ export class AuthController {
     }
   }
 
+  @Public()
   @Get('me')
   async getMe(
     @Req() req: Request,
     @Res() res: Response,
   ) {
     const user = req.user;
+    if (!user) {
+      return "";
+    }
     const userInfo =
       await this.authService.returnUser(
         user['email'],
@@ -67,13 +76,12 @@ export class AuthController {
     return res.send(userInfo);
   }
 
-
   @Public()
   @Post('signup')
   @HttpCode(HttpStatus.CREATED)
   async signupLocal(
     @Body() dto: AuthDto,
-    @Res() res: Response
+    @Res() res: Response,
   ) {
     const tokens =
       await this.authService.signupLocal(dto);
@@ -135,16 +143,16 @@ export class AuthController {
     @Res() res: Response,
   ) {
     const user = req.user;
-    const userAuth =
+    const tokens =
       await this.authService.signinGoogle(req);
-    res.cookie('token', userAuth.token.access_token, {
+    res.cookie('token', tokens.access_token, {
       maxAge: oneDay,
       httpOnly: true, // for security
       secure: true,
     });
     res.cookie(
       'refresh_token',
-      userAuth.token.refresh_token,
+      tokens.refresh_token,
       {
         maxAge: oneWeek,
         httpOnly: true, // for security
@@ -158,9 +166,11 @@ export class AuthController {
     await this.authService.updateUserState(
       userNew.id,
       true,
-      'ONLINE',
+      'ONLINE'
     );
-    res.redirect(`http://${process.env.VITE_ADDRESS}:5173/signup`);
+    res.redirect(
+      `http://${process.env.VITE_ADDRESS}:5173/signup`,
+    );
   }
 
   @Get('logout')
@@ -170,29 +180,28 @@ export class AuthController {
     @Res() res: Response,
     @Req() req: Request,
   ) {
-    console.log('A Request has reach here in logout !!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
     this.authService.logout(userId, req.cookies);
     if (req.cookies['token']) {
-      console.log('hello hmida')
       res.cookie('token', req.cookies['token'], {
-        expires: new Date(),
+        expires: new Date(0),
       });
       res.cookie(
         'refresh_token',
         req.cookies['refresh_token'],
-        { expires: new Date() },
-        );
-      }
-      const userNew =
+        { expires: new Date(0) },
+      );
+    }
+    const userNew =
       await this.authService.returnUser(
         req.user['email'],
-        );
+      );
     await this.authService.updateUserState(
       userNew.id,
       false,
       'OFFLINE'
     );
-    res.send('cookies deleted');
+
+    res.send('logged out');
   }
 
   @Get('refresh')
@@ -209,6 +218,13 @@ export class AuthController {
   }
 
   @Post('2fa/setup')
+  @ApiBody({
+    description: 'An email in the body is required'
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'The qrcode is returned and should be scanned to be verified in 2fa/verify request.'
+  })
   @HttpCode(HttpStatus.CREATED)
   async enable2fa(
     @Body() body: TwoFaAuthDto,
@@ -216,13 +232,20 @@ export class AuthController {
   ) {
     const user: Users =
       await this.authService.returnUser(
-        req.user['email'],
-      );
+        req.user['email']
+    );
     return this.authService.enable2fa(body, user);
   }
 
   @Post('2fa/verify')
-  @HttpCode(HttpStatus.FOUND)
+  @ApiBody({
+    description: 'A code as a string type is required in the body'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'The 2fa is enabled, the qrcode is returned and should be scanned to be verified.'
+  })
+  @HttpCode(HttpStatus.OK)
   async verify2fa(
     @Body() body: TwoFaCodeDto,
     @Req() req: Request,
@@ -231,16 +254,20 @@ export class AuthController {
       await this.authService.returnUser(
         req.user['email'],
       );
-    if (
-      await this.authService.verify2fa(body, user)
-    )
-      return this.authService.isEnable2fa(user);
+    const state = await this.authService.verify2fa(body, user);
+    if ( state ) {
+      await this.authService.isEnable2fa(user);
+      return true;
+    }
+    else {
+      return false;
+    }
     throw new UnauthorizedException(
       'code is wrong, try again',
     );
   }
 
-  @Post('2fa/disable')
+  @Get('2fa/disable')
   @HttpCode(HttpStatus.OK)
   async disable2fa(@Req() req: Request) {
     const user: Users =
@@ -270,9 +297,10 @@ export class AuthController {
   ): Promise<void> {
     const user = req.user;
     const [tokens, state] =
-      await this.authService.fortyTwo(
-        req.user['users'],
+    await this.authService.fortyTwo(
+      req.user['users'],
       );
+    // console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
       maxAge: oneDay,
       httpOnly: true, // for security

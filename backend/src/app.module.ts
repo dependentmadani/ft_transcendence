@@ -15,8 +15,15 @@ import { RoomModule } from './chat/room/room.module';
 import { InvitationsModule } from './chat/room/invitations/invitations.module';
 import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { HistoryModule } from './game/history/history.module';
-import { GameModule } from './game/game.module';
+import { HistoryModule } from './Game/history/history.module'
+import { GameModule } from './Game/game.module'
+
+///
+// import "./SocketGame/SocketClassic1"
+// import "./SocketGame/SocketClassic2"
+// import "./SocketGame/SocketMatch1"
+// import "./SocketGame/SocketMatch2"
+///
 
 @Module({
   imports: [
@@ -32,8 +39,8 @@ import { GameModule } from './game/game.module';
     RoomUsersModule,
     PrismaModule,
     NotificationsModule,
-    HistoryModule,
     GameModule,
+    HistoryModule,
   ],
   providers: [{
     provide: APP_GUARD,
@@ -41,11 +48,14 @@ import { GameModule } from './game/game.module';
   }],
   controllers: [HomeController]
 })
-export class AppModule implements NestModule{
-  configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(IfNotAuthenticatedMiddleware)
-      .exclude({path:'/auth*', method: RequestMethod.ALL})
-      .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
-  }
+export class AppModule {
+  
 }
+// export class AppModule implements NestModule{
+//   configure(consumer: MiddlewareConsumer) {
+//     consumer
+//       .apply(IfNotAuthenticatedMiddleware)
+//       .exclude({path:'/auth*', method: RequestMethod.ALL})
+//       .forRoutes({ path: '/u*', method: RequestMethod.ALL }); // Apply the middleware to all routes under /users
+//   }
+// }

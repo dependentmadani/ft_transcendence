@@ -31,10 +31,11 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(
 		session({
-			secret: 'pass',
+      secret: 'pass',
 			resave: false,
 			saveUninitialized: true,
 			cookie: {maxAge: oneWeek},
+      SameSite: "Lax"
 		})
 	);
 	app.use(passport.initialize());

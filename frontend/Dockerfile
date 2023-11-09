@@ -1,14 +1,14 @@
-FROM node:18
+FROM node:18-alpine
 
 WORKDIR /app
 
-COPY package*.json ./
-
-RUN npm install
-
 COPY . .
 
+RUN npm i
+
 EXPOSE 5173
+
+# npm install @mui/material @emotion/react
 
 RUN npm run build
 

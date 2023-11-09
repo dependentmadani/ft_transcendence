@@ -1,0 +1,85 @@
+/* * {
+  margin: 0;
+  padding: 0;
+  
+
+}
+body
+{
+  display: grid;
+  position:fixed;
+  margin: 0;
+  padding: 0;
+ background-color: rgb(36, 3, 63);
+ justify-content: space-around;
+} */
+
+.GameHome {
+  width: 100%;
+  height: 100%;
+  /* background-color: #ca90fa; */
+  display: flex;
+  /* align-items: center; */
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  
+}
+
+
+.style-mode {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+
+  max-width: 400px;
+  max-height: 400px;
+  background-color: rgba(44, 99, 174, 0.55);
+  margin: 20px;
+  /* overflow: hidden; */
+  border-radius: 20px;
+  box-shadow: 0 0 10px 5px rgba(9, 105, 135, 0.5);
+}
+
+
+.style-mode > img  {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -20%); 
+
+  /* float: right; */
+  width: auto;
+  height: 110%;
+  aspect-ratio: 4/4;
+  object-fit: contain;
+  /* background-color: saddlebrown; */
+  /* overflow: hidden; */
+}
+
+.style-mode > span {
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(30px, 3.3vw, 4vh);
+  color: aqua;
+  margin-top: 10%;
+  padding-left: 2%;
+  border-radius: 10px;
+  /* box-shadow: 0 0 10px 5px rgba(39, 44, 46, 0.5); */
+}
+
+@media (orientation: portrait) {
+  .style-mode > span {
+    font-size: clamp(25px, 4vh, 4vw);
+
+  }
+}
+
+.style-mode:hover    {
+  scale: 1.02;
+  cursor: pointer;
+}
+
+.style-mode:active   {
+  scale: .95;
+}
