@@ -40,6 +40,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         const socket = io(`http://${import.meta.env.VITE_BACK_ADDRESS}/MatchRandom`);
         
         socket.emit("canvas",canvas.width, canvas.height);
+       
         
         axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
         .then((res)=>{
@@ -264,7 +265,6 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
                 // console.log('left : [', this.left_score, '] | right : [', this.right_score, ']')
                 if(this.score_left == 5 || this.score_right == 5)
                 {
-                    document.removeEventListener("mousemove", handleMouseMove);
                     if (player % 2 != 0)
                     {
                         stopAnimation();
@@ -388,6 +388,7 @@ socket.on('disconnect', () => {
         
         animate()
         function stopAnimation() {
+            document.removeEventListener("mousemove", handleMouseMove);
             cancelAnimationFrame(animationId);
         }
 

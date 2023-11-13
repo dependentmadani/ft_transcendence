@@ -38,7 +38,7 @@ export function ping_pong(canvas : any, leftCallback:any , rightCallback:any, cl
         
              
         socket.emit("canvas",canvas.width, canvas.height);
-        
+        // document.removeEventListener("mousemove", handleMouseMove);
         axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/me`, { withCredentials: true })
         .then((res)=>{
             UserName = res.data?.username;
@@ -387,6 +387,7 @@ socket.on('disconnect', () => {
         
         animate()
         function stopAnimation() {
+            document.removeEventListener("mousemove", handleMouseMove);
             cancelAnimationFrame(animationId);
         }
 

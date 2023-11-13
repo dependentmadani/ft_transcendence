@@ -89,7 +89,7 @@ export class AuthService {
               username: 'akinator',
               email: 'ai@gmail.com',
               isActive: true,
-              avatar: '/boot.jpg',
+              avatar: '/bot.jpg',
             }
           })
           await this.prisma.game.create({
@@ -243,7 +243,7 @@ export class AuthService {
               username: 'akinator',
               email: 'ai@gmail.com',
               isActive: true,
-              avatar: '/boot.jpg',
+              avatar: '/bot.jpg',
             }
           })
           await this.prisma.game.create({

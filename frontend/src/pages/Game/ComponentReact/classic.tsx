@@ -152,13 +152,13 @@ useEffect(() => {
         <div id='players'>
             <div id="profile1"> 
                 <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                  target.src = '/src/imgs/user-img.png'; }} />
+                  target.src = '/src/assets/imgs/user-img.png'; }} />
                 <div className='profile1id' > {user1?.username}</div>
             </div>
-            <img className= "players-vs" src="/src/imgs/vs5.png"/>
+            <img className= "players-vs" src="/src/assets/imgs/vs5.png"/>
             <div id="profile2">
               <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                target.src = '/src/imgs/user-img.png'; }} />
+                target.src = '/src/assets/imgs/user-img.png'; }} />
               <div className='profile2id'>  {user2?.username} </div>
             </div>
         </div>
@@ -187,8 +187,8 @@ useEffect(() => {
             <span id='state' > {soundOn ? 'On' : 'Off'} </span>
           </div>
       </div>
-      <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
-        <img src="/src/imgs/svg/exit.svg" alt="exit"  />
+      <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false);navigate('/game')}}>
+        <img src="/src/assets/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 
     </div>

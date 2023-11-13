@@ -7,7 +7,7 @@ import axios from 'axios';
 import { useStart } from '@/context/startContext';
 // import { useUrl } from '@/context/UrlContext';
 import Discripion from './description';
-import { useUrl } from '@/context/UrlContext';
+// import { useUrl } from '@/context/UrlContext';
 
 
 interface User {
@@ -20,7 +20,7 @@ export default function Akinator()
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
   const [start, setStart] = useStart();
-  const [,setMyUrl] = useUrl();
+  // const [,setMyUrl] = useUrl();
   const navigate = useNavigate();
   // const [myUrl, setMyUrl] = useUrl();
 
@@ -52,7 +52,7 @@ export default function Akinator()
         },
         {withCredentials: true}
         )
-        setStart(false)
+        // setStart(false)
       }catch (err) {
       }
     }
@@ -78,20 +78,20 @@ export default function Akinator()
   }, [])
 
 
-  useEffect(() => {
-    const handleBeforeUnload = (event:any) => {
-      setMyUrl(true);
-      event.returnValue = 'Are you sure you want to leave this page?';
-      event.preventDefault();
-    };
+  // useEffect(() => {
+  //   const handleBeforeUnload = (event:any) => {
+  //     setMyUrl(true);
+  //     event.returnValue = 'Are you sure you want to leave this page?';
+  //     event.preventDefault();
+  //   };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+  //   window.addEventListener('beforeunload', handleBeforeUnload);
 
-    return () => {
-      // Remove the event listener when the component unmounts
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  //   return () => {
+  //     // Remove the event listener when the component unmounts
+  //     window.removeEventListener('beforeunload', handleBeforeUnload);
+  //   };
+  // }, []);
 
   
   const updateCanvasWidth = () => {
@@ -168,9 +168,9 @@ export default function Akinator()
       <div className='game-dimension'>
         <div id='players'>
             <div id="profile1"> 
-                <img className='profile1Img' src='/src/imgs/boot.jpg' onError={(e) => { 
+                <img className='profile1Img' src='/src/assets/imgs/bot.jpg' onError={(e) => { 
                   const target = e.target as HTMLImageElement
-                  target.src = '/src/imgs/user-img.png'; }}   />
+                  target.src = '/src/assets/imgs/user-img.png'; }}   />
                 <div className='profile1id'> Akinator </div>
                 <div className="BallScore1">
                   {score.map((element, index) => (
@@ -183,7 +183,7 @@ export default function Akinator()
                   <img className= "players-vs" src="/src/assets/img/vs.png"/>
             <div id="profile2">
               <img className='profile2Img' src={Userdata?.avatar} onError={(e) => { const target = e.target as HTMLImageElement 
-                target.src = '/src/imgs/user-img.png'; }} />
+                target.src = '/src/assets/imgs/user-img.png'; }} />
               <div className='profile2id'> {Userdata?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
@@ -216,7 +216,7 @@ export default function Akinator()
           </div>
       </div>
       <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false); navigate('/game')}}>
-        <img src="/src/imgs/svg/exit.svg" alt="exit"  />
+        <img src="/src/assets/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 
     </div>

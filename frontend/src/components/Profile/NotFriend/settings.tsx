@@ -56,7 +56,7 @@ const SettingsComponent = (props:any) => {
 
     return (
       <div className="settings-noFriend">
-          <img src={blocked ? "/src/imgs/unblock.png" : "/src/imgs/no-chat.png" } alt="no-chat"  onClick={() => {setChat(true)}} />
+          <img src={blocked ? "/src/assets/imgs/unblock.png" : "/src/assets/imgs/no-chat.png" } alt="no-chat"  onClick={() => {setChat(true)}} />
       </div>
     );
 }

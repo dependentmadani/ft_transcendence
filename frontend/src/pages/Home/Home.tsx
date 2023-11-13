@@ -22,6 +22,9 @@ export default function Home() {
     }
     toast.dismiss();
 
+
+            console.log('client ', client)
+
     return (
             <main className='main-home' >
                 <div className="dscp-home">
@@ -37,7 +40,7 @@ export default function Home() {
                     <button className="getStart-b" onClick={handelStart}> Get Started </button>
                 </div>
                 <div className='home-img' >
-                    <img  src='/src/imgs/home.png' alt='home.png' />
+                    <img  src='/src/assets/imgs/home.png' alt='home.png' />
                 </div>
             </main>
     )

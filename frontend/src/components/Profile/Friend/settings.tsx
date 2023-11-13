@@ -44,8 +44,8 @@ const SettingsComponent = ({userData} :any) => {
 
     return (
       <div className="settings-friend">
-          <img src="/src/imgs/no-chat.png" alt="no-chat"  onClick={() => {setChat(true)}} />
-          <img src="/src/imgs/unfriend.png" alt="unfriend"  onClick={() => {setFriend(true)}} />
+          <img src="/src/assets/imgs/no-chat.png" alt="no-chat"  onClick={() => {setChat(true)}} />
+          <img src="/src/assets/imgs/unfriend.png" alt="unfriend"  onClick={() => {setFriend(true)}} />
       </div>
     );
 }

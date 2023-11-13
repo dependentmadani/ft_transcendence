@@ -67,7 +67,7 @@ img {
 
 .search-input:focus {
     width: 100%;
-    /* background-image: url('/src/imgs/cancel-red.png'); */
+    /* background-image: url('/src/assets/imgs/cancel-red.png'); */
 }
 
 .search-input2{

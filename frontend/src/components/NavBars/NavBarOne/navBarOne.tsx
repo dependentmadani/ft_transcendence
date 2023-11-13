@@ -96,7 +96,7 @@ function NavBarOne() {
             <>
                 <nav className='bar'>
                     <Link to='/' >
-                        <img className="logo-img" src='/src/imgs/mskota.png' alt='Mskota-Logo' /> 
+                        <img className="logo-img" src='/src/assets/imgs/mskota.png' alt='Mskota-Logo' /> 
                     </Link>
                     <ul className="list">
                         {defaultList}
@@ -104,7 +104,7 @@ function NavBarOne() {
                     {!client.signedIn ?
                         <div className='login' onClick={()=> {navigate('/login')}} > Get Started </div> :
                         <button id='drop1' onClick={() => {setIsMenuOpen(!isMenuOpen)}}  onBlur={() => {setIsMenuOpen(false)}} > 
-                            <img className='user-img' src={client.avatar || '/src/imgs/user-img.png'} alt="user-img" />
+                            <img className='user-img' src={client.avatar || '/src/assets/imgs/user-img.png'} alt="user-img" />
                         </button>
                     }
                     {!client.signedIn && <div className='menu-ico' onClick={() => {setIsMenuOpen(!isMenuOpen)}}>

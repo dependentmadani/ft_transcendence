@@ -39,11 +39,11 @@ function NavBarTree () {
 
     return (
         <>
-            <img src="/src/imgs/home-icon.png" alt="home" onClick={goToHome}/>
-            <img src="/src/imgs/account-icon.png" alt="profile" onClick={goToProfile}/>
-            <img src="/src/imgs/chat-icon.png" alt="chat" onClick={goToChat}/>
-            <img src="/src/imgs/racket-icon.png" alt="game" onClick={goToPlay}/>
-            <img src="/src/imgs/leaderboard.png" alt="leaderboard" onClick={goToLeader}/>
+            <img src="/src/assets/imgs/home-icon.png" alt="home" onClick={goToHome}/>
+            <img src="/src/assets/imgs/account-icon.png" alt="profile" onClick={goToProfile}/>
+            <img src="/src/assets/imgs/chat-icon.png" alt="chat" onClick={goToChat}/>
+            <img src="/src/assets/imgs/racket-icon.png" alt="game" onClick={goToPlay}/>
+            <img src="/src/assets/imgs/leaderboard.png" alt="leaderboard" onClick={goToLeader}/>
         </>
     )
 }

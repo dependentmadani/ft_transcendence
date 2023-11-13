@@ -3,7 +3,9 @@ import '../ComponentReact/classic.css'
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/InviteClassicPong'
 import { useNavigate } from 'react-router-dom';
+import Discripion from '../ComponentReact/description';
 import axios from 'axios';
+import { useStart } from '@/context/startContext';
 
 interface User
 {
@@ -26,6 +28,7 @@ const InviteClassic: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
 
   const flag = useRef(false)
   const canvas = useRef(null)
+  const [, setStart] = useStart();
   const [size, setSize] = useState<'small' | 'medium'>('medium');
   
   const [leftballs, setLeftBalls] = useState(['grey', 'grey', 'grey', 'grey', 'grey']);
@@ -144,22 +147,23 @@ useEffect(() => {
           <div id='players'>
               <div id="profile1"> 
                   <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                    target.src = '/src/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
+                    target.src = '/src/assets/imgs/user-img.png'; }} /*src={user1?.avatar}*/ />
                   <div className='profile1id' > {user1?.username}</div>
               </div>
                     <img className= "players-vs" src="/src/assets/img/vs.png"/>
               <div id="profile2">
                 <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                  target.src = '/src/imgs/user-img.png'; }} />
+                  target.src = '/src/assets/imgs/user-img.png'; }} />
                 <div className='profile2id'>  {user2?.username} </div>
               </div>
           </div>
           <div className='dimension-canvas'>
             <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-            <button id="ButtonStart" className='ButtonStart'>
+            <button id="ButtonStart" className='ButtonStart'  onClick={() => {setStart(true);}} >
               <span className='startplus'>Start</span>
               <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
             </button>
+            <Discripion mode='classic' />
           </div>
           </div>
       <div className='game-setting'>
@@ -177,7 +181,7 @@ useEffect(() => {
             </div>
         </div>
         <button id="ExitGame" className='buttonExit' onClick={() => {navigate('/game')}}>
-          <img src="/src/imgs/svg/exit.svg" alt="exit"  />
+          <img src="/src/assets/imgs/svg/exit.svg" alt="exit"  />
           <span className ="EXIT"> Exit</span>
         </button> 
       </div>

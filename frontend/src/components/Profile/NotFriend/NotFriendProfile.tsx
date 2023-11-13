@@ -103,7 +103,7 @@ function ProfileInfo (props: any) {
                       <span>{props.userData.userStatus}</span>
                       <div></div>
                     </div>
-                    <img src={baseImg} onError={() => {setBaseImg('/src/imgs/user-img.png')}} onClick={() => {navigate(`/profile/${props.userData.username}`)}} alt="user-img" />
+                    <img src={baseImg} onError={() => {setBaseImg('/src/assets/imgs/user-img.png')}} onClick={() => {navigate(`/profile/${props.userData.username}`)}} alt="user-img" />
                 </div>
             </div>
             <div className='profile-info1-right'>
@@ -112,8 +112,8 @@ function ProfileInfo (props: any) {
                     <div className='profile-rank1'> {rank} </div>
                 </div>
                 <div className='profile-buttons'>
-                    <ReactSVG src='/src/imgs/svg/add-user.svg' className="add-friend" onClick={() => {checkUser(); sendFriendRequest(props.userData)}} />
-                    <ReactSVG src='/src/imgs/svg/play-game.svg' className="play-game" />
+                    <ReactSVG src='/src/assets/imgs/svg/add-user.svg' className="add-friend" onClick={() => {checkUser(); sendFriendRequest(props.userData)}} />
+                    <ReactSVG src='/src/assets/imgs/svg/play-game.svg' className="play-game" />
                 </div>
             </div>
         </div>
@@ -142,7 +142,7 @@ function NotFriendProfile (props: any) {
 
     return (
         <div className='profile'>
-                <img id='settings'  src="/src/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
+                <img id='settings'  src="/src/assets/imgs/setting.png" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
                 <ProfileInfo userData={props.userData[0]} />
                 <SettingsComponent user={props.userData[0]}  />
         </div>

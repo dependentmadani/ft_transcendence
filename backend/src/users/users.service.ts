@@ -289,22 +289,6 @@ export class UsersService {
         friends: true,
       }
     });
-    // await this.prisma.users.update({
-    //   where: {
-    //     id: friendId,
-    //   },
-    //   data: {
-    //     pendingFriendReq: {
-    //       connect: {
-    //         id: userId
-    //       }
-    //     }
-    //   },
-    //   include: {
-    //     friends: false,
-    //     _count: false,
-    //   }
-    // });
     return user;
   }
 
@@ -574,7 +558,7 @@ export class UsersService {
           },
           data: {
             avatar:
-              '/uploadAvatar/' + filePath,
+              '/uploads/' + filePath,
           },
         },
       );
@@ -596,7 +580,7 @@ export class UsersService {
             id: userId,
           },
         });
-
+      
       return user.avatar;
     } catch {
       throw new UnauthorizedException(

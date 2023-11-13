@@ -72,14 +72,14 @@ function  Sign(props:any) {
       <>
         <div className="row">
           <div className="logo-login">
-            <img className="logo-login-img" src="/src/imgs/mskota.png" alt="Mskota-Logo" onClick={handelClick} />
+            <img className="logo-login-img" src="/src/assets/imgs/mskota.png" alt="Mskota-Logo" onClick={handelClick} />
           </div>
           <div className='body-login'>
               {props.tag === 'login' && <Login />}
               {props.tag === 'signup' && <SignUp />}
               {props.tag === '2fa' && <Login2FA />}
             <div className='col2'>
-              <img src="/src/imgs/pingpong.gif" alt="pingpong-gif" />
+              <img src="/src/assets/imgs/pingpong.gif" alt="pingpong-gif" />
             </div>
           </div>
         </div>

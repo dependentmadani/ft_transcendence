@@ -41,7 +41,7 @@ function Leaderboard() {
                     <div key={user.id} className="player-stats">
                         <div className={(user.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
                             <img src={user.avatar} alt="User image" onError={(e) => { const target = e.target as HTMLImageElement
-                                target.src = '/src/imgs/user-img.png'; }} 
+                                target.src = '/src/assets/imgs/user-img.png'; }} 
                                 onClick={ () => goProfile(user.username) } />
                         </div>
                         <div className="status">
@@ -81,7 +81,7 @@ function Leaderboard() {
                 <div className="player-stats akinator-bot" key={akinatorUser.id}>
                     <div className={(akinatorUser.userStatus === "OFFLINE")? "img-frame offline" : "img-frame online" } > 
                         <img src={akinatorUser.avatar} alt="User image" onError={(e) => { const target = e.target as HTMLImageElement
-                            target.src = '/src/imgs/user-img.png'; }} />
+                            target.src = '/src/assets/imgs/user-img.png'; }} />
                     </div>
                     <div className="status">
                         <span>{akinatorUser.username}</span>
@@ -101,7 +101,7 @@ function Leaderboard() {
             </div> 
             )}
             {loading ? (
-                <img id='Loding' src='/src/imgs/svg/eat.svg' />
+                <img id='Loding' src='/src/assets/imgs/svg/eat.svg' />
             ) : userLeaderboard().length ? userLeaderboard() : <span className='no-users'> No Users .... </span>} 
         </div>
     );

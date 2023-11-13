@@ -53,7 +53,7 @@ const Login2FA: React.FC = () => {
 		</span>
 		<form className='signup-form'>
 			<div className='updateAvatar'>
-			<img src={client.avatar || '/src/imgs/user-img.png'} className='img-avatar' alt='User Avatar'/>
+			<img src={client.avatar || '/src/assets/imgs/user-img.png'} className='img-avatar' alt='User Avatar'/>
 			</div>
 			<input
 				type='text'

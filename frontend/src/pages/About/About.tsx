@@ -2,7 +2,7 @@ import './About.css'
 
 
 export default function About() {
-    const my_img:string = '/src/imgs/about.png'
+    const my_img:string = '/src/assets/imgs/about.png'
 
     return (
         <>

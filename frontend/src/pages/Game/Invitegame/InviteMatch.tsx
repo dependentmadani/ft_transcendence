@@ -3,7 +3,9 @@ import '../ComponentReact/classic.css'
 import Switch from '@mui/material/Switch';
 import { ping_pong} from '../ScriptGame/InviteMatchPong'
 import { useNavigate } from 'react-router-dom';
+import Discripion from '../ComponentReact/description';
 import axios from 'axios';
+import { useStart } from '@/context/startContext';
 
 interface User
 {
@@ -21,6 +23,7 @@ const InviteMatch: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
 {
   const [musicOn, setMusicOn] = useState(true);
   const [soundOn, setSoundOn] = useState(true);
+  const [, setStart] = useStart();
   const navigate = useNavigate();
 
   const goback = () => {
@@ -61,7 +64,7 @@ const InviteMatch: React.FC<MyComponentProps> = ({ProfileID1, ProfileID2}) =>
 }, [ProfileID1,Userdata?.id]);
 
 useEffect(() => {
-  setUser2({ id:2, username: "Waiting ...", avatar: "/src/imgs/svg/waiting.svg" });
+  setUser2({ id:2, username: "Waiting ...", avatar: "/src/assets/imgs/svg/waiting.svg" });
   if (ProfileID2)
   {
     axios.get(`http://${import.meta.env.VITE_BACK_ADDRESS}/users/${ProfileID2}`, { withCredentials: true })
@@ -147,7 +150,7 @@ useEffect(() => {
           <div id='players'>
               <div id="profile1"> 
                   <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                    target.src = '/src/imgs/user-img.png'; }} />
+                    target.src = '/src/assets/imgs/user-img.png'; }} />
                   <div className='profile1id' > {user1?.username}</div>
                   <div className="BallScore1">
                     {score.map((element, index) => (
@@ -158,7 +161,7 @@ useEffect(() => {
                     <img className= "players-vs" src="/src/assets/img/vs.png"/>
               <div id="profile2">
                 <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                  target.src = '/src/imgs/user-img.png'; }} />
+                  target.src = '/src/assets/imgs/user-img.png'; }} />
                 <div className='profile2id'>  {user2?.username} </div>
                 <div className="BallScore2">
                   {score.map((element, index) => (
@@ -169,10 +172,11 @@ useEffect(() => {
           </div>
           <div className='dimension-canvas'>
             <canvas ref={canvas} id = "canvas1"  width='1000px' height='600px' > </canvas>
-            <button id="ButtonStart" className='ButtonStart'>
+            <button id="ButtonStart" className='ButtonStart' onClick={() => {setStart(true);}} >
               <span className='startplus'>Start</span>
               <img className='Iconpaddles' src="/src/assets/img/IconPaddles.png" />
             </button>
+            <Discripion mode='classic' />
           </div>
           </div>
       <div className='game-setting'>
@@ -190,7 +194,7 @@ useEffect(() => {
             </div>
         </div>
         <button id="ExitGame" className='buttonExit' onClick={goback}>
-          <img src="/src/imgs/svg/exit.svg" alt="exit"  />
+          <img src="/src/assets/imgs/svg/exit.svg" alt="exit"  />
           <span className ="EXIT"> Exit</span>
         </button> 
       </div>

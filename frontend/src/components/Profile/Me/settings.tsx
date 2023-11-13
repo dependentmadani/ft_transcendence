@@ -73,7 +73,7 @@ const SettingsComponent: React.FC = () => {
           pending: "Generating QR Code...",
           success: {
             render: "QR Code generated successfully!",
-            icon: <img src='/src/imgs/qr-code.gif' width='25px' alt='qr-code' />,
+            icon: <img src='/src/assets/imgs/qr-code.gif' width='25px' alt='qr-code' />,
             },
           error: {
             render: 'Gmail address Error',
@@ -105,7 +105,7 @@ const SettingsComponent: React.FC = () => {
               pending: "Check Code...",
               success: {
                 render: ({ data }) => `${data}`,
-                icon: <img src='/src/imgs/password.gif' width='25px' alt='password' />,
+                icon: <img src='/src/assets/imgs/password.gif' width='25px' alt='password' />,
                 },
               error: {
                 render:({ data }) => `${data}`,
@@ -182,7 +182,7 @@ const SettingsComponent: React.FC = () => {
             pending: "Updating Profile...",
             success: {
               render: "Update Profile successfully!",
-              icon: <img src='/src/imgs/life-cycle.gif' width='25px' alt='profile' />,
+              icon: <img src='/src/assets/imgs/life-cycle.gif' width='25px' alt='profile' />,
               },
             error: {
               render: ({ data }) => `${data}`,
@@ -213,9 +213,9 @@ const SettingsComponent: React.FC = () => {
             <div className="image-frame">
                 <img src={avatar} alt="User Image" onError={(e) => { 
                   const target = e.target as HTMLImageElement; 
-                  target.src = '/src/imgs/user-img.png'; }} />
+                  target.src = '/src/assets/imgs/user-img.png'; }} />
                 <div className="change-image-container" onClick={handleImageChange}>
-                    <img src="/src/imgs/change-img.png" alt="Image Icon" />
+                    <img src="/src/assets/imgs/change-img.png" alt="Image Icon" />
                 </div>
             </div>
             <div className="username-frame">

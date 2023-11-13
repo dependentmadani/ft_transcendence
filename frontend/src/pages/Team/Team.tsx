@@ -57,18 +57,18 @@ function Badges() {
 
         return (
             <div key={badge.id} className='badge' >
-                <img src={badge.img} alt="person-img"  className='team-img' onError={() => {'/src/imgs/user-img.png'}} /> 
+                <img src={badge.img} alt="person-img"  className='team-img' onError={() => {'/src/assets/imgs/user-img.png'}} /> 
                 <div className='portfolio'>
                     <span>{badge.name}</span>
                     <div className='follow'>
                         <a href={badge.intra42}>
-                            <ReactSVG src="/src/imgs/svg/42_Logo.svg" className='contact'  />
+                            <ReactSVG src="/src/assets/imgs/svg/42_Logo.svg" className='contact'  />
                         </a>
                         <a href={badge.github}> 
-                            <ReactSVG src="/src/imgs/svg/github.svg"  className='contact' />
+                            <ReactSVG src="/src/assets/imgs/svg/github.svg"  className='contact' />
                         </a>
                         <a href={badge.linkedin}>
-                            <ReactSVG src='/src/imgs/svg/linkedin.svg' className='contact' />
+                            <ReactSVG src='/src/assets/imgs/svg/linkedin.svg' className='contact' />
                         </a>
                     </div>
                 </div>
@@ -88,15 +88,15 @@ function Badges() {
 const Tools = () => {
     return (
         <div  className='tools'>
-            <img src='/src/imgs/svg/nodejs.svg' className='tool' />
-            <img src='/src/imgs/svg/npm.svg' className='tool' />
-            <img src='/src/imgs/svg/vite.svg' className='tool' />
-            <img src='/src/imgs/svg/typescript.svg' className='tool' />
-            <img src='/src/imgs/svg/css.svg' className='tool' />
-            <img src='/src/imgs/svg/react-.svg' className='tool' />
-            <img src='/src/imgs/svg/nestjs.svg' className='tool' />
-            <img src='/src/imgs/svg/prisma.svg' className='tool' />
-            <img src='/src/imgs/svg/docker.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/nodejs.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/npm.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/vite.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/typescript.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/css.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/react-.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/nestjs.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/prisma.svg' className='tool' />
+            <img src='/src/assets/imgs/svg/docker.svg' className='tool' />
         </div> 
     )
 }

@@ -3,6 +3,9 @@ version: '3.8'
 networks:
   hadnetwork:
 
+volumes:
+  shared_volume:
+
 services:
   db:
     image: postgres:13
@@ -11,6 +14,8 @@ services:
       - .env
     networks:
       - hadnetwork
+    # ports:
+    #   - 5432:5432
 
   backend:
     build:
@@ -24,6 +29,8 @@ services:
       - db
     networks:
       - hadnetwork
+    volumes:
+      - shared_volume:/app/uploads
   
   frontend:
     build:
@@ -38,6 +45,8 @@ services:
       - backend
     networks:
       - hadnetwork
+    volumes:
+      - shared_volume:/app/public/uploads
 
   pgadmin:
     container_name: pgadmin4_container

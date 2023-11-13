@@ -28,7 +28,7 @@ function Friends_list(props:any) {
                 <div key={friend.id} className='friend'>
                     <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { 
                         const target = e.target as HTMLImageElement
-                        target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
+                        target.src = '/src/assets/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
                 </div>
@@ -51,10 +51,10 @@ function Friends_list(props:any) {
                 <div key={friend.id} className='friend'>
                     <img className='user-friend' src={friend.avatar} alt="friend-img" onError={(e) => { 
                         const target = e.target as HTMLImageElement
-                        target.src = '/src/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
+                        target.src = '/src/assets/imgs/user-img.png'; }} onClick={() => {navigate(`/profile/${friend.username}`)}} />
                     <span className='status-friend'><span id='circle' style={{ background: statusColor }} ></span> {friend.userStatus} </span>
                     <span className='name-friend'> {friend.username} </span>
-                    <img className='icon-chat' src="/src/imgs/chat-room.png" alt="chat-img" />
+                    <img className='icon-chat' src="/src/assets/imgs/chat-room.png" alt="chat-img" />
                 </div>
             )
         })
@@ -67,7 +67,7 @@ function Friends (props:any) {
 
     const [searchOpen, setSearchOpen] = useState(false);
     const [target, setTarget] = useState('');
-    const [iconSearch, setIconSearch] = useState('/src/imgs/search.png');
+    const [iconSearch, setIconSearch] = useState('/src/assets/imgs/search.png');
     
 
 
@@ -75,11 +75,11 @@ function Friends (props:any) {
 
     const search_open = () => {
         if (!searchOpen) {
-            setIconSearch('/src/imgs/cancel-red.png');
+            setIconSearch('/src/assets/imgs/cancel-red.png');
             my_search.focus()
         }
         else if (searchOpen) { 
-            setIconSearch('/src/imgs/search.png');
+            setIconSearch('/src/assets/imgs/search.png');
             my_search.blur();
             my_search.value = '';
         }
@@ -101,8 +101,8 @@ function Friends (props:any) {
                 <input type="text" className="search-input" 
                     placeholder="Search..." 
                     onKeyDown={handleKey}
-                    onFocus={() => {setIconSearch('/src/imgs/cancel-red.png')}}
-                    onBlur={() => { my_search.value = ''; setTarget('') ; setIconSearch('/src/imgs/search.png')}}
+                    onFocus={() => {setIconSearch('/src/assets/imgs/cancel-red.png')}}
+                    onBlur={() => { my_search.value = ''; setTarget('') ; setIconSearch('/src/assets/imgs/search.png')}}
                 />
                 <img id='search' src={iconSearch} alt="search"  onClick={search_open}/>
             </div>

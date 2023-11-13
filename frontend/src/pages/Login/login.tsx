@@ -26,11 +26,11 @@ function Login () {
       </h1>
       <div id="log">
         <button onClick={request42} className="log-b-42">
-          <img src="/src/imgs/42-white.png" alt="42 Logo" />
+          <img src="/src/assets/imgs/42-white.png" alt="42 Logo" />
           Log In With 42 intra
         </button>
         <button onClick={requestGoogle} className="log-b-google">
-          <img src="/src/imgs/google1.png" alt="Google Logo" />
+          <img src="/src/assets/imgs/google1.png" alt="Google Logo" />
           Log In With Google
         </button>
       </div>

@@ -195,11 +195,13 @@ export class AuthController {
       await this.authService.returnUser(
         req.user['email'],
       );
-    await this.authService.updateUserState(
-      userNew.id,
-      false,
-      'OFFLINE'
-    );
+      if (userNew) {
+        await this.authService.updateUserState(
+          userNew.id,
+          false,
+          'OFFLINE'
+        );
+      }
 
     res.send('logged out');
   }

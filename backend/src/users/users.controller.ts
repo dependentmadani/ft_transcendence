@@ -34,7 +34,7 @@ import { Public } from 'src/decorator';
 export const storage = {
   storage: diskStorage({
     destination:
-      `${process.cwd()}/../frontEnd/public/uploadAvatar/`,
+      `${process.cwd()}/uploads/`,
     filename: (req, file, cb) => {
       if (!path) return;
       const filename: string =
@@ -190,9 +190,17 @@ export class UsersController {
     const filenamePath =
       await this.userService.getAvatar(userId);
 
-    return res.sendFile(
-      join(process.cwd(), filenamePath),
-    );
+    // console.log('imgggg', path.join(__dirname,'../../',filenamePath));
+    // return res.sendFile(path.join(__dirname,'../../',filenamePath))
+    const fs = require('fs')
+    if (fs.existsSync(process.cwd() + filenamePath)) {
+      // return res.send(`http://locahost:8000/` + filenamePath);
+      // console.log('was here')
+      return res.sendFile(
+        join(process.cwd(), filenamePath),
+      );
+    }
+    return res.send(filenamePath);
   }
 
   @Get('blocked-friend/:id')
@@ -220,7 +228,7 @@ export class UsersController {
     @UploadedFile() file,
   ) {
     if (!file) {
-      console.log(process.cwd());
+
       throw new UnauthorizedException(
         'Did not upload successfully',
         );

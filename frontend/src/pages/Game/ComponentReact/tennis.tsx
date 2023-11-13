@@ -62,7 +62,7 @@ useEffect(() => {
 }, [ProfileID1,Userdata?.id]);
 
 useEffect(() => {
-  setUser2({ id:2, username: "Waiting ...", avatar: "/src/imgs/svg/waiting.svg" });
+  setUser2({ id:2, username: "Waiting ...", avatar: "/src/assets/imgs/svg/waiting.svg" });
 if (ProfileID2)
 {
 axios.get(`http://localhost:8000/users/${ProfileID2}`, { withCredentials: true })
@@ -153,7 +153,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
         <div id='players'>
             <div id="profile1"> 
                 <img className='profile1Img' src={user1?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                  target.src = '/src/imgs/user-img.png'; }}  />
+                  target.src = '/src/assets/imgs/user-img.png'; }}  />
                 <div className='profile1id' > {user1?.username}</div>
                 <div className="BallScore1">
                   {score.map((element, index) => (
@@ -161,10 +161,10 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
                   ))}
                 </div>
             </div>
-                  <img className= "players-vs" src="/src/imgs/vs5.png"/>
+                  <img className= "players-vs" src="/src/assets/imgs/vs5.png"/>
             <div id="profile2">
               <img className='profile2Img' src={user2?.avatar} onError={(e) => { const target = e.target as HTMLImageElement
-                target.src = '/src/imgs/user-img.png'; }} />
+                target.src = '/src/assets/imgs/user-img.png'; }} />
               <div className='profile2id'>  {user2?.username} </div>
               <div className="BallScore2">
                 {score.map((element, index) => (
@@ -197,7 +197,7 @@ const score = ['score-1', 'score-2', 'score-3', 'score-4', 'score-5']
           </div>
       </div>
       <button id="ExitGame" className='buttonExit' onClick={() => {setStart(false);navigate('/game')}}>
-        <img src="/src/imgs/svg/exit.svg" alt="exit"  />
+        <img src="/src/assets/imgs/svg/exit.svg" alt="exit"  />
         <span className ="EXIT"> Exit</span>
       </button> 
     </div>

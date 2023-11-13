@@ -48,12 +48,12 @@ function Badges({ historyEntry }: { historyEntry: HistoryEntry }) {
         <div className="players">
           <img id="player" style={historyEntry.myScore > historyEntry.oppScore ? { boxShadow: '0px 0px 4px 2px #39FF14' } : {boxShadow: '0px 0px 4px 2px #ff1e4f'}}
                 src={historyEntry.myUser.avatar} alt={historyEntry.myUser.username} />
-          <img id="vs-img" src="/src/imgs/vs-.png" alt="VS" />
+          <img id="vs-img" src="/src/assets/imgs/vs-.png" alt="VS" />
           <img id="player" style={historyEntry.myScore < historyEntry.oppScore ? { boxShadow: '0px 0px 4px 2px #39FF14' } : {boxShadow: '0px 0px 4px 2px #ff1e4f'}}
                 src={historyEntry.oppUser.avatar} alt={historyEntry.oppUser.username} onClick={handleclick} />
           <div id="comma">
-            <img src="/src/imgs/comma.png" alt="comma" />
-            <img src="/src/imgs/comma.png" alt="comma" />
+            <img src="/src/assets/imgs/comma.png" alt="comma" />
+            <img src="/src/assets/imgs/comma.png" alt="comma" />
           </div>
         </div>
         <div className="score-match">
@@ -135,13 +135,13 @@ const Achieves = () => {
     return (
         <>
             {!(badge.first_server || badge.conqueror || badge.ai_crusher  || badge.disciplined || badge.extrouvert || badge.failure || badge.challenger) && <span className='no-users no-achieve'> No Achievements .... </span>}
-            { badge.first_server && <Achieve achieveImg='/src/imgs/achievement-icons/firstserv.png' achieveTitle='First Serve!' achieveDiscription='Win your first game' />}
-            { badge.conqueror && <Achieve achieveImg='/src/imgs/achievement-icons/Conqueror.png' achieveTitle='Conqueror!' achieveDiscription='Win 3 games in a row' /> }
-            { badge.ai_crusher && <Achieve achieveImg='/src/imgs/akinator1.png' change={true} achieveTitle='Akinator Victory!' achieveDiscription='Beat AI bot' /> }
-            { badge.disciplined  && <Achieve achieveImg='/src/imgs/achievement-icons/Practice.png' achieveTitle='Disciplined!' achieveDiscription='Play 5 practice games' /> }
-            { badge.extrouvert && <Achieve achieveImg='/src/imgs/achievement-icons/social.png' achieveTitle='Extrouvert!' achieveDiscription='Have min of 5 friend' /> }
-            { badge.failure && <Achieve achieveImg='/src/imgs/achievement-icons/failure.png' achieveTitle='You Failed!' achieveDiscription='You lost 5 games' /> }
-            { badge.challenger && <Achieve achieveImg='/src/imgs/achievement-icons/challenger.png' achieveTitle='Challenger!' achieveDiscription='Play against 3 opponents' /> }
+            { badge.first_server && <Achieve achieveImg='/src/assets/imgs/achievement-icons/firstserv.png' achieveTitle='First Serve!' achieveDiscription='Win your first game' />}
+            { badge.conqueror && <Achieve achieveImg='/src/assets/imgs/achievement-icons/Conqueror.png' achieveTitle='Conqueror!' achieveDiscription='Win 3 games in a row' /> }
+            { badge.ai_crusher && <Achieve achieveImg='/src/assets/imgs/akinator1.png' change={true} achieveTitle='Akinator Victory!' achieveDiscription='Beat AI bot' /> }
+            { badge.disciplined  && <Achieve achieveImg='/src/assets/imgs/achievement-icons/Practice.png' achieveTitle='Disciplined!' achieveDiscription='Play 5 practice games' /> }
+            { badge.extrouvert && <Achieve achieveImg='/src/assets/imgs/achievement-icons/social.png' achieveTitle='Extrouvert!' achieveDiscription='Have min of 5 friend' /> }
+            { badge.failure && <Achieve achieveImg='/src/assets/imgs/achievement-icons/failure.png' achieveTitle='You Failed!' achieveDiscription='You lost 5 games' /> }
+            { badge.challenger && <Achieve achieveImg='/src/assets/imgs/achievement-icons/challenger.png' achieveTitle='Challenger!' achieveDiscription='Play against 3 opponents' /> }
 
         </>)
 }
@@ -149,7 +149,7 @@ const Achieves = () => {
 function ProfileInfo () {
 
     const {client} = useClient();
-    const [rank, setRank] = useState(0)
+    const [rank, setRank] = useState(0);
 
     useEffect(() => {
         async function getrank() {
@@ -163,12 +163,13 @@ function ProfileInfo () {
 
         getrank()
     }, [])
-    
+
+    console.log('avatar of user', client.avatar)
     return (
         <div className='profile-info'>
             <div className='profile-info-left'>
                 <div className='profile-img'>
-                    <img src={client.avatar ? client.avatar : '/src/imgs/user-img.png'} alt="user-img"   />                    
+                    <img src={client.avatar ? client.avatar : '/src/assets/imgs/user-img.png'} alt="user-img"   />                    
                 </div>
                 <div className='profile-name-rank'>
                     <div className='profile-name'> {client.username} </div>
@@ -223,10 +224,10 @@ function MyProfile () {
 
     return (
         <>
-            {loading ? <img id='Loding' src='/src/imgs/svg/eat.svg' /> : 
+            {loading ? <img id='Loding' src='/src/assets/imgs/svg/eat.svg' /> : 
                 <>
                     <div className='profile'>
-                        <img id='settings'  src="/src/imgs/svg/setting.svg" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
+                        <img id='settings'  src="/src/assets/imgs/svg/setting.svg" alt="setting" onClick={() => {setPopSettings(!popSettings)}} onBlur={() => {setPopSettings(false)}} />
                         <div className='profile-col-1'>
                             <ProfileInfo />
                             <Friends friendsData={client.friends} />

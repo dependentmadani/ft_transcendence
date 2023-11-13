@@ -210,8 +210,8 @@ const ListNotification = () => {
                         <img src={ notification.sender.avatar } alt="sender_avatar" />
                         <span id='notific-user' >{ notification.sender.username }</span>
                         <span id='notific-title'>{ notification.content }</span>
-                        <img id='accept' src="/src/imgs/checked.png" alt="accept" onClick={() => handleAccept(notification)} />
-                        <img id='refuse' src="/src/imgs/cancel1.png" alt="refuse" onClick={() => handleRefuse(notification)} />
+                        <img id='accept' src="/src/assets/imgs/checked.png" alt="accept" onClick={() => handleAccept(notification)} />
+                        <img id='refuse' src="/src/assets/imgs/cancel1.png" alt="refuse" onClick={() => handleRefuse(notification)} />
                     </div>
                 ))
             }
@@ -333,18 +333,18 @@ function NavBarTwo () {
         <>
             <div className='NavBarTwo'>
                 <Link to='/' >
-                    <img className='logo-img1'  src="/src/imgs/mskota.png" alt="Mskota-logo" onClick={() => {if (start) setMyUrl(true)}} />
+                    <img className='logo-img1'  src="/src/assets/imgs/mskota.png" alt="Mskota-logo" onClick={() => {if (start) setMyUrl(true)}} />
                 </Link>
                 <div className='right-bar'>
                     <button  id='notificDrop'   >
-                        <img className='notification' src="/src/imgs/notification.png" alt="Notification" ref={NotificRef} onClick={handel}  />
+                        <img className='notification' src="/src/assets/imgs/notification.png" alt="Notification" ref={NotificRef} onClick={handel}  />
                         <div id='newNotificaion' style={!newNotif ? {display: 'none' } : {display: 'block'}}  ></div>
                     </button>
                     <div className='drop-notification'  ref={targetRef}  >
                         <ListNotification />
                     </div>
                     <button id='drop2'  > 
-                        <img className='user-img2' src={client.avatar || '/src/imgs/user-img.png'} alt="user-img" ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
+                        <img className='user-img2' src={client.avatar || '/src/assets/imgs/user-img.png'} alt="user-img" ref={MenuRef} onClick={() => {setIsMenuOpen(!isMenuOpen)}}  /*onBlur={() => {setIsMenuOpen(false)}} *//>
                     </button>
                 </div>
                 <ul className="drop-menu2" ref={dropRef} >
