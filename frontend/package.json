@@ -19,7 +19,7 @@
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@material/switch": "^14.0.0",
     "@mui/material": "^5.14.11",
-    "axios": "^1.5.0",
+    "axios": "^1.8.2",
     "babel-plugin-macros": "^3.1.0",
     "crypto-js": "^4.1.1",
     "material": "^0.5.3",
