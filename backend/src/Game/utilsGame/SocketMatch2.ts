@@ -1,4 +1,3 @@
-
 // import direct_ball from "./MatchPong/MatchBall";
 // import paddle_left from "./MatchPong/MatchPaddle1";
 // import paddle_right from "./MatchPong/MatchPaddle2";
@@ -38,7 +37,7 @@
 //         canvas_width = await cnv_x;
 //         canvas_height = await cnv_y;
 //         arr.push(token);
-        
+
 //         for (let i =0;i < arr.length;i++)
 //         {
 //             console.log(`|----------|${arr[i]}|`);
@@ -55,7 +54,7 @@
 //                // If a room already exists for this token, join it
 //                room = rooms[token];
 //                pass = true;
-              
+
 //            }
 //            else
 //            {
@@ -65,8 +64,7 @@
 //                rooms[token] = room;
 //                pass = false;
 //            }
-        
-           
+
 //         client_num++;
 //         players.set(socket.id, client_num);
 
@@ -84,7 +82,6 @@
 //             // console.log(`JOJO VALUE 22222 ${jojo}`)
 //             socket.emit('playerId', players.get(socket.id), room,jojo);
 //         }
-
 
 //         // socket.emit('playerId', players.get(socket.id), room,jojo);1
 //         console.log(`Player ${client_num} joined room ${room}`);
@@ -115,7 +112,7 @@
 //             if(pl1[room] && pl2[room])
 //             {
 
-//                 if (grade %2 != await 0) 
+//                 if (grade %2 != await 0)
 //                 {
 //                     if (move == "up")
 //                         pl1[room].move_up();
@@ -139,18 +136,17 @@
 
 //         // let arr = [...map.values()];
 //         // console.log(`------------|||||||>>${arr.includes(room)}`);
-        
 
 //         // console.log(`${ROOM_NUM}|im herrrre---|${room}---------|${flag_room} `);
 //         // if (ROOM_NUM <= room && flag_room % 2 == 0)
 //         // {
 //             // Check if there are two players in the room to start the game
-           
+
 //             startGameIfNeeded(room);
 //             // }
 //         }
 //         });
-        
+
 //     function startGameIfNeeded(room_num)
 //     {
 //         // console.log(`|----------|${count}|`);
@@ -207,14 +203,9 @@
 //         io.to(room_num).emit("game_state", gameState);
 //     }
 
-
 //     socket.on('disconnect', () => {
 //         console.log('A player disconnected');
 
-
-
-
-        
 //         // if (db[room].ball_x !== null && db[room].ball_y !== null) {
 //         //     console.log("STILL IN THE GAME");
 //         // } else {
@@ -226,4 +217,3 @@
 // }
 
 // export default io;
-

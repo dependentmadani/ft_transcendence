@@ -65,7 +65,7 @@
 //   }
 
 //   @SubscribeMessage('sortContacts')
-//   handleSortContacts(): void { 
+//   handleSortContacts(): void {
 //     // const { sender, rec, contact } = data;
 //     // Send the message to the recipient's socket
 //     // console.log('Sort', contact , ' for ', sender , ' and ', rec)
@@ -74,7 +74,7 @@
 //   }
 
 //   @SubscribeMessage('lockRoom')
-//   handleLockRoom(): void { 
+//   handleLockRoom(): void {
 //     // const { sender, rec, contact } = data;
 //     // Send the message to the recipient's socket
 //     // console.log('Sort', contact , ' for ', sender , ' and ', rec)
@@ -121,7 +121,6 @@
 //   //   this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
 //   // }
 
-
 //   handleDisconnect(client: Socket): void {
 //     const userIdToRemove = [...this.userSocketMap.entries()].find(([_, socketId]) => socketId === client.id)?.[0];
 
@@ -143,14 +142,18 @@
 
 // }
 
-
-
-
-
-
-import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
+import {
+  MessageBody,
+  SubscribeMessage,
+  WebSocketGateway,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { Message, Users, Room } from '@prisma/client';
+import {
+  Message,
+  Users,
+  Room,
+} from '@prisma/client';
 import { number } from 'joi';
 import * as cookie from 'cookie';
 import * as jwt from 'jsonwebtoken';
@@ -158,19 +161,26 @@ import { UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 // import { JwtService } from '@nestjs/jwt';
 
-@WebSocketGateway({ namespace: 'chat', cors: { origin: "http://localhost:5173" } })
+@WebSocketGateway({
+  namespace: 'chat',
+  cors: { origin: 'http://localhost:5173' },
+})
 export class ChatGateway {
   @WebSocketServer()
   server: Server;
 
   socketMap: Map<number, Socket[]>;
 
-  constructor( private prismaService: PrismaService ) {}
+  constructor(
+    private prismaService: PrismaService,
+  ) {}
 
-  private userSocketMap = new Map<number, string>();
+  private userSocketMap = new Map<
+    number,
+    string
+  >();
 
   handleConnection(client: Socket): void {
-
     client.on('someEvent', (userId: number) => {
       // console.log('Received data from client:', userId);
 
@@ -207,15 +217,18 @@ export class ChatGateway {
     // Send the message to the recipient's socket
     // console.log('Yooo', sender, rec, message)
     if (message.type === 'Chat') {
-      this.server.to(this.userSocketMap[sender]).emit('receiveMessage', message);
-      this.server.to(this.userSocketMap[rec]).emit('receiveMessage', message);
-    }
-    else if (message.type === 'Room')
+      this.server
+        .to(this.userSocketMap[sender])
+        .emit('receiveMessage', message);
+      this.server
+        .to(this.userSocketMap[rec])
+        .emit('receiveMessage', message);
+    } else if (message.type === 'Room')
       this.server.emit('receiveMessage', message);
   }
 
   @SubscribeMessage('sortContacts')
-  handleSortContacts(): void { 
+  handleSortContacts(): void {
     // const { sender, rec, contact } = data;
     // Send the message to the recipient's socket
     // console.log('Sort', contact , ' for ', sender , ' and ', rec)
@@ -224,7 +237,7 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('lockRoom')
-  handleLockRoom(): void { 
+  handleLockRoom(): void {
     // const { sender, rec, contact } = data;
     // Send the message to the recipient's socket
     // console.log('Sort', contact , ' for ', sender , ' and ', rec)
@@ -233,25 +246,36 @@ export class ChatGateway {
   }
 
   @SubscribeMessage('roomMessage')
-  handleRoomMessage(@MessageBody() data: any): void {
+  handleRoomMessage(
+    @MessageBody() data: any,
+  ): void {
     const { message } = data;
     this.server.emit('receiveMessage', message);
   }
 
   @SubscribeMessage('roomMembers')
-  handleRoomMembers(client: Socket, user: any): void {
+  handleRoomMembers(
+    client: Socket,
+    user: any,
+  ): void {
     // console.log('Dkhol a ',user);
     this.server.emit('addMember', user);
   }
 
   @SubscribeMessage('updateMemberRole')
-  handleUpdateRoomMembers(client: Socket, user: any): void {
+  handleUpdateRoomMembers(
+    client: Socket,
+    user: any,
+  ): void {
     // console.log('Dkhol a ',user);
     this.server.emit('updateRole', user);
   }
 
   @SubscribeMessage('removeRoomMembers')
-  handleRemoveRoomMembers(client: Socket, user: any): void {
+  handleRemoveRoomMembers(
+    client: Socket,
+    user: any,
+  ): void {
     // console.log('Khrroj 3liya ',user);
     this.server.emit('removeMembers', user);
   }
@@ -277,9 +301,12 @@ export class ChatGateway {
   //   this.server.to(this.userSocketMap[owner]).emit('leavingRoom', roomId, owner);
   // }
 
-
   handleDisconnect(client: Socket): void {
-    const userIdToRemove = [...this.userSocketMap.entries()].find(([_, socketId]) => socketId === client.id)?.[0];
+    const userIdToRemove = [
+      ...this.userSocketMap.entries(),
+    ].find(
+      ([_, socketId]) => socketId === client.id,
+    )?.[0];
 
     if (userIdToRemove) {
       this.userSocketMap.delete(userIdToRemove);
@@ -296,5 +323,4 @@ export class ChatGateway {
   //   // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
   //   this.server.to(this.userSocketMap[notif.receiverId]).emit('receiveNotification', notif);
   // }
-
 }

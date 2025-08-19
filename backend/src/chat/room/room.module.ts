@@ -16,8 +16,26 @@ import { AuthService } from 'src/auth/auth.service';
 import { AuthModule } from 'src/auth/auth.module';
 
 @Module({
-  imports: [ MulterModule.register({ dest: './uploads' }), InvitationsModule, RoomUsersModule, PrismaModule, JwtModule.register({}), AuthModule ],
-  controllers: [RoomController, RoomUsersController],
-  providers: [RoomService, ChatGateway, RoomUsersService, ChatService, RoomService, UsersService, AuthService],
+  imports: [
+    MulterModule.register({ dest: './uploads' }),
+    InvitationsModule,
+    RoomUsersModule,
+    PrismaModule,
+    JwtModule.register({}),
+    AuthModule,
+  ],
+  controllers: [
+    RoomController,
+    RoomUsersController,
+  ],
+  providers: [
+    RoomService,
+    ChatGateway,
+    RoomUsersService,
+    ChatService,
+    RoomService,
+    UsersService,
+    AuthService,
+  ],
 })
 export class RoomModule {}

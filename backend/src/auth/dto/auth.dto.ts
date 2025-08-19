@@ -2,7 +2,7 @@ import {
   IsEmail,
   IsNotEmpty,
   IsString,
-  Length
+  Length,
 } from 'class-validator';
 
 export class AuthDto {

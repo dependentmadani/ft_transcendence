@@ -14,13 +14,16 @@ import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ConfigService } from '@nestjs/config';
 import { Tokens } from './types';
-import { Users, userStatus } from '@prisma/client';
+import {
+  Users,
+  userStatus,
+} from '@prisma/client';
 import * as speakeasy from 'speakeasy';
 import * as qrcode from 'qrcode';
 
 @Injectable({})
 export class AuthService {
-  private aiUserCreated : boolean;
+  private aiUserCreated: boolean;
   constructor(
     private prisma: PrismaService,
     private jwt: JwtService,
@@ -44,9 +47,11 @@ export class AuthService {
           data: {
             username: dto.username,
             email: dto.email,
-            password: await this.hashData(dto.password),
+            password: await this.hashData(
+              dto.password,
+            ),
             avatar: avatar,
-            userStatus: "ONLINE"
+            userStatus: 'ONLINE',
           },
         });
       //the password need to be deleted so it cannot be reached by interder
@@ -84,38 +89,43 @@ export class AuthService {
       // console.log('nadi canadi', dto)
       try {
         if (this.aiUserCreated === false) {
-          const user = await this.prisma.users.create({
-            data: {
-              username: 'akinator',
-              email: 'ai@gmail.com',
-              isActive: true,
-              avatar: '/bot.jpg',
-            }
-          })
+          const user =
+            await this.prisma.users.create({
+              data: {
+                username: 'akinator',
+                email: 'ai@gmail.com',
+                isActive: true,
+                avatar: '/bot.jpg',
+              },
+            });
           await this.prisma.game.create({
             data: {
               userId: user.id,
-            }
+            },
           });
           this.aiUserCreated = true;
         }
       } catch {
         console.log('bot already created');
       }
-      const usernameTaken = await this.findUserByUsername(dto.username, dto.email);
+      const usernameTaken =
+        await this.findUserByUsername(
+          dto.username,
+          dto.email,
+        );
       if (usernameTaken) {
         const users =
-        await this.prisma.users.create({
-          data: {
-            email: dto.email,
-            avatar: avatar,
-            userStatus: "ONLINE"
-          },
-        });
+          await this.prisma.users.create({
+            data: {
+              email: dto.email,
+              avatar: avatar,
+              userStatus: 'ONLINE',
+            },
+          });
         await this.prisma.game.create({
           data: {
             userId: users.id,
-          }
+          },
         });
         const token = await this.signToken(
           users.id,
@@ -133,26 +143,24 @@ export class AuthService {
             username: dto.username,
             email: dto.email,
             avatar: avatar,
-            userStatus: "ONLINE"
+            userStatus: 'ONLINE',
           },
         });
       await this.prisma.game.create({
-          data: {
-            userId: users.id,
-          }
-        });
-        const token = await this.signToken(
-          users.id,
-          users.email,
-        );
-        await this.updateRtHashed(
-          users.id,
-          token.refresh_token,
-        );
-        return token;
+        data: {
+          userId: users.id,
+        },
+      });
+      const token = await this.signToken(
+        users.id,
+        users.email,
+      );
+      await this.updateRtHashed(
+        users.id,
+        token.refresh_token,
+      );
+      return token;
       //the password need to be deleted so it cannot be reached by interder
-      
-
     } catch (error) {
       if (
         error instanceof
@@ -175,7 +183,7 @@ export class AuthService {
       await this.prisma.users.findUnique({
         where: {
           email: dto.email,
-          username: dto?.username
+          username: dto?.username,
         },
       });
 
@@ -199,9 +207,9 @@ export class AuthService {
       where: {
         id: user.id,
       },
-       data: {
-        userStatus: "ONLINE",
-       }
+      data: {
+        userStatus: 'ONLINE',
+      },
     });
 
     const token = await this.signToken(
@@ -225,7 +233,7 @@ export class AuthService {
         },
       },
       data: {
-        userStatus: "OFFLINE",
+        userStatus: 'OFFLINE',
         hashRt: null,
       },
     });
@@ -238,43 +246,45 @@ export class AuthService {
     try {
       try {
         if (this.aiUserCreated === false) {
-          const user = await this.prisma.users.create({
-            data: {
-              username: 'akinator',
-              email: 'ai@gmail.com',
-              isActive: true,
-              avatar: '/bot.jpg',
-            }
-          })
+          const user =
+            await this.prisma.users.create({
+              data: {
+                username: 'akinator',
+                email: 'ai@gmail.com',
+                isActive: true,
+                avatar: '/bot.jpg',
+              },
+            });
           await this.prisma.game.create({
             data: {
               userId: user.id,
-            }
+            },
           });
           this.aiUserCreated = true;
         }
       } catch {
         console.log('the bot is already created');
       }
-      const usernameAvailable = await this.prisma.users.findUnique({
-        where: {
-          username: dto.username,
-        }
-      });
+      const usernameAvailable =
+        await this.prisma.users.findUnique({
+          where: {
+            username: dto.username,
+          },
+        });
       if (usernameAvailable) {
         const users =
           await this.prisma.users.create({
             data: {
               email: dto.email,
               avatar: profile.avatar,
-              userStatus: "ONLINE",
+              userStatus: 'ONLINE',
             },
           });
         await this.prisma.game.create({
-            data: {
-              userId: users.id,
-            }
-          });
+          data: {
+            userId: users.id,
+          },
+        });
         //the password need to be deleted so it cannot be reached by interder
         const token = await this.signToken(
           users.id,
@@ -293,14 +303,14 @@ export class AuthService {
             username: dto.username,
             email: dto.email,
             avatar: profile.avatar,
-            userStatus: "ONLINE",
+            userStatus: 'ONLINE',
           },
         });
       await this.prisma.game.create({
-          data: {
-            userId: users.id,
-          }
-        });
+        data: {
+          userId: users.id,
+        },
+      });
       //the password need to be deleted so it cannot be reached by interder
       const token = await this.signToken(
         users.id,
@@ -344,8 +354,8 @@ export class AuthService {
         id: user.id,
       },
       data: {
-        userStatus: "ONLINE",
-      }
+        userStatus: 'ONLINE',
+      },
     });
     delete user.password;
     const token = await this.signToken(
@@ -383,7 +393,7 @@ export class AuthService {
     const user =
       await this.prisma.users.findUnique({
         where: {
-          email: userDto.email
+          email: userDto.email,
         },
       });
 
@@ -391,9 +401,9 @@ export class AuthService {
       where: {
         id: user.id,
       },
-       data: {
-        userStatus: "ONLINE",
-       }
+      data: {
+        userStatus: 'ONLINE',
+      },
     });
 
     const token = await this.signToken(
@@ -511,8 +521,7 @@ export class AuthService {
       encoding: 'base32',
       token: body.code,
     });
-    if (verified)
-      return true;
+    if (verified) return true;
 
     return false;
   }
@@ -551,7 +560,7 @@ export class AuthService {
   async updateUserState(
     userId: number,
     state: boolean,
-    status: userStatus
+    status: userStatus,
   ) {
     const user: Users =
       await this.prisma.users.update({
@@ -643,7 +652,7 @@ export class AuthService {
         include: {
           friends: true,
           blocked: true,
-        }
+        },
       });
     return user;
   }

@@ -24,17 +24,16 @@
 
 // console.log(`HELLO FROM SCRTIPT 4444444444444` );
 // io.on("connection", connect_client);
- 
+
 // function connect_client(socket)
 // {
 //     let interval = new Array();
-    
+
 //     socket.on ("canvas",async (cnv_x, cnv_y)=>
 //     {
 //         canvas_width =   await cnv_x;
 //         canvas_height =  await cnv_y;
 //     });
-
 
 //     socket.on("youcan start", async (pp,rr) =>
 //     {
@@ -50,23 +49,23 @@
 //         {
 //             pl1[room] = await new paddle_left ;
 //             pl2[room] = await new paddle_right;
-            
+
 //             db[room] = await new direct_ball;
 //             prev_room = await room;
 //         }
 //         // console.log(`canvas_width ${canvas_width} canvas_height ${canvas_height}`);
 //         pl1[room].canvas_height = await canvas_height;
-//         pl2[room].canvas_height = await canvas_height; 
+//         pl2[room].canvas_height = await canvas_height;
 //         pl1[room].paddle_y =  await canvas_height/2;
 //         pl2[room].paddle_y = await canvas_height/2;
 //         pl1[room].height_paddle = await canvas_height*20/100;
 //         pl2[room].height_paddle = await canvas_height*20/100;
-            
+
 //         db[room].cnv_w = await canvas_width;
 //         db[room].cnv_h = await canvas_height;
 //         db[room].ball_x = await canvas_width/2;
 //         db[room].ball_y = await canvas_height/2;
-        
+
 //         console.log(`player number ${players.get(socket.id)}`);
 //         socket.on("move_paddle_right", (move, num_player,data) =>
 //         {
@@ -101,9 +100,9 @@
 //         // startGameIfNeeded(room);
 //         if(start_game == 2 )
 //         {
-//             for(let room_num = 1; room_num <= await ROOM_NUM;room_num++)   
+//             for(let room_num = 1; room_num <= await ROOM_NUM;room_num++)
 //             {
-//                 interval[room_num] = await setInterval(()=>game(room_num),1000/60);    
+//                 interval[room_num] = await setInterval(()=>game(room_num),1000/60);
 //             }
 //             start_game = 0;
 //         }
@@ -119,7 +118,7 @@
 //     //         interval[room_num] = setInterval(() => game(room_num), 1000 / 60);
 //     //     // }
 //     // }
-    
+
 //     function game(room_num:number)
 //     {
 //         db[room_num].p_left = pl1[room_num].paddle_y;
@@ -133,7 +132,7 @@
 //             sound :{sound_paddle: db[room_num].sound_padd, sound_wall: db[room_num].sound_wall},
 //         };
 
-//         db[room_num].mouve_ball(); 
+//         db[room_num].mouve_ball();
 //         if (db[room_num].reset_game_flag)
 //         {
 //             db[room_num].initial_direction();
@@ -177,7 +176,7 @@
 //         //     io.to(room).emit("player1 disconect", "LOSE");
 //         // else
 //         //     io.to(room).emit("player2 disconect", "WIN");
-           
+
 //                 socket.leave(room);
 //         // if (db[room].ball_x !== null && db[room].ball_y !== null)
 //         // {
@@ -189,11 +188,8 @@
 //         //     db[room].reset_game();
 //         // }
 //         players.delete(socket.id);
-        
-        
+
 //     });
 // }
- 
-
 
 // export default io;

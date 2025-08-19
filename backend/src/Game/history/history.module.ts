@@ -7,8 +7,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { GameService } from '../game.service';
 
 @Module({
-  imports: [PassportModule, JwtModule.register({})],
-  providers: [HistoryService, PrismaService, GameService],
-  controllers: [HistoryController]
+  imports: [
+    PassportModule,
+    JwtModule.register({}),
+  ],
+  providers: [
+    HistoryService,
+    PrismaService,
+    GameService,
+  ],
+  controllers: [HistoryController],
 })
 export class HistoryModule {}

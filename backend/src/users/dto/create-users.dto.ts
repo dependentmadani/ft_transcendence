@@ -3,7 +3,7 @@ import {
   IsInt,
   IsDate,
   ValidateIf,
-  Length
+  Length,
 } from 'class-validator';
 
 export class users {

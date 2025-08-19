@@ -22,13 +22,16 @@ import { ConfigService } from '@nestjs/config';
 import { GoogleGuard, RtGuard } from 'src/guards';
 import { GetUser, Public } from 'src/decorator';
 import { Users } from '@prisma/client';
-import { ApiBody, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiResponse,
+} from '@nestjs/swagger';
 
 // TODO: add this installation for password incryption in the laptop: $ npm install -g node-gyp
 // $ CXX=g++-12 npm install argon2
 
 const oneDay = 1000 * 60 * 60 * 24;
-const oneWeek= 1000 * 60 * 60 * 24 * 7;
+const oneWeek = 1000 * 60 * 60 * 24 * 7;
 
 @Controller('auth')
 export class AuthController {
@@ -50,10 +53,12 @@ export class AuthController {
   async signedUp(@Req() req: Request) {
     const user = req.user;
     try {
-      const userInfo = await this.authService.returnUser(user['email']);
+      const userInfo =
+        await this.authService.returnUser(
+          user['email'],
+        );
       return userInfo.signedUp;
-
-    } catch(err) {
+    } catch (err) {
       console.log('the user is not available');
       return false;
     }
@@ -67,7 +72,7 @@ export class AuthController {
   ) {
     const user = req.user;
     if (!user) {
-      return "";
+      return '';
     }
     const userInfo =
       await this.authService.returnUser(
@@ -166,7 +171,7 @@ export class AuthController {
     await this.authService.updateUserState(
       userNew.id,
       true,
-      'ONLINE'
+      'ONLINE',
     );
     res.redirect(
       `http://${process.env.VITE_ADDRESS}:5173/signup`,
@@ -195,13 +200,13 @@ export class AuthController {
       await this.authService.returnUser(
         req.user['email'],
       );
-      if (userNew) {
-        await this.authService.updateUserState(
-          userNew.id,
-          false,
-          'OFFLINE'
-        );
-      }
+    if (userNew) {
+      await this.authService.updateUserState(
+        userNew.id,
+        false,
+        'OFFLINE',
+      );
+    }
 
     res.send('logged out');
   }
@@ -221,11 +226,13 @@ export class AuthController {
 
   @Post('2fa/setup')
   @ApiBody({
-    description: 'An email in the body is required'
+    description:
+      'An email in the body is required',
   })
   @ApiResponse({
     status: 201,
-    description: 'The qrcode is returned and should be scanned to be verified in 2fa/verify request.'
+    description:
+      'The qrcode is returned and should be scanned to be verified in 2fa/verify request.',
   })
   @HttpCode(HttpStatus.CREATED)
   async enable2fa(
@@ -234,18 +241,20 @@ export class AuthController {
   ) {
     const user: Users =
       await this.authService.returnUser(
-        req.user['email']
-    );
+        req.user['email'],
+      );
     return this.authService.enable2fa(body, user);
   }
 
   @Post('2fa/verify')
   @ApiBody({
-    description: 'A code as a string type is required in the body'
+    description:
+      'A code as a string type is required in the body',
   })
   @ApiResponse({
     status: 200,
-    description: 'The 2fa is enabled, the qrcode is returned and should be scanned to be verified.'
+    description:
+      'The 2fa is enabled, the qrcode is returned and should be scanned to be verified.',
   })
   @HttpCode(HttpStatus.OK)
   async verify2fa(
@@ -256,12 +265,15 @@ export class AuthController {
       await this.authService.returnUser(
         req.user['email'],
       );
-    const state = await this.authService.verify2fa(body, user);
-    if ( state ) {
+    const state =
+      await this.authService.verify2fa(
+        body,
+        user,
+      );
+    if (state) {
       await this.authService.isEnable2fa(user);
       return true;
-    }
-    else {
+    } else {
       return false;
     }
     throw new UnauthorizedException(
@@ -299,8 +311,8 @@ export class AuthController {
   ): Promise<void> {
     const user = req.user;
     const [tokens, state] =
-    await this.authService.fortyTwo(
-      req.user['users'],
+      await this.authService.fortyTwo(
+        req.user['users'],
       );
     // console.log('user info', tokens);
     res.cookie('token', tokens.access_token, {
@@ -324,7 +336,7 @@ export class AuthController {
     await this.authService.updateUserState(
       userNew.id,
       true,
-      'ONLINE'
+      'ONLINE',
     );
     res.redirect(
       `http://${process.env.VITE_ADDRESS}:5173/signup`,

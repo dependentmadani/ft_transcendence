@@ -2,7 +2,6 @@
 // import paddle_left from "./ClassicPong/ClassicPaddle1";
 // import paddle_right from "./ClassicPong/ClassicPaddle2";
 
-
 // const io = require('socket.io')(7000, {
 //     cors: {
 //         origin: ["http://10.14.10.5:5173/"],
@@ -21,7 +20,7 @@
 // let flag_room = 0;
 // let prev_room = 0;
 // // let room = 0;
-// let rooms = {}; 
+// let rooms = {};
 // let arr = new Array();
 // let jojo = 0;
 // let map1 = new Map();
@@ -38,7 +37,7 @@
 //         canvas_width = await cnv_x;
 //         canvas_height = await cnv_y;
 //         arr.push(token);
-        
+
 //         for (let i =0;i < arr.length;i++)
 //         {
 //             console.log(`|----------|${arr[i]}|`);
@@ -51,10 +50,10 @@
 //        if(count <= 2)
 //        {
 //            if (rooms[token])
-//            { 
+//            {
 //                room = rooms[token];
 //                pass = true;
-              
+
 //            }
 //            else
 //            {
@@ -63,8 +62,7 @@
 //                rooms[token] = room;
 //                pass = false;
 //            }
-        
-           
+
 //         client_num++;
 //         players.set(socket.id, client_num);
 
@@ -82,7 +80,6 @@
 //             console.log(`JOJO VALUE 22222 ${jojo}`)
 //             socket.emit('playerId', players.get(socket.id), room,jojo);
 //         }
-
 
 //         // socket.emit('playerId', players.get(socket.id), room,jojo);1
 //         console.log(`Player ${client_num} joined room ${room}`);
@@ -109,7 +106,7 @@
 //         socket.on("move_paddle_right", async(move, num_player, data, grade) => {
 
 //             room = await data;
-//             if (grade %2 != 0) 
+//             if (grade %2 != 0)
 //             {
 //                 if (move == "up")
 //                     pl1[room].move_up();
@@ -133,18 +130,17 @@
 
 //         // let arr = [...map.values()];
 //         // console.log(`------------|||||||>>${arr.includes(room)}`);
-        
 
 //         // console.log(`${ROOM_NUM}|im herrrre---|${room}---------|${flag_room} `);
 //         // if (ROOM_NUM <= room && flag_room % 2 == 0)
 //         // {
 //             // Check if there are two players in the room to start the game
-           
+
 //             startGameIfNeeded(room);
 //             // }
 //         }
 //         });
-        
+
 //     function startGameIfNeeded(room_num)
 //     {
 //         // console.log(`|----------|${count}|`);
@@ -201,7 +197,6 @@
 //         io.to(room_num).emit("game_state", gameState);
 //     }
 
-
 //     socket.on('disconnect', () => {
 //         console.log('A player disconnected');
 //         if (db[room].ball_x !== null && db[room].ball_y !== null) {
@@ -215,5 +210,3 @@
 // }
 
 // export default io;
-
-
