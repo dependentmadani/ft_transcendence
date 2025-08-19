@@ -10,7 +10,7 @@ function compare(actual, expected, rules, path, strict) {
   try {
     _compare(actual, expected, rules, path);
     if (strict) {
-      _compare(expected, actual, rules, path);
+      _compare(expected, actual, rules, path, true);
     }
   } catch (error) {
     return {

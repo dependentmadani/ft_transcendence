@@ -52,6 +52,7 @@ export interface Config {
   observeMutations: boolean;
   keepOriginalSource: boolean;
   measurePerformance: boolean;
+  mutateApproach: "async" | "sync";
   showMissingIcons: boolean;
 }
 export interface AbstractElement {
@@ -120,6 +121,6 @@ export interface DOM {
 }
 type IconDefinitionOrPack = IconDefinition | IconPack;
 export interface Library {
-  add(...definitions: IconDefinitionOrPack[]): void;
+  add(...definitions: Array<IconDefinitionOrPack | IconDefinitionOrPack[]>): void;
   reset(): void;
 }
