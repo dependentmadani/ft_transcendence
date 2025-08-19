@@ -1,4 +1,9 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import {
+  MiddlewareConsumer,
+  Module,
+  NestModule,
+  RequestMethod,
+} from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
@@ -15,8 +20,8 @@ import { RoomModule } from './chat/room/room.module';
 import { InvitationsModule } from './chat/room/invitations/invitations.module';
 import { RoomUsersModule } from './chat/room/room-users/room-users.module';
 import { NotificationsModule } from './notifications/notifications.module';
-import { HistoryModule } from './Game/history/history.module'
-import { GameModule } from './Game/game.module'
+import { HistoryModule } from './Game/history/history.module';
+import { GameModule } from './Game/game.module';
 
 ///
 // import "./SocketGame/SocketClassic1"
@@ -27,10 +32,10 @@ import { GameModule } from './Game/game.module'
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }) ,
+    ConfigModule.forRoot({ isGlobal: true }),
     PassportModule,
     HomeModule,
-    AuthModule ,
+    AuthModule,
     UsersModule,
     ChatModule,
     MessageModule,
@@ -42,15 +47,15 @@ import { GameModule } from './Game/game.module'
     GameModule,
     HistoryModule,
   ],
-  providers: [{
-    provide: APP_GUARD,
-    useClass: AtGuard,
-  }],
-  controllers: [HomeController]
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard,
+    },
+  ],
+  controllers: [HomeController],
 })
-export class AppModule {
-  
-}
+export class AppModule {}
 // export class AppModule implements NestModule{
 //   configure(consumer: MiddlewareConsumer) {
 //     consumer

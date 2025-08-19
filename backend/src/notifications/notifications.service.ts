@@ -1,51 +1,71 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { NotificationBody, NotificationDto } from './dto/create-notification.dto';
+import {
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
+import {
+  NotificationBody,
+  NotificationDto,
+} from './dto/create-notification.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Users, Notifications } from '@prisma/client';
+import {
+  Users,
+  Notifications,
+} from '@prisma/client';
 
 @Injectable()
 export class NotificationsService {
   constructor(private prisma: PrismaService) {}
 
-
-  async getNotifications(): Promise<Notifications[]> {
+  async getNotifications(): Promise<
+    Notifications[]
+  > {
     try {
-      return this.prisma.notifications.findMany()
-    }
-    catch {
-        throw new UnauthorizedException("Couldn't find any Notification")
+      return this.prisma.notifications.findMany();
+    } catch {
+      throw new UnauthorizedException(
+        "Couldn't find any Notification",
+      );
     }
   }
 
-  
-  async isNotifFound(senderId: number, receiverId: number): Promise<boolean> {
+  async isNotifFound(
+    senderId: number,
+    receiverId: number,
+  ): Promise<boolean> {
     try {
-      const res = await this.prisma.notifications.findMany({
+      const res =
+        await this.prisma.notifications.findMany({
+          where: {
+            AND: [
+              { senderId: senderId },
+              { receiverId: receiverId },
+            ],
+          },
+        });
+      if (res) return false;
+      return true;
+    } catch {
+      return true;
+    }
+  }
+
+  async createNotification(
+    type: any,
+    read: boolean,
+    receiverId: number,
+    senderId: number,
+    mode: string,
+  ): Promise<Notifications> {
+    const receiverInfo =
+      await this.prisma.users.findUnique({
         where: {
-          AND: [
-            { senderId: senderId },
-            { receiverId: receiverId },
-          ]
-        }
-      })
-      if (res)
-        return false
-      return true
-    }
-    catch {
-      return true
-    }
-  }
-
-  async createNotification(type: any, read: boolean, receiverId: number, senderId: number, mode: string): Promise<Notifications> {
-    
-    const receiverInfo = await this.prisma.users.findUnique({
-      where: {
-        id: receiverId
-      }
-    })
+          id: receiverId,
+        },
+      });
     if (senderId == receiverInfo.id) {
-      throw new UnauthorizedException("Cannot send add friend request to yourself!");
+      throw new UnauthorizedException(
+        'Cannot send add friend request to yourself!',
+      );
     }
     // const alreadyFriend = await this.prisma.users.findFirst({
     //   where: {
@@ -61,30 +81,32 @@ export class NotificationsService {
     //   throw new UnauthorizedException("already friends!");
     // }
 
-    const createNotif = await this.prisma.notifications.create({
-      data: {
-        type: type,
-        read: read,
-        receiverId: receiverId,
-        senderId: senderId,
-        mode: mode,
-      },
-    });
-    const updatedUser = await this.prisma.users.update({
-      where: {
-        id: receiverId,
-      },
-      data: {
-        recNotification: {
-          connect: {
-            id: createNotif.id,
-          }
-        }
-      },
-      include: {
-        recNotification: true,
-      }
-    });
+    const createNotif =
+      await this.prisma.notifications.create({
+        data: {
+          type: type,
+          read: read,
+          receiverId: receiverId,
+          senderId: senderId,
+          mode: mode,
+        },
+      });
+    const updatedUser =
+      await this.prisma.users.update({
+        where: {
+          id: receiverId,
+        },
+        data: {
+          recNotification: {
+            connect: {
+              id: createNotif.id,
+            },
+          },
+        },
+        include: {
+          recNotification: true,
+        },
+      });
     await this.prisma.users.update({
       where: {
         id: senderId,
@@ -93,9 +115,9 @@ export class NotificationsService {
         senNotification: {
           connect: {
             id: createNotif.id,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     await this.prisma.users.update({
       where: {
@@ -105,47 +127,59 @@ export class NotificationsService {
         pendingFriendReq: {
           connect: {
             id: senderId,
-          }
-        }
+          },
+        },
       },
       include: {
         friends: true,
-      }
-    });
-    return await this.prisma.notifications.findUnique({
-      where: {
-        id: createNotif.id
       },
-      include: {
-        receiverUser: true,
-      }
     });
+    return await this.prisma.notifications.findUnique(
+      {
+        where: {
+          id: createNotif.id,
+        },
+        include: {
+          receiverUser: true,
+        },
+      },
+    );
   }
 
-  async updateNotification(id: number): Promise<Notifications> {
+  async updateNotification(
+    id: number,
+  ): Promise<Notifications> {
     try {
       // console.log('IIIIOOOOOIII')
-      const notif = await this.prisma.notifications.findUnique({
-        where: {
-          id: id
-        }
-      });
+      const notif =
+        await this.prisma.notifications.findUnique(
+          {
+            where: {
+              id: id,
+            },
+          },
+        );
 
       if (!notif) {
-        throw new UnauthorizedException(`Notification with id ${id} not found!`);
+        throw new UnauthorizedException(
+          `Notification with id ${id} not found!`,
+        );
       }
 
-      return await this.prisma.notifications.update({
-        where: {
-          id: id,
+      return await this.prisma.notifications.update(
+        {
+          where: {
+            id: id,
+          },
+          data: {
+            read: true,
+          },
         },
-        data: {
-          read: true
-        }
-      });
-    }
-    catch {
-      throw new UnauthorizedException(`Something went Wrong!`);
+      );
+    } catch {
+      throw new UnauthorizedException(
+        `Something went Wrong!`,
+      );
     }
   }
 
@@ -252,74 +286,89 @@ export class NotificationsService {
   // }
 
   async deleteNotification(id: number) {
-    const notif = await this.prisma.notifications.findUnique({
-      where: {
-          id: id
-      }
-    })
+    const notif =
+      await this.prisma.notifications.findUnique({
+        where: {
+          id: id,
+        },
+      });
     if (notif) {
-        return await this.prisma.notifications.delete({
-            where: {
-                id: id
-            }
-        })
-    }
-    else
-        return `Couldn't find chat with id ${id}`
+      return await this.prisma.notifications.delete(
+        {
+          where: {
+            id: id,
+          },
+        },
+      );
+    } else
+      return `Couldn't find chat with id ${id}`;
   }
 
   ///////////////////////////////////
 
-  async create(createNotificationDto: NotificationDto, userId: number, socketId: string) {
+  async create(
+    createNotificationDto: NotificationDto,
+    userId: number,
+    socketId: string,
+  ) {
     // console.log('the user id is:', createNotificationDto);
-    const receiverInfo = await this.prisma.users.findUnique({
-      where: {
-        username: createNotificationDto.receiverName
-      }
-    })
+    const receiverInfo =
+      await this.prisma.users.findUnique({
+        where: {
+          username:
+            createNotificationDto.receiverName,
+        },
+      });
     if (userId == receiverInfo.id) {
-      throw new UnauthorizedException("Cannot send add friend request to yourself!");
+      throw new UnauthorizedException(
+        'Cannot send add friend request to yourself!',
+      );
     }
-    const alreadyFriend = await this.prisma.users.findFirst({
-      where: {
-        id: userId,
-        friends: {
-          some: {
-            id: receiverInfo.id,
-          }
-        }
-      }
-    });
+    const alreadyFriend =
+      await this.prisma.users.findFirst({
+        where: {
+          id: userId,
+          friends: {
+            some: {
+              id: receiverInfo.id,
+            },
+          },
+        },
+      });
     if (alreadyFriend) {
-      throw new UnauthorizedException("already friends!");
+      throw new UnauthorizedException(
+        'already friends!',
+      );
     }
-    const createNotif = await this.prisma.notifications.create({
-      data: {
-        // title: createNotificationDto.title,
-        type: createNotificationDto.type,
-        read: createNotificationDto.read,
-        // description: createNotificationDto.description,
-        // icon: createNotificationDto.icon,
-        // socketId: socketId,
-        receiverId: receiverInfo.id,
-        senderId: userId
-      },
-    });
-    const updatedUser = await this.prisma.users.update({
-      where: {
-        id: receiverInfo.id,
-      },
-      data: {
-        recNotification: {
-          connect: {
-            id: createNotif.id,
-          }
-        }
-      },
-      include: {
-        recNotification: true,
-      }
-    });
+    const createNotif =
+      await this.prisma.notifications.create({
+        data: {
+          // title: createNotificationDto.title,
+          type: createNotificationDto.type,
+          read: createNotificationDto.read,
+          // description: createNotificationDto.description,
+          // icon: createNotificationDto.icon,
+          // socketId: socketId,
+          receiverId: receiverInfo.id,
+          senderId: userId,
+        },
+      });
+    const updatedUser =
+      await this.prisma.users.update({
+        where: {
+          id: receiverInfo.id,
+        },
+        data: {
+          recNotification: {
+            connect: {
+              id: createNotif.id,
+            },
+          },
+        },
+        include: {
+          recNotification: true,
+        },
+      });
     await this.prisma.users.update({
       where: {
         id: userId,
@@ -328,9 +377,9 @@ export class NotificationsService {
         senNotification: {
           connect: {
             id: createNotif.id,
-          }
-        }
-      }
+          },
+        },
+      },
     });
     await this.prisma.users.update({
       where: {
@@ -340,86 +389,101 @@ export class NotificationsService {
         pendingFriendReq: {
           connect: {
             id: userId,
-          }
-        }
+          },
+        },
       },
       include: {
         friends: true,
-      }
-    });
-    return await this.prisma.notifications.findUnique({
-      where: {
-        id: createNotif.id
       },
-      include: {
-        receiverUser: true,
-      }
     });
+    return await this.prisma.notifications.findUnique(
+      {
+        where: {
+          id: createNotif.id,
+        },
+        include: {
+          receiverUser: true,
+        },
+      },
+    );
   }
 
-
-
-  async findAll(userId:number) {
-    
-    const allNotifs = await this.prisma.notifications.findMany({
-      where: {
-        receiverId: userId,
-      }
-    });
+  async findAll(userId: number) {
+    const allNotifs =
+      await this.prisma.notifications.findMany({
+        where: {
+          receiverId: userId,
+        },
+      });
     return allNotifs;
   }
 
   async viewNotification(userId: number) {
-    const notif = await this.prisma.notifications.findFirst({
-      where: {
-        receiverId: userId,
-      }
-    });
-    const updateNotif = await this.prisma.notifications.update({
-      where: {
-        id: notif.id,
-      },
-      data: {
-        read: true,
-      }
-    });
+    const notif =
+      await this.prisma.notifications.findFirst({
+        where: {
+          receiverId: userId,
+        },
+      });
+    const updateNotif =
+      await this.prisma.notifications.update({
+        where: {
+          id: notif.id,
+        },
+        data: {
+          read: true,
+        },
+      });
     return updateNotif;
   }
 
-  async acceptFriend(receiverId: number, senderId: number, notifId: number) {
-    const friend = await this.prisma.users.findUnique({
-      where: {
-        id: receiverId,
-      }
-    });
+  async acceptFriend(
+    receiverId: number,
+    senderId: number,
+    notifId: number,
+  ) {
+    const friend =
+      await this.prisma.users.findUnique({
+        where: {
+          id: receiverId,
+        },
+      });
     if (friend.id === senderId) {
-      throw new UnauthorizedException('should not be the same user!');
+      throw new UnauthorizedException(
+        'should not be the same user!',
+      );
     }
-    const alreadyFriend = await this.prisma.users.findFirst({
-      where: {
-        id: senderId,
-        friends: {
-          some: {
-            id: friend.id
-          }
-        }
-      }
-    });
+    const alreadyFriend =
+      await this.prisma.users.findFirst({
+        where: {
+          id: senderId,
+          friends: {
+            some: {
+              id: friend.id,
+            },
+          },
+        },
+      });
     if (alreadyFriend) {
-      throw new UnauthorizedException("already friends!");
+      throw new UnauthorizedException(
+        'already friends!',
+      );
     }
-    const pendingFriend = await this.prisma.users.findFirst({
-      where: {
-        id: senderId,
-        pendingFriendReq: {
-          some: {
-            id: friend.id,
-          }
-        }
-      },
-    });
+    const pendingFriend =
+      await this.prisma.users.findFirst({
+        where: {
+          id: senderId,
+          pendingFriendReq: {
+            some: {
+              id: friend.id,
+            },
+          },
+        },
+      });
     if (!pendingFriend) {
-      throw new UnauthorizedException("No friend request!");
+      throw new UnauthorizedException(
+        'No friend request!',
+      );
     }
     //add users to friend lists
     const user = await this.prisma.users.update({
@@ -429,13 +493,13 @@ export class NotificationsService {
       data: {
         friends: {
           connect: {
-            id: friend.id
-          }
-        }
+            id: friend.id,
+          },
+        },
       },
       include: {
         friends: true,
-      }
+      },
     });
     await this.prisma.users.update({
       where: {
@@ -444,14 +508,14 @@ export class NotificationsService {
       data: {
         friends: {
           connect: {
-            id: senderId
-          }
-        }
+            id: senderId,
+          },
+        },
       },
       include: {
         friends: false,
         _count: false,
-      }
+      },
     });
     await this.prisma.users.update({
       where: {
@@ -461,68 +525,81 @@ export class NotificationsService {
         pendingFriendReq: {
           disconnect: {
             id: senderId,
-          }
+          },
         },
         pendingFriendReqOf: {
           disconnect: {
             id: senderId,
-          }
-        }
-      }
-    });
-    let notif = await this.prisma.notifications.findFirst({
-      where: {
-        id: notifId,
+          },
+        },
       },
-      include: {
-        receiverUser: true,
-      }
     });
+    const notif =
+      await this.prisma.notifications.findFirst({
+        where: {
+          id: notifId,
+        },
+        include: {
+          receiverUser: true,
+        },
+      });
     await this.prisma.notifications.deleteMany({
       where: {
         senderId: senderId,
         receiverId: receiverId,
-      }
+      },
     });
     return notif;
   }
 
-  
-  async refureFriend(senderId: number, receiverId: number, notifId: number) {
-    const friend = await this.prisma.users.findUnique({
-      where: {
-        id: receiverId,
-      }
-    });
+  async refureFriend(
+    senderId: number,
+    receiverId: number,
+    notifId: number,
+  ) {
+    const friend =
+      await this.prisma.users.findUnique({
+        where: {
+          id: receiverId,
+        },
+      });
 
     if (friend.id === senderId) {
-      throw new UnauthorizedException('should not be the same user!');
+      throw new UnauthorizedException(
+        'should not be the same user!',
+      );
     }
-    const alreadyFriend = await this.prisma.users.findFirst({
-      where: {
-        id: senderId,
-        friends: {
-          some: {
-            id: friend.id
-          }
-        }
-      }
-    });
+    const alreadyFriend =
+      await this.prisma.users.findFirst({
+        where: {
+          id: senderId,
+          friends: {
+            some: {
+              id: friend.id,
+            },
+          },
+        },
+      });
     if (alreadyFriend) {
-      throw new UnauthorizedException("already friends!");
+      throw new UnauthorizedException(
+        'already friends!',
+      );
     }
-    const pendingFriend = await this.prisma.users.findUnique({
-      where: {
-        id: friend.id,
-        pendingFriendReq: {
-          some: {
-            id: senderId,
-          }
-        }
-      },
-    });
+    const pendingFriend =
+      await this.prisma.users.findUnique({
+        where: {
+          id: friend.id,
+          pendingFriendReq: {
+            some: {
+              id: senderId,
+            },
+          },
+        },
+      });
     if (!pendingFriend) {
-      throw new UnauthorizedException("No friend request!");
+      throw new UnauthorizedException(
+        'No friend request!',
+      );
     }
     await this.prisma.users.update({
       where: {
@@ -532,28 +609,28 @@ export class NotificationsService {
         pendingFriendReq: {
           disconnect: {
             id: senderId,
-          }
+          },
         },
         pendingFriendReqOf: {
           disconnect: {
             id: senderId,
-          }
-        }
-      }
-    });
-    let notif = await this.prisma.notifications.findUnique({
-      where: {
-        id: notifId,
+          },
+        },
       },
     });
+    const notif =
+      await this.prisma.notifications.findUnique({
+        where: {
+          id: notifId,
+        },
+      });
     await this.prisma.notifications.deleteMany({
       where: {
         senderId: senderId,
         receiverId: receiverId,
         // title: notif.title,
-      }
+      },
     });
     return notif;
   }
-
 }

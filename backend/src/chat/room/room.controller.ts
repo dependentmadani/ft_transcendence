@@ -1,8 +1,23 @@
-import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Put, Req, Res, UnauthorizedException, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  Put,
+  Req,
+  Res,
+  UnauthorizedException,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { RoomService } from './room.service';
-import { Room, Users } from '@prisma/client'
+import { Room, Users } from '@prisma/client';
 import { diskStorage } from 'multer';
-import * as path from 'path'
+import * as path from 'path';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 // export const storage = {
@@ -26,7 +41,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 // };
 
 interface FileParams {
-  fileName: string
+  fileName: string;
 }
 
 export const storage = {
@@ -40,60 +55,105 @@ export const storage = {
 
 @Controller('room')
 export class RoomController {
-    constructor(private roomService: RoomService) {}
+  constructor(private roomService: RoomService) {}
 
-    @Get()
-    async getRooms(): Promise<Room[]> {
-        return this.roomService.getRooms()
-    }
+  @Get()
+  async getRooms(): Promise<Room[]> {
+    return this.roomService.getRooms();
+  }
 
-    @Get('/:roomId')
-    async getRoomAdmin(@Param('roomId', ParseIntPipe) roomId: number): Promise<Room> {
-        return this.roomService.getOneRoom(roomId)
-    }
+  @Get('/:roomId')
+  async getRoomAdmin(
+    @Param('roomId', ParseIntPipe) roomId: number,
+  ): Promise<Room> {
+    return this.roomService.getOneRoom(roomId);
+  }
 
-    @Get('roomAvatar/:id')
-    async getRoomAvatar(@Param('id', ParseIntPipe) id: number, @Res() res) {
-      const fileName = await this.roomService.getRoomAvatar(id)
-      return res.sendFile(path.join(__dirname,'../../../uploads/',fileName))
-    }
+  @Get('roomAvatar/:id')
+  async getRoomAvatar(
+    @Param('id', ParseIntPipe) id: number,
+    @Res() res,
+  ) {
+    const fileName =
+      await this.roomService.getRoomAvatar(id);
+    return res.sendFile(
+      path.join(
+        __dirname,
+        '../../../uploads/',
+        fileName,
+      ),
+    );
+  }
 
-    @Post()
-    @UseInterceptors(FileInterceptor('roomAvatar', storage))
-    createRoom(@Body('roomName') roomName: string,
-                @UploadedFile() file: Express.Multer.File,
-                @Body('roomType') roomType: string,
-                @Body('roomPass') roomPass: string) {
-        return this.roomService.createRoom(roomName, file.filename, roomType, roomPass)
-    }
+  @Post()
+  @UseInterceptors(
+    FileInterceptor('roomAvatar', storage),
+  )
+  createRoom(
+    @Body('roomName') roomName: string,
+    @UploadedFile() file: Express.Multer.File,
+    @Body('roomType') roomType: string,
+    @Body('roomPass') roomPass: string,
+  ) {
+    return this.roomService.createRoom(
+      roomName,
+      file.filename,
+      roomType,
+      roomPass,
+    );
+  }
 
-    @Post('pass/:id')
-    async checkRoomAccess(@Param('id', ParseIntPipe) roomId: number, @Body('roomPass') roomPass: string): Promise<boolean> {
-        return this.roomService.checkRoomAccess(roomId, roomPass)
-    }
+  @Post('pass/:id')
+  async checkRoomAccess(
+    @Param('id', ParseIntPipe) roomId: number,
+    @Body('roomPass') roomPass: string,
+  ): Promise<boolean> {
+    return this.roomService.checkRoomAccess(
+      roomId,
+      roomPass,
+    );
+  }
 
-    @Patch('/:roomId')
-    @UseInterceptors(FileInterceptor('roomAvatar', storage))
-    async updateRoom(@Param('roomId', ParseIntPipe) roomId: number,
-                    @Body('roomName') roomName: string,
-                    @UploadedFile() file,
-                    @Body('roomType') roomType: string,
-                    @Body('roomPass') roomPass: string) {
-        return await this.roomService.updateRoom(roomId, roomName, file.filename, roomType, roomPass)
-    }
+  @Patch('/:roomId')
+  @UseInterceptors(
+    FileInterceptor('roomAvatar', storage),
+  )
+  async updateRoom(
+    @Param('roomId', ParseIntPipe) roomId: number,
+    @Body('roomName') roomName: string,
+    @UploadedFile() file,
+    @Body('roomType') roomType: string,
+    @Body('roomPass') roomPass: string,
+  ) {
+    return await this.roomService.updateRoom(
+      roomId,
+      roomName,
+      file.filename,
+      roomType,
+      roomPass,
+    );
+  }
 
-    @Put('/last-message/:id')
-    async updateLastMessage(@Param('id', ParseIntPipe) id: number, @Body('content') content: string) {
-        return await this.roomService.updateLastMessage(id, content)
-    }
+  @Put('/last-message/:id')
+  async updateLastMessage(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('content') content: string,
+  ) {
+    return await this.roomService.updateLastMessage(
+      id,
+      content,
+    );
+  }
 
-    @Delete()
-    async deleteAllRooms() {
-        return this.roomService.deleteAllRooms()
-    }
-    
-    @Delete('/:roomId')
-    async deleteRoom(@Param('roomId', ParseIntPipe) roomId: number) {
-        return this.roomService.deleteOneRoom(roomId)
-    }
+  @Delete()
+  async deleteAllRooms() {
+    return this.roomService.deleteAllRooms();
+  }
+
+  @Delete('/:roomId')
+  async deleteRoom(
+    @Param('roomId', ParseIntPipe) roomId: number,
+  ) {
+    return this.roomService.deleteOneRoom(roomId);
+  }
 }

@@ -12,8 +12,20 @@ import { NotificationController } from './notifications.controller';
 import { UsersService } from 'src/users/users.service';
 
 @Module({
-  imports: [PrismaModule, AuthModule,PassportModule, JwtModule.register({})],
+  imports: [
+    PrismaModule,
+    AuthModule,
+    PassportModule,
+    JwtModule.register({}),
+  ],
   controllers: [NotificationController],
-  providers: [NotificationsGateway, NotificationsService, PrismaService, AuthService, UsersService, webSocketJwtStrategy]
+  providers: [
+    NotificationsGateway,
+    NotificationsService,
+    PrismaService,
+    AuthService,
+    UsersService,
+    webSocketJwtStrategy,
+  ],
 })
 export class NotificationsModule {}

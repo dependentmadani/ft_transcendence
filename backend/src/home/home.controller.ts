@@ -4,10 +4,10 @@ import { Public } from 'src/decorator';
 @Controller('')
 @Public()
 export class HomeController {
-    constructor() {}
+  constructor() {}
 
-    @Get('')
-    getHome() {
-        return 'welcome home :)'
-    }
+  @Get('')
+  getHome() {
+    return 'welcome home :)';
+  }
 }

@@ -1,11 +1,26 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody, WebSocketServer, OnGatewayConnection, OnGatewayDisconnect, ConnectedSocket } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  SubscribeMessage,
+  MessageBody,
+  WebSocketServer,
+  OnGatewayConnection,
+  OnGatewayDisconnect,
+  ConnectedSocket,
+} from '@nestjs/websockets';
 import { NotificationsService } from './notifications.service';
-import { NotificationDto, NotificationBody } from './dto/create-notification.dto';
+import {
+  NotificationDto,
+  NotificationBody,
+} from './dto/create-notification.dto';
 import { JwtPayload } from 'src/auth/types';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { Request } from 'express';
-import { Req, UnauthorizedException, UseGuards } from '@nestjs/common';
+import {
+  Req,
+  UnauthorizedException,
+  UseGuards,
+} from '@nestjs/common';
 import { WsGuard } from 'src/guards';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
@@ -18,21 +33,30 @@ export interface socketMetaPayload {
 //   origin: 'localhost:8000*'
 // }})
 
-
-@WebSocketGateway({ namespace: 'notification', cors: { origin: "*" } })
-export class NotificationsGateway implements OnGatewayConnection {
+@WebSocketGateway({
+  namespace: 'notification',
+  cors: { origin: '*' },
+})
+export class NotificationsGateway
+  implements OnGatewayConnection
+{
   @WebSocketServer()
   server: Server;
 
   socketMap: Map<number, Socket[]>;
 
-  private userSocketMap = new Map<number, string>();
+  private userSocketMap = new Map<
+    number,
+    string
+  >();
 
-  constructor( private prismaService: PrismaService, 
+  constructor(
+    private prismaService: PrismaService,
     // private jwtService: JwtService,
-    private readonly notificationsService: NotificationsService) {
-      // this.socketMap = new Map<number, Socket[] >();
-    }
+    private readonly notificationsService: NotificationsService,
+  ) {
+    // this.socketMap = new Map<number, Socket[] >();
+  }
 
   // async handleConnection(client: Socket) {
   //   try {
@@ -87,7 +111,7 @@ export class NotificationsGateway implements OnGatewayConnection {
   // }
 
   // async emitNotification(userId: number, notification: Partial<Notifications>) {
-    
+
   // }
 
   // @UseGuards(WsGuard)
@@ -109,7 +133,7 @@ export class NotificationsGateway implements OnGatewayConnection {
   // @SubscribeMessage('acceptNotification')
   // async acceptFriend(@MessageBody('friendUsername') notifBody: NotificationBody, @Req() req: Request) {
   //   let notif = await this.notificationsService.acceptFriend(notifBody, req.user['sub']);
-    
+
   //   for (let i = 0; i < this.socketMap.get(notif.receiverId).length; ++i) {
   //     this.socketMap.get(notif.senderId)[i].emit('acceptedNotification', {
   //       receiver: notif.receiverUser.username,
@@ -127,7 +151,6 @@ export class NotificationsGateway implements OnGatewayConnection {
 
   ////////////////////////////////////
   handleConnection(client: Socket): void {
-
     client.on('someEvent', (userId: number) => {
       // console.log('Received data from client:', userId);
 
@@ -140,12 +163,18 @@ export class NotificationsGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('notification')
-  handleNotification(@MessageBody() data: any): void {
+  handleNotification(
+    @MessageBody() data: any,
+  ): void {
     const { notif } = data;
     // Send the message to the recipient's socket
     // console.log('Yooooooooo', notif.receiverUser.id)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
-    this.server.to(this.userSocketMap[notif.receiverUser.id]).emit('receiveNotification', notif);
+    this.server
+      .to(
+        this.userSocketMap[notif.receiverUser.id],
+      )
+      .emit('receiveNotification', notif);
   }
 
   // @SubscribeMessage('removeNotification')
@@ -158,23 +187,28 @@ export class NotificationsGateway implements OnGatewayConnection {
   // }
 
   @SubscribeMessage('acceptNotification')
-  handleAcceptedNotification(@MessageBody() data: any): void {
+  handleAcceptedNotification(
+    @MessageBody() data: any,
+  ): void {
     const { notif } = data;
     // Send the message to the recipient's socket
     // console.log('Pooooooooo', notif)
     // this.server.to(this.userSocketMap[sender]).emit('sendNotification', message, data.rec);
-    this.server.to(this.userSocketMap[notif.sender.id]).emit('notificationAccepted', notif);
+    this.server
+      .to(this.userSocketMap[notif.sender.id])
+      .emit('notificationAccepted', notif);
     // this.server.to(this.userSocketMap[notif.receiver.id]).emit('notificationAccepted', notif);
   }
 
   @SubscribeMessage('lockChat')
-  handleLockChat(@MessageBody() rec: any): void { 
+  handleLockChat(@MessageBody() rec: any): void {
     // const { sender, rec, contact } = data;
     // Send the message to the recipient's socket
     // console.log('Sort', contact , ' for ', sender , ' and ', rec)
     // console.log('chhhhhhhhhhhh', rec)
-    this.server.to(this.userSocketMap[rec]).emit('lockingChat', rec);
+    this.server
+      .to(this.userSocketMap[rec])
+      .emit('lockingChat', rec);
     // this.server.to(this.userSocketMap[rec]).emit('sortChats', contact);
   }
-
 }

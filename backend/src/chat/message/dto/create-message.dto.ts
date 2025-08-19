@@ -1,14 +1,12 @@
-import { IsString, IsInt } from "class-validator";
+import { IsString, IsInt } from 'class-validator';
 
 export class Message {
+  @IsInt()
+  messageId: number;
 
-    @IsInt()
-    messageId: number;
+  @IsInt()
+  senderId: number;
 
-    @IsInt()
-    senderId: number;
-
-    @IsString()
-    text: string
-
+  @IsString()
+  text: string;
 }

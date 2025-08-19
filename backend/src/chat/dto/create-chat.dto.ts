@@ -1,8 +1,6 @@
-import { IsDate, IsInt } from "class-validator";
+import { IsDate, IsInt } from 'class-validator';
 
 export class Chat {
-
-    @IsInt()
-    contactId: number
-
+  @IsInt()
+  contactId: number;
 }

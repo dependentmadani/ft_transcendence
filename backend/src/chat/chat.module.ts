@@ -14,8 +14,16 @@ import { UsersService } from 'src/users/users.service';
 import { RoomUsersService } from './room/room-users/room-users.service';
 
 @Module({
-    imports: [PrismaModule, JwtModule.register({})],
-    controllers: [ChatController],
-    providers: [ChatService, ChatGateway, RoomUsersService, RoomService, UsersService, AuthService, PrismaService],
+  imports: [PrismaModule, JwtModule.register({})],
+  controllers: [ChatController],
+  providers: [
+    ChatService,
+    ChatGateway,
+    RoomUsersService,
+    RoomService,
+    UsersService,
+    AuthService,
+    PrismaService,
+  ],
 })
 export class ChatModule {}
